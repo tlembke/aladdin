@@ -1,0 +1,17 @@
+<%# Links for current user. %>
+<nav class='navbar'>
+  <div class='navbar-brand'>
+    Alstonville Clinic 02 66280505
+  </div>
+  <div class="navbar-text pull-right">
+  	<% if session[:username] %>
+    <%= fa_icon_tag "user" %> Hi, <strong><%= session[:name] %></strong>
+    <span class="divider">|</span>
+    You are connected to Genie
+    <span class="divider">|</span>
+    <%= link_to "Disconnect", controller: "genie", action: "login" %>
+    <% end %>
+
+  
+  </div>
+</nav>
