@@ -1,0 +1,11 @@
+  			   			<!--   Tasks -->
+			         <% if tasks.count > 0 %>
+						        <legend><i class="fa fa-tasks" aria-hidden="true"></i>  Next Actions</legend>
+						        <ul class="fa-ul">
+						        <% tasks.each do |task| %>
+						        	<li><i class="fa-li fa fa-square-o"></i> <%= task %></li>
+						        <% end %>
+						        </ul>
+			        <% end %>
+
+			           <!--   EndTasks -->

@@ -1,0 +1,578 @@
+<div class="container-fluid mt20">
+  <div class="row top-summary">
+    <div class="col-lg-3 col-md-6 col-sm-12 animate-drop-fade">
+      <div class="panel panel-danger">
+        <div class="panel-heading">
+          <p class="lead"><i class="fa fa-globe"></i> TOTAL <b>PAGE HITS</b></p>
+        </div>
+        <div class='panel-body text-red-400'>
+          <h2 class='page-hits m0'>1123</h2>
+        </div>
+        <div class="panel-footer">
+          <div class="row">
+            <div class="col-sm-12">
+              <i class="fa fa-caret-down"></i> <b>10%</b> decrease in page hits.
+            </div>
+          </div>
+          <div class="clearfix"></div>
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-3 col-md-6 col-sm-12 animate-drop-fade">
+      <div class="panel panel-info">
+        <div class="panel-heading">
+          <p class="lead"><i class="fa fa-trophy"></i> TOTAL <b>SALES</b></p>
+        </div>
+        <div class='panel-body text-light-blue-400'>
+          <h2 class="m0">$12,121</h2>
+        </div>
+        <div class="panel-footer">
+          <div class="row">
+            <div class="col-sm-12">
+              <i class="fa fa-minus"></i> <b>No change</b> in sales
+            </div>
+          </div>
+          <div class="clearfix"></div>
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-3 col-md-6 col-sm-12 animate-drop-fade">
+      <div class="panel panel-success">
+        <div class="panel-heading">
+          <p class="lead"><i class="fa fa-dollar"></i> TOTAL <b>REVENUE</b></p>
+        </div>
+        <div class='panel-body text-green-400'>
+          <h2 class="m0">$100,123</h2>
+        </div>
+        <div class="panel-footer">
+          <div class="row">
+            <div class="col-sm-12">
+              <i class="fa fa-caret-up"></i> <b>12%</b> increase in revenue.
+            </div>
+          </div>
+          <div class="clearfix"></div>
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-3 col-md-6 col-sm-12 animate-drop-fade">
+      <div class="panel panel-success">
+        <div class="panel-heading">
+          <p class="lead"><i class="fa fa-users"></i> ACTIVE <b>CUSTOMERS</b></p>
+        </div>
+        <div class='panel-body text-green-400'>
+          <h2 class="m0">23,453</h2>
+        </div>
+        <div class="panel-footer">
+          <div class="row">
+            <div class="col-sm-12">
+              <i class="fa fa-caret-up"></i> <b>1%</b> increase in active customers.
+            </div>
+          </div>
+          <div class="clearfix"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+      <div class="panel panel-metric">
+        <div class="panel-body">
+          <div class="metric-content">
+            <div class="row">
+              <header class="col-xs-12">
+                <h3>Monthly Earnings</h3>
+              </header>
+              <div class="col-xs-7 col-sm-7 col-md-7 col-lg-7" style="min-height: 150px;">
+                <div class='metric-graph' id='metric-monthly-earnings' style='height:150px;'></div>
+              </div>
+              <div class="col-xs-5 col-sm-5 col-md-5 col-lg-5">
+                <div class="metric-value">
+                  $19,821
+                  <small>CURRENT</small>
+                </div>
+                <div class="metric-trend">
+                  <p class="text-success">
+                    <i class="fa fa-chevron-up"></i> 12%
+                  </p>
+                  <small>30 Days Ago</small>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+      <div class="panel panel-metric">
+        <div class="panel-body">
+          <div class="metric-content">
+            <div class="row">
+              <header class="col-xs-12">
+                <h3>Cancellations</h3>
+              </header>
+              <div class="col-xs-7 col-sm-7 col-md-7 col-lg-7" style="min-height: 150px;">
+                <div class='metric-graph' id='metric-cancellations' style='height:150px;'></div>
+              </div>
+              <div class="col-xs-5 col-sm-5 col-md-5 col-lg-5">
+                <div class="metric-value">
+                  123
+                  <small>CURRENT</small>
+                </div>
+                <div class="metric-trend">
+                  <p class="text-success">
+                    <i class="fa fa-chevron-up"></i> 12%
+                  </p>
+                  <small>30 Days Ago</small>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-sm-12 col-md-9 animate-fade-in-1000">
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <p class="lead">SALES VS REFUNDS</p>
+        </div>
+        <div class="panel-body">
+          <div id="rickshaw-bars"></div>
+        </div>
+      </div>
+    </div>
+    <div class="col-sm-12 col-md-3 animate-fade-in-1000">
+      <div class="panel panel-cover" style="background-image: url(<%= image_path("dresssed/header_1.jpg") %>)">
+        <p class="lead p10">Top Affiliate</p>
+        <%= random_avatar 115, "img-circle" %>
+        <h3 class='mt0'>Fill Murray</h3>
+        <ul class="stats list-unstlyed list-inline clearfix">
+          <li class="col-4"><span>$1,267</span>Commission</li>
+          <li class="col-4"><span>$3,987</span>Sales</li>
+          <li class="col-4"><span>121</span>Referrals</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-sm-12 col-md-7 animate-fade-in-1000">
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <p class="lead">MASTER SERVER</p>
+        </div>
+        <div class="panel-body">
+          <div class="container-fluid">
+            <div class="row">
+              <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                <div id="realtime" style="height: 315px; width: 100%; display: block;">
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="panel-footer">
+          <div class="row">
+            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+              <div class="server-status-details clearfix">
+                <h5 class="text-center">Memory Stats</h5>
+                <div class="row stat-list">
+                  <dl class="col-xs-6 col-sm-6 col-md-3">
+                    <dt>In use</dt>
+                    <dd>2.5 GB</dd>
+                  </dl>
+                  <dl class="col-xs-6 col-sm-6 col-md-3">
+                    <dt>Total</dt>
+                    <dd>4 GB</dd>
+                  </dl>
+                  <dl class="col-xs-6 col-sm-6 col-md-3">
+                    <dt>Available</dt>
+                    <dd>500 MB</dd>
+                  </dl>
+                  <dl class="col-xs-6 col-sm-6 col-md-3">
+                    <dt>Swap</dt>
+                    <dd>360 MB</dd>
+                  </dl>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-sm-12 col-md-5 animate-fade-in-1000">
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <p class='lead'><%= ionicon_icon_tag 'flame' %> RECENT ACTIVITY</p>
+          <ul class="nav nav-tabs nav-tabs-xs">
+            <li class="active">
+              <a href="#dashboard-recent-comments" data-toggle="tab">Comments</a>
+            </li>
+            <li class="">
+              <a href="#dashboard-recent-threads" data-toggle="tab">Forum threads</a>
+            </li>
+          </ul>
+        </div>
+        <div class="tab-content">
+          <div class="tab-pane fade active in" style='height: 470px; overflow: scroll;' id='dashboard-recent-comments'>
+            <ul class="list-group list-group-flush">
+              <li class='list-group-item'>
+                <div class="media">
+                  <a class="pull-left" href="#">
+                    <%= random_avatar 40, "media-object" %>
+                  </a>
+                  <div class="media-body">
+                    <h5 class="media-heading"><a href="#" title="">Fill Murray</a> commented on <a href="#" title="">Article Name</a></h5>
+                    <p class='small'>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Repudiandae atque, dolore quo voluptatum sed voluptas incidunt aspernatur natus iste dolor neque porro quos illo quia iusto minima, nesciunt animi architecto.</p>
+                    <ul class="list-inline small">
+                      <li><a href="#"><i class="fa fa-fw fa-pencil"></i>Edit</a></li>
+                      <li><a href="#"><i class="fa fa-fw fa-times"></i>Remove</a></li>
+                      <span class="pull-right">1 hour ago</span>
+                    </ul>
+                  </div>
+                </div>
+              </li>
+              <li class='list-group-item'>
+                <div class="media">
+                  <a class="pull-left" href="#">
+                    <%= random_avatar 40, "media-object" %>
+                  </a>
+                  <div class="media-body">
+                    <h5 class="media-heading"><a href="#" title="">Fill Murray</a> commented on <a href="#" title="">Article Name</a></h5>
+                    <p class='small'>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Voluptatibus harum hic, atque, blanditiis commodi repellendus quibusdam ratione, a tenetur sint iste sunt consequatur nemo. Sed necessitatibus aut aperiam accusamus dignissimos.</p>
+                    <ul class="list-inline small">
+                      <li><a href="#"><i class="fa fa-fw fa-pencil"></i>Edit</a></li>
+                      <li><a href="#"><i class="fa fa-fw fa-times"></i>Remove</a></li>
+                      <span class="pull-right">1 hour ago</span>
+                    </ul>
+                  </div>
+                </div>
+              </li>
+              <li class='list-group-item'>
+                <div class="media">
+                  <a class="pull-left" href="#">
+                    <%= random_avatar 40, "media-object" %>
+                  </a>
+                  <div class="media-body">
+                    <h5 class="media-heading"><a href="#" title="">Fill Murray</a> commented on <a href="#" title="">Article Name</a></h5>
+                    <p class='small'>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Tempora illo odio ducimus voluptas dicta, mollitia omnis reiciendis architecto nisi sunt cumque accusantium incidunt eveniet. Dicta accusamus voluptas, iure facilis quo.</p>
+                    <ul class="list-inline small">
+                      <li><a href="#"><i class="fa fa-fw fa-pencil"></i>Edit</a></li>
+                      <li><a href="#"><i class="fa fa-fw fa-times"></i>Remove</a></li>
+                      <span class="pull-right">1 hour ago</span>
+                    </ul>
+                  </div>
+                </div>
+              </li>
+              <li class='list-group-item'>
+                <div class="media">
+                  <a class="pull-left" href="#">
+                    <%= random_avatar 40, "media-object" %>
+                  </a>
+                  <div class="media-body">
+                    <h5 class="media-heading"><a href="#" title="">Fill Murray</a> commented on <a href="#" title="">Article Name</a></h5>
+                    <p class='small'>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Repellendus non voluptatibus dolorum maxime, distinctio, dolores corporis, eveniet placeat odio est nulla a ea aliquam, tempore autem voluptas. Ex, quibusdam, itaque.</p>
+                    <ul class="list-inline small">
+                      <li><a href="#"><i class="fa fa-fw fa-pencil"></i>Edit</a></li>
+                      <li><a href="#"><i class="fa fa-fw fa-times"></i>Remove</a></li>
+                      <span class="pull-right">1 hour ago</span>
+                    </ul>
+                  </div>
+                </div>
+              </li>
+              <li class='list-group-item'>
+                <div class="media">
+                  <a class="pull-left" href="#">
+                    <%= random_avatar 40, "media-object" %>
+                  </a>
+                  <div class="media-body">
+                    <h5 class="media-heading"><a href="#" title="">Fill Murray</a> commented on <a href="#" title="">Article Name</a></h5>
+                    <p class='small'>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Commodi, corporis, facilis magni error est quibusdam eaque hic nulla quod veniam reiciendis atque itaque laboriosam. Molestias architecto natus hic, veritatis fugiat.</p>
+                    <ul class="list-inline small">
+                      <li><a href="#"><i class="fa fa-fw fa-pencil"></i>Edit</a></li>
+                      <li><a href="#"><i class="fa fa-fw fa-times"></i>Remove</a></li>
+                      <span class="pull-right">1 hour ago</span>
+                    </ul>
+                  </div>
+                </div>
+              </li>
+              <li class='list-group-item'>
+                <div class="media">
+                  <a class="pull-left" href="#">
+                    <%= random_avatar 40, "media-object" %>
+                  </a>
+                  <div class="media-body">
+                    <h5 class="media-heading"><a href="#" title="">Fill Murray</a> commented on <a href="#" title="">Article Name</a></h5>
+                    <p class='small'>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aliquam suscipit, exercitationem mollitia, id fugit earum. Nemo veniam, temporibus soluta laudantium nulla quae ipsam, iste et accusantium blanditiis dignissimos id adipisci.</p>
+                    <ul class="list-inline small">
+                      <li><a href="#"><i class="fa fa-fw fa-pencil"></i>Edit</a></li>
+                      <li><a href="#"><i class="fa fa-fw fa-times"></i>Remove</a></li>
+                      <span class="pull-right">1 hour ago</span>
+                    </ul>
+                  </div>
+                </div>
+              </li>
+              <li class='list-group-item'>
+                <div class="media">
+                  <a class="pull-left" href="#">
+                    <%= random_avatar 40, "media-object" %>
+                  </a>
+                  <div class="media-body">
+                    <h5 class="media-heading"><a href="#" title="">Fill Murray</a> commented on <a href="#" title="">Article Name</a></h5>
+                    <p class='small'>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Incidunt vel pariatur repellat hic magni a, sit odit quaerat veniam, quae veritatis temporibus ex ullam nesciunt dolor consequuntur ut dignissimos praesentium.</p>
+                    <ul class="list-inline small">
+                      <li><a href="#"><i class="fa fa-fw fa-pencil"></i>Edit</a></li>
+                      <li><a href="#"><i class="fa fa-fw fa-times"></i>Remove</a></li>
+                      <span class="pull-right">1 hour ago</span>
+                    </ul>
+                  </div>
+                </div>
+              </li>
+            </ul>
+          </div>
+          <div class="tab-pane fade" id="dashboard-recent-threads">
+            <div style="overflow: scroll; width: auto; height: 474px;">
+              <ul class="list-group list-group-flush">
+                <li class="list-group-item">
+                  <div class="media">
+                    <a class="pull-left" href="#">
+                      <%= random_avatar 40, "media-object" %>
+                    </a>
+                    <div class="media-body">
+                      <h5 class="media-heading"><a href="#" title="">Lorem ipsum dolor sit amet</a></h5>
+                      <div class="small">started by <a href="#" title="">Fill Murray</a> in <a href="#" title="">Forum name</a><span class="pull-right">3h</span>
+                      </div>
+                    </div>
+                  </div>
+                </li>
+                <li class="list-group-item">
+                  <div class="media">
+                    <a class="pull-left" href="#">
+                      <%= random_avatar 40, "media-object" %>
+                    </a>
+                    <div class="media-body">
+                      <h5 class="media-heading"><a href="#" title="">Lorem ipsum dolor sit amet</a></h5>
+                      <div class="small">started by <a href="#" title="">Fill Murray</a> in <a href="#" title="">Forum name</a><span class="pull-right">3h</span>
+                      </div>
+                    </div>
+                  </div>
+                </li>
+                <li class="list-group-item">
+                  <div class="media">
+                    <a class="pull-left" href="#">
+                      <%= random_avatar 40, "media-object" %>
+                    </a>
+                    <div class="media-body">
+                      <h5 class="media-heading"><a href="#" title="">Lorem ipsum dolor sit amet</a></h5>
+                      <div class="small">started by <a href="#" title="">Fill Murray</a> in <a href="#" title="">Forum name</a><span class="pull-right">3h</span>
+                      </div>
+                    </div>
+                  </div>
+                </li>
+                <li class="list-group-item">
+                  <div class="media">
+                    <a class="pull-left" href="#">
+                      <%= random_avatar 40, "media-object" %>
+                    </a>
+                    <div class="media-body">
+                      <h5 class="media-heading"><a href="#" title="">Lorem ipsum dolor sit amet</a></h5>
+                      <div class="small">started by <a href="#" title="">Fill Murray</a> in <a href="#" title="">Forum name</a><span class="pull-right">3h</span>
+                      </div>
+                    </div>
+                  </div>
+                </li>
+                <li class="list-group-item">
+                  <div class="media">
+                    <a class="pull-left" href="#">
+                      <%= random_avatar 40, "media-object" %>
+                    </a>
+                    <div class="media-body">
+                      <h5 class="media-heading"><a href="#" title="">Lorem ipsum dolor sit amet</a></h5>
+                      <div class="small">started by <a href="#" title="">Fill Murray</a> in <a href="#" title="">Forum name</a><span class="pull-right">3h</span>
+                      </div>
+                    </div>
+                  </div>
+                </li>
+                <li class="list-group-item">
+                  <div class="media">
+                    <a class="pull-left" href="#">
+                      <%= random_avatar 40, "media-object" %>
+                    </a>
+                    <div class="media-body">
+                      <h5 class="media-heading"><a href="#" title="">Lorem ipsum dolor sit amet</a></h5>
+                      <div class="small">started by <a href="#" title="">Fill Murray</a> in <a href="#" title="">Forum name</a><span class="pull-right">3h</span>
+                      </div>
+                    </div>
+                  </div>
+                </li>
+                <li class="list-group-item">
+                  <div class="media">
+                    <a class="pull-left" href="#">
+                      <%= random_avatar 40, "media-object" %>
+                    </a>
+                    <div class="media-body">
+                      <h5 class="media-heading"><a href="#" title="">Lorem ipsum dolor sit amet</a></h5>
+                      <div class="small">started by <a href="#" title="">Fill Murray</a> in <a href="#" title="">Forum name</a><span class="pull-right">3h</span>
+                      </div>
+                    </div>
+                  </div>
+                </li>
+
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <p class="lead">ONLINE USERS</p>
+        </div>
+        <div class="panel-body">
+          <div id="map_canvas_1"></div>
+        </div>
+      </div>
+    </div>
+    <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <p class="lead">MOST ACTIVE USERS</p>
+        </div>
+        <div class="panel-body">
+          <div class="table-responsive">
+            <table class="table table-hover table-striped">
+              <thead>
+                <tr>
+                  <th>#</th>
+                  <th>Full Name</th>
+                  <th>Location</th>
+                  <th>Status</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+
+              <tbody>
+                <tr>
+                  <td>1</td><td><strong>Fred Berlin</strong></td>
+                  <td>Vancouver, Canada</td>
+                  <td><span class="label label-success">Active</span></td>
+                  <td>
+                    <div class="btn-group btn-group-xs">
+                      <a data-toggle="tooltip" class="btn btn-default" data-original-title="Delete"><i class="fa fa-trash"></i></a>
+                      <a data-toggle="tooltip" class="btn btn-default" data-original-title="Edit"><i class="fa fa-edit"></i></a>
+                    </div>
+                  </td>
+                </tr>
+                <tr>
+                  <td>2</td><td>Octavius Belt</td>
+                  <td>London, United Kingdom</td>
+                  <td><span class="label label-success">Active</span></td>
+                  <td>
+                    <div class="btn-group btn-group-xs">
+                      <a data-toggle="tooltip" class="btn btn-default" data-original-title="Delete"><i class="fa fa-trash"></i></a>
+                      <a data-toggle="tooltip" class="btn btn-default" data-original-title="Edit"><i class="fa fa-edit"></i></a>
+                    </div>
+                  </td>
+                </tr>
+                <tr>
+                  <td>3</td><td><strong>Cash Money</strong></td>
+                  <td>Ney York City, USA</td>
+                  <td><span class="label label-success">Active</span></td>
+                  <td>
+                    <div class="btn-group btn-group-xs">
+                      <a data-toggle="tooltip" class="btn btn-default" data-original-title="Delete"><i class="fa fa-trash"></i></a>
+                      <a data-toggle="tooltip" class="btn btn-default" data-original-title="Edit"><i class="fa fa-edit"></i></a>
+                    </div>
+                  </td>
+                </tr>
+                <tr>
+                  <td>4</td><td><strong>Bailey Bingface</strong></td>
+                  <td>Liberia</td>
+                  <td><span class="label label-success">Active</span></td>
+                  <td>
+                    <div class="btn-group btn-group-xs">
+                      <a data-toggle="tooltip" class="btn btn-default" data-original-title="Delete"><i class="fa fa-trash"></i></a>
+                      <a data-toggle="tooltip" class="btn btn-default" data-original-title="Edit"><i class="fa fa-edit"></i></a>
+                    </div>
+                  </td>
+                </tr>
+                <tr>
+                  <td>5</td><td><strong>Altus Zombo</strong></td>
+                  <td>Monrovia</td>
+                  <td><span class="label label-danger">Suspended</span></td>
+                  <td>
+                    <div class="btn-group btn-group-xs">
+                      <a data-toggle="tooltip" class="btn btn-default" data-original-title="Delete"><i class="fa fa-trash"></i></a>
+                      <a data-toggle="tooltip" class="btn btn-default" data-original-title="Edit"><i class="fa fa-edit"></i></a>
+                    </div>
+                  </td>
+                </tr>
+                <tr>
+                  <td>6</td><td><strong>Leslie Taket</strong></td>
+                  <td>Dublin, Ireland</td>
+                  <td><span class="label label-success">Active</span></td>
+                  <td>
+                    <div class="btn-group btn-group-xs">
+                      <a data-toggle="tooltip" class="btn btn-sm" data-original-title="Delete"><i class="fa fa-trash"></i></a>
+                      <a data-toggle="tooltip" class="btn btn-sm" data-original-title="Edit"><i class="fa fa-edit"></i></a>
+                    </div>
+                  </td>
+                </tr>
+                <tr>
+                  <td>7</td><td><strong>Leslie Taket</strong></td>
+                  <td>Dublin, Ireland</td>
+                  <td><span class="label label-success">Active</span></td>
+                  <td>
+                    <div class="btn-group btn-group-xs">
+                      <a data-toggle="tooltip" class="btn btn-sm" data-original-title="Delete"><i class="fa fa-trash"></i></a>
+                      <a data-toggle="tooltip" class="btn btn-sm" data-original-title="Edit"><i class="fa fa-edit"></i></a>
+                    </div>
+                  </td>
+                </tr>
+                <tr>
+                  <td>8</td><td><strong>Leslie Taket</strong></td>
+                  <td>Dublin, Ireland</td>
+                  <td><span class="label label-success">Active</span></td>
+                  <td>
+                    <div class="btn-group btn-group-xs">
+                      <a data-toggle="tooltip" class="btn btn-sm" data-original-title="Delete"><i class="fa fa-trash"></i></a>
+                      <a data-toggle="tooltip" class="btn btn-sm" data-original-title="Edit"><i class="fa fa-edit"></i></a>
+                    </div>
+                  </td>
+                </tr>
+                <tr>
+                  <td>9</td><td><strong>Leslie Taket</strong></td>
+                  <td>Dublin, Ireland</td>
+                  <td><span class="label label-success">Active</span></td>
+                  <td>
+                    <div class="btn-group btn-group-xs">
+                      <a data-toggle="tooltip" class="btn btn-sm" data-original-title="Delete"><i class="fa fa-trash"></i></a>
+                      <a data-toggle="tooltip" class="btn btn-sm" data-original-title="Edit"><i class="fa fa-edit"></i></a>
+                    </div>
+                  </td>
+                </tr>
+                <tr>
+                  <td>10</td><td><strong>Leslie Taket</strong></td>
+                  <td>Dublin, Ireland</td>
+                  <td><span class="label label-success">Active</span></td>
+                  <td>
+                    <div class="btn-group btn-group-xs">
+                      <a data-toggle="tooltip" class="btn btn-sm" data-original-title="Delete"><i class="fa fa-trash"></i></a>
+                      <a data-toggle="tooltip" class="btn btn-sm" data-original-title="Edit"><i class="fa fa-edit"></i></a>
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

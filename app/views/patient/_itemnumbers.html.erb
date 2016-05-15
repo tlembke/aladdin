@@ -1,0 +1,64 @@
+<div class="row">
+	<div class="col-md-2">
+		GPMP (721)
+	</div>
+	<div class="col-md-3">
+		<% if @item_numbers['721'] %>
+		<% Time.now >  @item_numbers['721'] + 12.months ? tag= "mark" : tag= "span" %>
+		<%= content_tag(tag, @item_numbers['721'].strftime("%d/%m/%y")) %>
+		<% end %>
+	</div>
+</div>
+<div class="row">
+	<div class="col-md-2">
+	TCA (723)
+	</div>
+	<div class="col-md-3">
+		<% if @item_numbers['723'] %>
+	   <% Time.now >  @item_numbers['723'] + 12.months ? tag= "mark" : tag= "span" %>	
+	   <%= content_tag(tag, @item_numbers['723'].strftime("%d/%m/%y")) %>
+	   <% end %>
+	</div>
+</div>
+<div class="row">
+	<div class="col-md-2">
+	 EPC Review (732)
+	</div>
+	<div class="col-md-3">
+		<% if @item_numbers['732'] %>
+		<% Time.now <  @item_numbers['721'] + 12.months and Time.now > @item_numbers['732'] + 3.months ? tag= "mark" : tag= "span" %>
+
+		<%= content_tag(tag, @item_numbers['732'].strftime("%d/%m/%y")) %>
+		<% end %>
+	</div>
+</div>
+<div class="row">
+	<div class="col-md-2">
+		Diabetes SIPP
+	</div>
+	<div class="col-md-3">
+		<% if @item_numbers['2517'] %>
+		<% Time.now >  @item_numbers['2517'] + 12.months ? tag= "mark" : tag= "span" %>
+		<%= content_tag(tag, @item_numbers['2517'].strftime("%d/%m/%y")) %>
+		<% end %>
+	</div>
+</div>
+
+<% if @patient.age >= 75 %>
+<div class="row">
+	<div class="col-md-2">
+		Health Assessment
+	</div>
+	<div class="col-md-3">
+		<%= @item_numbers['701'].strftime("%d/%m/%y") if  @item_numbers['701']%>
+	</div>
+</div>
+<% end %>
+<div class="row">
+	<div class="col-md-2">
+		Medication Review
+	</div>
+	<div class="col-md-3">
+		<%= @item_numbers['900'].strftime("%d/%m/%y") if  @item_numbers['701']%>
+	</div>
+</div>

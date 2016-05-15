@@ -1,0 +1,13 @@
+         <% if @recent_consults.count > 0 %>
+	        <hr>
+	        <legend><i class="fa fa-stethoscope"></i> Recent Consults </legend>
+	        <ul class="fa-ul">
+	        <% @recent_consults.each do |consult| %>
+		        <% if consult['ID'] == @consult['ID'] %>
+			        	<li><i class="fa-li"></i><%= consult['CONSULTDATE'].strftime("%d/%m/%y") + " " + +consult['DOCTORNAME'] %></li>
+			     <% else %>
+			        <li><i class="fa-li"></i><%= link_to consult['CONSULTDATE'].strftime("%d/%m/%y") + " " + +consult['DOCTORNAME'], patient_path(:id=> @id, :consult_id=> consult['ID'])%></li>
+			    <% end %>
+	        <% end %>
+	        </ul>
+        <% end %>

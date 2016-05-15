@@ -1,0 +1,12 @@
+        <!-- Tests -->
+        <% if @tests.count> 1 %>
+        <legend><i class="fa fa-flask"></i>  Tests Ordered</legend>
+        	<% @tests.each do |row| %>
+	        	<b><%= row[0] %></b><br>
+	        	<%= row[1] %><P>
+        	<% end %>
+
+
+        <% end %>
+
+        <!-- End Tests -->

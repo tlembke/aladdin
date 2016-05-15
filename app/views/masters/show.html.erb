@@ -1,0 +1,23 @@
+<% @title = "Showing master" %>
+
+<div class="container">
+  <div class="row">
+    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+      <div class="form-horizontal">
+                <div class="form-group">
+          <label class="col-md-2 form-label">Name</label>
+          <div class="col-md-10 form-control uneditable-input">
+            <span>
+              <%= @master.name %>
+            </span>
+          </div>
+        </div>
+
+                <div class="form-actions col-md-offset-2">
+          <%= link_to fa_icon_tag("pencil") + ' Edit', edit_master_path(@master), class: 'btn btn-primary' %>
+          <%= link_to 'Back', masters_path, class: 'btn' %>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -43,4 +43,9 @@ module PatientHelper
 		end
 		return tasks
 	end
+
+	def get_goals(condition)
+		@goals=Goal.where(condition_id: condition)
+		return @goals
+	end
 end

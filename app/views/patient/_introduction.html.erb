@@ -1,0 +1,33 @@
+<div class="row">
+	<div class="col-md-4">
+			<%= @patient.introduction.html_safe%>
+	</div>
+
+	<% if @current_problems.count > 0   %>
+	<div class="col-md-4">
+	<%= @patient.pronoun %> is being managed for the following <%= pluralize(@current_problems.count, 'condition') %>
+	<ul>
+			<% @current_problems.each do |problem| %>
+					<li><%= problem['PROBLEM'] %></li>
+			<% end %>
+	</ul>
+	</div>
+	<% end %>
+
+	<% if @careteam.count > 0   %>
+	<div class="col-md-4">
+	<%= @patient.pospronoun %>  care team includes :
+	<ul>
+			<% @careteam.each do |member| %>
+					<li><%= member['PROVIDERNAME'] %>
+					<%= "(" + member['PROVIDERTYPE'] + ")" if member['PROVIDERTYPE']!="" %>
+					</li>
+			<% end %>
+	</ul>
+	</div>
+	<% end %>
+</div>
+
+
+
+

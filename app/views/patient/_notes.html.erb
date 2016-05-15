@@ -1,0 +1,12 @@
+   		<!--   NOTES -->
+        <% if notes.count > 0 %>
+            <div class-='no-page-break-inside'>
+                <legend><i class="fa fa-sticky-note-o"></i>  Notes</legend>
+                <ul class="fa-ul">
+                <% notes.each do |task| %>
+                	<li><i class="fa-li fa fa-check-square-o"></i><%= task %></li>
+                <% end %>
+                </ul>
+            </div>
+    	<% end %>
+    	<!--   END NOTES -->

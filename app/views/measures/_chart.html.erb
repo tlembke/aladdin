@@ -1,0 +1,56 @@
+<div class="row">
+     <div class="panel panel-metric">
+        <div class="panel-body">
+          <div class="metric-content">
+              <div class="row">
+                      <header class='col-xs-12'>
+                        <h3><%= @chart[:title] %></h3>
+                        <%= @chart[:description] %>
+                      </header>
+              
+
+                     
+                        <%= content_tag :div,"", class: "chart col-xs-7 col-sm-7 col-md-7 col-lg-7",id: "chart_"+@chart[:measure_id].to_s, data: {values: @chart[:values], goals: @chart[:goals],labels: @chart[:labels], xkey: @chart[:xkey], ykeys: @chart[:ykeys], units: @chart[:units]   }, style: "min-height: 250px;" %>
+                     
+                    <div class="col-xs-5 col-sm-5 col-md-5 col-lg-5">
+                          <div class="metric-value col-xs-12">
+                          <%= @chart[:last] %>  <%= @chart[:units] %>
+                          <small>MOST RECENT (<%= @chart[:last_date].strftime("%d/%m/%y")%>)</small>
+                        </div>
+                        <div class="metric-trend col-xs-12">
+                          <% if @chart[:values].count>1 %>
+                          <p class="text-danger">
+   
+                            <%= @chart[:secondlast] %> 
+                             (<% if @chart[:caret] != "" %>
+                              <i class='fa fa-chevron-<%= @chart[:caret] %>'></i>
+                            <% end %><%= @chart[:diff].abs %> <%= @chart[:units] %>)
+                          </p>
+
+                          <small><%= distance_of_time_in_words(@chart[:last_date],@chart[:secondlast_date]) %> before</small>
+                          <% end %>
+                         
+
+                          <% if @chart[:goals][0]!=nil %>
+                           <hr>
+                          <p class="text-danger">
+                              
+                            <%= @chart[:goals][0] %> 
+                             (<% if @chart[:caretgap] != "" %>
+                              <i class='fa fa-chevron-<%= @chart[:caretgap] %>'></i>
+                            <% end %><%= @chart[:gap] %> <%= @chart[:units] %>)
+                          </p>
+
+                          <small>TARGET</small>
+                          <% end %>
+                        </div>
+                    </div> <!-- col-md-5 -->
+              </div> <!-- row -->
+          </div>  <!-- metric-content -->
+        </div>  <!-- panel-body -->
+      </div>  <!-- panel-->
+
+</div>
+
+
+

@@ -1,0 +1,14 @@
+<legend><i class="fa fa-user"></i>  Consultation Summary  <%= @date.to_date.strftime("%d/%m/%y") %></legend>
+<% if @patient["HISTORY"] != "" %>
+<b>History: </b>
+<%= @patient["HISTORY"] %><p>
+<% end %>
+<% if @patient["EXAMINATION"] != "" %>
+<b>Examination: <b>
+<%= @patient["EXAMINATION"] %><p>
+<% end %>
+<% if @patient["PLAN"] != "" %>
+<b>Plan: </b>
+<%= @patient["PLAN"] %><p>
+<% end %>
+

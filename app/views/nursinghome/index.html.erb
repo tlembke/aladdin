@@ -1,0 +1,7 @@
+<h2> Nursing Home Rounds</h2>
+<ul>
+<% @nh_visit_dates.each do | visit | %>
+<li><%= link_to visit.to_date.strftime("%A, %e %B"),{ :action => "show",:date => visit.to_s(:db) }%> (<%= pluralize(@nh_visit_counts[visit], 'patient') %>)</li>
+
+<% end %>
+</ul>

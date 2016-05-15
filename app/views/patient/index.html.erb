@@ -22,7 +22,9 @@
     <legend>Search results</legend>
  		<% @patients_search.each do |patient| %>
 
- 		<%= link_to patient['SURNAME']+","+patient['FIRSTNAME'], patient_path(:id=> patient['ID']) %><br>
+ 		<%= link_to patient['SURNAME']+","+patient['FIRSTNAME'], patient_path(:id=> patient['ID']) %>
+ 		<%= link_to "CP", careplan_patient_path(:id=> patient['ID']),{:class => "btn btn-primary btn-xs"} %>
+ 		<br>
 
  	<% end %>
 

@@ -9,7 +9,9 @@
     <h2>Search Results</h2>
  		<% @patients_search.each do |patient| %>
 
- 		<%= link_to patient['Surname']+","+patient['FirstName'], patient_path(:id=> patient['id']) %><br>
+ 		<%= link_to patient['Surname']+","+patient['FirstName'] + " Whoa", patient_path(:id=> patient['id']) %>
+ 		<%= link_to "(Careplan)", careplan_patient_path(:id=> patient['id']) %>
+ 		<br>
 
  		<% end %>
 

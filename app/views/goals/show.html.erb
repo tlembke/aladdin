@@ -1,0 +1,77 @@
+<% @title = "Showing goal" %>
+
+<div class="container">
+  <div class="row">
+    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+      <div class="form-horizontal">
+                <div class="form-group">
+          <label class="col-md-2 form-label">Title</label>
+          <div class="col-md-10 form-control uneditable-input">
+            <span>
+              <%= @goal.title %>
+            </span>
+          </div>
+        </div>
+
+                <div class="form-group">
+          <label class="col-md-2 form-label">Description</label>
+          <div class="col-md-10 form-control uneditable-input">
+            <span>
+              <%= @goal.description %>
+            </span>
+          </div>
+        </div>
+
+                <div class="form-group">
+          <label class="col-md-2 form-label">Condition</label>
+          <div class="col-md-10 form-control uneditable-input">
+            <span>
+              <%= @goal.condition_id %>
+            </span>
+          </div>
+        </div>
+
+                <div class="form-group">
+          <label class="col-md-2 form-label">Patient</label>
+          <div class="col-md-10 form-control uneditable-input">
+            <span>
+              <%= @goal.patient_id %>
+            </span>
+          </div>
+        </div>
+
+                <div class="form-group">
+          <label class="col-md-2 form-label">Measure</label>
+          <div class="col-md-10 form-control uneditable-input">
+            <span>
+              <%= @goal.measure_id %>
+            </span>
+          </div>
+        </div>
+
+                <div class="form-group">
+          <label class="col-md-2 form-label">Active</label>
+          <div class="col-md-10 form-control uneditable-input">
+            <span>
+              <%= @goal.active %>
+            </span>
+          </div>
+        </div>
+
+                <div class="form-group">
+          <label class="col-md-2 form-label">Parent</label>
+          <div class="col-md-10 form-control uneditable-input">
+            <span>
+              <%= @goal.parent %>
+            </span>
+          </div>
+        </div>
+
+                <div class="form-actions col-md-offset-2">
+          <%= link_to fa_icon_tag("pencil") + ' Edit', edit_goal_path(@goal), class: 'btn btn-primary' %>
+          <%= link_to 'Back', goals_path, class: 'btn' %>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

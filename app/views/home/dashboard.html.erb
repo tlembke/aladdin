@@ -1,0 +1,609 @@
+<div class="container-fluid mt20">
+  <div class="row top-summary">
+    <div class="col-lg-3 col-md-6 col-sm-12 animate-drop-fade">
+      <div class="panel panel-danger">
+        <div class="panel-heading">
+          <p class="lead"><i class="fa fa-globe"></i> TOTAL <b>PAGE HITS</b></p>
+        </div>
+        <div class='panel-body text-red-400'>
+          <h2 class='page-hits m0'>1123</h2>
+        </div>
+        <div class="panel-footer">
+          <div class="row">
+            <div class="col-sm-12">
+              <i class="fa fa-caret-down"></i> <b>10%</b> decrease in page hits.
+            </div>
+          </div>
+          <div class="clearfix"></div>
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-3 col-md-6 col-sm-12 animate-drop-fade">
+      <div class="panel panel-info">
+        <div class="panel-heading">
+          <p class="lead"><i class="fa fa-trophy"></i> TOTAL <b>SALES</b></p>
+        </div>
+        <div class='panel-body text-light-blue-400'>
+          <h2 class="m0">$12,121</h2>
+        </div>
+        <div class="panel-footer">
+          <div class="row">
+            <div class="col-sm-12">
+              <i class="fa fa-minus"></i> <b>No change</b> in sales
+            </div>
+          </div>
+          <div class="clearfix"></div>
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-3 col-md-6 col-sm-12 animate-drop-fade">
+      <div class="panel panel-success">
+        <div class="panel-heading">
+          <p class="lead"><i class="fa fa-dollar"></i> TOTAL <b>REVENUE</b></p>
+        </div>
+        <div class='panel-body text-green-400'>
+          <h2 class="m0">$100,123</h2>
+        </div>
+        <div class="panel-footer">
+          <div class="row">
+            <div class="col-sm-12">
+              <i class="fa fa-caret-up"></i> <b>12%</b> increase in revenue.
+            </div>
+          </div>
+          <div class="clearfix"></div>
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-3 col-md-6 col-sm-12 animate-drop-fade">
+      <div class="panel panel-success">
+        <div class="panel-heading">
+          <p class="lead"><i class="fa fa-users"></i> ACTIVE <b>CUSTOMERS</b></p>
+        </div>
+        <div class='panel-body text-green-400'>
+          <h2 class="m0">23,453</h2>
+        </div>
+        <div class="panel-footer">
+          <div class="row">
+            <div class="col-sm-12">
+              <i class="fa fa-caret-up"></i> <b>1%</b> increase in active customers.
+            </div>
+          </div>
+          <div class="clearfix"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+      <div class="panel panel-metric">
+        <div class="panel-body">
+          <div class="metric-content">
+            <div class="row">
+              <header class="col-xs-12">
+                <h3>Monthly Earnings</h3>
+              </header>
+              <div class="col-xs-7 col-sm-7 col-md-7 col-lg-7" style="min-height: 150px;">
+                <div class='metric-graph' id='metric-monthly-earnings' style='height:150px;'></div>
+              </div>
+              <div class="col-xs-5 col-sm-5 col-md-5 col-lg-5">
+                <div class="metric-value">
+                  $19,821
+                  <small>CURRENT</small>
+                </div>
+                <div class="metric-trend">
+                  <p class="text-success">
+                    <i class="fa fa-chevron-up"></i> 12%
+                  </p>
+                  <small>30 Days Ago</small>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+      <div class="panel panel-metric">
+        <div class="panel-body">
+          <div class="metric-content">
+            <div class="row">
+              <header class="col-xs-12">
+                <h3>Cancellations</h3>
+              </header>
+              <div class="col-xs-7 col-sm-7 col-md-7 col-lg-7" style="min-height: 150px;">
+                <div class='metric-graph' id='metric-cancellations' style='height:150px;'></div>
+              </div>
+              <div class="col-xs-5 col-sm-5 col-md-5 col-lg-5">
+                <div class="metric-value">
+                  123
+                  <small>CURRENT</small>
+                </div>
+                <div class="metric-trend">
+                  <p class="text-success">
+                    <i class="fa fa-chevron-up"></i> 12%
+                  </p>
+                  <small>30 Days Ago</small>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-sm-12 col-md-9 animate-fade-in-1000">
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <p class="lead">SALES VS REFUNDS</p>
+        </div>
+        <div class="panel-body">
+          <div id="rickshaw-bars"></div>
+        </div>
+      </div>
+    </div>
+    <div class="col-sm-12 col-md-3 animate-fade-in-1000">
+      <div class="panel panel-cover" style="background-image: url(<%= image_path("dresssed/header_1.jpg") %>)">
+        <p class="lead p10">Top Affiliate</p>
+        <%= random_avatar 115, "img-circle" %>
+        <h3 class='mt0'>Fill Murray</h3>
+        <ul class="stats list-unstlyed list-inline clearfix">
+          <li class="col-4"><span>$1,267</span>Commission</li>
+          <li class="col-4"><span>$3,987</span>Sales</li>
+          <li class="col-4"><span>121</span>Referrals</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-sm-12 col-md-7 animate-fade-in-1000">
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <p class="lead">MASTER SERVER</p>
+        </div>
+        <div class="panel-body">
+          <div class="container-fluid">
+            <div class="row">
+              <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                <div id="realtime" style="height: 315px; width: 100%; display: block;">
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="panel-footer">
+          <div class="row">
+            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+              <div class="server-status-details clearfix">
+                <h5 class="text-center">Memory Stats</h5>
+                <div class="row stat-list">
+                  <dl class="col-xs-6 col-sm-6 col-md-3">
+                    <dt>In use</dt>
+                    <dd>2.5 GB</dd>
+                  </dl>
+                  <dl class="col-xs-6 col-sm-6 col-md-3">
+                    <dt>Total</dt>
+                    <dd>4 GB</dd>
+                  </dl>
+                  <dl class="col-xs-6 col-sm-6 col-md-3">
+                    <dt>Available</dt>
+                    <dd>500 MB</dd>
+                  </dl>
+                  <dl class="col-xs-6 col-sm-6 col-md-3">
+                    <dt>Swap</dt>
+                    <dd>360 MB</dd>
+                  </dl>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-sm-12 col-md-5 animate-fade-in-1000">
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <p class='lead'><%= ionicon_icon_tag 'flame' %> RECENT ACTIVITY</p>
+          <ul class="nav nav-tabs nav-tabs-xs">
+            <li class="active">
+              <a href="#dashboard-recent-comments" data-toggle="tab">Comments</a>
+            </li>
+            <li class="">
+              <a href="#dashboard-recent-threads" data-toggle="tab">Forum threads</a>
+            </li>
+          </ul>
+        </div>
+        <div class="tab-content">
+          <div class="tab-pane fade active in" style='height: 470px; overflow: scroll;' id='dashboard-recent-comments'>
+            <ul class="list-group list-group-flush">
+              <li class='list-group-item'>
+                <div class="media">
+                  <a class="pull-left" href="#">
+                    <%= random_avatar 40, "media-object" %>
+                  </a>
+                  <div class="media-body">
+                    <h5 class="media-heading"><a href="#" title="">Fill Murray</a> commented on <a href="#" title="">Article Name</a></h5>
+                    <p class='small'>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Repudiandae atque, dolore quo voluptatum sed voluptas incidunt aspernatur natus iste dolor neque porro quos illo quia iusto minima, nesciunt animi architecto.</p>
+                    <ul class="list-inline small">
+                      <li><a href="#"><i class="fa fa-fw fa-pencil"></i>Edit</a></li>
+                      <li><a href="#"><i class="fa fa-fw fa-times"></i>Remove</a></li>
+                      <span class="pull-right">1 hour ago</span>
+                    </ul>
+                  </div>
+                </div>
+              </li>
+              <li class='list-group-item'>
+                <div class="media">
+                  <a class="pull-left" href="#">
+                    <%= random_avatar 40, "media-object" %>
+                  </a>
+                  <div class="media-body">
+                    <h5 class="media-heading"><a href="#" title="">Fill Murray</a> commented on <a href="#" title="">Article Name</a></h5>
+                    <p class='small'>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Voluptatibus harum hic, atque, blanditiis commodi repellendus quibusdam ratione, a tenetur sint iste sunt consequatur nemo. Sed necessitatibus aut aperiam accusamus dignissimos.</p>
+                    <ul class="list-inline small">
+                      <li><a href="#"><i class="fa fa-fw fa-pencil"></i>Edit</a></li>
+                      <li><a href="#"><i class="fa fa-fw fa-times"></i>Remove</a></li>
+                      <span class="pull-right">1 hour ago</span>
+                    </ul>
+                  </div>
+                </div>
+              </li>
+              <li class='list-group-item'>
+                <div class="media">
+                  <a class="pull-left" href="#">
+                    <%= random_avatar 40, "media-object" %>
+                  </a>
+                  <div class="media-body">
+                    <h5 class="media-heading"><a href="#" title="">Fill Murray</a> commented on <a href="#" title="">Article Name</a></h5>
+                    <p class='small'>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Tempora illo odio ducimus voluptas dicta, mollitia omnis reiciendis architecto nisi sunt cumque accusantium incidunt eveniet. Dicta accusamus voluptas, iure facilis quo.</p>
+                    <ul class="list-inline small">
+                      <li><a href="#"><i class="fa fa-fw fa-pencil"></i>Edit</a></li>
+                      <li><a href="#"><i class="fa fa-fw fa-times"></i>Remove</a></li>
+                      <span class="pull-right">1 hour ago</span>
+                    </ul>
+                  </div>
+                </div>
+              </li>
+              <li class='list-group-item'>
+                <div class="media">
+                  <a class="pull-left" href="#">
+                    <%= random_avatar 40, "media-object" %>
+                  </a>
+                  <div class="media-body">
+                    <h5 class="media-heading"><a href="#" title="">Fill Murray</a> commented on <a href="#" title="">Article Name</a></h5>
+                    <p class='small'>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Repellendus non voluptatibus dolorum maxime, distinctio, dolores corporis, eveniet placeat odio est nulla a ea aliquam, tempore autem voluptas. Ex, quibusdam, itaque.</p>
+                    <ul class="list-inline small">
+                      <li><a href="#"><i class="fa fa-fw fa-pencil"></i>Edit</a></li>
+                      <li><a href="#"><i class="fa fa-fw fa-times"></i>Remove</a></li>
+                      <span class="pull-right">1 hour ago</span>
+                    </ul>
+                  </div>
+                </div>
+              </li>
+              <li class='list-group-item'>
+                <div class="media">
+                  <a class="pull-left" href="#">
+                    <%= random_avatar 40, "media-object" %>
+                  </a>
+                  <div class="media-body">
+                    <h5 class="media-heading"><a href="#" title="">Fill Murray</a> commented on <a href="#" title="">Article Name</a></h5>
+                    <p class='small'>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Commodi, corporis, facilis magni error est quibusdam eaque hic nulla quod veniam reiciendis atque itaque laboriosam. Molestias architecto natus hic, veritatis fugiat.</p>
+                    <ul class="list-inline small">
+                      <li><a href="#"><i class="fa fa-fw fa-pencil"></i>Edit</a></li>
+                      <li><a href="#"><i class="fa fa-fw fa-times"></i>Remove</a></li>
+                      <span class="pull-right">1 hour ago</span>
+                    </ul>
+                  </div>
+                </div>
+              </li>
+              <li class='list-group-item'>
+                <div class="media">
+                  <a class="pull-left" href="#">
+                    <%= random_avatar 40, "media-object" %>
+                  </a>
+                  <div class="media-body">
+                    <h5 class="media-heading"><a href="#" title="">Fill Murray</a> commented on <a href="#" title="">Article Name</a></h5>
+                    <p class='small'>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aliquam suscipit, exercitationem mollitia, id fugit earum. Nemo veniam, temporibus soluta laudantium nulla quae ipsam, iste et accusantium blanditiis dignissimos id adipisci.</p>
+                    <ul class="list-inline small">
+                      <li><a href="#"><i class="fa fa-fw fa-pencil"></i>Edit</a></li>
+                      <li><a href="#"><i class="fa fa-fw fa-times"></i>Remove</a></li>
+                      <span class="pull-right">1 hour ago</span>
+                    </ul>
+                  </div>
+                </div>
+              </li>
+              <li class='list-group-item'>
+                <div class="media">
+                  <a class="pull-left" href="#">
+                    <%= random_avatar 40, "media-object" %>
+                  </a>
+                  <div class="media-body">
+                    <h5 class="media-heading"><a href="#" title="">Fill Murray</a> commented on <a href="#" title="">Article Name</a></h5>
+                    <p class='small'>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Incidunt vel pariatur repellat hic magni a, sit odit quaerat veniam, quae veritatis temporibus ex ullam nesciunt dolor consequuntur ut dignissimos praesentium.</p>
+                    <ul class="list-inline small">
+                      <li><a href="#"><i class="fa fa-fw fa-pencil"></i>Edit</a></li>
+                      <li><a href="#"><i class="fa fa-fw fa-times"></i>Remove</a></li>
+                      <span class="pull-right">1 hour ago</span>
+                    </ul>
+                  </div>
+                </div>
+              </li>
+            </ul>
+          </div>
+          <div class="tab-pane fade" id="dashboard-recent-threads">
+            <div style="overflow: scroll; width: auto; height: 474px;">
+              <ul class="list-group list-group-flush">
+                <li class="list-group-item">
+                  <div class="media">
+                    <a class="pull-left" href="#">
+                      <%= random_avatar 40, "media-object" %>
+                    </a>
+                    <div class="media-body">
+                      <h5 class="media-heading"><a href="#" title="">Lorem ipsum dolor sit amet</a></h5>
+                      <div class="small">started by <a href="#" title="">Fill Murray</a> in <a href="#" title="">Forum name</a><span class="pull-right">3h</span>
+                      </div>
+                    </div>
+                  </div>
+                </li>
+                <li class="list-group-item">
+                  <div class="media">
+                    <a class="pull-left" href="#">
+                      <%= random_avatar 40, "media-object" %>
+                    </a>
+                    <div class="media-body">
+                      <h5 class="media-heading"><a href="#" title="">Lorem ipsum dolor sit amet</a></h5>
+                      <div class="small">started by <a href="#" title="">Fill Murray</a> in <a href="#" title="">Forum name</a><span class="pull-right">3h</span>
+                      </div>
+                    </div>
+                  </div>
+                </li>
+                <li class="list-group-item">
+                  <div class="media">
+                    <a class="pull-left" href="#">
+                      <%= random_avatar 40, "media-object" %>
+                    </a>
+                    <div class="media-body">
+                      <h5 class="media-heading"><a href="#" title="">Lorem ipsum dolor sit amet</a></h5>
+                      <div class="small">started by <a href="#" title="">Fill Murray</a> in <a href="#" title="">Forum name</a><span class="pull-right">3h</span>
+                      </div>
+                    </div>
+                  </div>
+                </li>
+                <li class="list-group-item">
+                  <div class="media">
+                    <a class="pull-left" href="#">
+                      <%= random_avatar 40, "media-object" %>
+                    </a>
+                    <div class="media-body">
+                      <h5 class="media-heading"><a href="#" title="">Lorem ipsum dolor sit amet</a></h5>
+                      <div class="small">started by <a href="#" title="">Fill Murray</a> in <a href="#" title="">Forum name</a><span class="pull-right">3h</span>
+                      </div>
+                    </div>
+                  </div>
+                </li>
+                <li class="list-group-item">
+                  <div class="media">
+                    <a class="pull-left" href="#">
+                      <%= random_avatar 40, "media-object" %>
+                    </a>
+                    <div class="media-body">
+                      <h5 class="media-heading"><a href="#" title="">Lorem ipsum dolor sit amet</a></h5>
+                      <div class="small">started by <a href="#" title="">Fill Murray</a> in <a href="#" title="">Forum name</a><span class="pull-right">3h</span>
+                      </div>
+                    </div>
+                  </div>
+                </li>
+                <li class="list-group-item">
+                  <div class="media">
+                    <a class="pull-left" href="#">
+                      <%= random_avatar 40, "media-object" %>
+                    </a>
+                    <div class="media-body">
+                      <h5 class="media-heading"><a href="#" title="">Lorem ipsum dolor sit amet</a></h5>
+                      <div class="small">started by <a href="#" title="">Fill Murray</a> in <a href="#" title="">Forum name</a><span class="pull-right">3h</span>
+                      </div>
+                    </div>
+                  </div>
+                </li>
+                <li class="list-group-item">
+                  <div class="media">
+                    <a class="pull-left" href="#">
+                      <%= random_avatar 40, "media-object" %>
+                    </a>
+                    <div class="media-body">
+                      <h5 class="media-heading"><a href="#" title="">Lorem ipsum dolor sit amet</a></h5>
+                      <div class="small">started by <a href="#" title="">Fill Murray</a> in <a href="#" title="">Forum name</a><span class="pull-right">3h</span>
+                      </div>
+                    </div>
+                  </div>
+                </li>
+
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <p class="lead">ONLINE USERS</p>
+        </div>
+        <div class="panel-body">
+          <div id="map_canvas_1"></div>
+        </div>
+      </div>
+    </div>
+    <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <p class="lead">MOST ACTIVE USERS</p>
+        </div>
+        <div class="panel-body">
+          <div class="table-responsive">
+            <table class="table table-hover table-striped">
+              <thead>
+                <tr>
+                  <th>#</th>
+                  <th>Full Name</th>
+                  <th>Location</th>
+                  <th>Status</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+
+              <tbody>
+                <tr>
+                  <td>1</td><td><strong>Fred Berlin</strong></td>
+                  <td>Vancouver, Canada</td>
+                  <td><span class="label label-success">Active</span></td>
+                  <td>
+                    <div class="btn-group btn-group-xs">
+                      <a data-toggle="tooltip" class="btn btn-default" data-original-title="Delete"><i class="fa fa-trash"></i></a>
+                      <a data-toggle="tooltip" class="btn btn-default" data-original-title="Edit"><i class="fa fa-edit"></i></a>
+                    </div>
+                  </td>
+                </tr>
+                <tr>
+                  <td>2</td><td>Octavius Belt</td>
+                  <td>London, United Kingdom</td>
+                  <td><span class="label label-success">Active</span></td>
+                  <td>
+                    <div class="btn-group btn-group-xs">
+                      <a data-toggle="tooltip" class="btn btn-default" data-original-title="Delete"><i class="fa fa-trash"></i></a>
+                      <a data-toggle="tooltip" class="btn btn-default" data-original-title="Edit"><i class="fa fa-edit"></i></a>
+                    </div>
+                  </td>
+                </tr>
+                <tr>
+                  <td>3</td><td><strong>Cash Money</strong></td>
+                  <td>Ney York City, USA</td>
+                  <td><span class="label label-success">Active</span></td>
+                  <td>
+                    <div class="btn-group btn-group-xs">
+                      <a data-toggle="tooltip" class="btn btn-default" data-original-title="Delete"><i class="fa fa-trash"></i></a>
+                      <a data-toggle="tooltip" class="btn btn-default" data-original-title="Edit"><i class="fa fa-edit"></i></a>
+                    </div>
+                  </td>
+                </tr>
+                <tr>
+                  <td>4</td><td><strong>Bailey Bingface</strong></td>
+                  <td>Liberia</td>
+                  <td><span class="label label-success">Active</span></td>
+                  <td>
+                    <div class="btn-group btn-group-xs">
+                      <a data-toggle="tooltip" class="btn btn-default" data-original-title="Delete"><i class="fa fa-trash"></i></a>
+                      <a data-toggle="tooltip" class="btn btn-default" data-original-title="Edit"><i class="fa fa-edit"></i></a>
+                    </div>
+                  </td>
+                </tr>
+                <tr>
+                  <td>5</td><td><strong>Altus Zombo</strong></td>
+                  <td>Monrovia</td>
+                  <td><span class="label label-danger">Suspended</span></td>
+                  <td>
+                    <div class="btn-group btn-group-xs">
+                      <a data-toggle="tooltip" class="btn btn-default" data-original-title="Delete"><i class="fa fa-trash"></i></a>
+                      <a data-toggle="tooltip" class="btn btn-default" data-original-title="Edit"><i class="fa fa-edit"></i></a>
+                    </div>
+                  </td>
+                </tr>
+                <tr>
+                  <td>6</td><td><strong>Leslie Taket</strong></td>
+                  <td>Dublin, Ireland</td>
+                  <td><span class="label label-success">Active</span></td>
+                  <td>
+                    <div class="btn-group btn-group-xs">
+                      <a data-toggle="tooltip" class="btn btn-sm" data-original-title="Delete"><i class="fa fa-trash"></i></a>
+                      <a data-toggle="tooltip" class="btn btn-sm" data-original-title="Edit"><i class="fa fa-edit"></i></a>
+                    </div>
+                  </td>
+                </tr>
+                <tr>
+                  <td>7</td><td><strong>Leslie Taket</strong></td>
+                  <td>Dublin, Ireland</td>
+                  <td><span class="label label-success">Active</span></td>
+                  <td>
+                    <div class="btn-group btn-group-xs">
+                      <a data-toggle="tooltip" class="btn btn-sm" data-original-title="Delete"><i class="fa fa-trash"></i></a>
+                      <a data-toggle="tooltip" class="btn btn-sm" data-original-title="Edit"><i class="fa fa-edit"></i></a>
+                    </div>
+                  </td>
+                </tr>
+                <tr>
+                  <td>8</td><td><strong>Leslie Taket</strong></td>
+                  <td>Dublin, Ireland</td>
+                  <td><span class="label label-success">Active</span></td>
+                  <td>
+                    <div class="btn-group btn-group-xs">
+                      <a data-toggle="tooltip" class="btn btn-sm" data-original-title="Delete"><i class="fa fa-trash"></i></a>
+                      <a data-toggle="tooltip" class="btn btn-sm" data-original-title="Edit"><i class="fa fa-edit"></i></a>
+                    </div>
+                  </td>
+                </tr>
+                <tr>
+                  <td>9</td><td><strong>Leslie Taket</strong></td>
+                  <td>Dublin, Ireland</td>
+                  <td><span class="label label-success">Active</span></td>
+                  <td>
+                    <div class="btn-group btn-group-xs">
+                      <a data-toggle="tooltip" class="btn btn-sm" data-original-title="Delete"><i class="fa fa-trash"></i></a>
+                      <a data-toggle="tooltip" class="btn btn-sm" data-original-title="Edit"><i class="fa fa-edit"></i></a>
+                    </div>
+                  </td>
+                </tr>
+                <tr>
+                  <td>10</td><td><strong>Leslie Taket</strong></td>
+                  <td>Dublin, Ireland</td>
+                  <td><span class="label label-success">Active</span></td>
+                  <td>
+                    <div class="btn-group btn-group-xs">
+                      <a data-toggle="tooltip" class="btn btn-sm" data-original-title="Delete"><i class="fa fa-trash"></i></a>
+                      <a data-toggle="tooltip" class="btn btn-sm" data-original-title="Edit"><i class="fa fa-edit"></i></a>
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+            <script>
+            flotMetric('#metric-bounce-rate', [[7, 0], [6, 0.23209251864503488], [5, 1.8986783670163425], [4, 2.3330433296149056], [3, 3.8951065262119497], [2, 4.3742736267022035], [1, 5.371025793419772], [0, 6.0920617352260225]] );
+        </script>
+        <script>
+            flotMetric('#metric-cancellations', [[0, 5.752654905129665], [1, 5.22545169914668], [2, 5.9200387559633665], [3, 5.192107014402612], [4, 5.553425194200624], [5, 5.601005068565028], [6, 5.248743218394408], [7, 5.889023531642669]] );
+        </script>
+        <script>
+            flotMetric('#metric-refunds', [[0, 0.20665831693483017], [1, 1.6245553905805181], [2, 2.883830595837852], [3, 3.912527985859434], [4, 4.435827740802949], [5, 5.188488486763384], [6, 6.10285708813905], [7, 7.610960309370873]] );
+        </script>
+        <script>
+            flotMetric('#metric-charges', [[7, 0], [6, 0.02177905644025535], [5, 1.6332120940484933], [4, 2.0523715132911198], [3, 3.2247600722421748], [2, 4.508891685823012], [1, 5.778321038032771], [0, 6.328918471644488]] );
+        </script>
+        <script>
+            flotMetric('#metric-time-on-site', [[0, 5.335863854786061], [1, 5.758787873884499], [2, 5.973108811568445], [3, 5.625222356296328], [4, 5.41271802680851], [5, 5.483555491581403], [6, 5.535494099071109], [7, 5.286647688493377]] );
+        </script>
+        <script>
+            flotMetric('#metric-average-revenue-per-customer', [[0, 0.3255693382357431], [1, 1.3673117514368196], [2, 2.406811874205454], [3, 3.3719916806837755], [4, 4.62748952699859], [5, 5.223217362326101], [6, 6.12350812023603], [7, 7.324323965640449]] );
+        </script>
+        <script>
+            flotMetric('#metric-ltv', [[0, 0.8404023304894113], [1, 1.8934516760837368], [2, 2.315278992038871], [3, 3.5209537027517404], [4, 4.08998465584035], [5, 5.627754577294939], [6, 6.226314020414095], [7, 7.295853223227888]] );
+        </script>
+        <script>
+            flotMetric('#metric-churn', [[0, 0.02168528938220793], [1, 1.5682743887673722], [2, 2.8455167715688794], [3, 3.2353536342724154], [4, 4.835431346365065], [5, 5.757841175351276], [6, 6.423055589606638], [7, 7.236393189465136]] );
+        </script>
+        <script>
+            flotMetric('#metric-page-hits', [[7, 0], [6, 0.1937316242640118], [5, 1.7996243347931955], [4, 2.582095720859689], [3, 3.7024702159979084], [2, 4.402507165343258], [1, 5.099134498244306], [0, 6.210290694523414]] );
+        </script>
+        <script>
+            flotMetric('#metric-support-queries', [[0, 0.14489843450555173], [1, 1.1412554414913147], [2, 2.0401947793245334], [3, 3.0977247123175844], [4, 4.004217219039795], [5, 5.242021095428497], [6, 6.310694957155869], [7, 7.180231333150592]] );
+        </script>

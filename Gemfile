@@ -27,6 +27,10 @@ gem 'ruby-odbc'
 
 gem 'dnssd'
 
+gem 'bootstrap-editable-rails'
+
+
+
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
 

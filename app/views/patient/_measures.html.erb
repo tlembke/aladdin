@@ -1,0 +1,29 @@
+				    				<!-- Measues -->
+         <% if @measures.count>0 %>
+         <legend><i class="fa fa-line-chart"></i>    Today's Measures  </legend>
+         	 <% if @measures['SYSTOLIC'] and  @measures['DIASTOLIC']%>
+         	 <div class="row">
+
+         		<div class="col-md-3">
+         		Blood Pressure:
+         		</div>
+         		<div class="col-md-3">
+         		<%= @measures['SYSTOLIC'].to_i %> / <%= @measures['DIASTOLIC'].to_i %>
+         		</div>
+         	 </div>
+         	<% end %>
+         	<% if @measures['WEIGHT']%>
+         	 <div class="row">
+
+         		<div class="col-md-3">
+         		Weight:
+         		</div>
+         		<div class="col-md-3">
+         		<%= @measures['WEIGHT'] %>
+         		</div>
+         	 </div>
+         	<% end %>
+         	
+         	
+        <% end %>
+        <!-- End Measures -->

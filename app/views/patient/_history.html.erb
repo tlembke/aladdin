@@ -1,0 +1,28 @@
+       		           <!--   problems  -->
+						<div class="no-page-break-inside">
+	
+						<h4>Procedures and Operations</h4>
+						<% if @procedures.count > 0  %>
+							<dl>
+					 		<% @procedures.each do |problem| %>
+								<dt><%= problem['HISTORY'] %> <%= "(" + problem['CREATIONDATE'].strftime("%d/%m/%Y") + ")" if problem['CREATIONDATE']%></dt>
+								<dd><%= simple_format(problem['NOTE'])%></dd>
+							<% end %>
+							</dl>
+					    <% else %>
+					    		Nil recorded
+						<% end %>
+
+						<h4>Medical Events</h4>
+						<% if @events.count > 0  %>
+							<dl>
+					 		<% @events.each do |problem| %>
+								<dt><%= problem['HISTORY'] %> <%= "(" + problem['CREATIONDATE'].strftime("%d/%m/%Y") + ")" if problem['CREATIONDATE']%></dt>
+								<dd><%= simple_format(problem['NOTE'])%></dd>
+							<% end %>
+							</dl>
+					    <% else %>
+					    		Nil recorded
+						<% end %>						
+						</div>
+						<!--   End problems  -->

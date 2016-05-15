@@ -1,218 +1,97 @@
-<div class="row">
+<% content_for :head do %>
+<script type="text/javascript"> 
+    window.onload = function() { window.print(); } 
+</script>
 
-    			<div class="col-md-6">
-    	 			<h2><%= @patient["FULLNAME"]%></h2>
-    	 		</div>
-    	 		<div class="col-md-6">
-    	 			<div class="row">
-    	 			<hr>
-    	 			</div>
-
-					<div class="row">
-			         	<div class="col-md-5">
-			         	DOB: 
-			         	</div>
-			         	<div class="col-md-7">
-			         	<%= @patient['DOB'].strftime("%d/%m/%y") %>
-			         	</div>
-			         </div>
-			         <div class="row">
-			         	<div class="col-md-5">
-			         	Address: 
-			         	</div>
-			         	<div class="col-md-7">
-			         	<%= @patient['ADDRESSLINE1'] +","%>
-			         	<%= @patient['ADDRESSLINE2']+"," if @patient['ADDRESSLINE2']!="" %>
-			         	<%= @patient['SUBURB'] %>
-			         	</div>
-         			</div>
-         			<div class="row">
-    	 			<hr>
-    	 			</div>
-         		</div>
-</div>	
+<% end %>
 
 <div class="row">
 
-			  <div class="col-md-4">
-			  			<!--   Consulation Summary  -->
-						<h3>Consultation Summary</h3>
-						<h4><%= @consult['DIAGNOSIS']%></h4>
+                <div class="col-md-4 col-md-offset-3">
+                    <h2><%= @patient.fullname %></h2>
+                </div>
+                <div class="col-md-5">
+                    <div class="row">
+                        <hr>
+                        <div class="col-md-5">
 
+                        DOB: 
+                        </div>
+                        <div class="col-md-7">
+                        <%= @patient.dob.strftime("%d/%m/%y") %>
+                        </div>
+                     </div>
+                     <div class="row">
+                        <div class="col-md-5">
+                        Address: 
+                        </div>
+                        <div class="col-md-7">
+                        <%= @patient.addressline1 + "," if @patient.addressline1 !="" %>
+                        <%= @patient.addressline2 + "," if @patient.addressline2 !="" %>
+                        <%= @patient.suburb %>
+                        </div>
+                    </div>
+                    <div class="row">
+                    <hr>
+                    </div>
+                </div>
+</div>  
 
-				                 <ul>
-				        <% @problems.each do |problem| %>
-				        	<% if problem != @consult['DIAGNOSIS'] and problem != "Pathology"%>
-				        	<li><%= problem %></li>
-				        	<% end %>
-				        <% end %>
-				        </ul>	
-					
+<div class="row">
+    <div class="col-md-12">
+    <!--   Half the page for medications   -->
+    <%= render "summary" %>
+            <%= render "tasks" %>
+            <%= render "medchanges" %>
+            <%= render "notes" %>
+       
 
-       		 </div>
-       		 <div class="col-md-6">
-       		 						<br>
-       		 						<br>
-					        	 <%= @consult['CONSULTDATE'].to_time.strftime("%d/%m/%y") %>
-				         with <%= @consult['DOCTORNAME']%>
-
-
-
-				        <!--   End Consulation Summary  -->
-
-
-
-		  </div>
-	</div>  <!-- end of row 1 -->
-   <div class="row"> <!-- Full screen row -->
-   		<div class="col-md-12">
-
-
-	       		           <!--   Appointments  -->
-	       		           <hr>
-						<legend>Appointments</legend>
-						<% if @appointments.count > 0  %>
-					 		<% @appointments.each do |row| %>
-								<%= row['PROVIDERNAME'] %> on <%= row['STARTDATE'].to_time.strftime("%b %d, %Y") %> at <%= row['STARTTIME'].strftime("%l:%M %p") %>
-								<% if row['REASON'].include? "Care" %>
-									in Annexe
-								<% else %>
-									in Clinic
-								<% end %>
-								<br>
-							<% end %>
-			 			<% else %>
-			 				...............................
-						<% end %>
-					
-						<!--   End Appointments  -->
-
-
-
-							<!--   Med Changes -->
-				        <% if @meds.count > 0 %>
-				        <hr>
-
-				        <legend>Medication Changes</legend>
-				        <ul>
-				        <% @meds.each do |task| %>
-				        	<li><%= task %></li>
-				        <% end %>
-				        </ul>
-				    	<% end %>
-				    	<!--   End Med Changes -->
-
-				    				<!-- Measues -->
-         <% if @measures %>
-         <legend>Today's Measures</legend>
-         	 <% if @measures['SYSTOLIC'] and  @measures['DIASTOLIC']%>
-         	 <div class="row">
-
-         		<div class="col-md-2">
-         		Blood Pressure:
-         		</div>
-         		<div class="col-md-2">
-         		<%= @measures['SYSTOLIC'].to_i %> / <%= @measures['DIASTOLIC'].to_i %>
-         		</div>
-         	 </div>
-         	<% end %>
-         	<% if @measures['WEIGHT']%>
-         	 <div class="row">
-
-         		<div class="col-md-2">
-         		Weight:
-         		</div>
-         		<div class="col-md-2">
-         		<%= @measures['WEIGHT'] %>
-         		</div>
-         	 </div>
-         	<% end %>
-         	
-         	
-        <% end %>
-        <!-- End Measures -->
-
-
-        <!-- Tests -->
-        <% if @tests.count> 1 %>
-        <legend>Tests Ordered</legend>
-        	<% @tests.each do |row| %>
-	        	<b><%= row[0] %></b><br>
-	        	<%= row[1] %><P>
-        	<% end %>
-
-
-        <% end %>
-
-        <!-- End Tests -->
-
-
-  			   			<!--   Tasks -->
-			         <% if @tasks.count > 0 %>
-			        <hr>
-			        <legend>Tasks</legend>
-			        <ul>
-			        <% @tasks.each do |task| %>
-			        	<li><%= task %></li>
-			        <% end %>
-			        </ul>
-			        <% end %>
-
-			           <!--   EndTasks -->
-
-
-
-
-
-
-   		<!--   NOTES -->
-        <% if @notes.count > 0 %>
-        <hr>
-        <legend>Notes</legend>
-        <ul>
-        <% @notes.each do |task| %>
-        	<li><%= task %></li>
-        <% end %>
-        </ul>
-    	<% end %>
-    	<!--   END NOTES -->
-
-
-    	<!--   PLAN -->
-    	<% if @plan.strip != "" %>
+         <%= render "measures" %>
          <hr>
-         <legend>Scripts and misc</legend>
-         <%= simple_format(@plan) %>
-         <% end %>
-      
-         <!--   END PLAN -->
+       <%= render "tests" %>
+        <hr>
 
+        
+
+
+            <%=render "appointments" %>
        
 
 
-			<!--   Medciations Full Screen  -->
-		<legend>Medications</legend>
-         		<% if @medications.count > 0 %>
-         		(Please check with your phamacist that this medication list is up to date and let us know of any changes that should me made to our record)<br><br>
-         			<%= meds_by_cat(@medications,"C","Long term") %>
-         			<%= meds_by_cat(@medications,"S","Short term") %>
-         			<%= meds_by_cat(@medications,"P","When required") %>
-         			<%= meds_by_cat(@medications,"","Not defined") %>
-         		<% else %>
-         			Nil medications<p>
-         		<% end %>
-         
-         <!--   End Medciations Full Screen  -->
 
-         <!--   Phone Calls and Urgent Care-->
-         <legend>Phone Calls</legend>
-         Dr Lembke is available for phone calls most days from 1.30pm to 1.45pm, using number 66285950<p>
+
+
+
+
+    
+
+        
          <hr>
-         <legend>Urgent Care</legend>
-         The surgery is open from 8.30 -5.30 each day. Please phone 66280505 for urgent care outside of these hours.<p>  
+         <%= render "misc" %> 
+         <hr>
+           <%= render "lembke" %>
+           <hr>
+         <%= render "urgent" %>
+
+    </div>
+
+
+
+</div>
+
+
+
+<br style='page-break-before: always;'>
+       
+ <div class="row page-break"> <!-- Full screen row -->
+<div class="col-md-12">
+
+         <%= render "medications" %>
+
 
  </div>
  </div>
+
 
 
 

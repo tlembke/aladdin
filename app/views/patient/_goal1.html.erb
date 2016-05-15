@@ -1,0 +1,5 @@
+This is the old goal partial at patient/_goals.html.erb and should probably be removed
+
+<b><a href="#" id="editable_goal_title_<%=@goal.id%>" data-defaultValue="Add new goal" data-type="text" data-pk="1" data-resource="goal" data-name="title" data-url="/goals/<%=@goal.id%>" data-placeholder="Your notes here..." data-original-title="Enter notes" class="editable"><%= @goal.title %> </a></b><br>
+
+<a href="#" id="editable_goal__desc_<%=@goal.id%>" data-defaultValue="Add new goal" data-type="textarea" data-pk="1" data-resource="goal" data-name="description" data-url="/goals/<%=@goal.id%>" data-placeholder="Your notes here..." data-original-title="Enter notes" class="editable"><%= textarea_format(@goal.description) %> </a><br><br>

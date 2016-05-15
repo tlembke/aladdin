@@ -1,0 +1,12 @@
+							<!--   Med Changes -->
+				        <% if meds.count > 0 %>
+				        <hr>
+
+				        <legend><i class="fa fa-exchange"></i>  Medication Changes</legend>
+				        <ul>
+				        <% meds.each do |task| %>
+				        	<li><%= task %></li>
+				        <% end %>
+				        </ul>
+				    	<% end %>
+				    	<!--   End Med Changes -->

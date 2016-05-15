@@ -1,0 +1,21 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  name: MyString
+  abbreviation: MyString
+  description: MyString
+  units: MyString
+  value: 9.99
+  operator: 1
+  places: 1
+  local: false
+
+two:
+  name: MyString
+  abbreviation: MyString
+  description: MyString
+  units: MyString
+  value: 9.99
+  operator: 1
+  places: 1
+  local: false

@@ -1,0 +1,68 @@
+<% @title = "Listing goals" %> 
+
+
+<% content_for :actions do %>
+<div class="btn-group pull-right" role="group">
+<%= link_to @all ? "Masters Only" : "Show All", goals_path + (@all ? "" : "?all=true"), {class: 'btn btn-primary btn-large'}  %>
+<%= link_to fa_icon_tag("plus") + " Add Goal ",new_goal_path,{class: 'btn btn-primary btn-large'}  %>
+</div>
+<% end %>
+
+<div class="container">
+  <div class="row">
+    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+      <div class="sheet sheet-condensed">
+        <div class="sheet-inner">
+          <table class="table">
+            <thead>
+              <tr>
+                                <th>Title</th>
+                                <th>Description</th>
+  
+                                <%= "<th>Patient</th>".html_safe if @all %>
+                                <th>Measure</th>
+
+                                <%=  "<th>Parent</th>".html_safe if @all %>
+
+                                <th>Master</th>
+                                <th></th>
+              </tr>
+            </thead>
+            <tbody>
+              <% @goals.each do |goal| %>
+              <tr>
+                                <td><%= goal.title %></td>
+                                <td><%= goal.description %></td>
+                                <%= "<td>".html_safe + goal.patient_id.to_s + "</td>".html_safe if @all %>
+                                
+                                <td><a href="#" data-xeditable="true" class="editable" data-type="select" data-pk="1" data-model="goal" data-name="goal[measure_id]" data-url="<%= goal_url(goal) %>" data-source="<%= @measure_items.to_json %>" data-title="Choose Measure">
+                                  <%= (goal.measure_id == 0 or goal.measure_id == nil) ? "None" : goal.measure.name %></a>
+                                </td>
+
+
+
+                                <%= "<td>".html_safe + goal.parent.to_s + "</td>".html_safe if @all %>
+
+                          
+                            <td><a href="#" data-xeditable="true" class="editable" data-type="select" data-pk="1" data-model="goal" data-name="goal[master_id]" data-url="<%= goal_url(goal) %>" data-source="<%= @master_items.to_json %>" data-title="Choose Category">
+                                  <%= goal.master_id == 0 or goal.master_id == nil ? "Select Catgeory" : goal.master.name %></a>
+                                </td>
+                                <td class="actions">
+                  <%= link_to fa_icon_tag("eye"), goal, rel: 'tooltip', title: 'Show' %>
+                  <%= link_to fa_icon_tag("pencil"), edit_goal_path(goal), rel: 'tooltip', title: 'Edit' %>
+                  <%= link_to fa_icon_tag("trash-o"), goal, rel: 'tooltip', title: 'Delete',
+                  data: { confirm: 'Are you sure?' }, method: :delete %>
+                </td>
+              </tr>
+              <% end %>
+              <% if @goals.length == 0 %>
+              <tr><td colspan=42 class='text-center'>No goals.</td></tr>
+              <% end %>
+            </tbody>
+          </table>
+        </div><!-- /.sheet-inner -->
+      </div><!-- /.sheet -->
+
+                </div>
+  </div>
+</div>

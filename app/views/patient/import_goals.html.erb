@@ -1,0 +1,65 @@
+<% @title = "Import from master goals" %> 
+
+
+<% content_for :actions do %>
+<div class="btn-group pull-right" role="group">
+<a hef="#" id='submit-import-goals' class="btn btn-primary btn-large">Import Goals</a>
+</div>
+<% end %>
+
+
+
+
+<div class="container">
+  <div class="row">
+    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+
+      <div class="sheet sheet-condensed">
+        <div class="sheet-inner">
+          <% current_master="" %>
+             <%= form_for 'goal', url: {action: "import_goals"},html: {id: "import-goals"} do |f| %>
+             <% @masters.each do |goal| %>
+         <!-- start a new table with each new master_id -->
+		         <% if goal.master_id != current_master %>  <!-- new heading and new table-->
+						<% if current_master!="" %>
+								</table>
+									</div><!-- /.sheet-inner -->
+								 </div><!-- /.sheet -->
+
+								 <div class="sheet sheet-condensed">
+		       					 	<div class="sheet-inner">
+		       			<% end %>
+		         		<% current_master = goal.master_id %>
+		         		<b><%= goal.master.name %></b>     
+		         		<% if goal.master_id !=1 %>
+		         			 &nbsp;&nbsp;
+			         		<%= f.select("master["+goal.master_id.to_s+"]") do %>
+			         			<%= options_for_select(@cond_select) %>
+			         		<% end %>
+		         		<% end %>
+		         		<table class="table">
+		         		<tr>
+		         			<td colspan=3>
+		         			<input type='checkbox' data-master='<%=goal.master_id.to_s %>' class='master-select-all'> Select/unselect all
+		         			</td>
+		         		</tr>
+		        	<% end %>
+				<tr>
+					<td>
+						<%= f.check_box(goal.id, {class: 'goal_master_'+goal.master_id.to_s }, 1) %>	
+					</td>
+        	 		<td><%= goal.title %></td>
+        	 		<td><%= goal.measure.name if goal.measure%></td>
+        	 	</tr>
+
+             <% end %> <!-- end @masters.each -->
+             </table>
+
+        </div><!-- /.sheet-inner -->
+      </div><!-- /.sheet -->
+                     <%= f.submit "Import Goals", class: "btn btn-primary btn-large" %>
+			<% end %> <!-- end form -->
+    </div>
+  </div>
+</div>
+

@@ -1,0 +1,2 @@
+module NursinghomeHelper
+end

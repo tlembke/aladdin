@@ -1,0 +1,13 @@
+ <% @chart = measure.chart(@bps,@goal.target) if measure.name =="Blood Pressure" %>
+ <% @chart = measure.chart(@lipids,@goal.target) if measure.name =="Lipids" %>
+ <% @chart = measure.chart(@all_measures,@goal.target) if (measure.name !="Lipids" and  measure.name !="Blood Pressure") %>
+
+ <% if @chart %> 
+  	<%= render "measures/chart" %>
+ <% else %>
+  	No values recorderd for <%= measure.name %>
+ <% end %>
+
+
+
+

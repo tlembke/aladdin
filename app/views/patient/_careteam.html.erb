@@ -1,0 +1,22 @@
+       		           <!--   care team  -->
+
+       		           <div>
+					
+
+						<% if @careteam.count > 0   %>
+							<dl class="dl-horizontal">
+					 		<% @careteam.each do |member| %>
+								<dt><%= member['PROVIDERNAME'] %></dt>
+								<dd><%= member['PROVIDERTYPE']%>  (<%= member['PROVIDERPHONE']%>)</dd>
+								<dd>
+								<% @member=member['member'] %>
+					<a href="#" id="note_<%=@member.id%>" class="editable" data-defaultValue="Add role, review times, notes etc" data-type="textarea" data-pk="1" data-resource="member" data-name="note" data-url="/members/<%=@member.id%>" data-placeholder="Your notes here..." data-original-title="Enter notes"><%= textarea_format(@member.note) %> </a>
+					</dd>
+
+
+							<% end %>
+							</dl>
+						<% end %>
+						</div>
+
+						<!--   End care team -->

@@ -1,0 +1,15 @@
+       		           <!--   allergies -->
+						
+						<% if @allergies.count > 0   %>
+							<dl class="dl-horizontal">
+					 		<% @allergies.each do |problem| %>
+								<dt><%= problem['ALLERGY'] %></dt>
+								<dd><%= simple_format(problem['DETAIL'])%></dd>
+							<% end %>
+							</dl>
+						<% else %>
+							Nil Recorded Allergies
+						<% end %>
+
+					
+						<!--   End allergies -->

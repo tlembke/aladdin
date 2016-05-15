@@ -1,0 +1,17 @@
+	 <!-- Consult Summary -->
+        <legend><i class="fa fa-user-md"></i>  Consultation <%= @consult['CONSULTDATE'].to_time.strftime("%d/%m/%y") %> with <%= @consult['DOCTORNAME']%></legend>
+
+         
+         
+
+	    <h4><%= @consult['DIAGNOSIS']%></h4>
+
+
+                 <ul>
+        <% @problems.each do |problem| %>
+        	<% if problem != @consult['DIAGNOSIS'] and problem != "Pathology"%>
+        	<li><%= problem %></li>
+        	<% end %>
+        <% end %>
+        </ul>
+        <!-- end consult summary  -->

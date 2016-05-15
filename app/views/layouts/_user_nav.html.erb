@@ -7,9 +7,27 @@
   	<% if session[:username] %>
     <%= fa_icon_tag "user" %> Hi, <strong><%= session[:name] %></strong>
     <span class="divider">|</span>
-    You are connected to Genie
+    Connected to Genie
     <span class="divider">|</span>
     <%= link_to "Disconnect", controller: "genie", action: "login" %>
+    <span class="divider">|</span>
+
+  <a class="dropdown-toggle" data-toggle="dropdown" href="#"><i class="fa fa-cogs"></i></a>
+  <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+   <li><%= link_to "Search",root_path, { "data-no-turbolink" => "true"} %></li>
+    <li><%= link_to "Nursing Home Rounds",nursinghome_index_path, { "data-no-turbolink" => "true"} %></li>
+  
+    <li role="separator" class="divider"></li>
+    <li><%= link_to "Goals",goals_path, { "data-no-turbolink" => "true"} %></li>
+    <li><%= link_to "Measures",measures_path, { "data-no-turbolink" => "true"} %></li>
+    <li><%= link_to "Masters",masters_path, { "data-no-turbolink" => "true"} %></li>
+    <li><%= link_to "Measurements",measurements_path, { "data-no-turbolink" => "true"} %></li>
+    <li><a href="#">Another action</a></li>
+    <li><a href="#">Something else here</a></li>
+    <li role="separator" class="divider"></li>
+    <li><a href="#">Separated link</a></li>
+  </ul>
+
     <% end %>
 
   

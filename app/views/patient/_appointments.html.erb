@@ -1,0 +1,17 @@
+	       		           <!--   Appointments  -->
+						<legend><i class="fa fa-calendar"></i>  Upcoming Appointments </legend>
+						<% if @appointments.count > 0  %>
+					 		<% @appointments.each do |row| %>
+								<%= row['PROVIDERNAME'] %> on <%= row['STARTDATE'].to_time.strftime("%b %d, %Y") %> at <%= row['STARTTIME'].strftime("%l:%M %p") %>
+								<% if row['REASON'].include? "Care" %>
+									in Annexe
+								<% else %>
+									in Clinic
+								<% end %>
+								<br>
+							<% end %>
+			 			<% else %>
+			 				...............................
+						<% end %>
+					
+						<!--   End Appointments  -->

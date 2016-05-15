@@ -1,0 +1,26 @@
+<% @nh_patients.each do |patient| %>
+
+<% @patient = patient %>
+<%= render "header" %>
+<%= render "consult" %>
+ <%= render partial: "patient/tasks", locals: {tasks: patient["TASKS"]} %>
+ <%= render partial: "patient/notes",locals: {notes: patient["NOTES"]} %> 
+
+<div class="row  page-break-before page-break-after">
+	<h2><i class="fa fa-medkit"></i>  Medication Chart</h2>
+	<div class="row">
+                <div class="col-md-5">
+                        <h2><%= @patient['FULLNAME'] %></h2>
+				</div>
+				<div class="col-md-3 col-md-offset6" >
+				        <br><br> DOB:  <%= @patient['DOB'].strftime("%d/%m/%y") %>
+				 </div>
+	</div>
+	<%= render partial: "webster",locals: {medications: patient['MEDICATIONS']} %> 
+	<span class='pull-right'><b><%= @name %>, Alstonville Clinic, Phone 02 66280505</b></span><p>
+	<% @changes = patient["PRESCRIPTION_HISTORY"] %>
+	<%= render  partial: "prescription_history",  locals: {meds: patient["MEDCHANGES"]} %>
+
+</div>
+
+<% end %>

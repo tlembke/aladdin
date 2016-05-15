@@ -1,4 +1,13 @@
 Rails.application.routes.draw do
+  get 'nursinghome/index'
+
+  resources :measurements
+  resources :measures
+  resources :masters
+  resources :masters
+  resources :goals
+  resources :members
+
   get 'genie/home'
 
   # The priority is based upon order of creation: first created -> highest priority.
@@ -11,6 +20,11 @@ Rails.application.routes.draw do
     collection do
         get 'index'
         post 'index'
+    end
+    member do
+        get 'careplan'
+        get 'import_goals'
+        post 'import_goals'
     end
   end
 

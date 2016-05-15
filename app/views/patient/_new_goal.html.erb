@@ -1,0 +1,59 @@
+<div class="modal fade" id="new-goal-modal" role="dialog">
+    <div class="modal-dialog">
+
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4> New Goal</h4>
+        </div>
+     	 <div class="modal-body">
+
+        	<%= form_for(Goal.new, remote: true) do |f| %>
+			  <%= f.error_notification %>
+			  <%= f.hidden_field :patient_id, :value => @patient.id %>
+			  <%= f.hidden_field :condition_id, :value => 0  %>
+			  <div class="form-inputs">
+			    <%= f.form_group :title do |f| %>
+			      <%= f.label :title %>
+				  <%= f.text_field :title, class: 'form-control' %>
+				  <% end %>
+			  
+				<%= f.form_group :description do |f| %>
+			      <%= f.label :description, class: 'form-label' %>
+			        <%= f.text_area :description, class: 'form-control' %>
+			        <%= f.error_messages %>
+			    <% end %>
+
+			    <div class="checkbox">
+			    <p class="help-block">Check this box if this is a generic goal that should be added to the master template</p>
+
+              		<label><input type="checkbox" value="1" name="mastercheck" id="master-box"  onClick="$('#master-select').toggle();">Add to master</label>
+            	</div>
+			    
+            	<div id="master-select" style="display:none;">
+				<%= f.form_group :master_id do |f| %>
+				<p class="help-block">Select category for goal (leave blank for 'other')</p>
+			      <%= f.label "Add to master for ", class: 'form-label' %>
+			        <%= f.collection_select :master_id, Master.all, :id, :name,{include_blank: true},{class: 'form-control'} %>
+			        <%= f.error_messages %>
+			    <% end %>
+			    </div>
+
+
+			  </div> <!-- form inputs -->
+
+			  <div class="form-actions">
+			    <%= f.submit class: 'btn btn-primary' %>
+			    <%= link_to "Cancel", goals_path, class: 'btn' %>
+			  </div> <!-- form actions -->
+			  </div> <!-- modal body -->
+			  <div class="modal-footer">
+	          	<button type="submit" class="btn btn-default btn-default pull-left" data-dismiss="modal"><span class="glyphicon glyphicon-remove"></span> Cancel</button>
+	          </div> <!-- modal footer -->
+		<% end %>  <!-- form -->
+		
+        
+      </div> <!-- modal content -->
+    </div> <!-- modal dialog -->
+  </div>  <!-- modal -->

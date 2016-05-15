@@ -39,11 +39,13 @@
     ================================================== -->
     <!-- Placed at the end of the document so the pages load faster -->
 
-    <!-- This is for Google Maps integration, you can safely remove if not using Google Maps -->
-    <%= javascript_include_tag "//maps.google.com/maps/api/js?sensor=true&.js" %>
-    <%= javascript_include_tag "//cdnjs.cloudflare.com/ajax/libs/modernizr/2.8.3/modernizr.min.js" %>
+    <!-- This is for Google Maps integration, you can safely remove if not using Google Maps 
+    <%= javascript_include_tag "//maps.google.com/maps/api/js?sensor=true&.js" %> -->
+    <!-- <%= javascript_include_tag "//cdnjs.cloudflare.com/ajax/libs/modernizr/2.8.3/modernizr.min.js" %> -->
+
     <%= javascript_include_tag "application" %>
     <%= yield :javascript %>
+
 
   </body>
 <% end %>

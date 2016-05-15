@@ -1,0 +1,13 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  patient_id: 1
+  measure_id: 1
+  value: 1
+  measuredate: 2016-04-19
+
+two:
+  patient_id: 1
+  measure_id: 1
+  value: 1
+  measuredate: 2016-04-19
