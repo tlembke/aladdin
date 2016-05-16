@@ -108,7 +108,7 @@ class NursinghomeController < ApplicationController
           nh_visits_date=[]
           nh_visits_count=Hash.new
               sth.fetch_hash do |row|
-              nh_visits_date << row['CONSULTDATE']
+              nh_visits_date << row['CONSULTDATE'].to_date
               nh_visits_count[row['CONSULTDATE']]=row['num']
           end
 
