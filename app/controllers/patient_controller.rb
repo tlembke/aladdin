@@ -202,7 +202,8 @@ class PatientController < ApplicationController
     end
 
     if params[:print]
-          render :print
+          @print = true
+          render :careplanprint
     end
 
 

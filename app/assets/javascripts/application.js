@@ -19,7 +19,10 @@
 
 $(document).ready(function() {
     $(".editable").editable();
-
+     $(".chart").each(function(){
+            drawChart($(this));
+    });
+});
 
     $('.panel').on('shown.bs.collapse', function (e) {
         $(".chart").each(function(){
@@ -27,7 +30,6 @@ $(document).ready(function() {
             drawChart($(this));
         });
     });
-});
 
 
 // This is to load condiiton id into hidden field in New Goal modal

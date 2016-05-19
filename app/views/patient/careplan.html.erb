@@ -7,8 +7,11 @@
     					<%= render "patient" %>
     	 		</div>
           <div class="col-md-4">
+          <div class="btn-group btn-group-justified">
 <%= link_to 'Import Goals', import_goals_patient_path(@patient.id), {:class => "btn btn-lg btn-primary", "data-no-turbolink" => "true"} %>
+<%= link_to 'Print',careplan_patient_path(@patient.id, :print => "true"),{:class => "btn btn-lg btn-primary"} %>
 
+            </div>
             </div>
 
 
