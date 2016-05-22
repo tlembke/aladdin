@@ -41,9 +41,9 @@
     <div class="col-md-12">
     <!--   Half the page for medications   -->
     <%= render "summary" %>
-            <%= render "tasks" %>
-            <%= render "medchanges" %>
-            <%= render "notes" %>
+         <%= render partial: "tasks", locals: {tasks: @tasks} %>
+            <%= render partial: "medchanges", locals: {meds: @meds} %> 
+            <%= render partial: "notes",locals: {notes: @notes} %> 
        
 
          <%= render "measures" %>
