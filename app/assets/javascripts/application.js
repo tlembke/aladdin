@@ -22,8 +22,8 @@ $(document).ready(function() {
      $(".chart").each(function(){
             drawChart($(this));
     });
-});
 
+});
     $('.panel').on('shown.bs.collapse', function (e) {
         $(".chart").each(function(){
             $(this).empty();

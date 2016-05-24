@@ -33923,19 +33923,7 @@ window.Modernizr=function(e,t,n){function r(e){b.cssText=e}function o(e,t){retur
 
 }).call(this);
 (function() {
-  $.rails.allowAction = function(element) {
-    var $link, $modal_html, message, modal_html;
-    message = element.data('confirm');
-    if (!message) {
-      return true;
-    }
-    $link = element.clone().removeAttr('class').removeAttr('data-confirm').attr('data-dismiss', 'modal').addClass('btn').addClass('btn-danger').html("Yes, I'm positively certain.");
-    modal_html = "\n<div class=\"modal fade\" id=\"delete-modal\" role=\"dialog\">\n	 <div class=\"modal-dialog\">\n	 <div class=\"modal-content\">\n  <div class=\"modal-header\">\n    <a class=\"close\" data-dismiss=\"modal\">×</a>\n    <h3>" + message + "</h3>\n  </div>\n  <div class=\"modal-body\">\n    <p>Be certain, sonny.</p>\n  </div>\n  <div class=\"modal-footer\">\n    <a data-dismiss=\"modal\" class=\"btn\">Cancel</a>\n  </div>\n</div>\n</div>\n</div>";
-    $modal_html = $(modal_html);
-    $modal_html.find('.modal-footer').append($link);
-    $modal_html.modal();
-    return false;
-  };
+
 
 }).call(this);
 // This is a manifest file that'll be compiled into application.js, which will include all the files
@@ -33949,45 +33937,37 @@ window.Modernizr=function(e,t,n){function r(e){b.cssText=e}function o(e,t){retur
 //
 // Read Sprockets README (https://github.com/rails/sprockets#sprockets-directives) for details
 // about supported directives.
-//
-
-
-
 // require turbolinks
 
 
 
 
+
+
+
 $(document).ready(function() {
+    alert("Ready");
     $(".editable").editable();
+     $(".chart").each(function(){
+            drawChart($(this));
+    });
 
-
+});
     $('.panel').on('shown.bs.collapse', function (e) {
-    $(".chart").each(function(){
-        $(this).empty();
-        drawChart($(this));
+        $(".chart").each(function(){
+            $(this).empty();
+            drawChart($(this));
+        });
     });
 
 
-
-
-
-})
-
-
-
-  
-
-
-
-
 // This is to load condiiton id into hidden field in New Goal modal
-     $(".new_goal_link").click(function(){ 
+  $(".new_goal_link").click(function(){ 
      	$("#goal_condition_id").val($(this).data('condition'));
      	$('#new-goal-modal').modal('show');
-   	 });
+   });
 // an external submit button for import goals
-     $('#submit-import-goals').click( function() {
+  $('#submit-import-goals').click( function() {
      		$('form#import-goals').submit();
 	});
 // select / unselect all
@@ -34002,7 +33982,6 @@ $(document).ready(function() {
 
 
 
-});
 
     function drawChart(chart){
          //alert(chart.data('values'));
@@ -34029,62 +34008,7 @@ $(document).ready(function() {
          });
     }
 
-    function drawChart1(chart){
-        // alert(chart.data('values'));
-        // jsn=JSON.parse(chart.data('values'));
-        alert(chart.data('values'));
-        ykeys=["a"];
-        if (chart.data('labels').length == 2) {
-            ykeys.push("b"); 
-        }
-        Morris.Line({
-            element: chart.attr('id'),
-            data: chart.data('values'),
-            xkey: 'date',
-              xLabelFormat: function(date) {
-                      return date.getDate()+'/'+   (date.getMonth()+1)+'/'+date.getFullYear(); 
-                      },
-            parseTime: 'true',
-            goals: chart.data('goals'),
-            ykeys: ykeys,
-            goalLineColors: ['red'],
-            labels: chart.data('labels'),
-            dateFormat: function(date) {
-                      d = new Date(date);
-                      return d.getDate()+'/'+(d.getMonth()+1)+'/'+d.getFullYear(); 
-            },
-         });
-    }
 
-    function drawChart2(){
-         // using Morris Charts
-        Morris.Line({
-            element: 'measure_example',
-            data: [
-                { date: '2016-04-03', a: 170, b: 80 },
-                { date: '2016-04-01', a: 175,  b: 65 },
-                { date: '2016-03-03', a: 150,  b: 40 },
-                { date: '2016-02-03', a: 170,  b: 65 },
-                { date: '2015-04-03', a: 130,  b: 80 },
-                { date: '2015-12-10', a: 195,  b: 65 },
-                { date: '2016-01-03', a: 100, b: 40 }
-              ],
-              xkey: 'date',
-              xLabelFormat: function(date) {
-                      return date.getDate()+'/'+   (date.getMonth()+1)+'/'+date.getFullYear(); 
-                      },
-              parseTime: 'true',
-              goals: ['130','80'],
-              ykeys: ['a', 'b'],
-              goalLineColors: ['red'],
-              labels: ['Systolic', 'Diastolic'],
-              dateFormat: function(date) {
-                      d = new Date(date);
-                      return d.getDate()+'/'+(d.getMonth()+1)+'/'+d.getFullYear(); 
-              },
-            });
-
-      };
 
 
 
