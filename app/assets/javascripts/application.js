@@ -12,9 +12,10 @@
 // require turbolinks
 //= require jquery
 //= require jquery_ujs
-//= require dresssed
-//= require bootstrap-editable
-//= require bootstrap-editable-rails
+//= require modernizr
+//  require dresssed
+//  require bootstrap-editable
+//  require bootstrap-editable-rails
 //= require_tree .
 
 $(document).ready(function() {
@@ -78,6 +79,7 @@ $(document).ready(function() {
             },
          });
     }
+
 
 
 
