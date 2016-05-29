@@ -1,14 +1,14 @@
 <legend><i class="fa fa-user"></i>  Consultation Summary  <%= @date.to_date.strftime("%d/%m/%y") %></legend>
-<% if @patient["HISTORY"] != "" %>
+<% if @patient["HISTORY"].strip != "" %>
 <b>History: </b>
-<%= @patient["HISTORY"] %><p>
+<%= simple_format(@patient["HISTORY"].strip) %>
 <% end %>
-<% if @patient["EXAMINATION"] != "" %>
-<b>Examination: <b>
-<%= @patient["EXAMINATION"] %><p>
+<% if @patient["EXAMINATION"].strip != "" %>
+<b>Examination: </b>
+<%= simple_format(@patient["EXAMINATION"].strip) %>
 <% end %>
-<% if @patient["PLAN"] != "" %>
+<% if @patient["PLAN"].strip != "" %>
 <b>Plan: </b>
-<%= @patient["PLAN"] %><p>
+<%= simple_format(@patient["PLAN"].strip) %>
 <% end %>
 

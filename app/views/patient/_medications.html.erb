@@ -1,10 +1,6 @@
 			<!--   Medciations Full Screen  -->
-<style type="text/css" media="print">
-.test-page-break-inside {border: 1px dashed black; page-break-inside: avoid;}
-</style>
 
-<div class="no-page-break-inside">
-
+            <legend><i class="fa fa-tasks" aria-hidden="true"></i> Medications</legend>
          		<% if @medications.count > 0 %>
          		(Please check with your phamacist that this medication list is up to date and let us know of any changes that should me made to our record)<br><br>
          			<%= meds_by_cat(@medications,"C","Long term") %>
@@ -14,5 +10,5 @@
          		<% else %>
          			Nil medications<p>
          		<% end %>
-</div>     
+    
          <!--   End Medciations Full Screen  -->

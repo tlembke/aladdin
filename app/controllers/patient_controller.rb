@@ -82,13 +82,14 @@ class PatientController < ApplicationController
           # Deafult Get last consult details
           # Unless otherwise selected
           if params[:consult_id]
-              sql = "SELECT ConsultDate, DoctorName,Plan,Diagnosis,Id FROM Consult WHERE Id = " + params[:consult_id]
+              sql = "SELECT ConsultDate, DoctorName,Plan,Diagnosis, History, Examination, Id FROM Consult WHERE Id = " + params[:consult_id]
           else
-              sql = "SELECT ConsultDate, DoctorName,Plan,Diagnosis,Id FROM Consult WHERE PT_Id_FK = " + @id + " ORDER BY ConsultDate DESC LIMIT 1"
+              sql = "SELECT ConsultDate, DoctorName,Plan,Diagnosis,History, Examination, Id FROM Consult WHERE PT_Id_FK = " + @id + " ORDER BY ConsultDate DESC LIMIT 1"
           end
           puts sql
           sth = dbh.run(sql)
            sth.fetch_hash do |row|
+            row['CONSULTDATE']=row['CONSULTDATE'].to_date
             @consult = row
           end
           sth.drop
@@ -204,6 +205,50 @@ class PatientController < ApplicationController
     if params[:print]
           @print = true
           render :careplanprint
+    end
+
+
+  end
+
+
+def healthsummary
+    @id=params[:id]
+    connect_array=connect()
+    @error_code=connect_array[1]
+    if (@error_code==0)
+          dbh=connect_array[0]
+        # Get info about this patient
+          @patient=get_patient(@id,dbh)
+          #tasks_array=extract_tasks(@consult['PLAN'])
+          #@tasks=tasks_array[0]
+          #@meds=tasks_array[1]
+          #@notes=tasks_array[2]
+          #@plan = tasks_array[3]
+          #tests_array= get_tests(@plan)
+          #@tests= tests_array[0]
+          #@plan= tests_array[1]
+          @medications = get_medications(@id,dbh)
+          @appointments = get_appointments(@id,dbh)
+          # @measures = get_measures(@id,dbh)
+          @current_problems = get_current_problems(@id,dbh)
+          history_array = get_history(@id,dbh)
+          @procedures=history_array[0]
+          @events=history_array[1]
+          @allergies=get_allergies(@id,dbh)
+          @careteam=get_careteam(@id,dbh)
+          
+          dbh.disconnect
+
+
+    else
+          # lost connection to database
+          flash[:notice]=connect_array[2]
+          redirect_to  action: "login"
+    end
+
+    if params[:print]
+          @print = true
+          render :healthsummaryprint
     end
 
 

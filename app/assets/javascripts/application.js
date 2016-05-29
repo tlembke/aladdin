@@ -23,6 +23,8 @@ $(document).ready(function() {
      $(".chart").each(function(){
             drawChart($(this));
     });
+     $(".apptname").hide();
+     
 
 });
     $('.panel').on('shown.bs.collapse', function (e) {
@@ -32,6 +34,13 @@ $(document).ready(function() {
         });
     });
 
+    // Show Appt Details
+
+   $('#apptdetails').click( function() {
+
+            $('.apptname').toggle();
+            $('.apptreason').toggle();
+    });
 
 // This is to load condiiton id into hidden field in New Goal modal
   $(".new_goal_link").click(function(){ 

@@ -1,0 +1,17 @@
+						<% if @current_problems.count > 0   %>
+
+					 		<% @current_problems.each do |problem| %>
+					 		<div class="row">
+					 			<div class="col-md-12">
+								<h3><%= problem['PROBLEM'] %></h3>
+								<%= problem['DIAGNOSISDATE'].strftime("%d/%m/%y") if problem['DIAGNOSISDATE'] %></b>
+
+								</div>
+								<div class="col-md-10 col-md-offset-2">
+								<%= simple_format(problem['NOTE'])%>
+								</div>
+
+							</div>
+							<%end %>
+
+						<% end %>

@@ -1,0 +1,13 @@
+<legend><i class="fa fa-user"></i>Progess Note</legend>
+<% if @consult["HISTORY"].strip != "" %>
+<b>History: </b>
+<%= simple_format(@consult["HISTORY"].strip) %>
+<% end %>
+<% if @consult["EXAMINATION"].strip != "" %>
+<b>Examination: </b>
+<%= simple_format(@consult["EXAMINATION"].strip) %>
+<% end %>
+<% if @consult["PLAN"].strip != "" %>
+<b>Plan: </b>
+<%= simple_format(@consult["PLAN"].strip) %>
+<% end %>

@@ -1,0 +1,26 @@
+<h1>Appointments</h1>
+ <% datekey = @theStartDate.to_date.strftime("%Y-%m-%d") %>
+
+<div class="row">
+
+    <div class="col-md-2">
+<label class="switch switch-warning"><input id='apptdetails' type="checkbox"><span></span></label> Details<p>
+</div>
+<div class="col-md-8">
+<%= render "datechange" %>
+</div>
+</div>
+<div class='panel'>
+<%= drawCalendar(datekey,@noDays).html_safe %>
+</div>
+
+
+
+
+
+
+
+
+
+
+

@@ -1,4 +1,6 @@
 Rails.application.routes.draw do
+
+
   get 'nursinghome/index'
 
   resources :measurements
@@ -23,6 +25,7 @@ Rails.application.routes.draw do
     end
     member do
         get 'careplan'
+        get 'healthsummary'
         get 'import_goals'
         post 'import_goals'
     end

@@ -1,6 +1,11 @@
 <div class="row">
 
     <div class="col-md-4">
+       <div class="btn-group">
+   <%= link_to "Appointments",{controller: "appointments"}, {:class => "btn btn-lg btn-primary","data-no-turbolink" => "true"} %></li>
+   <%= link_to "Nursing Home",nursinghome_index_path, { :class => "btn btn-lg btn-primary","data-no-turbolink" => "true"} %>
+  </div>
+  <p><p>
  	 <legend>Open</legend>
  		<% @open_patients.each do |patient| %>
  			<%= link_to patient['SURNAME']+","+patient['FIRSTNAME'], patient_path(:id=> patient['PT_ID_FK']) %><br>
@@ -19,6 +24,7 @@
     </div>
 
     <div class="col-md-4">
+
     <legend>Search results</legend>
  		<% @patients_search.each do |patient| %>
 
