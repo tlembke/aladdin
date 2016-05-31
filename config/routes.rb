@@ -1,6 +1,7 @@
 Rails.application.routes.draw do
 
 
+  resources :phonetimes
   get 'nursinghome/index'
 
   resources :measurements

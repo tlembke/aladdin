@@ -3,11 +3,11 @@
      <div class="form-group">
         <% nextWeek = @theStartDate + @noDays.days %>
         <% lastWeek = @theStartDate - @noDays.days %>
-         <%= link_to "", {controller: "appointments",'date[day]' => lastWeek.strftime("%d"),'date[month]' => lastWeek.strftime("%m"),'date[year]' => lastWeek.strftime("%Y")}, {:class => "fa fa-chevron-left", "data-no-turbolink" => "true"} %>
+         <%= link_to "", {controller: "appointments",'date[day]' => lastWeek.strftime("%d"),'date[month]' => lastWeek.strftime("%m"),'date[year]' => lastWeek.strftime("%Y")}, {:class => "btn btn-primary btn-sm fa fa-chevron-left", "data-no-turbolink" => "true"} %>
         <%= select_date(@theStartDate, order: [:day, :month, :year]) %>
 
         <%= submit_tag "Go", class: "btn btn-primary btn-sm" %>
-        <%= link_to "", {controller: "appointments",'date[day]' => nextWeek.strftime("%d"),'date[month]' => nextWeek.strftime("%m"),'date[year]' => nextWeek.strftime("%Y")}, {:class => "fa fa-chevron-right", "data-no-turbolink" => "true"} %>
+        <%= link_to "", {controller: "appointments",'date[day]' => nextWeek.strftime("%d"),'date[month]' => nextWeek.strftime("%m"),'date[year]' => nextWeek.strftime("%Y")}, {:class => "btn btn-primary btn-sm fa fa-chevron-right", "data-no-turbolink" => "true"} %>
      </div>
    </fieldset>
 <% end %>

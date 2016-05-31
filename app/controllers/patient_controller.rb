@@ -142,7 +142,7 @@ class PatientController < ApplicationController
           @events=history_array[1]
           @allergies=get_allergies(@id,dbh)
           @careteam=get_careteam(@id,dbh)
-
+          @phonetime = get_phonetime(session[:id])
           dbh.disconnect
 
 
@@ -192,6 +192,7 @@ class PatientController < ApplicationController
           @all_measures=get_all_measurements(@id,dbh,50)
           @tracked_items=[721,723,732,2517,2521,701,703,900]
           @item_numbers=get_item_numbers(@id,dbh,@tracked_items)
+          @phonetime = get_phonetime(session[:id])
           
           dbh.disconnect
 
@@ -632,4 +633,13 @@ def healthsummary
           sth.drop
           return  careteam
   end
+
+  def get_phonetime(doctor)
+    @phonetime=Phonetime.find_by_doctor_id(doctor)
+    if @phonetime
+     return @phonetime.message
+    else
+      return nil
+    end
+ end
 end

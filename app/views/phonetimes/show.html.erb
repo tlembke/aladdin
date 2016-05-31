@@ -1,0 +1,32 @@
+<% @title = "Showing phonetime" %>
+
+<div class="container">
+  <div class="row">
+    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+      <div class="form-horizontal">
+                <div class="form-group">
+          <label class="col-md-2 form-label">Doctor</label>
+          <div class="col-md-10 form-control uneditable-input">
+            <span>
+              <%= @doctors_h[@phonetime.doctor_id.to_s] %>
+            </span>
+          </div>
+        </div>
+
+                <div class="form-group">
+          <label class="col-md-2 form-label">Message</label>
+          <div class="col-md-10 form-control uneditable-input">
+            <span>
+              <%= @phonetime.message %>
+            </span>
+          </div>
+        </div>
+
+                <div class="form-actions col-md-offset-2">
+          <%= link_to fa_icon_tag("pencil") + ' Edit', edit_phonetime_path(@phonetime), class: 'btn btn-primary' %>
+          <%= link_to 'Back', phonetimes_path, class: 'btn' %>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

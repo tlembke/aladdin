@@ -61,7 +61,11 @@ module AppointmentsHelper
 			theText+= "</td>\r"
 			theText += "\t\t<td class='apptname'>" 
 			if  @appointments.key?(dateCol[dayCount]) and @appointments[dateCol[dayCount]].key?(timekey)
-				 	theText += @appointments[dateCol[dayCount]][timekey]['name']
+					if @appointments[dateCol[dayCount]][timekey]['patient_id']==0
+						theText += @appointments[dateCol[dayCount]][timekey]['name']
+					else
+				 		theText += link_to( @appointments[dateCol[dayCount]][timekey]['name'],patient_path(:id=> @appointments[dateCol[dayCount]][timekey]['patient_id'].to_s) )
+					end
 			end
 			theText+= "</td>\r"
 			dayCount += 1

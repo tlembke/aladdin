@@ -95,7 +95,7 @@ class NursinghomeController < ApplicationController
   end
 
   def get_nh_visit_dates(dbh,doctor)
-     date=  2.weeks.ago.to_date
+     date=  4.weeks.ago.to_date
      date = date.to_s(:db)
       sql = "SELECT DISTINCT Consult.ConsultDate, COUNT(*) as 'num' from Consult, ConsultationProblem where ConsultationProblem.CNSLT_Id_Fk = Consult.Id and ConsultationProblem.ICPCCode = 'A64' and Consult.DoctorId = " + doctor.to_s + "  and Consult.ConsultDate > '" + date +"' ORDER BY ConsultDate DESC GROUP BY Consult.ConsultDate"
           #sql = "SELECT PT_Id_Fk as PatientId, Id from Consult  where  DoctorId = " + doctor.to_s + "  and ConsultDate = '" + date +"' "
@@ -108,8 +108,10 @@ class NursinghomeController < ApplicationController
           nh_visits_date=[]
           nh_visits_count=Hash.new
               sth.fetch_hash do |row|
-              nh_visits_date << row['CONSULTDATE'].to_date
-              nh_visits_count[row['CONSULTDATE']]=row['num']
+              if row['CONSULTDATE']
+                nh_visits_date << row['CONSULTDATE'].to_date
+                nh_visits_count[row['CONSULTDATE']]=row['num']
+              end
           end
 
           sth.drop
