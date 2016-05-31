@@ -21,7 +21,7 @@ class AppointmentsController < ApplicationController
           @appointments=get_appointments(dbh,@id,@theStartDate,@noDays)
           dbh.disconnect
      else
-  				flash[:alert] = "Unable to connect to database. "+get_odbc
+  				flash[:alert] = "Unable to connect to database. "+ get_odbc
   				flash[:notice] = connect_array[2]
   				redirect_to  action: "login"
   	 end

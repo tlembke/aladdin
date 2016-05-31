@@ -19,28 +19,39 @@
       </div>
     <% end %>
 
-
-    <%= f.hidden_field :condition_id, :value => 0  %>
+    <%= f.form_group :condition_id do |f| %>
+      <%= f.label :condition_id, class: 'control-label col-md-2' %>
+      <div class='col-md-8'>
+        <%= f.number_field :condition_id, class: 'form-control' %>
+        <%= f.error_messages %>
+      </div>
+    <% end %>
 
     <% if @goal.patient_id == nil %>
 
-      <%= f.form_group :patient_id do |f| %>
-        <%= f.label :patient_id, class: 'control-label col-md-2' %>
-        <div class='col-md-8'>
-          <%= f.number_field :patient_id, class: 'form-control' %>
-          <%= f.error_messages %>
-        </div>
+    <%= f.form_group :patient_id do |f| %>
+      <%= f.label :patient_id, class: 'control-label col-md-2' %>
+      <div class='col-md-8'>
+        <%= f.number_field :patient_id, class: 'form-control' %>
+        <%= f.error_messages %>
+      </div>
     <% end %>
 
     <% else %>
       <%= f.hidden_field :patient_id, :value => @goal.patient_id  %>
   <% end %>
 
+
+          <div class="checkbox col-md-10 col-md-offset-2">
+          <p class="help-block">Check this box if this is a generic goal that should be added to the master template</p>
+
+                  <label><input type="checkbox" value="1" name="mastercheck" id="master-box"  onClick="$('#master-select').toggle();">Add to master</label>
+              </div>
           
  
 
     <%= f.form_group :master_id do |f| %>
-    <div id='master-select' >
+    <div id='master-select' style="display:none;">
       <%= f.label :master_id, class: 'control-label col-md-2' %>
       <div class='col-md-8'>
 
@@ -62,6 +73,21 @@
       </div>
     <% end %>
 
+    <%= f.form_group :active do |f| %>
+      <%= f.label :active, class: 'control-label col-md-2' %>
+      <div class='col-md-8'>
+        <%= f.number_field :active, class: 'form-control' %>
+        <%= f.error_messages %>
+      </div>
+    <% end %>
+
+    <%= f.form_group :parent do |f| %>
+      <%= f.label :parent, class: 'control-label col-md-2' %>
+      <div class='col-md-8'>
+        <%= f.number_field :parent, class: 'form-control' %>
+        <%= f.error_messages %>
+      </div>
+    <% end %>
 
   </div>
 
