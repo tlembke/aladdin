@@ -25,9 +25,11 @@ class MeasurementsController < ApplicationController
   # POST /measurements.json
   def create
     @measurement = Measurement.new(measurement_params)
-
+    @goal=Goal.find(params[:goal_id])
+    @measure=Measure.find(@measurement.measure_id)
     respond_to do |format|
       if @measurement.save
+        format.js {}
         format.html { redirect_to @measurement, notice: 'Measure value was successfully created.' }
         format.json { render :show, status: :created, location: @measurement }
       else

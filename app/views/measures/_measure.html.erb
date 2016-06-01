@@ -1,12 +1,35 @@
- <% @chart = measure.chart(@bps,@goal.target) if measure.name =="Blood Pressure" %>
- <% @chart = measure.chart(@lipids,@goal.target) if measure.name =="Lipids" %>
- <% @chart = measure.chart(@all_measures,@goal.target) if (measure.name !="Lipids" and  measure.name !="Blood Pressure") %>
+ <div id="measure-html-<%= measure.id %>">
+ <% if measure.local %>
+
+ 		
+
+
+ 	<% @measure = measure %>
+
+ 	<% @chart = measure.chart_local(@goal.patient_id,@goal.target) %>
+
+ 	<% @measurement = Measurement.new %>
+ 	<%= render "measurements/form" %>
+ 	<p>
+
+
+
+<% else %>
+	 <% @chart = measure.chart_genie(@bps,@goal.target) if measure.name =="Blood Pressure" %>
+	 <% @chart = measure.chart_genie(@lipids,@goal.target) if measure.name =="Lipids" %>
+	 <% @chart = measure.chart_genie(@all_measures,@goal.target) if (measure.name !="Lipids" and  measure.name !="Blood Pressure") %>
+ <% end %>
+
+ 
+
+
 
  <% if @chart %> 
   	<%= render "measures/chart" %>
  <% else %>
   	No values recorderd for <%= measure.name %>
  <% end %>
+ </div>
 
 
 

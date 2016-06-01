@@ -1,0 +1,5 @@
+
+$("#measure-html-<%= @measure.id %>").html("<%= escape_javascript(render partial: 'measures/measure', locals: { measure: @measure }) %>");
+$("#chart_<%=@measure.id%>").empty();
+drawChart($("#chart_<%=@measure.id%>"));
+ 

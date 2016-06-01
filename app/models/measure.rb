@@ -1,20 +1,41 @@
 class Measure < ActiveRecord::Base
 	has_many :goals
-	has_many :measurements, -> { order(created_at: :desc) }
+	has_many :measurements, -> { order(measuredate: :desc) }
 
-	def measureset
+	def measureset(patient_id)
 		if !(self.local)
 			self.measurements << {value: "Drats will have to look them up"}
+		else
+			measureset = Measurement.where("patient_id = ? AND measure_id = ?", patient_id, self.id).each 
 		end
-		return self.measurements
+		return measureset
 	end
 
+	def chart_local(patient_id,target=nil)
+		if target
+			self.target = target
+		end
+
+		measurevalues=[]
+		measureset = self.measurements.where("patient_id = ?", patient_id)
+		measureset.each do | mes |
+			mes_h = {"MEASUREMENTDATE" => mes.measuredate, "VALUE" => mes.value}
+
+			measurevalues << mes_h
+	    end
+
+	    chart = self.chart(measurevalues)
+	    return chart
+
+	 end 
 
 
-	def chart(values,target=nil)
-		 target = self.target unless target
-		 chart = false
-		 if ! self.local
+
+	def chart_genie(values,target=nil)
+		if target
+			self.target = target
+		end
+		 
 			 # value is an array of a hash of all measures
 			 # get it back to just this measure
 			 measurevalues=[]
@@ -34,12 +55,24 @@ class Measure < ActiveRecord::Base
 			 	 end
 
 			 end
+
+			 chart  = self.chart(measurevalues, genie_key)
 			 
-			 if measurevalues.count>0
+
+		  
+
+		 return chart
+	end
+
+	def chart(measurevalues, genie_key="VALUE")
+			chart=false
+			if measurevalues.count>0
+				 
 			 	 chart = HashWithIndifferentAccess.new 
 				 chart[:values] = measurevalues
 				 chart[:description] = self.description
-				 chart[:goals]= [target]
+				 chart[:goals]= [self.target]
+
 				 chart[:measure_id]=self.id
 				 chart[:xkey] = "MEASUREMENTDATE"
 				 chart[:title] = self.name
@@ -89,10 +122,10 @@ class Measure < ActiveRecord::Base
 					 
 				 end
 			 end
-		 end
+		  
+
 		 return chart
 	end
-
 
 
 end

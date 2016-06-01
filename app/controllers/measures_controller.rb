@@ -42,6 +42,7 @@ class MeasuresController < ApplicationController
   def update
     respond_to do |format|
       if @measure.update(measure_params)
+        format.js
         format.html { redirect_to @measure, notice: 'Measure was successfully updated.' }
         format.json { render :show, status: :ok, location: @measure }
       else
