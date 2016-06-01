@@ -176,6 +176,8 @@ class PatientController < ApplicationController
           #tests_array= get_tests(@plan)
           #@tests= tests_array[0]
           #@plan= tests_array[1]
+          @provider = session[:provider]
+          @username = session[:username]
           @medications = get_medications(@id,dbh)
           @appointments = get_appointments(@id,dbh)
           # @measures = get_measures(@id,dbh)
@@ -185,6 +187,7 @@ class PatientController < ApplicationController
           @events=history_array[1]
           @allergies=get_allergies(@id,dbh)
           @careteam=get_careteam(@id,dbh)
+          @ahp_items=get_ahp_items
           bpsweights=get_bps(@id,dbh,50)
           @bps=bpsweights[0]
           @weights=bpsweights[1]
@@ -253,6 +256,57 @@ def healthsummary
     end
 
 
+  end
+
+
+
+
+  def epc
+    @name = session[:name]
+    @username = session[:username]
+    @provider = session[:provider]
+    @id=params[:id]
+    @member = params[:member]
+    @craft = params[:craft]
+    @no_visits = params[:noVisits]
+    connect_array=connect()
+    @error_code=connect_array[1]
+    @ahp_items=get_ahp_items
+    if (@error_code==0)
+          dbh=connect_array[0]
+        # Get info about this patient
+          @patient=get_patient(@id,dbh)
+
+          @ahp=get_ahp(@member,dbh)
+          
+          dbh.disconnect
+
+
+    else
+          # lost connection to database
+          flash[:notice]=connect_array[2]
+          redirect_to  action: "login"
+    end
+
+
+
+  end
+
+  def get_ahp(member_id,dbh)
+          sql = "SELECT FullName, Category, Address1, Address2, Address3, Address4, Specialty, WorkPhone, Suburb FROM AddressBook WHERE Id= " + member_id.to_s
+          puts sql
+         
+
+          sth = dbh.run(sql)
+               
+          ahp=sth.fetch_hash
+
+
+          return ahp
+
+    end
+  def get_ahp_items
+        ahp_items={ "Dietitian" => 10954, "Physiotherapist" => 10960, "Audiologist" => 10952, "Aboriginal Health Worker" => 10950, "Chiropractor" => 10964, "Diabetes Educator" => 10951, "Exercise Physiologist" => 10953, "Mental Health Worker" => 10956, "Occupational Therapist" => 10958, "Osteopath" => 10966, "Podiatrist" => 10962, "Psychologist" => 10968, "Speech Pathologist" => 10970}
   end
 
   def import_goals
@@ -394,11 +448,11 @@ def healthsummary
 
   def get_patient(patient,dbh)
             # Get info about this patient
-         sql = "SELECT Surname,FirstName,FullName,LastSeenDate,LastSeenBy,AddressLine1, AddressLine2,Suburb,DOB, Age, Sex, Scratchpad, FamilyHistory FROM Patient WHERE id = "+patient       
+         sql = "SELECT Surname,FirstName,FullName,LastSeenDate,LastSeenBy,AddressLine1, AddressLine2,Suburb,DOB, Age, Sex, Scratchpad, FamilyHistory, MedicareNum, MedicareRefNum FROM Patient WHERE id = "+patient       
          puts sql
           sth = dbh.run(sql)
           sth.fetch_hash do |row|
-            @patient=Patient.new(id: @id, surname: row['SURNAME'], firstname: row['FIRSTNAME'], fullname: row['FULLNAME'], lastseendate: row['LASTSEENDATE'], lastseenby: row['LASTSEENBY'], addressline1: row['ADDRESSLINE1'], addressline2: row['ADDRESSLINE2'],suburb: row['SUBURB'],dob: row['DOB'], age: row['AGE'], sex: row['SEX'], scratchpad: row['SCRATCHPAD'], social: row['FAMILYHISTORY'])
+            @patient=Patient.new(id: @id, surname: row['SURNAME'], firstname: row['FIRSTNAME'], fullname: row['FULLNAME'], lastseendate: row['LASTSEENDATE'], lastseenby: row['LASTSEENBY'], addressline1: row['ADDRESSLINE1'], addressline2: row['ADDRESSLINE2'],suburb: row['SUBURB'],dob: row['DOB'], age: row['AGE'], sex: row['SEX'], scratchpad: row['SCRATCHPAD'], social: row['FAMILYHISTORY'], medicare: row['MEDICARENUM'].to_s + "/" + row['MEDICAREREFNUM'].to_s)
           end
           sth.drop
           return @patient
@@ -621,18 +675,29 @@ def healthsummary
 
 
   def get_careteam(patient,dbh)
-          sql = "SELECT ProviderName, ProviderPhone,ProviderType, AB_Id_Fk FROM InterestedParty where PT_Id_FK = " + patient
+          theDate = Time.now
+          theYear=theDate.strftime("%Y")
+          sql = "SELECT ProviderName, ProviderPhone,ProviderType, AB_Id_Fk as address_book_id FROM InterestedParty where PT_Id_FK = " + patient
           puts sql
           sth = dbh.run(sql)
           careteam=[]
           sth.fetch_hash do |row|
               member = Member.find_or_create_by(patient_id: patient, genie_id: row['AB_ID_FK'])
+              if member.year_reset == nil or member.year_reset < theYear.to_i
+                  member.update(year_reset: theYear, epc: 0)
+              end
               row['member']=member
               careteam << row
           end
           sth.drop
+
+          # reset epc count if new year has passed
+
+          # members = Member.where("year_reset = '' or year_reset < ?", @year).update_all(year_reset: @year, epc: 0)
           return  careteam
   end
+
+
 
   def get_phonetime(doctor)
     @phonetime=Phonetime.find_by_doctor_id(doctor)

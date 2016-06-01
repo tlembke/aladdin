@@ -15,7 +15,7 @@ class MembersController < ApplicationController
   end
   private
   def measure_params
-      params.require(:member).permit(:note)
+      params.require(:member).permit(:note,:year_reset,:epc)
   end
 
 

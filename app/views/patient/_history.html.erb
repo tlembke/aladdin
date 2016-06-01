@@ -1,28 +1,44 @@
        		           <!--   problems  -->
 						
 	
-						<h4>Procedures and Operations</h4>
+						<h3>Procedures and Operations</h3>
+						<div class='row'>
 						<% if @procedures.count > 0  %>
-							<dl>
+							
 					 		<% @procedures.each do |problem| %>
-								<dt><%= problem['HISTORY'] %> <%= "(" + problem['CREATIONDATE'].strftime("%d/%m/%Y") + ")" if problem['CREATIONDATE']%></dt>
-								<dd><%= simple_format(problem['NOTE'])%></dd>
+					 			<div class='col-md-11 col-md-offset-1'>
+								<b><%= problem['HISTORY'] %> <%= "(" + problem['CREATIONDATE'].strftime("%d/%m/%Y") + ")" if problem['CREATIONDATE']%></b>
+								</div>
+								<div class='col-md-10 col-md-offset-2'>
+								<%= simple_format(problem['NOTE'])%>
+								</div>
 							<% end %>
-							</dl>
+						
 					    <% else %>
+					    <div class='col-md-11 col-md-offset-1'>
 					    		Nil recorded
+					    </div>
 						<% end %>
-
-						<h4>Medical Events</h4>
+						</div> <!-- row -->
+						<h3>Medical Events</h3>
+						<div class='row'>
 						<% if @events.count > 0  %>
-							<dl>
+							
 					 		<% @events.each do |problem| %>
-								<dt><%= problem['HISTORY'] %> <%= "(" + problem['CREATIONDATE'].strftime("%d/%m/%Y") + ")" if problem['CREATIONDATE']%></dt>
-								<dd><%= simple_format(problem['NOTE'])%></dd>
+					 		<div class='col-md-11 col-md-offset-1'>
+								<b><%= problem['HISTORY'] %> <%= "(" + problem['CREATIONDATE'].strftime("%d/%m/%Y") + ")" if problem['CREATIONDATE']%></b>
+								</div>
+								<div class='col-md-10 col-md-offset-2'>
+
+								<%= simple_format(problem['NOTE'])%>
+								</div>
 							<% end %>
-							</dl>
+							
 					    <% else %>
+					    <div class='col-md-11 col-md-offset-1'>
 					    		Nil recorded
-						<% end %>						
+					    </div>
+						<% end %>	
+						</div> <!-- row -->					
 						
 						<!--   End problems  -->

@@ -44,7 +44,7 @@ class GenieController < ApplicationController
   	
   		# logged in
   		if connect
-          sql = "SELECT Id, Name FROM Preference where Username  = '%s'" % @username
+          sql = "SELECT Id, Name, ProviderNum FROM Preference where Username  = '%s'" % @username
           puts sql
 
           sth = dbh.run(sql)
@@ -55,6 +55,7 @@ class GenieController < ApplicationController
 
               @name=row[1]
               @id=row[0]
+              @provider=row[2]
 
           end
           sth.drop
@@ -62,6 +63,7 @@ class GenieController < ApplicationController
         session[:name]=@name
   		 	session[:username] = @username
   		 	session[:password] = @password
+        session[:provider] = @provider
         #session[:id] = id
         #session[:name] = name
   		 	# 10 * 60 = 10 minutes

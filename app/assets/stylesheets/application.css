@@ -14,11 +14,26 @@
  *= require_self
  */
 
+ .shrink {margin: .5em 0 0.5em !important;}
+ .hrshrink {margin-top: 5px !important; margin-bottom: 5px !important;}
+
+
 @media print {
 	#content {float:none !important;}
 	.page-break-before	{page-break-before: always; }
 	.no-page-break-inside {page-break-inside: avoid;}
 	.page-break-after	{ page-break-after: always; }
+	body {
+		font-size: 12px !important;
+	}
+
+	
+	.noprint {visibility: hidden;}
 }
+
+/* Print styling */
+
+
+
 
 

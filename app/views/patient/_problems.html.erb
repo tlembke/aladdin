@@ -6,7 +6,7 @@
 					 		<% @current_problems.each do |problem| %>
 					 		<div class="row">
 					 			<div class="col-md-12">
-								<h3><%= problem['PROBLEM'] %></h3>
+								<h3 class="shrink"><%= problem['PROBLEM'] %></h3>
 								<%= problem['DIAGNOSISDATE'].strftime("%d/%m/%y") if problem['DIAGNOSISDATE'] %></b>
 
 								</div>
@@ -14,6 +14,7 @@
 								<%= simple_format(problem['NOTE'])%>
 								</div>
 								<% @goals=get_goals(problem['ID']) %>
+								<% if @goals.count > 0 %>
 								<div class="col-md-2 text-right">
 								
 								<b>Goals</b>
@@ -30,8 +31,9 @@
 								
 								<% end %>
 								</div>
+								<% end %> <!-- @goal.count > 0 -->
 							</div>
-							<hr>
+							<hr class="hrshrink">
 							<% end %>
 							
 						<% end %>

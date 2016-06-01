@@ -1,18 +1,18 @@
-<div id="goal_<%=@goal.id%>">
-<b><a href="#" id="editable_goal_title_<%=@goal.id%>" data-defaultValue="Add new goal" data-type="text" data-pk="1" data-resource="goal" data-name="title" data-url="/goals/<%=@goal.id%>" data-placeholder="Your notes here..." data-original-title="Enter notes" class="editable"><%= @goal.title %> </a></b>
+<div id="goal_<%=@goal.id%>" class="no-page-break-inside">
+<b><a href="#" id="editable_goal_title_<%=@goal.id%>" data-defaultValue="Add new goal" data-type="text" data-pk="1" data-resource="goal" data-name="title" data-url="/goals/<%=@goal.id%>" data-emptytext= "Notes"data-placeholder="Your notes here..." data-original-title="Enter notes" class="editable"><%= @goal.title %> </a></b>
 <%= link_to fa_icon_tag("trash-o"),@goal, data: {confirm: "Are you sure you want to delete '#{@goal.title}'?"}, :remote => true, method: :delete %>
 
 <br>
-<a href="#" id="editable_goal__desc_<%=@goal.id%>" data-defaultValue="Add new goal" data-type="textarea" data-pk="1" data-resource="goal" data-name="description" data-url="/goals/<%=@goal.id%>" data-placeholder="Your notes here..." data-original-title="Enter notes" class="editable"><%= textarea_format(@goal.description) %> </a><br><br>
+<a href="#" id="editable_goal__desc_<%=@goal.id%>" data-defaultValue="Add new goal" data-type="textarea" data-pk="1" data-resource="goal" data-name="description" data-emptytext= "Notes" data-url="/goals/<%=@goal.id%>" data-placeholder="Your notes here..." data-original-title="Enter notes" class="editable"><%= textarea_format(@goal.description) %> </a><br><br>
 
 
 
 <% if @goal.measure_id != 0 and @goal.measure_id != nil %>
 	<% @goal.target = @goal.measure.target if @goal.target== nil %>
 	Target for <%= goal.measure.name %> for this patient is set at 
-	<a href="#" id="editable_goal_target_<%=@goal.id%>" data-defaultValue="New Target" data-type="text" data-pk="1" data-resource="goal" data-name="target" data-url="/goals/<%=@goal.id%>" data-placeholder="Target here..." data-original-title="Enter target" class="editable"><%= @goal.target %> </a>
+	<a href="#" id="editable_goal_target_<%=@goal.id%>" data-defaultValue="New Target" data-emptytext= "0"data-type="text" data-pk="1" data-resource="goal" data-name="target" data-url="/goals/<%=@goal.id%>" data-placeholder="Target here..." data-original-title="Enter target" class="editable"><%= @goal.target %> </a>
 
 	<%= render partial: "measures/measure", object: @goal.measure %>
 <% end %>
-</div>
-<hr>
+</div> <!-- end id = goal_ -->
+<hr class="hrshrink">

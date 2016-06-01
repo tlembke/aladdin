@@ -1,0 +1,95 @@
+<% content_for :head do %>
+<script type="text/javascript"> 
+    window.onload = function() { window.print(); } 
+    window.onfocus=function(){ window.close();}
+</script>
+
+<% end %>
+<h3>Referral Form for Individual Allied Health Services under Medicare for patients with a chronic medical condition and complex care needs</h3>
+
+<i class="fa fa-check-square-o"></i> Patient has GP Management Plan (item 721 ) AND Team Care Arrangements (item 723)<p>
+
+<div class='panel panel-default'>
+<div class="panel-body">
+<div class='row'>
+
+<div class='col-md-6'>
+<h3>GP Details</h3>
+<b><%= @name %></b><br>
+Provider Number <%= @provider%><p>
+Alstonville Clinic<br>
+61 Main St, Alstonville NSW 2477<p>
+</div>
+<div class='col-md-6'>
+<h3>Patient Details</h3>
+<b><%= @patient.fullname %></b><br>
+<b>Medicare Number : </b><%= @patient.medicare%><br>
+<b>Address         : </b><%= @patient.addressline1 + "," if @patient.addressline1 !="" %>
+<%= @patient.addressline2 + "," if @patient.addressline2 !="" %>
+<%= @patient.suburb %><p>
+</div>
+</div> <!-- row -->
+<hr>
+<div class='row'>
+<div class='col-md-3 col-md-offset-1'>
+<b>Referred to:</b>
+</div>
+<div class='col-md-8'>
+<h3><%= @ahp['FULLNAME'] %>  -  <%= @ahp['SPECIALTY'] %> </h3>
+<b>Address         : </b><%= @ahp["ADDRESS1"] + "," if @ahp["ADDRESS1"] !="" %>
+<%= @ahp["ADDRESS2"] + "," if @ahp["ADDRESS2"] !="" %>
+<%= @ahp["ADDRESS3"] + "," if @ahp["ADDRESS3"] !="" %>
+<%= @ahp["SUBURB"] %><br>
+<b>Phone         : </b><%= @ahp["WORKPHONE"] %><p>
+</div>
+</div>
+
+<table class='table table-condensed table-bordered'>
+<tr>
+<th>No Services</th>
+<th>AHP Type</th>
+<th>Item</th>
+</tr>
+<tr>
+<td><%= @no_visits %></td>
+<td><%= @ahp["SPECIALTY"] %></td>
+<td><%= @ahp_items[@ahp["SPECIALTY"]] %></td>
+</tr>
+</table>
+
+
+
+
+
+
+
+
+</div> <!-- panel-body -->
+</div> <!-- panel -->
+
+
+
+<div class='row'>
+
+<div class='col-md-4'>
+<b>Referrring General Practitioner Signature </b>
+</div>
+<div class='col-md-4' style=" height:70px; background:white; border:black;">
+</div>
+<div class='col-md-1'>
+<b>Date</b>
+</div>
+<div class='col-md-3' style=" height:70px; background:white; border:black;"> <%= Date.today.strftime("%d/%m/%y") %>
+</div>
+
+
+</div>
+<hr>
+
+The AHP must provide a written report to the patient’s GP after the first and last service, and more often if clinically necessary.<br>
+Allied health providers should retain this referral form for record keeping and Department of Human Services (Medicare) audit purposes.<p>
+THE FORM DOES NOT HAVE TO ACCOMPANY MEDICARE CLAIMS
+
+
+
+	

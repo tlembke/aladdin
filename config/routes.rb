@@ -26,6 +26,7 @@ Rails.application.routes.draw do
     end
     member do
         get 'careplan'
+        get 'epc'
         get 'healthsummary'
         get 'import_goals'
         post 'import_goals'

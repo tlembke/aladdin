@@ -2,7 +2,7 @@
 
             <legend><i class="fa fa-tasks" aria-hidden="true"></i> Medications</legend>
          		<% if @medications.count > 0 %>
-         		(Please check with your phamacist that this medication list is up to date and let us know of any changes that should me made to our record)<br><br>
+         		(Please check with your phamacist that this medication list is up to date and let us know of any changes that should be made to our record)<br><br>
          			<%= meds_by_cat(@medications,"C","Long term") %>
          			<%= meds_by_cat(@medications,"S","Short term") %>
          			<%= meds_by_cat(@medications,"P","When required") %>

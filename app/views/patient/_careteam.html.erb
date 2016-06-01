@@ -1,22 +1,42 @@
        		           <!--   care team  -->
 
-       		           <div>
+       		          
+					 			
 					
 
 						<% if @careteam.count > 0   %>
-							<dl class="dl-horizontal">
+							
+							
 					 		<% @careteam.each do |member| %>
-								<dt><%= member['PROVIDERNAME'] %></dt>
-								<dd><%= member['PROVIDERTYPE']%>  (<%= member['PROVIDERPHONE']%>)</dd>
-								<dd>
-								<% @member=member['member'] %>
-					<a href="#" id="note_<%=@member.id%>" class="editable" data-defaultValue="Add role, review times, notes etc" data-type="textarea" data-pk="1" data-resource="member" data-name="note" data-url="/members/<%=@member.id%>" data-placeholder="Your notes here..." data-original-title="Enter notes"><%= textarea_format(@member.note) %> </a>
-					</dd>
+					 		 <div class="row">
+					 		<% @member=member['member'] %>
+					 		<div class="col-md-2">
+								<%= member['PROVIDERNAME'] %>
+				
+								
+							</div>
+							<div class="col-md-8">
+								<%= member['PROVIDERTYPE']%>  (<%= member['PROVIDERPHONE']%>) <p>
+								
+						<a href="#" id="note_<%=@member.id%>" class="editable" data-defaultValue="Add role, review times, notes etc" data-type="textarea" data-emptytext= "Notes" data-pk="1" data-resource="member" data-name="note" data-url="/members/<%=@member.id%>" data-placeholder="Your notes here..." data-original-title="Enter notes"><%= textarea_format(@member.note) %> </a>
 
+							</div>
+							<div class="col-md-2">
+
+							<% if @ahp_items.has_key?(member['PROVIDERTYPE']) %>
+									
+		EPC : <a href="#" id="epc_<%=@member.id%>" class="editable" data-defaultValue="Enter EPC referral count" data-type="text" data-pk="1" data-resource="member" data-name="epc" data-url="/members/<%=@member.id%>" data-placeholder="EPC referrals..." data-original-title="EPC Referrals"><%= @member.epc %> </a><p>
+									<%= link_to "EPC Form",epc_patient_path(:member=> member['address_book_id'].to_s), {:class => 'epclink noprint',"data-member" => "epc_" + @member.id.to_s} %>
+
+						   <% end %>
+							
+							</div>
+							</div> <!-- row -->
 
 							<% end %>
-							</dl>
+							
 						<% end %>
-						</div>
+	
+			
 
 						<!--   End care team -->

@@ -34,6 +34,23 @@ $(document).ready(function() {
         });
     });
 
+    // Add parameter to epclink
+    $(".epclink").click(function(e) {
+
+        var theLink=$(this).data('member');
+
+        theText=$("#"+theLink).text();
+
+        e.preventDefault();
+
+        newLink= $(this).attr("href") + '&noVisits=' + theText;
+
+        window.open(newLink, '_blank'); // <- This is what makes it open in a new window.
+
+
+        // window.location.href = $(this).attr("href") + '&noVisits=' + theText;
+    });
+
     // Show Appt Details
 
    $('#apptdetails').click( function() {

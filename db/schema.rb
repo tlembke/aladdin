@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160529034708) do
+ActiveRecord::Schema.define(version: 20160531060137) do
 
   create_table "goals", force: :cascade do |t|
     t.string   "title"
@@ -63,6 +63,8 @@ ActiveRecord::Schema.define(version: 20160529034708) do
     t.text     "note"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer  "year_reset"
+    t.integer  "epc"
   end
 
   create_table "phonetimes", force: :cascade do |t|
