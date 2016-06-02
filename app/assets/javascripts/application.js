@@ -10,9 +10,9 @@
 // Read Sprockets README (https://github.com/rails/sprockets#sprockets-directives) for details
 // about supported directives.
 // require turbolinks
-//= require jquery
-//= require jquery_ujs
-//= require modernizr
+// require jquery
+// require jquery_ujs
+// require modernizr
 //  require dresssed
 //  require bootstrap-editable
 //  require bootstrap-editable-rails
