@@ -49,7 +49,7 @@
 					<td>
 						<% hasAllready = Patient.has_goal?(@id,goal.id) %>
 						<% if Patient.has_goal?(@id,goal.id) %>
-							X
+							<i class="fa fa-check-square-o">
 						<% else %>
 						<%= f.check_box(goal.id, {class: 'goal_master_'+goal.master_id.to_s}, 1) %>
 						<% end %>	
