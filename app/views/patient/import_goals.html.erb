@@ -30,7 +30,8 @@
 		       					 	<div class="sheet-inner">
 		       			<% end %>
 		         		<% current_master = goal.master_id %>
-		         		<b><%= goal.master.name %></b>     
+		         		<b><%= goal.master.name %></b> 
+
 		         		<% if goal.master_id !=1 %>
 		         			 &nbsp;&nbsp;
 			         		<%= f.select("master["+goal.master_id.to_s+"]") do %>
@@ -46,7 +47,12 @@
 		        	<% end %>
 				<tr>
 					<td>
-						<%= f.check_box(goal.id, {class: 'goal_master_'+goal.master_id.to_s }, 1) %>	
+						<% hasAllready = Patient.has_goal?(@id,goal.id) %>
+						<% if Patient.has_goal?(@id,goal.id) %>
+							X
+						<% else %>
+						<%= f.check_box(goal.id, {class: 'goal_master_'+goal.master_id.to_s}, 1) %>
+						<% end %>	
 					</td>
         	 		<td><%= goal.title %></td>
         	 		<td><%= goal.measure.name if goal.measure%></td>

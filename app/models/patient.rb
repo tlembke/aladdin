@@ -169,5 +169,11 @@ class Patient
     return instruction
   end
 
+  def self.has_goal?(id,goal)
+        @parent=Goal.where("patient_id= ? and parent = ?",id,goal)
+        @parent.count > 0 ? returnText = true : returnText = false
+        return returnText
+  end
+
 
 end

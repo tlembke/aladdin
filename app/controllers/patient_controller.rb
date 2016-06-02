@@ -306,7 +306,7 @@ def healthsummary
 
     end
   def get_ahp_items
-        ahp_items={ "Dietitian" => 10954, "Physiotherapist" => 10960, "Audiologist" => 10952, "Aboriginal Health Worker" => 10950, "Chiropractor" => 10964, "Diabetes Educator" => 10951, "Exercise Physiologist" => 10953, "Mental Health Worker" => 10956, "Occupational Therapist" => 10958, "Osteopath" => 10966, "Podiatrist" => 10962, "Psychologist" => 10968, "Speech Pathologist" => 10970}
+        ahp_items={ "Dietitian" => 10954, "Physiotherapist" => 10960, "Physio" => 10960, "Audiologist" => 10952, "Aboriginal Health Worker" => 10950, "Chiropractor" => 10964, "Chiropractic" => 10964,"Diabetes Educator" => 10951, "Exercise Physiologist" => 10953, "Mental Health Worker" => 10956, "Occupational Therapist" => 10958, "Osteopath" => 10966, "Podiatrist" => 10962, "Psychologist" => 10968, "Speech Pathologist" => 10970}
   end
 
   def import_goals
@@ -317,9 +317,10 @@ def healthsummary
             @masters.each do |goal|
               if params[:goal][goal.id.to_s]=="1"
                  # need to create new patient goal with parent master
+
                  condition_selected=params[:goal][:master][goal.master_id.to_s]
                  if condition_selected == "" and goal.master.id!=1
-                          byebug
+                           
                           error_msg += "Goals cound not be imported from section " + goal.master.name + ". Patient condition was not selected.<br>"
                  else
                         newgoal=goal.dup

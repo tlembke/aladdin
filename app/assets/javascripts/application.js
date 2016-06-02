@@ -72,7 +72,7 @@ $(document).ready(function() {
 
      $(".master-select-all").click( function() {
      		master=".goal_master_"+$(this).data('master');
-			$(master).prop("checked",$(this).prop("checked"))
+			$(master).prop("checked",$(this).prop("checked"));
 	});
 
 // new goal saved via ajax
