@@ -53,6 +53,7 @@ class Measure < ActiveRecord::Base
 				 	mclone.delete_if {|key, value| key != genie_key && key != "MEASUREMENTDATE"}
 				 	measurevalues << mclone if mclone.count > 1  #MeasurementDate plus one other
 			 	 end
+			 	
 
 			 end
 

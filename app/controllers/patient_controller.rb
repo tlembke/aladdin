@@ -351,6 +351,7 @@ def healthsummary
       current_problems = get_current_problems(@id,dbh)
       
       @cond_select = current_problems.map{ |problem| [problem["PROBLEM"], problem["ID"]] }
+      @cond_select.unshift ["General","0"]
       @cond_select.unshift ["Import to...",""]
       
 
