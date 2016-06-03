@@ -21,7 +21,7 @@
 	</div>
 </div>
 <div class="row">
-	<div class="col-md-2">
+	<div class="col-md-3">
 	 EPC Review (732)
 	</div>
 	<div class="col-md-3">
@@ -33,7 +33,7 @@
 	</div>
 </div>
 <div class="row">
-	<div class="col-md-2">
+	<div class="col-md-3">
 		Diabetes SIPP
 	</div>
 	<div class="col-md-3">
@@ -46,7 +46,7 @@
 
 <% if @patient.age >= 75 %>
 <div class="row">
-	<div class="col-md-2">
+	<div class="col-md-3">
 		Health Assessment
 	</div>
 	<div class="col-md-3">
@@ -55,10 +55,18 @@
 </div>
 <% end %>
 <div class="row">
-	<div class="col-md-2">
+	<div class="col-md-3">
 		Medication Review
 	</div>
 	<div class="col-md-3">
 		<%= @item_numbers['900'].strftime("%d/%m/%y") if  @item_numbers['701']%>
+	</div>
+</div>
+<div class="row">
+	<div class="col-md-3">
+		Shared Health Summary
+	</div>
+	<div class="col-md-3">
+		<%= @lastSHS == nil ? "Not uploaded" : @lastSHS.strftime("%d/%m/%y") %>
 	</div>
 </div>

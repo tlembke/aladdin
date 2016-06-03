@@ -36,7 +36,7 @@ module AppointmentsHelper
  	dayCount = 0
  	dateCol = getDateCol(datekey,noDays)
  	# draw Headers
- 	theText="<table class='table table-striped table-bordered table-condensed'>\r"
+ 	theText="<table class='table table-striped table-bordered table-condensed table-compact table-responsive'>\r"
  	theText += "\t<thead>\r\t<tr>\r\t\t<td></td>\r"
 	while dayCount < noDays do 
 		theText += "\t\t<th style='text-align:center' class='apptreason'>" + dateCol[dayCount].to_date.strftime("%a %d/%m") + "</th>\r"

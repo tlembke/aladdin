@@ -9,7 +9,9 @@
  	<% @chart = measure.chart_local(@goal.patient_id,@goal.target) %>
 
  	<% @measurement = Measurement.new %>
- 	<%= render "measurements/form" %>
+ 	<% unless @print %>
+ 		<%= render "measurements/form" %>
+ 	<% end %>
  	<p>
 
 

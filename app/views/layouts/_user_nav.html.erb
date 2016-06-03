@@ -7,9 +7,11 @@
   	<% if session[:username] %>
     <%= fa_icon_tag "user" %> Hi, <strong><%= session[:name] %></strong>
     <span class="divider">|</span>
-    Connected to Genie
+    <%= link_to "Patients",root_path, { "data-no-turbolink" => "true"} %>
     <span class="divider">|</span>
-    <%= link_to "Disconnect", controller: "genie", action: "login" %>
+    <%= link_to "Appointments",{controller: "appointments"}, { "data-no-turbolink" => "true"} %>
+    <span class="divider">|</span>
+    <%= link_to "NH",nursinghome_index_path, { "data-no-turbolink" => "true"} %>
     <span class="divider">|</span>
 
   <a class="dropdown-toggle" data-toggle="dropdown" href="#"><i class="fa fa-cogs"></i></a>
@@ -17,6 +19,7 @@
    <li><%= link_to "Search",root_path, { "data-no-turbolink" => "true"} %></li>
    <li><%= link_to "Appointments",{controller: "appointments"}, { "data-no-turbolink" => "true"} %></li>
     <li><%= link_to "Nursing Home Rounds",nursinghome_index_path, { "data-no-turbolink" => "true"} %></li>
+    <li><%= link_to "Disconnect", controller: "genie", action: "login" %></li>
   
     <li role="separator" class="divider"></li>
     <li><%= link_to "Goals",goals_path, { "data-no-turbolink" => "true"} %></li>

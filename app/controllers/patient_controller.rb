@@ -196,6 +196,7 @@ class PatientController < ApplicationController
           @tracked_items=[721,723,732,2517,2521,701,703,900]
           @item_numbers=get_item_numbers(@id,dbh,@tracked_items)
           @phonetime = get_phonetime(session[:id])
+          @lastSHS = get_shs_date(@id,dbh)
           
           dbh.disconnect
 
@@ -699,6 +700,17 @@ def healthsummary
           return  careteam
   end
 
+  def get_shs_date(patient,dbh)
+      sql = "SELECT CreationDate FROM CDA where PT_Id_FK = " + patient + " AND SentToPCEHR = true ORDER BY CreationDate DESC"
+          puts sql
+          sth = dbh.run(sql)
+          lastSHS = nil
+          sth.fetch_hash do |row|
+            lastSHS = row['CREATIONDATE']
+          end
+          sth.drop
+          return lastSHS
+  end
 
 
   def get_phonetime(doctor)
