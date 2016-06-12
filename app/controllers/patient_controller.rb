@@ -685,7 +685,7 @@ def healthsummary
           sth = dbh.run(sql)
           careteam=[]
           sth.fetch_hash do |row|
-              member = Member.find_or_create_by(patient_id: patient, genie_id: row['AB_ID_FK'])
+              member = Member.find_or_create_by(patient_id: patient, genie_id: row['address_book_id'])
               if member.year_reset == nil or member.year_reset < theYear.to_i
                   member.update(year_reset: theYear, epc: 0)
               end
