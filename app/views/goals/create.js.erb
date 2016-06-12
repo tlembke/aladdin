@@ -1,3 +1,8 @@
 $("<%= escape_javascript(render @goal) %>").insertBefore("#goal-placeholder-<%= @goal.condition_id%>-<%= @goal.patient_id%>");
 $(".editable").editable();
+$("#master-box").attr('checked', false);
+$('#goal_title').val("");
+$('#goal_description').val("");
 $('#new-goal-modal').modal('hide');
+$('#master-select').hide();
+
