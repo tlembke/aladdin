@@ -53,7 +53,7 @@ group :development do
   gem 'spring'
 end
 
-source "https://dresssed.com/gems/517b7530da680a8adf05/" do
+source "https://dresssed.com/gems/" do
   gem "dresssed-ives", "~> 1.0.22"
 end
 
