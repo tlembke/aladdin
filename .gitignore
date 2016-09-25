@@ -11,7 +11,7 @@ capybara-*.html
 **.orig
 rerun.txt
 pickle-email-*.html
-public/assets/**
+public/assets/
 
 # TODO Comment out these rules if you are OK with secrets being uploaded to the repo
 config/initializers/secret_token.rb
@@ -38,3 +38,14 @@ bower.json
 
 # Ignore Byebug command history file.
 .byebug_history
+public/assets/.sprockets-manifest-2b48b23a63228cd619fab432da6a9ced.json
+
+app/assets/javascripts/.DS_Store
+
+public/assets/.sprockets-manifest-2b48b23a63228cd619fab432da6a9ced.json
+
+public/assets/application-10206152645afff9fcc5345454b67f30971ad73c74258f9d9f9133262d573318.js
+
+public/assets/application-10206152645afff9fcc5345454b67f30971ad73c74258f9d9f9133262d573318.js
+
+public/assets/.sprockets-manifest-2b48b23a63228cd619fab432da6a9ced.json
