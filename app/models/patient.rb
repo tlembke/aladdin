@@ -1,6 +1,6 @@
 class Patient
   include ActiveModel::Model
-  attr_accessor :id, :surname, :firstname, :age, :sex, :fullname, :lastseendate, :lastseenby, :addressline1, :addressline2, :suburb, :dob, :scratchpad, :social, :medicare
+  attr_accessor :id, :surname, :firstname, :age, :sex, :fullname, :lastseendate, :lastseenby, :addressline1, :addressline2, :suburb, :dob, :scratchpad, :social, :medicare, :ihi
 
   
   def self.get_patient(patient,dbh)
@@ -173,6 +173,12 @@ class Patient
         @parent=Goal.where("patient_id= ? and parent = ?",id,goal)
         @parent.count > 0 ? returnText = true : returnText = false
         return returnText
+  end
+
+  def register(register_id)
+      @register = Register.where("patient_id= ? and register_id = ?",self.id,register_id)
+      @register.count > 0 ? returnText = true : returnText = false
+      return returnText
   end
 
 

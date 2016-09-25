@@ -156,6 +156,17 @@ class PatientController < ApplicationController
           render :print
     end
 
+    respond_to do |format|
+        format.html 
+        format.json { 
+           json_string = render_to_string   
+           json_object = JSON.parse(json_string) 
+           stream = JSON.pretty_generate(json_object)     
+           send_data(stream, :type=>"text/json",:filename => "test.json")
+        }
+    end
+    
+
  
 	end
 
@@ -359,6 +370,24 @@ def healthsummary
       dbh.disconnect
   end
 
+   def register
+
+      id=params[:id]
+      register_id=params[:register]
+      @register = Register.where("patient_id= ? and register_id = ?",id,register_id)
+      if @register.count > 0
+            @register.each do |reg |
+              reg.destroy
+            end
+      else
+            @new_register=Register.new(patient_id: id, register_id: register_id)
+            #@new_register.update_attribute(:register_id, register_id)
+            #@new_register.update_attribute(:patient_id, id)
+            @new_register.save
+      end
+      render :nothing => true 
+ end
+
   private
 
 
@@ -451,11 +480,11 @@ def healthsummary
 
   def get_patient(patient,dbh)
             # Get info about this patient
-         sql = "SELECT Surname,FirstName,FullName,LastSeenDate,LastSeenBy,AddressLine1, AddressLine2,Suburb,DOB, Age, Sex, Scratchpad, FamilyHistory, MedicareNum, MedicareRefNum FROM Patient WHERE id = "+patient       
+         sql = "SELECT Surname,FirstName,FullName,LastSeenDate,LastSeenBy,AddressLine1, AddressLine2,Suburb,DOB, Age, Sex, Scratchpad, FamilyHistory, MedicareNum, MedicareRefNum, IHI FROM Patient WHERE id = "+patient       
          puts sql
           sth = dbh.run(sql)
           sth.fetch_hash do |row|
-            @patient=Patient.new(id: @id, surname: row['SURNAME'], firstname: row['FIRSTNAME'], fullname: row['FULLNAME'], lastseendate: row['LASTSEENDATE'], lastseenby: row['LASTSEENBY'], addressline1: row['ADDRESSLINE1'], addressline2: row['ADDRESSLINE2'],suburb: row['SUBURB'],dob: row['DOB'], age: row['AGE'], sex: row['SEX'], scratchpad: row['SCRATCHPAD'], social: row['FAMILYHISTORY'], medicare: row['MEDICARENUM'].to_s + "/" + row['MEDICAREREFNUM'].to_s)
+            @patient=Patient.new(id: @id, surname: row['SURNAME'], firstname: row['FIRSTNAME'], fullname: row['FULLNAME'], lastseendate: row['LASTSEENDATE'], lastseenby: row['LASTSEENBY'], addressline1: row['ADDRESSLINE1'], addressline2: row['ADDRESSLINE2'],suburb: row['SUBURB'],dob: row['DOB'], age: row['AGE'], sex: row['SEX'], scratchpad: row['SCRATCHPAD'], social: row['FAMILYHISTORY'], ihi: row['IHI'],medicare: row['MEDICARENUM'].to_s + "/" + row['MEDICAREREFNUM'].to_s)
           end
           sth.drop
           return @patient
@@ -721,4 +750,10 @@ def healthsummary
       return nil
     end
  end
+
+   def patient_params
+      params.permit(:id,:register)
+  end
+
+
 end

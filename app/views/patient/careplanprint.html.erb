@@ -24,29 +24,19 @@
 
 </div> <!-- col -->
 </div> <!--  row -->
- <div class="row page-break-before"> <!-- Full screen row -->
-<div class="col-md-12">
 
-    <legend class="panel-title"><i class="fa fa-heartbeat"></i>  Challenges and General Health</legend>
-
-
-        <%= render "general" %>
-
-
-</div> <!-- col -->
-</div> <!--  row -->
  <div class="row page-break-before"> <!-- Full screen row -->
 <div class="col-md-12">
 
  
           <legend class="panel-title"><i class="fa fa-heartbeat"></i>  Current Conditions</legend>
       <div class="panel-body">
-                <%= render "problems" %>
+                <%= render "problems_no_goals" %>
        </div>
 
 </div> <!-- col -->
 </div> <!--  row -->
-<div class="row page-break-before"> <!-- Full screen row -->
+<div class="row no-page-break-inside"> <!-- Full screen row -->
 <div class="col-md-12">
      
    
@@ -59,19 +49,7 @@
 
 </div> <!-- col -->
 </div> <!--  row -->
- <div class="row page-break-before"> <!-- Full screen row -->
-<div class="col-md-12">
-
-
-          <legend class="panel-title"><i class="fa fa-user"></i>   Care Team</legend>
-         
-            <div class="panel-body">
-                    <%= render "careteam" %>
-            </div>
-
-</div> <!-- col -->
-</div class="page-break-after"> <!--  row -->
-<div class="row page-break-before"> <!-- Full screen row -->
+<div class="row no-page-break-inside"> <!-- Full screen row -->
 <div class="col-md-12">
 
           <legend class="panel-title"><i class="fa fa-medkit"></i>  Medications</legend>
@@ -90,6 +68,32 @@
 
 </div> <!-- col -->
 </div> <!--  row -->
+
+ <div class="row page-break-before"> <!-- Full screen row -->
+<div class="col-md-12">
+
+    <legend class="panel-title"><i class="fa fa-heartbeat"></i>  Challenges and Goals</legend>
+
+
+        <%= render "general" %>
+        <%= render "problems_goals_only" %>
+
+
+</div> <!-- col -->
+</div> <!--  row -->
+ <div class="row page-break-before"> <!-- Full screen row -->
+<div class="col-md-12">
+
+
+          <legend class="panel-title"><i class="fa fa-user"></i>   Care Team</legend>
+         
+            <div class="panel-body">
+                    <%= render "careteam" %>
+            </div>
+
+</div> <!-- col -->
+</div class="page-break-after"> <!--  row -->
+
 <div class="row page-break-before"> <!-- Full screen row -->
 <div class="col-md-12">
 

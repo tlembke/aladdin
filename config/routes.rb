@@ -30,6 +30,7 @@ Rails.application.routes.draw do
         get 'healthsummary'
         get 'import_goals'
         post 'import_goals'
+        post 'register'
     end
   end
 

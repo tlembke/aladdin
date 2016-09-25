@@ -4,9 +4,9 @@
 	        <ul class="fa-ul">
 	        <% @recent_consults.each do |consult| %>
 		        <% if consult['ID'] == @consult['ID'] %>
-			        	<li><i class="fa-li"></i><%= consult['CONSULTDATE'].strftime("%d/%m/%y") + " " + +consult['DOCTORNAME'] %></li>
+			        	<li><i class="fa-li"></i><%= consult['CONSULTDATE'].to_date.strftime("%d/%m/%y") + " " + +consult['DOCTORNAME'] %></li>
 			     <% else %>
-			        <li><i class="fa-li"></i><%= link_to consult['CONSULTDATE'].strftime("%d/%m/%y") + " " + +consult['DOCTORNAME'], patient_path(:id=> @id, :consult_id=> consult['ID'])%></li>
+			        <li><i class="fa-li"></i><%= link_to consult['CONSULTDATE'].to_date.strftime("%d/%m/%y") + " " + +consult['DOCTORNAME'], patient_path(:id=> @id, :consult_id=> consult['ID'])%></li>
 			    <% end %>
 	        <% end %>
 	        </ul>
