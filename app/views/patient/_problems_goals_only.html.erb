@@ -4,25 +4,25 @@
 						<% if @current_problems.count > 0   %>
 
 					 		<% @current_problems.each do |problem| %>
-					 		<div class="row">
-					 			<div class="col-md-11 col-md-offset-1">
-								<h3 class="shrink"><%= problem['PROBLEM'] %></h3>
+
 
 								<!----------- -->
 								<% @goals=get_goals(problem['ID']) %>
 								<% if @goals.count > 0 %>
-									<div class="col-md-2 text-right">
+									<div class="row">
+									<div class="col-md-11 col-md-offset-1">
+									<h3 class="shrink"><%= problem['PROBLEM'] %></h3>
+									</div> <!-- col-md-11 -->
+									<div class="col-md-10 col-md-offset-2">
 									
-									<b>Goals</b>
-									</div> <!-- col-md-2 -->
-									<div class="col-md-10">
 										<% @goals.each do |goal| %>
 											<% @goal = goal %>
 											<%= render @goal %>
 			 
 										<% end %>
 									</div> <!-- col-md-10-->
-								 <% end %> <!-- @goal.count > 0 -->
+									
+								<% end %> <!-- end if  -->
 								 <% if ! @print %>
 									
 									<div class="col-md-10 col-md-offset-2">

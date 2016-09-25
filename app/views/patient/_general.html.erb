@@ -1,15 +1,31 @@
        		           <!--   general  -->
 
 						<div class="row">
-							<div class="col-md-2 text-right">
-								<b>Goals</b>
-							</div>
-							<div class="col-md-10">
-									<% @patient.general_goals.each do |goal| %>
 
-								<% @goal = goal %>
-								<%= render @goal %>
-								<% end %>
+
+
+							<% if @patient.general_goals.count > 0 %>
+									
+									<div class="col-md-11 col-md-offset-1">
+									<h3 class="shrink">General Health</h3>
+									</div> <!-- col-md-11 -->
+									<div class="col-md-10 col-md-offset-2">
+									
+										<% @patient.general_goals.each do |goal| %>
+											<% @goal = goal %>
+											<%= render @goal %>
+			 
+										<% end %>
+									
+									
+								<% end %> <!-- end if  -->
+
+
+
+
+
+
+			
 								<% if @print != true %>
 								<div id="goal-placeholder-0-<%= @id%>" >
 								</div>
@@ -17,12 +33,13 @@
 
 								<a href ='#new-goal-modal' data-condition="0" class="new_goal_link">New Goal</a>
 								<% end %>
-							</div>
+							
 
 						
  						
 						<hr>
 						<%= render "new_goal" %>
-						</div>
+						</div> <!-- col-md-10-->
+						</div> <!-- row  -->
 
 						<!--   End general  -->

@@ -2,16 +2,16 @@
 
 					 		<% @current_problems.each do |problem| %>
 					 		<div class="row">
-					 			<div class="col-md-12">
-								<h3><%= problem['PROBLEM'] %></h3>
-								<%= problem['DIAGNOSISDATE'].strftime("%d/%m/%y") if problem['DIAGNOSISDATE'] %></b>
-
-								</div>
-								<div class="col-md-10 col-md-offset-2">
+					 			<div class="col-md-1">
+					 			<div style="height:13px;"></div>
+					 			<%= problem['DIAGNOSISDATE'].strftime("%d/%m/%y") if problem['DIAGNOSISDATE'] %>
+					 			</div>
+					 			<div class="col-md-11">
+								<h3 class="shrink"><%= problem['PROBLEM'] %></h3>
 								<%= simple_format(problem['NOTE'])%>
-								</div>
 
+								</div>
 							</div>
-							<%end %>
+							<% end %>
 
 						<% end %>

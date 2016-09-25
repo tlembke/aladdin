@@ -1,6 +1,6 @@
 GEM
   remote: https://rubygems.org/
-  remote: https://dresssed.com/gems/517b7530da680a8adf05/
+  remote: https://dresssed.com/gems/
   specs:
     actionmailer (4.2.6)
       actionpack (= 4.2.6)
