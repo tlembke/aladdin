@@ -4,12 +4,13 @@
 						<% if @current_problems.count > 0   %>
 
 					 		<% @current_problems.each do |problem| %>
+					 		<div class="row">
 
 
 								<!----------- -->
 								<% @goals=get_goals(problem['ID']) %>
 								<% if @goals.count > 0 %>
-									<div class="row">
+									
 									<div class="col-md-11 col-md-offset-1">
 									<h3 class="shrink"><%= problem['PROBLEM'] %></h3>
 									</div> <!-- col-md-11 -->
@@ -22,7 +23,7 @@
 										<% end %>
 									</div> <!-- col-md-10-->
 									
-								<% end %> <!-- end if  -->
+								<% end %> <!-- end if goals count-->
 								 <% if ! @print %>
 									
 									<div class="col-md-10 col-md-offset-2">
