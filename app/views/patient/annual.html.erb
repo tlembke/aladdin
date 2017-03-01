@@ -1,0 +1,110 @@
+<div class="row">
+
+                <div class="col-md-8">
+                        <%= render "patient" %>
+                </div>
+                 <div class="col-md-4">
+                        <h2>Annual Report Card</h2>
+
+                </div>
+
+
+</div>
+
+<div class="row">
+<div class="col-md-12">
+
+
+   <div class="panel-body">
+      <%= render "introduction" %>
+   </div>
+</div> <!-- col -->
+</div> <!--  row -->
+
+ <div class="row"> <!-- Full screen row -->
+<div class="col-md-12">
+
+ 
+          <legend class="panel-title"><i class="fa fa-heartbeat"></i>  Current Conditions</legend>
+      <div class="panel-body">
+                <%= render "problems_list" %>
+       </div>
+
+</div> <!-- col -->
+</div> <!--  row -->
+<div class="row"> <!-- Full screen row -->
+<div class="col-md-12">
+     
+   
+
+          <div class="panel-title"><i class="fa fa-hospital-o"></i>  Medical History</div>
+     
+             <div class="panel-body">
+                 <%= render "history_list" %>
+            </div>
+
+</div> <!-- col -->
+</div> <!--  row -->
+
+<div class="row no-page-break-inside"> <!-- Full screen row -->
+<div class="col-md-12">
+
+          <legend class="panel-title"><i class="fa fa-medkit"></i>  Medications</legend>
+       
+            <div class="panel-body">
+                <% if @medications.count > 0 %>
+                (Please check this medication list is up to date and let us know of any changes that should be made to our record)<br><br>
+                <% end %>
+                    <%= render "medications" %>
+            </div>
+
+
+
+            <legend class="panel-title"><i class="fa fa-flag"></i> Allergies</legend>
+         
+             <div class="panel-body">
+                    <%= render "allergies" %>
+            </div>
+
+</div> <!-- col -->
+</div> <!--  row -->
+
+
+<div class="row no-page-break-inside"> <!-- Full screen row -->
+<div class="col-md-12">
+
+          <legend class="panel-title"><i class="fa fa-medkit"></i>  Health Checks</legend>
+       
+            <div class="panel-body">
+            <table class='table table-striped table-bordered table-condensed'>
+            <tr><td width=50%>Bowel screening</td><td>Up to date  (next FHH 2017)</td></tr>
+            <tr><td width=50%>Tetanus status</td><td>Up to date (last 2013)</td></tr>
+            </table>
+            </div>
+
+            <legend class="panel-title"><i class="fa fa-flag"></i>Risks</legend>
+         
+             <div class="panel-body">
+            <table class='table table-striped table-bordered table-condensed'>
+             <tr><td width=50%>Calculated Risk of Heart attack in next 5 years</td><td>8% (Low)</td></tr>
+             <tr><td width=50%>Calculated Diabetes risk</td><td>Low</td></tr>  
+            </table>
+            </div>
+            <legend class="panel-title"><i class="fa fa-flag"></i>Lifestyle</legend>
+         
+             <div class="panel-body">
+             <table class='table table-striped table-bordered table-condensed'>
+             <tr><td width=50%>Exercise</td><td>2/4</td></tr>
+             <tr><td width=50%>Alcohol</td><td>3/4</td></tr>
+             <tr><td width=50%>Diet</td><td>2/4</td></tr>
+             <tr><td width=50%>Smoking</td><td>4/4</td></tr>
+             </table>
+            </div>
+
+              <div class="panel-body">
+                    <%= render "measures" %>
+            </div>
+           
+            The score for age <%= @value %> is <%= @score %>
+</div> <!-- col -->
+</div> <!--  row -->

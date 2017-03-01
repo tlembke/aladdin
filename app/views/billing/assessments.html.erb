@@ -1,0 +1,57 @@
+<h1>45 - 49 Year Old Health Assessments</h1>
+
+There are <%= @totalCount %> patients in the age range. <%= @no_ass_patients.count %> (<%= number_to_percentage(@no_ass_patients.count * 100/ @totalCount, precision: 0)%>) have not had a health assessment performed.<br>
+<%= @mobileCount %> of these have a mobile phone number, and <%= @emailCount %> have an email address<p>
+<%= @F49Count %> have already turned 49!<br>
+
+
+<table class='table table-striped'>
+<thead>
+<tr>
+<th>Name</th>
+<th>Age</th>
+<th>Mobile</th>
+<th>Last Seen</th>
+<th>By</th>
+
+</thead>
+<tbody>
+<% @no_ass_patients.each do |patient| %>
+<tr>
+	<td><%= patient["FULLNAME"]%></td>
+	<td><%= patient["AGE"] %></td>
+	<td><%= patient["MOBILEPHONE"]%></td>
+	<td><%= patient["LASTSEENDATE"].to_date.strftime("%m/%Y") if patient["LASTSEENDATE"]%></td>
+	<td><%= patient["LASTSEENBY"] %></td>
+
+</tr>
+<% end %>
+</tbody>
+</table>
+
+
+
+<h2>Completed</h2>
+
+These are the people who have had a health assessment.
+<table class='table table-striped'>
+<thead>
+<tr>
+<th>Name</th>
+<th>Age</th>
+<th>Date </th>
+<th>Done By</th>
+
+</thead>
+<tbody>
+<% @ass_patients.each do |patient| %>
+<tr>
+	<td><%= patient["FULLNAME"]%></td>
+	<td><%= patient["AGE"] %></td>
+	<td><%= patient[:SERVICEDATE].to_date.strftime("%m/%Y") %>
+	<td><%= patient[:PROVIDERID] %></td>
+
+</tr>
+<% end %>
+</tbody>
+</table>

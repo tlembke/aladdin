@@ -1,0 +1,1 @@
+  <%= content_tag :div,"", class: "chart col-md-7",id: "chart_"+@chart[:measure_id].to_s, data: {values: @chart[:values], goals: @chart[:goals],labels: @chart[:labels], xkey: @chart[:xkey], ykeys: @chart[:ykeys], units: @chart[:units]   }, style: "min-height: 250px;" %>

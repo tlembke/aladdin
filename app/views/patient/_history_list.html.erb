@@ -1,0 +1,37 @@
+       		           <!--   problems  -->
+						
+	
+						Procedures and Operations<p>
+						<ul>
+						<% if @procedures.count > 0  %>
+							
+					 		<% @procedures.each do |problem| %>
+					 			<li>
+								<%= problem['HISTORY'] %> <%= "(" + problem['CREATIONDATE'].strftime("%d/%m/%Y") + ")" if problem['CREATIONDATE']%>
+								</li>
+							<% end %>
+						
+					    <% else %>
+					    <li>
+					    		Nil recorded
+					    </li>
+						<% end %>
+						</ul>
+						Medical Events<p>
+						<ul>
+						<% if @events.count > 0  %>
+							
+					 		<% @events.each do |problem| %>
+					 		<li>
+								<%= problem['HISTORY'] %> <%= "(" + problem['CREATIONDATE'].strftime("%d/%m/%Y") + ")" if problem['CREATIONDATE']%>
+							</li>
+							<% end %>
+							
+					    <% else %>
+					   
+					    		<li>Nil recorded</li>
+					   
+						<% end %>	
+						</ul> <!-- row -->					
+						
+						<!--   End problems  -->

@@ -61,6 +61,31 @@ class Patient
     
   end
 
+  def self.billing(patient,dbh,date)
+          sql = "SELECT * FROM PrescriptionHistory WHERE PT_Id_FK = " + patient + "and  DateOfChange = '" + date + "'"
+          puts sql
+         
+
+          sth = dbh.run(sql)
+               
+          prescription_history=[]
+          sth.fetch_hash do |row|
+            # Drug Name - Tablets is repeated in Dose
+            drug=row['DrugName'].sub(" Tablets","")
+            drug=drug.sub(" Capsules","")
+            row['Dose']=row['Dose'].sub(drug,"")
+            prescription_history << row
+          end
+
+          sth.drop
+
+
+
+          return prescription_history
+
+    
+  end
+
   def general_goals
   		general_goals = Goal.where(patient_id: self.id, condition_id: 0)
   		return general_goals
@@ -180,6 +205,7 @@ class Patient
       @register.count > 0 ? returnText = true : returnText = false
       return returnText
   end
+
 
 
 end

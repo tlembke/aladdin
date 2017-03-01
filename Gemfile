@@ -29,6 +29,8 @@ gem 'dnssd'
 
 gem 'bootstrap-editable-rails'
 
+gem 'rubyzip'
+
 
 
 # Use ActiveModel has_secure_password

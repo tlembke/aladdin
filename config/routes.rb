@@ -1,5 +1,18 @@
 Rails.application.routes.draw do
 
+  get 'agent/index'
+
+  resources :billing do
+    collection do
+      get 'index'
+      get 'ccp'
+      get 'paeds'
+      get 'assessments'
+
+    end
+
+  end
+  
 
   resources :phonetimes
   get 'nursinghome/index'
@@ -26,11 +39,17 @@ Rails.application.routes.draw do
     end
     member do
         get 'careplan'
+        get 'annual'
         get 'epc'
         get 'healthsummary'
         get 'import_goals'
         post 'import_goals'
         post 'register'
+        get 'conditions'
+        get 'billing'
+        get 'medications'
+        get 'allergies'
+        get 'fhir'
     end
   end
 

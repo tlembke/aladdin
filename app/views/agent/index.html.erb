@@ -1,0 +1,17 @@
+<h1>Agent#index</h1>
+<p>Find me in app/views/agent/index.html.erb</p>
+
+The p is <%= @p %>
+<% @names.each do |name| %>
+<%= name %> - 
+<% end %>
+
+    <legend>Search results</legend>
+ 		<% @patients_search.each do |patient| %>
+
+ 		<%= link_to patient['SURNAME']+","+patient['FIRSTNAME'], patient_path(:id=> patient['ID']) %>
+    <%= link_to "Sum", healthsummary_patient_path(:id=> patient['ID']),{:class => "btn btn-primary btn-xs"} %>
+ 		<%= link_to "CP", careplan_patient_path(:id=> patient['ID']),{:class => "btn btn-primary btn-xs"} %>
+ 		<br>
+
+ 	<% end %>

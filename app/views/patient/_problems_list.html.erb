@@ -1,0 +1,11 @@
+						<% if @current_problems.count > 0   %>
+							<ul>
+					 		<% @current_problems.each do |problem| %>
+					 		
+					 		<li>
+					 		<%= problem['PROBLEM'] %>
+					 		<%= problem['DIAGNOSISDATE'].strftime("%d/%m/%y") if problem['DIAGNOSISDATE'] %>
+							</li>
+							<% end %>
+							</ul>
+						<% end %>
