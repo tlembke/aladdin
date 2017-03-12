@@ -20,7 +20,7 @@ class AgentController < ApplicationController
 		  				@names.shift
 		  			end
 		  		end
-
+            puts 'here'
 		  		# now find patient 
 		  		# first name starts with @name[0]
 		  		# surname end with @name.last
@@ -28,12 +28,17 @@ class AgentController < ApplicationController
 		  		surname= "%" + @names.last
 		  		firstname = @names[0] + "%"
 		  		where_clause = "Surname LIKE '" + surname + "' and FirstName LIKE '" + firstname + "'"
-		  		year = 2000 + bits['year'].to_i
-		  		if year > Time.now.year
-		  			year = year -100
-		  		end
+		  		year = bits['year'].to_i
+
+          if year  < 100
+            year = year + 2000
+		  		  if year > Time.now.year
+		  			      year = year -100
+		  		  end
+          end
 		  		dob = Date.new(year,bits['month'].to_i,bits['day'].to_i)
 		  		where_clause += " and DOB = '"+dob.to_s(:db)+"'"
+          @dob=dob.to_s
 		  		sql = "SELECT id FROM Patient WHERE " + where_clause
                 puts sql
 
