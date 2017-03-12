@@ -1,0 +1,7 @@
+<div id="status_<%=@status.id%>" class="no-page-break-inside">
+This is the status in patients<p>
+<a href="#" id="status_<%=@status.id%>" class="editable" data-defaultValue="Add role, review times, notes etc" data-type="textarea" data-emptytext= "Progress" data-pk="1" data-resource="status" data-name="progress" data-url="/statuses/<%=@member.id%>" data-placeholder="Your notes here..." data-original-title="Enter notes"><%= textarea_format(@status.status) %> </a>
+
+
+</div> <!-- end id = status_ -->
+<hr class="hrshrink">

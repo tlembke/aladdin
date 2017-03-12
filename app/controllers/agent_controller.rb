@@ -13,7 +13,7 @@ class AgentController < ApplicationController
 		  		#bits=@p.match(/?<name>.*)\((?<day>\d{1,2})\/(?<month>\d{1,2})\/(?<year>\d{4}/)
 		  		#bits=@p.match(/(.*)\((\d+)\/(\d+)\/(\d+)/)
 		  		bits=@p.match(/(?<name>.*)\s\((?<day>\d+)\/(?<month>\d+)\/(?<year>\d+)/)
-		  		titles=%w(Mr Mrs Ms Miss Dr Prof)
+		  		titles=%w(Mr Mrs Ms Miss Dr Prof Master)
 		  		@names=bits['name'].split
 		  		titles.each do |title|
 		  			if @names[0]==title

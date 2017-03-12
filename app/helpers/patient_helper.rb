@@ -48,4 +48,14 @@ module PatientHelper
 		@goals=Goal.where(condition_id: condition)
 		return @goals
 	end
+
+	def get_status(condition, patient)
+		
+		@status=Status.where(condition_id: condition, patient_id: patient).first
+	
+		unless @status
+			@status=Status.create(condition_id: condition, patient_id: patient,progress: "")
+		end
+		return @status
+	end
 end

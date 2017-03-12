@@ -144,6 +144,7 @@ class PatientController < ApplicationController
           @allergies=get_allergies(@id,dbh)
           @careteam=get_careteam(@id,dbh)
           @phonetime = get_phonetime(session[:id])
+          @registers=Register.all
           dbh.disconnect
 
 
@@ -157,6 +158,7 @@ class PatientController < ApplicationController
           render :print
     end
 
+
     respond_to do |format|
         format.html 
         format.json { 
@@ -167,6 +169,7 @@ class PatientController < ApplicationController
            # as canonical json
            # stream = render_to_string
         }
+
     end
     
 
@@ -181,6 +184,20 @@ class PatientController < ApplicationController
               json_object = JSON.parse(json_string) 
               stream = JSON.pretty_generate(json_object)
               return [filename,stream]
+  end
+
+  def fhirlist
+    @orions=RegisterPatient.where(register_id: 1)
+    content=""
+    @orions.each do |orion|
+        content=content+orion.patient_id.to_s+":"
+    end
+    path = "/Users/tlembke/Documents/AladdinDocs/path.txt"
+    File.open(path, "w+") do |f|
+        f.write(content)
+    end
+
+    @count=@orions.count
   end
 
     def fhir
@@ -473,6 +490,10 @@ class PatientController < ApplicationController
           @item_numbers=get_item_numbers(@id,dbh,@tracked_items)
           @phonetime = get_phonetime(session[:id])
           @lastSHS = get_shs_date(@id,dbh)
+          @users = get_users(dbh)
+          @provider = session[:provider]
+          @epc_count = get_epc_count(@id)
+
           
           dbh.disconnect
 
@@ -483,10 +504,26 @@ class PatientController < ApplicationController
           redirect_to  action: "login"
     end
 
-    if params[:print]
-          @print = true
-          render :careplanprint
+
+
+    respond_to do |format|
+        format.html {
+            if params[:print]
+                  @print = true
+                  render :careplanprint
+                  return
+            end
+
+
+        }
+        format.pdf {
+                  render pdf: 'care_plan',
+                  layout: 'layouts/pdf.html.erb',
+                  template: "patient/careplanprint.html.erb",
+                  show_as_html: params.key?('debug')
+        }
     end
+
 
 
   end
@@ -539,9 +576,10 @@ def healthsummary
 
 
   def epc
+
     @name = session[:name]
     @username = session[:username]
-    @provider = session[:provider]
+    @provider = params[:provider]
     @id=params[:id]
     @member = params[:member]
     @craft = params[:craft]
@@ -555,6 +593,7 @@ def healthsummary
           @patient=get_patient(@id,dbh)
 
           @ahp=get_ahp(@member,dbh)
+          @name = get_provider(dbh,@provider)
           
           dbh.disconnect
 
@@ -580,6 +619,7 @@ def healthsummary
           sth.fetch_hash do |row|
               hpio = row['HPIO']
           end
+          sth.drop
           return hpio
 
   end
@@ -594,7 +634,7 @@ def healthsummary
                
           ahp=sth.fetch_hash
 
-
+          sth.drop
           return ahp
 
     end
@@ -608,13 +648,13 @@ def healthsummary
                
           invoices=sth.fetch_hash
 
-
+          sth.drop
 
           return invoices
 
     end
   def get_ahp_items
-        ahp_items={ "Dietitian" => 10954, "Physiotherapist" => 10960, "Physio" => 10960, "Audiologist" => 10952, "Aboriginal Health Worker" => 10950, "Chiropractor" => 10964, "Chiropractic" => 10964,"Diabetes Educator" => 10951, "Exercise Physiologist" => 10953, "Mental Health Worker" => 10956, "Occupational Therapist" => 10958, "Osteopath" => 10966, "Podiatrist" => 10962, "Psychologist" => 10968, "Speech Pathologist" => 10970}
+        ahp_items={ "Dietitian" => 10954, "Physiotherapist" => 10960, "Physio" => 10960, "Audiologist" => 10952, "Aboriginal Health Worker" => 10950, "Chiropractor" => 10964, "Chiropractic" => 10964,"Diabetes Educator" => 10951, "Diabetic Educator" => 10951,"Exercise Physiologist" => 10953, "Mental Health Worker" => 10956, "Occupational Therapist" => 10958, "Osteopath" => 10966, "Podiatrist" => 10962, "Psychologist" => 10968, "Speech Pathologist" => 10970}
   end
 
 
@@ -672,13 +712,13 @@ def healthsummary
 
       id=params[:id]
       register_id=params[:register]
-      @register = Register.where("patient_id= ? and register_id = ?",id,register_id)
+      @register = RegisterPatient.where("patient_id= ? and register_id = ?",id,register_id)
       if @register.count > 0
             @register.each do |reg |
               reg.destroy
             end
       else
-            @new_register=Register.new(patient_id: id, register_id: register_id)
+            @new_register=RegisterPatient.new(patient_id: id, register_id: register_id)
             #@new_register.update_attribute(:register_id, register_id)
             #@new_register.update_attribute(:patient_id, id)
             @new_register.save
@@ -688,6 +728,42 @@ def healthsummary
 
   private
 
+  def get_users(dbh)
+          sql = "SELECT  Name, ProviderNum FROM Preference  where Inactive = False and ProviderType = 2 and ProviderNum <> '' ORDER BY Surname"
+          puts sql
+         
+
+          sth = dbh.run(sql)
+               
+          users=[]
+          sth.fetch_hash do |row|
+            users << [row['NAME'],row['PROVIDERNUM']]
+          end
+
+          sth.drop
+          return users
+
+
+
+  end
+
+  def get_provider(dbh,providerNum)
+          sql = "SELECT Name FROM Preference where ProviderNum  = '%s'" % providerNum
+          puts sql
+
+          sth = dbh.run(sql)
+          @error = ODBC.error
+
+         
+          sth.fetch do |row|
+
+              @name=row[0]
+
+
+          end
+          sth.drop
+          return @name
+  end
 
   def get_medications(patient,dbh)
           sql = "SELECT Medication, Dose, Frequency, Instructions, Category, CreationDate FROM Prescription WHERE PT_Id_FK = " + patient.to_s + " ORDER BY Medication"
@@ -1051,7 +1127,7 @@ def healthsummary
   def get_careteam(patient,dbh)
           theDate = Time.now
           theYear=theDate.strftime("%Y")
-          sql = "SELECT ProviderName, ProviderPhone,ProviderType, AB_Id_Fk as address_book_id FROM InterestedParty where PT_Id_FK = " + patient
+          sql = "SELECT ProviderName, ProviderPhone,ProviderType, Specialty, Category, AB_Id_Fk as address_book_id FROM InterestedParty, AddressBook where InterestedParty.PT_Id_FK = " + patient + " AND AddressBook.Id = InterestedParty.AB_Id_Fk"
           puts sql
           sth = dbh.run(sql)
           careteam=[]
@@ -1061,6 +1137,13 @@ def healthsummary
                   member.update(year_reset: theYear, epc: 0)
               end
               row['member']=member
+              if row['PROVIDERTYPE']==""
+                row['PROVIDERTYPE']=row['CATEGORY']
+              end
+              if row['PROVIDERTYPE']==""
+                row['PROVIDERTYPE']=row['SPECIALTY']
+              end
+              
               careteam << row
           end
           sth.drop
@@ -1070,6 +1153,8 @@ def healthsummary
           # members = Member.where("year_reset = '' or year_reset < ?", @year).update_all(year_reset: @year, epc: 0)
           return  careteam
   end
+
+
 
   def get_shs_date(patient,dbh)
       sql = "SELECT CreationDate FROM CDA where PT_Id_FK = " + patient + " AND SentToPCEHR = true ORDER BY CreationDate DESC"
@@ -1081,6 +1166,12 @@ def healthsummary
           end
           sth.drop
           return lastSHS
+  end
+
+  def get_epc_count(patient)
+          epc_count=Member.where(patient_id: patient).sum(:epc)
+          return epc_count
+
   end
 
 

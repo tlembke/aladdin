@@ -1,0 +1,153 @@
+<%= render "new_goal" %>
+<div class="row">
+                <div class="col-md-3">
+                        <h2>Care Plan</h2>
+
+                </div>
+    			<div class="col-md-5">
+    					<%= render "patient" %>
+    	 		</div>
+          <div class="col-md-4">
+          <div class="btn-group btn-group-justified">
+<%= link_to 'Import Goals', import_goals_patient_path(@patient.id), {:class => "btn btn-lg btn-primary", "data-no-turbolink" => "true"} %>
+<%= link_to 'Print',careplan_patient_path(@patient.id, :print => "true"),{:class => "btn btn-lg btn-primary"} %>
+
+            </div>
+            </div>
+
+
+</div>
+
+<div class="row">
+<div class="col-md-12">
+
+
+      
+<div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true"> <!-- accordion -->
+  <div class="panel panel-default">
+    <div class="panel-heading" role="tab" id="headingNone">
+        <legend class="panel-title">
+        
+                  <a role="button" data-toggle="collapse" data-parent="#accordion"  href="#collapseNone" aria-expanded="true" aria-controls="collapseNone"><i class="fa fa-heartbeat"></i>  Summary</a>
+        </legend>
+     
+     </div>
+     <div id="collapseNone" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingNone">
+            <div class="panel-body">
+                <%= render "introduction" %>
+                <%= render "itemnumbers" %> 
+            </div>
+
+      </div>
+  </div>
+
+  <div class="panel panel-default">
+      <div class="panel-heading" role="tab" id="headingOne">
+          <legend class="panel-title">
+                  <a role="button" data-toggle="collapse" data-parent="#accordion"  href="#collapseOne" aria-expanded="false" aria-controls="collapseOne"><i class="fa fa-heartbeat"></i>  Challenges and General Health</a>
+          </legend>
+        </div>
+        <div id="collapseOne" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
+            <div class="panel-body">
+                <%= render "general" %>
+            </div>
+        </div>
+  </div>
+
+ 
+
+  <div class="panel panel-default">
+        <div class="panel-heading" role="tab" id="headingTwo">
+          <legend class="panel-title">
+                  <a role="button" data-toggle="collapse" data-parent="#accordion"  href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo"><i class="fa fa-heartbeat"></i>  Current Conditions</a>
+          </legend>
+         </div>
+         <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
+            <div class="panel-body">
+                <%= render "problems" %>
+            </div>
+        </div>
+    </div>
+     
+   
+     <div class="panel panel-default">
+        <div class="panel-heading" role="tab" id="headingThree">
+          <legend class="panel-title">
+                  <a role="button" data-toggle="collapse" data-parent="#accordion"  href="#collapseThree" aria-expanded="false" aria-controls="collapseThree"><i class="fa fa-hospital-o"></i>  Medical History</a>
+          </legend>
+         </div>
+         <div id="collapseThree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
+            <div class="panel-body">
+                 <%= render "history" %>
+            </div>
+        </div>
+    </div>
+
+
+     <div class="panel panel-default">
+        <div class="panel-heading" role="tab" id="headingFour">
+          <legend class="panel-title">
+                  <a role="button" data-toggle="collapse" data-parent="#accordion"  href="#collapseFour" aria-expanded="false" aria-controls="collapseFour"><i class="fa fa-user"></i>   Care Team</a>
+          </legend>
+         </div>
+         <div id="collapseFour" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingFour">
+            <div class="panel-body">
+                    <%= render "careteam" %>
+            </div>
+        </div>
+    </div>
+
+     <div class="panel panel-default">
+        <div class="panel-heading" role="tab" id="headingFive">
+          <legend class="panel-title">
+                  <a role="button" data-toggle="collapse" data-parent="#accordion"  href="#collapseFive" aria-expanded="false" aria-controls="collapseFive"><i class="fa fa-medkit"></i>  Medications</a>
+          </legend>
+         </div>
+         <div id="collapseFive" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingFive">
+            <div class="panel-body">
+                    <%= render "medications" %>
+            </div>
+        </div>
+    </div>
+   
+
+
+     <div class="panel panel-default">
+        <div class="panel-heading" role="tab" id="headingSix">
+          <legend class="panel-title">
+                  <a role="button" data-toggle="collapse" data-parent="#accordion"  href="#collapseSix" aria-expanded="false" aria-controls="collapseSix"><i class="fa fa-flag"></i> Allergies</a>
+          </legend>
+         </div>
+         <div id="collapseSix" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingSix">
+            <div class="panel-body">
+                    <%= render "allergies" %>
+            </div>
+        </div>
+    </div>
+
+         <div class="panel panel-default">
+        <div class="panel-heading" role="tab" id="heading7">
+          <legend class="panel-title">
+                  <a role="button" data-toggle="collapse" data-parent="#accordion"  href="#collapse7" aria-expanded="false" aria-controls="collapse7"><i class="fa fa-flag"></i> Calendar</a>
+          </legend>
+         </div>
+         <div id="collapse7" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading7">
+            <div class="panel-body">
+              <%= render "appointments" %>
+              <hr>
+               <%= render "lembke" %> 
+               <hr>
+                <%= render "urgent" %> 
+                <hr>
+                
+                                 
+            </div>
+        </div>
+    </div>
+
+</div> <!-- accordion -->
+
+
+
+</div>
+</div>

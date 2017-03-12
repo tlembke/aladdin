@@ -24,6 +24,7 @@ $(document).ready(function() {
             drawChart($(this));
     });
      $(".apptname").hide();
+
      
 
 });
@@ -32,6 +33,9 @@ $(document).ready(function() {
             $(this).empty();
             drawChart($(this));
         });
+ 
+
+
     });
 
     // Add parameter to epclink
@@ -41,9 +45,12 @@ $(document).ready(function() {
 
         theText=$("#"+theLink).text();
 
+        theProvider = $("#provider").val();
+
+
         e.preventDefault();
 
-        newLink= $(this).attr("href") + '&noVisits=' + theText;
+        newLink= $(this).attr("href") + '&noVisits=' + theText + '&provider=' + theProvider;
 
         window.open(newLink, '_blank'); // <- This is what makes it open in a new window.
 
@@ -82,7 +89,7 @@ $(document).ready(function() {
 
 
     function drawChart(chart){
-         //alert(chart.data('values'));
+         //alert(chart.data('xkey'));
         // jsn=JSON.parse(chart.data('values'));
 
 

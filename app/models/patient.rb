@@ -91,6 +91,11 @@ class Patient
   		return general_goals
   end
 
+  def overall_goals
+      general_goals = Goal.where(patient_id: self.id, condition_id: 0)
+      return general_goals
+  end
+  
   def pronoun
   	    self.sex=="F"  ?  pronoun = "She" : pronoun = "He"
 
@@ -201,7 +206,7 @@ class Patient
   end
 
   def register(register_id)
-      @register = Register.where("patient_id= ? and register_id = ?",self.id,register_id)
+      @register = RegisterPatient.where("patient_id= ? and register_id = ?",self.id,register_id)
       @register.count > 0 ? returnText = true : returnText = false
       return returnText
   end
