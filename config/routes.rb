@@ -23,6 +23,8 @@ Rails.application.routes.draw do
   resources :masters
   resources :goals
   resources :members
+  resources :statuses
+  resources :registers
 
   get 'genie/home'
 
@@ -36,6 +38,7 @@ Rails.application.routes.draw do
     collection do
         get 'index'
         post 'index'
+        get 'fhirlist'
     end
     member do
         get 'careplan'

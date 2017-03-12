@@ -14,16 +14,13 @@
     <![endif]-->
 
     <!-- Le fonts -->
-    <%= stylesheet_link_tag "//fonts.googleapis.com/css?family=Droid+Sans:400,700" %>
-    <%= stylesheet_link_tag '//fonts.googleapis.com/css?family=Lato:300,400,700,900' %>
+    <%= stylesheet_link_tag "https://fonts.googleapis.com/css?family=Droid+Sans:400,700" %>
 
     <!-- Le styles -->
-    <%= stylesheet_link_tag "application", :media => "all" %>
-    <%= wicked_pdf_stylesheet_link_tag "application" %>
-    <%= yield :styles %>
+    
+<%= wicked_pdf_stylesheet_link_tag "application" -%>
+ 
 
-    <!-- This is for Google Maps integration, you can safely remove if not using Google Maps -->
-    <!--  <%= javascript_include_tag "//maps.google.com/maps/api/js?sensor=true&.js" %> -->
 
     <!-- Le fav and touch icons -->
     <%= favicon_link_tag %>
@@ -34,27 +31,36 @@
   <body class="<%= yield (:body_class) %>">
     <%= render "layouts/navbar" %>
 
-    <header>
-      <%= yield :header %>
-    </header>
-
-    <%= yield :banner %>
-
     <div id="main" class="container-fluid">
       <div class="row">
         <%= yield %>
       </div> <!-- /.container -->
     </div> <!-- /#main -->
 
-    <%= render "layouts/footer" %>
-
     <!-- Le javascript
     ================================================== -->
     <!-- Placed at the end of the document so the pages load faster -->
+
+    <!-- This is for Google Maps integration, you can safely remove if not using Google Maps 
+    <%= javascript_include_tag "//maps.google.com/maps/api/js?sensor=true&.js" %> -->
     <!-- <%= javascript_include_tag "//cdnjs.cloudflare.com/ajax/libs/modernizr/2.8.3/modernizr.min.js" %> -->
 
-    <%= javascript_include_tag "application" %>
+
+
+
+    <%= wicked_pdf_javascript_include_tag "jquery" %>
+    <%= wicked_pdf_javascript_include_tag "jquery_ujs" %>
+    <%= wicked_pdf_javascript_include_tag  "modernizr" %>
+    <%= wicked_pdf_javascript_include_tag  "raphael" %>
+    <%= wicked_pdf_javascript_include_tag  "morris" %>
+    <%= wicked_pdf_javascript_include_tag "application" %>
+    <%= wicked_pdf_javascript_include_tag "dresssed" %>
+    <%= wicked_pdf_javascript_include_tag "bootstrap-editable" %>
+    <%= wicked_pdf_javascript_include_tag "bootstrap-editable-rails" %>
+   
+
     <%= yield :javascript %>
+
 
   </body>
 <% end %>

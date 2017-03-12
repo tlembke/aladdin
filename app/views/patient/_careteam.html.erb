@@ -5,7 +5,19 @@
 					
 
 						<% if @careteam.count > 0   %>
-							
+							<!--  select user for EPC form -->
+
+							<div class="row">
+								<div class="col-md-3 col-md-offset-9">
+									<div class='form-group'>
+									<label for="provider">Referring GP:</label>
+										<%= select_tag("provider", options_for_select(@users,@provider),{:class => 'form-control'}) %>
+									</div>
+								</div>
+							</div>
+
+
+
 							
 					 		<% @careteam.each do |member| %>
 					 		 <div class="row">
@@ -26,7 +38,7 @@
 							<% if @ahp_items.has_key?(member['PROVIDERTYPE']) %>
 									
 		EPC : <a href="#" id="epc_<%=@member.id%>" class="editable" data-defaultValue="Enter EPC referral count" data-type="text" data-pk="1" data-resource="member" data-name="epc" data-url="/members/<%=@member.id%>" data-placeholder="EPC referrals..." data-original-title="EPC Referrals"><%= @member.epc %> </a><p>
-									<%= link_to "EPC Form",epc_patient_path(:member=> member['address_book_id'].to_s), {:class => 'epclink noprint',"data-member" => "epc_" + @member.id.to_s} %>
+									<%= link_to "EPC Form",epc_patient_path(:member=> member['address_book_id'].to_s),{:class => 'epclink noprint',"data-member" => "epc_" + @member.id.to_s} %>
 
 						   <% end %>
 							

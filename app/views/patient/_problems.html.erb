@@ -13,6 +13,18 @@
 								
 
 								<%= simple_format(problem['NOTE'])%>
+								<!----------- -->
+								<% @status=get_status(problem['ID'],@patient.id) %>
+
+									
+									<b>Progress</b>
+
+	
+
+											<%= render  @status %>
+			 
+	
+
 							
 								<!----------- -->
 								<% @goals=get_goals(problem['ID']) %>
