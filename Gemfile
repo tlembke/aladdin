@@ -31,6 +31,10 @@ gem 'bootstrap-editable-rails'
 
 gem 'rubyzip'
 
+gem 'wicked_pdf'
+
+gem 'wkhtmltopdf-binary'
+
 
 
 # Use ActiveModel has_secure_password
@@ -56,6 +60,6 @@ group :development do
 end
 
 source "https://dresssed.com/gems/" do
-  gem "dresssed-ives", "~> 1.0.22"
+  gem "dresssed-ives", "~> 1.0.48"
 end
 

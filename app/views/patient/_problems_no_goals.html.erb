@@ -9,6 +9,13 @@
 					 			<div class="col-md-11">
 								<h3 class="shrink"><%= problem['PROBLEM'] %></h3>
 								<%= simple_format(problem['NOTE'])%>
+										<!----------- -->
+								<% @status=get_status(problem['ID'],@patient.id) %>
+
+									<% if @status.progress !="" %>
+									<b>Progress</b>
+										<%= simple_format(@status.progress) %>
+									<% end %>
 
 								</div>
 							</div>
