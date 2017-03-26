@@ -1,0 +1,52 @@
+<% @title = "Preferences" %>
+
+<% content_for :description do %>
+<p>Preferences for this practice</p>
+<% end %>
+
+
+
+
+
+
+
+
+
+
+
+<div class="container">
+  <div class="row">
+    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+      <div class="sheet sheet-condensed">
+        <div class="sheet-inner">
+          <table class="table">
+            <thead>
+              <tr>
+                                <th>Name</th>
+                                <th>Value</th>
+                                <th></th>
+              </tr>
+            </thead>
+            <tbody>
+              <% Pref.list.each_pair do |key,val| %>
+              <tr>
+                                <td><%= val[:name] %></td>
+                                <td><%= Pref.send(key.to_s) %></td>
+                                <td class="actions">
+                  <%= link_to fa_icon_tag("pencil"), edit_pref_path(:id => Pref.get_id(key.to_s),:name => key.to_s), rel: 'tooltip', title: 'Edit' %>
+
+
+                </td>
+              </tr>
+              <% end %>
+              <% if Pref.list.length == 0 %>
+              <tr><td colspan=42 class='text-center'>No prefs.</td></tr>
+              <% end %>
+            </tbody>
+          </table>
+        </div><!-- /.sheet-inner -->
+      </div><!-- /.sheet -->
+
+                </div>
+  </div>
+</div>

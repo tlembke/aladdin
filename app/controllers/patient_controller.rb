@@ -65,7 +65,7 @@ class PatientController < ApplicationController
   			else
   				flash[:alert] = "Unable to connect to database. "+get_odbc
   				flash[:notice] = connect_array[2]
-  				redirect_to  action: "login"
+  				redirect_to  controller: "genie", action: "login"
   			end
   	end
 
@@ -151,16 +151,21 @@ class PatientController < ApplicationController
     else
           # lost connection to database
           flash[:notice]=connect_array[2]
-          redirect_to  action: "login"
+          redirect_to  controller: "genie", action: "login"
     end
-
-    if params[:print]
-          render :print
-    end
+    @print=false
 
 
     respond_to do |format|
-        format.html 
+         format.html {
+            if params[:print]
+                  @print = true
+                  render :print
+                  return
+            end
+
+
+        }
         format.json { 
            json_string = render_to_string   
            json_object = JSON.parse(json_string) 
@@ -186,19 +191,56 @@ class PatientController < ApplicationController
               return [filename,stream]
   end
 
-  def fhirlist
+  def orion
     @orions=RegisterPatient.where(register_id: 1)
-    content=""
-    @orions.each do |orion|
-        content=content+orion.patient_id.to_s+":"
-    end
-    path = "/Users/tlembke/Documents/AladdinDocs/path.txt"
-    File.open(path, "w+") do |f|
-        f.write(content)
-    end
+    if @orions.count >0
+        connect_array=connect()
+        @error_code=connect_array[1]
+        if (@error_code==0)
+            dbh=connect_array[0]
+            compressed_filestream = Zip::OutputStream.write_buffer do |zos|
+                  @orions.each do |orion|
+                      @id= orion.patient_id.to_s
+                      @patient=get_patient(@id,dbh)
+                      @hpio = get_hpio(dbh)
+                      @medications = get_medications_amt(@id,dbh)
+                      @current_problems = get_current_problems(@id,dbh)
+                      @allergies=get_allergies(@id,dbh)
 
-    @count=@orions.count
-  end
+                      json_file=get_json_stream(@id,"medications")
+                      zos.put_next_entry json_file[0]
+                      zos.print json_file[1]
+
+                      json_file=get_json_stream(@id,"allergies")
+                      zos.put_next_entry json_file[0]
+                      zos.print json_file[1]
+
+                      json_file=get_json_stream(@id,"conditions")
+                      zos.put_next_entry json_file[0]
+                      zos.print json_file[1]
+
+
+                      json_file=get_json_stream(@id,"patient")
+                      zos.put_next_entry json_file[0]
+                      zos.print json_file[1]
+                    
+
+                  end # do |orion|
+             end # do |zos|
+             dbh.disconnect
+             compressed_filestream.rewind
+             send_data compressed_filestream.read, filename: "orion.zip", type: 'application/zip'
+             
+        end # if error code
+
+     end # end if count > 0
+    
+
+
+  end # end orion
+
+
+
 
     def fhir
       # this is for json
@@ -230,11 +272,11 @@ class PatientController < ApplicationController
           dbh.disconnect
 
 
-    else
+        else
           # lost connection to database
           flash[:notice]=connect_array[2]
           redirect_to  action: "login"
-    end
+        end
 
         
 
@@ -801,14 +843,20 @@ def healthsummary
             puts row["DRUGINDEXCODE"]
             code=row["DRUGINDEXCODE"].split('/')
             code[0]=code[0].gsub(/^\D/,'')
-            sql2= "SELECT LinkAMT.AMTCode, AMTName from LinkAMT,AMTDescription where prodcode = " + code[0] + " and formcode = " + code[1] + " and packcode = " + code[2] + "and AMTDescription.AMTCode = LinkAMT.AMTCode "
-            puts sql2
-            sth2 = dbh.run(sql2)
-            sth2.fetch do |row2|
-              row["AMT"]= row2[0]
-              row["AMTName"] = row2[1]
+            if code[0] and code[1] and code[2]
+              sql2= "SELECT LinkAMT.AMTCode, AMTName from LinkAMT,AMTDescription where prodcode = " + code[0] + " and formcode = " + code[1] + " and packcode = " + code[2] + "and AMTDescription.AMTCode = LinkAMT.AMTCode "
+              puts sql2
+              sth2 = dbh.run(sql2)
+              sth2.fetch do |row2|
+                row["AMT"]= row2[0]
+                row["AMTName"] = row2[1]
+              end
+              sth2.drop
+            else
+                row["AMT"]= ""
+                row["AMTName"] = ""
+
             end
-            sth2.drop
 
             #row["INSTRUCTIONS"]=expand_instruction(row["INSTRUCTIONS"])
             #row["FREQUENCY"]=expand_instruction(row["FREQUENCY"])
@@ -892,11 +940,11 @@ def healthsummary
 
   def get_patient(patient,dbh)
             # Get info about this patient
-         sql = "SELECT Surname,FirstName,FullName,LastSeenDate,LastSeenBy,AddressLine1, AddressLine2,Suburb,DOB, Age, Sex, Scratchpad, FamilyHistory, MedicareNum, MedicareRefNum, IHI FROM Patient WHERE id = "+patient       
+         sql = "SELECT Surname,FirstName,FullName,LastSeenDate,LastSeenBy,AddressLine1, AddressLine2,Suburb,DOB, Age, Sex, Scratchpad, FamilyHistory, MedicareNum, MedicareRefNum, IHI, HomePhone, MobilePhone FROM Patient WHERE id = "+patient       
          puts sql
           sth = dbh.run(sql)
           sth.fetch_hash do |row|
-            @patient=Patient.new(id: @id, surname: row['SURNAME'], firstname: row['FIRSTNAME'], fullname: row['FULLNAME'], lastseendate: row['LASTSEENDATE'], lastseenby: row['LASTSEENBY'], addressline1: row['ADDRESSLINE1'], addressline2: row['ADDRESSLINE2'],suburb: row['SUBURB'],dob: row['DOB'], age: row['AGE'], sex: row['SEX'], scratchpad: row['SCRATCHPAD'], social: row['FAMILYHISTORY'], ihi: row['IHI'],medicare: row['MEDICARENUM'].to_s + "/" + row['MEDICAREREFNUM'].to_s)
+            @patient=Patient.new(id: @id, surname: row['SURNAME'], firstname: row['FIRSTNAME'], fullname: row['FULLNAME'], lastseendate: row['LASTSEENDATE'], lastseenby: row['LASTSEENBY'], addressline1: row['ADDRESSLINE1'], addressline2: row['ADDRESSLINE2'],suburb: row['SUBURB'],dob: row['DOB'], age: row['AGE'], sex: row['SEX'], scratchpad: row['SCRATCHPAD'], social: row['FAMILYHISTORY'], ihi: row['IHI'],medicare: row['MEDICARENUM'].to_s + "/" + row['MEDICAREREFNUM'].to_s,homephone: row['HOMEPHONE'],mobilephone: row['MOBILEPHONE'])
           end
           sth.drop
           return @patient

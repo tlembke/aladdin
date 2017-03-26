@@ -1,0 +1,28 @@
+
+<%= form_for(@pref, html: { class: 'form-horizontal' }) do |f| %>
+  <%= f.error_notification %>
+
+  <div class="form-inputs">
+
+
+    <%= f.form_group :value do |f| %>
+      <%= f.label @pref.name, class: 'control-label col-md-2' %>
+      <div class='col-md-8'>
+      <% if @pref.value == "false" or @pref.value == "true" %>
+        <%= f.check_box :value, {}, "true", "false"%> 
+      <% else %>
+        <%= f.text_field :value, class: 'form-control' %>
+      <% end %>
+        <%= f.error_messages %>
+
+      </div>
+    <% end %>
+
+  </div>
+  <%= f.hidden_field :name, value: @pref.name %>
+  <div class="form-actions col-md-offset-2 col-md-10">
+    <%= f.submit class: 'btn btn-primary' %>
+    <%= link_to "Cancel", prefs_path, class: 'btn' %>
+  </div>
+<% end %>
+

@@ -1,7 +1,7 @@
 <%# Links for current user. %>
 <nav class='navbar'>
   <div class='navbar-brand'>
-    Alstonville Clinic 02 66280505
+    <%= Pref.clinic %> <%= Pref.phone %>
   </div>
   <div class="navbar-text pull-right">
   	<% if session[:username] %>
@@ -12,7 +12,7 @@
     <%= link_to "Appointments",{controller: "appointments"}, { "data-no-turbolink" => "true"} %>
     <span class="divider">|</span>
     <%= link_to "NH",nursinghome_index_path, { "data-no-turbolink" => "true"} %>
-    <span class="divider">|</span>
+<span class="divider">|</span>
 
   <a class="dropdown-toggle" data-toggle="dropdown" href="#"><i class="fa fa-cogs"></i></a>
   <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
@@ -28,9 +28,16 @@
     <li><%= link_to "Measurements",measurements_path, { "data-no-turbolink" => "true"} %></li>
     <li><%= link_to "Phonetimes",phonetimes_path, { "data-no-turbolink" => "true"} %></li>
     <li><%= link_to "Registers",registers_path, { "data-no-turbolink" => "true"} %></li>
+    <li role="separator" class="divider"></li>
+    <li><%= link_to "Preferences",prefs_path, { "data-no-turbolink" => "true"} %></li>
+    <li role="separator" class="divider"></li>
+    <li><%= link_to "Orion download",orion_patient_index_path, { "data-no-turbolink" => "true"} %></li>
   </ul>
+    <span class="divider">|</span>
 
-    <% end %>
+     <%= link_to ("<i class='fa fa-refresh'></i>").html_safe, url_for(params), { "data-no-turbolink" => "true"} %>
+<span class="divider">|</span>
+    <% end %> 
 
   
   </div>
