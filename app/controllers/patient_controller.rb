@@ -328,11 +328,9 @@ class PatientController < ApplicationController
 
           # Deafult Get last consult details
           # Unless otherwise selected
-          if params[:consult_id]
-              sql = "SELECT ConsultDate, DoctorName,Plan,Diagnosis, History, Examination, Id FROM Consult WHERE Id = " + params[:consult_id]
-          else
-              sql = "SELECT ConsultDate, DoctorName,Plan,Diagnosis,History, Examination, Id FROM Consult WHERE PT_Id_FK = " + @id + " ORDER BY ConsultDate DESC LIMIT 1"
-          end
+
+          sql = "SELECT ConsultDate, DoctorName,Plan,Diagnosis,History, Examination, Id FROM Consult WHERE PT_Id_FK = " + @id + " ORDER BY ConsultDate DESC LIMIT 1"
+          
           puts sql
           sth = dbh.run(sql)
            sth.fetch_hash do |row|
@@ -341,37 +339,8 @@ class PatientController < ApplicationController
           end
           sth.drop
 
-          # Get other recent consults as well
-          @recent_consults=[]
-          sql = "SELECT ConsultDate, DoctorName, Id FROM Consult WHERE PT_Id_FK = " + @id + " ORDER BY ConsultDate DESC LIMIT 5"
-          puts sql
-          sth = dbh.run(sql)
-           sth.fetch_hash do |row|
-            @recent_consults << row
-          end
-          sth.drop
-          
-          @problems=get_problems(dbh,@consult['ID'])
+          @prescription_history= Patient.prescription_history(@patient.id,dbh,Date.today.strftime("%Y-%m-%d"))
 
-          careplan=false
-          if ! params[:consult]
-            if params[:careplan]
-                careplan=true
-            end
-            @problems.each do |problem|
-                if problem.include? ("Plan")
-                   careplan=true
-                end
-            end
-          end
-
-          if (@consult['DIAGNOSIS'] == "")
-            if @problems.count>0
-                @consult['DIAGNOSIS']=@problems[0]
-            else
-                @consult['DIAGNOSIS']="Consultation"
-            end
-          end
           tasks_array=extract_tasks(@consult['PLAN'])
           @tasks=tasks_array[0]
           @meds=tasks_array[1]
@@ -387,22 +356,160 @@ class PatientController < ApplicationController
           history_array = get_history(@id,dbh)
           @procedures=history_array[0]
           @events=history_array[1]
+          @diabetes=has_condition?("diabetes",@current_problems)
+          @ihd=has_condition?("ihd",@current_problems)
+          unless @ihd
+              @ihd=has_condition?("ihd",@procedures)
+          end
+          unless @ihd
+              @ihd=has_condition?("ihd",@events)
+          end
+          @ckd = has_condition?("ckd",@current_problems)
+
           @allergies=get_allergies(@id,dbh)
           @careteam=get_careteam(@id,dbh)
           @phonetime = get_phonetime(session[:id])
+          @all_measures=get_all_measurements(@id,dbh,50)
+
+          measure_list=["Blood Pressure","Weight","Lipids"]
+          @measures=[]
+          measure_list.each do |next_measure|
+            @this_measure = Measure.find_by Name: next_measure
+            @measures << @this_measure
+          end
+
+          @ecg =  get_last_ecg(@patient.id,dbh)
+
+          @immunisations=get_immunisations(@id,dbh)
+
+          # Tetanus true if never given or if last booster more than 15 years ago unless given over age 65
+          @tetanus = get_tetanus(@immunisations)
+          @tetanus_msg = false
+          if @tetanus
+            last_given_age = @patient.age.to_i - @tetanus.year
+          else
+            last_given_age = 0
+            @tetanus_msg = true unless @patient.age < 30
+          end
+          if @tetanus and @tetanus < 15.years.ago and last_given_age <65 and @patient.age > 30
+                   @tetanus_msg = true
+          end
+             
+          # need to get latest BP, Chol and HDL
+          bpsweights=get_bps(@id,dbh,50)
+          @bps=bpsweights[0]
+          @weights=bpsweights[1]
+          @heights=bpsweights[2]
+          @bp=0
+          if @bps.count > 0
+            @bp=@bps[0]["SYSTOLIC"]
+            @bpd=@bps[0]["DIASTOLIC"]
+            @bp_date=@bps[0]["MEASUREMENTDATE"]
+          end
+          @weight=0
+          if @weights.count>0
+            @weight=@weights[0]["WEIGHT"]
+            @weight_date=@weights[0]["MEASUREMENTDATE"]
+          end
+          @height=0
+          if @heights.count > 0 
+            @height=@heights[0]["HEIGHT"]
+            @height_date=@heights[0]["MEASUREMENTDATE"]
+          end
 
 
+            @bmi=get_bmi(@height,@weight)
 
-          @value=36
-          @score=0
-          flag=true
-          values_array=[[34,-9],[39,-4],[44,0],[49,3],[54,6],[59,8],[64,10],[69,11],[74,12],[79,13]]
-          values_array.each do |pair|
-            if @value<=pair[0] and flag             
-              @score = pair[1]
-              flag=false
+
+          @lipids=get_lipids(@id,dbh,20)
+          @chol=0
+          @hdl=0
+          if @lipids.count > 0 
+            @chol=@lipids[0]["CHOLESTEROL"]
+            @chol_date=@lipids[0]["MEASUREMENTDATE"]
+            flag=0
+            @lipids.each do |lipid|
+              if flag==0
+                    if lipid["HDL"]
+                      @hdl=lipid["HDL"]
+                      @hdl_date=lipid["MEASUREMENTDATE"]
+                      flag=1
+                    end
+               end
             end
           end
+          
+          @smoking = @patient.smoking
+          @smoking ==1 ? smokingflag=1 : smokingflag = 0
+          @alcohol = @patient.etoh
+          @alcoholinfo = @patient.etohinfo
+          if @patient.sex == "F"
+            @mammogram = @patient.mammogram
+            @last_scanned_mammogram = get_last_mammogram_scans(@id,dbh)
+          end
+          results_check=get_last_mammogram_fhh_results(@id,dbh,@patient.sex)
+          @last_results_mammogram=results_check[0]
+          @last_fhh=results_check[1]
+
+          if @patient.sex =="F"
+
+                #first which is most recent s can or results or both 0
+                @mammogram= 0 if @mammogram == nil
+                @last_mam = @mammogram
+
+
+                @last_mam = @last_scanned_mammogram if @last_mam != 0 and @last_scanned_mammogram !=0  and @last_scanned_mammogram > @last_mam
+               
+                @last_mam = @last_results_mammogram if @last_mam == 0 or  (@last_results_mammogram > @last_mam)
+
+                @mam = {:color => "green", :msg => "Not required" }
+                if @patient.age >49 and @patient.age <71
+                    @mam = {:color => "red", :msg => "Mammogram recommended" } if @last_mam ==0 or @last_mam < 2.years.ago
+                    @mam = {:color => "green", :msg => "Mammogram Up To Date" } if @last_mam !=0 and @last_mam >  1.years.ago
+                    @mam = {:color => "orange", :msg => "Mammogram Due next 12 months" } if @last_mam !=0 and @last_mam < 1.years.ago and @last_mam > 2.years.ago
+
+
+                end
+                
+                 if @patient.age < 20 or @patient.age > 70 or @patient.pap_recall 
+                        @pap = {:color => "green", :msg => "No PAP recall" }
+                 else
+
+                      @pap = {:color => "green", :msg => "PAP up to date" } if @patient.pap and @patient.pap >  2.years.ago
+                      @pap = {:color => "red", :msg => "PAP due" } if @patient.pap ==nil or @patient.pap <  2.years.ago
+                end
+         end
+         
+
+          @colonoscopy = last_colonoscopy(history_array)
+         
+
+            if @diabetes and @patient.age > 60
+                @score = { :value => 100, :color => "orange", :cat => "aged over 60 and presence of diabetes" }
+            elsif @ckd
+                 @score = { :value => 100, :color => "orange", :cat => "presence of Chronic Kidney Disease" }
+            elsif @ihd
+                 @score = { :value => 200, :color => "orange", :cat => "Ischaemic Heart Disease already documented" }
+            elsif @patient.atsi==1 and @patient.age > 75
+                 @score = { :value => 100, :color => "orange", :cat => "aged over 75 and ATSI" }
+            elsif @chol.to_f > 7.5
+                 @score = { :value => 100, :color => "orange", :cat => "Cholesterol over 7.5"}
+            elsif @bp > 180
+                 @score = { :value => 100, :color => "orange", :cat => "Blood pressure > 180" }
+            else  
+                 if @chol.to_f > 0  and @hdl.to_f  > 0 and @bp.to_i > 0 
+                        @score=get_cardiac_risk(@patient.age,@patient.sex,@chol, @hdl,@bp, smokingflag)
+                 else
+                      msg="Unable to calculate Absolute cardiac risk as missing"
+                      msg= msg+ " Cholesterol" unless @chol.to_i > 0 
+                      msg= msg+ " HDL" unless @hdl.to_i > 0 
+                      msg= msg+ " BP" unless @bp.to_i > 0
+                      @score = { :value => 200, :color => "orange", :cat => msg }
+                 end 
+
+
+            end
+
           dbh.disconnect
 
 
@@ -412,12 +519,17 @@ class PatientController < ApplicationController
           redirect_to  action: "login"
     end
 
-    if params[:print]
-          render :print
-    end
+  
 
     respond_to do |format|
-        format.html 
+        format.html{
+            if params[:precheck]
+                  render :precheck
+                  return
+            end
+        }
+
+
         format.json { 
            json_string = render_to_string   
            json_object = JSON.parse(json_string) 
@@ -430,6 +542,144 @@ class PatientController < ApplicationController
     
 
  
+  end
+
+  def get_bmi(height,weight)
+      if height ==0 or weight == 0 
+        bmi = { :value => 0}
+      else
+        height = height/100 # convert from cm to m
+        value = weight / (height * height)
+        upper = (25 * height * height).round(0)
+        lower = (20 * height * height).round(0)
+        range = lower.to_s + " - " + upper.to_s
+        color="green"
+        color="orange" if value > 25
+        color="red" if value > 30
+        bmi = { :value => value.round(0), :range => range, :upper => upper, :lower => lower, :color => color}
+      end
+      return bmi
+
+
+
+
+
+  end
+
+  def get_cardiac_risk(age,sex,chol,hdl,bp,smoking=0, htmed=0)
+         total_score=0
+
+          # Age
+          sex=="M" ? s=1 : s=0
+          k = 0.057*age - 8.65 + 0.008*bp + 0.18*chol.to_f + 0.234*hdl.to_f + 0.61*s + 0.458*smoking + 0.749*htmed
+          k = - k 
+          risk = 1 / ( 1 + Math.exp(k) )
+    
+          risk = risk * 100
+          if risk < 10
+                  color="green"
+                  cat="Low"
+          elsif risk <15
+                  color="orange"
+                  cat = "Moderate"
+          else
+                  color="red"
+                  cat = "High"
+          end
+          score = { :value => risk, :color => color, :cat => cat }
+          return score
+
+  end
+
+  def get_tetanus(immunisations)
+    givenDate = false
+    immunisations.each do |imm|
+      if givenDate == false
+        if imm["VACCINE"].downcase == "adt" or imm["VACCINE"].downcase == "boostrix"
+          givenDate = imm["GIVENDATE"]
+        end
+      end
+    end
+    return givenDate
+
+  end
+
+  def get_cardiac_risk2(age,sex,chol,hdl,bp)
+       total_score=0
+          # Age
+
+          if sex=="F"
+            value_array=[[34,-9],[39,-4],[44,0],[49,3],[54,6],[59,7],[64,8],[69,8],[74,8],[79,8]]
+          else
+              value_array=[[34,-1],[39,0],[44,1],[49,2],[54,3],[59,4],[64,5],[69,6],[74,7]]
+          end
+
+          total_score = total_score + get_score(value_array,age)
+          puts " Age Score " + total_score.to_s
+
+          # Total Cholesterol
+          if sex =="F"           
+              value_array=[[4.14,-2],[5.17,0],[6.21,1],[7.24,1],[100,3]]        
+          else
+            value_array=[[4.14,-3],[5.17,0],[6.21,1],[7.24,2],[100,3]] 
+          end
+          old_score=total_score
+          total_score = total_score + get_score(value_array,chol)
+          puts "Chol Score " + (total_score - old_score).to_s
+
+          # HDL Cholesterol
+          if sex =="F"           
+              value_array=[[0.9,5],[1.16,2],[1.29,1],[1.55,0],[5,-3]]       
+          else
+            value_array=[[0.9,2],[1.16,1],[1.29,0],[1.55,0],[5,-2]]
+          end
+          old_score=total_score
+          total_score = total_score + get_score(value_array,hdl)
+          puts "HDL Score " + (total_score - old_score).to_s
+
+
+          # Blood Pressure
+          if sex =="F"           
+              value_array=[[120,-3],[129,0],[139,0],[159,2],[300,3]]      
+          else
+                value_array=[[120,0],[129,0],[139,1],[159,2],[300,3]]
+          end
+          old_score=total_score
+          total_score = total_score + get_score(value_array,bp)
+          puts "BP Score" + (total_score - old_score).to_s
+          puts "Total Score is " + total_score.to_s
+
+          # Smoker
+          # +2
+
+          # Diabetes
+          # +2 = High Risk
+
+          # Risk %
+          if sex =="F"           
+            value_array=[[0,2],[1,2],[2,3],[3,3],[4,4],[5,4],[6,5],[7,6],[8,7],[9,8],[10,10],[11,11],[12,13],[13,15],[14,18],[15,20],[16,24],[100,27]]          
+          else
+            value_array=[[0,3],[1,3],[2,4],[3,5],[4,7],[5,8],[6,10],[7,13],[8,16],[9,20],[10,25],[11,31],[12,37],[13,45],[20,53]]          
+          end
+          risk=get_score(value_array,total_score)
+
+
+
+          return risk
+  end
+
+
+  def get_score(value_array,value)
+      score=0
+      flag=true
+      value_array.each do |pair|
+        if value<=pair[0] and flag             
+            score = pair[1]
+            flag=false
+        end
+      end
+      return score
+
   end
 
   def points_assign(value,upper,score)
@@ -828,6 +1078,28 @@ def healthsummary
           return medications
   end
 
+    def get_immunisations(patient,dbh)
+          sql = "SELECT ACIRCode, GivenDate, Vaccine FROM Vaccination WHERE PT_Id_FK = " + patient.to_s + "ORDER BY GivenDate DESC"
+          puts sql
+         
+
+          sth = dbh.run(sql)
+               
+          immunisations=[]
+          sth.fetch_hash do |row|
+
+            immunisations<< row
+          end
+
+         
+
+         
+          sth.drop
+          return immunisations
+
+    end
+
+
     def get_medications_amt(patient,dbh)
           sql = "SELECT Medication, Dose, Frequency, Instructions, Category, CreationDate, DrugIndexCode, Id FROM Prescription WHERE Prescription.PT_Id_FK = " + patient.to_s
           puts sql
@@ -940,19 +1212,68 @@ def healthsummary
 
   def get_patient(patient,dbh)
             # Get info about this patient
-         sql = "SELECT Surname,FirstName,FullName,LastSeenDate,LastSeenBy,AddressLine1, AddressLine2,Suburb,DOB, Age, Sex, Scratchpad, FamilyHistory, MedicareNum, MedicareRefNum, IHI, HomePhone, MobilePhone FROM Patient WHERE id = "+patient       
+         sql = "SELECT Surname,FirstName,FullName,LastSeenDate,LastSeenBy,AddressLine1, AddressLine2,Suburb,DOB, Age, Sex, Scratchpad, FamilyHistory, MedicareNum, MedicareRefNum, IHI, HomePhone, MobilePhone, SmokingFreq, Alcohol, AlcoholInfo, LastMammogram, CultureCode, EmailAddress, LastSmear, NoPapRecall FROM Patient WHERE id = "+patient       
          puts sql
           sth = dbh.run(sql)
           sth.fetch_hash do |row|
-            @patient=Patient.new(id: @id, surname: row['SURNAME'], firstname: row['FIRSTNAME'], fullname: row['FULLNAME'], lastseendate: row['LASTSEENDATE'], lastseenby: row['LASTSEENBY'], addressline1: row['ADDRESSLINE1'], addressline2: row['ADDRESSLINE2'],suburb: row['SUBURB'],dob: row['DOB'], age: row['AGE'], sex: row['SEX'], scratchpad: row['SCRATCHPAD'], social: row['FAMILYHISTORY'], ihi: row['IHI'],medicare: row['MEDICARENUM'].to_s + "/" + row['MEDICAREREFNUM'].to_s,homephone: row['HOMEPHONE'],mobilephone: row['MOBILEPHONE'])
+            atsi=0
+            row['CULTURECODE'] > 3 ? atsi=0 : atsi=1
+
+            @patient=Patient.new(id: @id, surname: row['SURNAME'], firstname: row['FIRSTNAME'], fullname: row['FULLNAME'], lastseendate: row['LASTSEENDATE'], lastseenby: row['LASTSEENBY'], addressline1: row['ADDRESSLINE1'], addressline2: row['ADDRESSLINE2'],suburb: row['SUBURB'],dob: row['DOB'], age: row['AGE'], sex: row['SEX'], scratchpad: row['SCRATCHPAD'], social: row['FAMILYHISTORY'], ihi: row['IHI'],medicare: row['MEDICARENUM'].to_s + "/" + row['MEDICAREREFNUM'].to_s,homephone: row['HOMEPHONE'],mobilephone: row['MOBILEPHONE'], smoking: row['SMOKINGFREQ'], etoh: row['ALCOHOL'], etohinfo: row['ALCOHOLINFO'], mammogram: row['LASTMAMMOGRAM'], atsi: atsi, email: row['EMAILADDRESS'], pap: row['LASTSMEAR'],pap_recall: row['NOPAPREACLL'])
           end
           sth.drop
           return @patient
   end
 
+ def has_condition?(condition,problems)
+    icpc=""
+    flag=false
+    if condition =="ihd"
+        icpc = %w(k74 K75 K76 K54007 K53003 K53009)
+    end
+    if condition =="diabetes"  
+        icpc = %w(T89 T90)
+    end
+    if condition =="ckd"  
+        icpc = %w(U99)
+    end
+    if icpc!=""
+      problems.each do |problem |
+        if flag==false
+            icpc.each do |code|
+              if problem["ICPCCODE"].start_with?(code)
+                flag=true
+              end
+            end
+        end
+      end
+    end
+
+    
+    return flag
+end 
+
+ def last_colonoscopy(history)
+    colon=false
+    colon_date=Date.new(1980,1,1)
+    history.each do | problemlist |
+        problemlist.each do | problem |
+          if problem["HISTORY"].downcase.include?("colonoscopy")
+                if problem["CREATIONDATE"] > colon_date
+                  colon=problem["HISTORY"]
+                  colon_date=problem["CREATIONDATE"]
+                end
+             
+          end
+        end
+      end
+
+  
 
 
- 
+    
+    return [colon,colon_date]
+end 
 
   def get_problems(dbh,consult)
           sql = "SELECT Problem FROM ConsultationProblem WHERE CNSLT_Id_FK = " + consult.to_s + " ORDER BY IsPrimaryProblem DESC"
@@ -999,6 +1320,8 @@ def healthsummary
 
 
 
+
+
   def get_measures(patient,dbh)
           today=Date.today.to_s(:db)
           consult_date= @consult['CONSULTDATE'].to_date
@@ -1026,7 +1349,7 @@ def healthsummary
   def get_bps(patient,dbh,number)
 
 
-          sql = "SELECT Systolic,Diastolic,Weight,MeasurementDate FROM Measurement where PT_Id_FK = " + patient + " ORDER BY MeasurementDate Desc LIMIT "+ number.to_s
+          sql = "SELECT Systolic,Diastolic,Weight,Height,MeasurementDate FROM Measurement where PT_Id_FK = " + patient + " ORDER BY MeasurementDate Desc LIMIT "+ number.to_s
  
           puts sql
          
@@ -1038,6 +1361,7 @@ def healthsummary
           # systolic BP is returned as string - drats
           bps=[]
           weights=[]
+          heights=[]
           sth.fetch_hash do |row|
             row['SYSTOLIC']=row['SYSTOLIC'].to_i
             row['DIASTOLIC']=row['DIASTOLIC'].to_i
@@ -1049,13 +1373,16 @@ def healthsummary
             if row['WEIGHT'] > 0
                 weights << row
             end
+            if row['HEIGHT'] > 0
+                heights << row
+            end
           end
          
 
          
           sth.drop
 
-          return [bps,weights]
+          return [bps,weights,heights]
 
 
   end
@@ -1131,6 +1458,110 @@ def healthsummary
 
   end
 
+    def get_images(patient,dbh)
+
+        sql = "SELECT Description, ImageDate FROM  Graphic where PT_Id_FK = " + patient
+ 
+          puts sql
+         
+
+          sth = dbh.run(sql)
+               
+          images=[]
+          sth.fetch_hash do |row|
+            images<< row
+          end
+
+         
+
+         
+          sth.drop
+          return images
+
+  end 
+
+  def get_last_ecg(patient,dbh)
+
+        sql = "SELECT Description, ImageDate FROM  Graphic where PT_Id_FK = " + patient + " AND Description LIKE '%ecg%'  ORDER BY ImageDate DESC"
+ 
+          puts sql
+         
+
+          sth = dbh.run(sql)
+               
+
+          row= sth.fetch_first
+
+
+         
+
+         
+          sth.drop
+          row ? returnValue= row[1] : returnValue=0
+
+          return returnValue
+
+  end 
+
+      def get_last_mammogram_scans(patient,dbh)
+
+        sql = "SELECT Description, ImageDate FROM  Graphic where PT_Id_FK = " + patient + " AND (Description LIKE '%breast screen%' or Description LIKE '%breastscreen%') ORDER BY ImageDate DESC"
+ 
+          puts sql
+         
+
+          sth = dbh.run(sql)
+               
+
+          row= sth.fetch_first
+
+
+         
+
+         
+          sth.drop
+          row ? returnValue= row[1] : returnValue=0
+
+          return returnValue
+
+  end 
+
+        def get_last_mammogram_fhh_results(patient,dbh,sex)
+
+        sql = "SELECT Test, CollectionDate FROM  DownloadedResult where PT_Id_FK = " + patient + " ORDER BY CollectionDate DESC"
+ 
+          puts sql
+         
+
+          sth = dbh.run(sql)
+               
+          returnMAM=0
+          returnFHH=0
+
+          sth.fetch_hash do |row|
+            if sex=="F"
+              if row['TEST'].downcase.include? "xr breasts" and returnMAM==0
+                  returnMAM = row['COLLECTIONDATE']
+              end
+            end
+            if row['TEST'].downcase.include? "faecal blood" and returnFHH==0
+                returnFHH = row['COLLECTIONDATE']
+            end
+
+          end
+         
+
+         
+          sth.drop
+          return [returnMAM, returnFHH]
+
+  end 
+
+
+  # ihd = k74,k75,k76,k54007,k53003,k53009
+  # diabetes = t89,t90
+
+
   def get_allergies(patient,dbh)
 
         sql = "SELECT Allergy,Detail,ClassCode,GenericCode FROM Allergy where PT_Id_FK = " + patient
@@ -1154,7 +1585,7 @@ def healthsummary
   end  
 
     def get_history(patient,dbh)
-          sql = "SELECT History,Note, Procedure,TermCode,ICPCCode,CreationDate FROM PastHistory where Confidential = false AND PT_Id_FK = " + patient 
+          sql = "SELECT History,Note, Procedure,TermCode,ICPCCode,Confidential,CreationDate FROM PastHistory where Confidential = false AND PT_Id_FK = " + patient 
           puts sql
           sth = dbh.run(sql)
           procedures=[]

@@ -2,10 +2,12 @@
 							<ul>
 					 		<% @current_problems.each do |problem| %>
 					 		
-					 		<li>
-					 		<%= problem['PROBLEM'] %>
-					 		<%= problem['DIAGNOSISDATE'].strftime("%d/%m/%y") if problem['DIAGNOSISDATE'] %>
-							</li>
+						 		<% if problem['CONFIDENTIAL'] == "false" %>
+						 		<li>
+						 		<%= problem['PROBLEM'] %>
+						 		<%= problem['DIAGNOSISDATE'].strftime("%d/%m/%y") if problem['DIAGNOSISDATE'] %>
+								</li>
+								<% end %>
 							<% end %>
 							</ul>
 						<% end %>

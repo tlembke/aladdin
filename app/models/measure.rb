@@ -38,6 +38,7 @@ class Measure < ActiveRecord::Base
 		 
 			 # value is an array of a hash of all measures
 			 # get it back to just this measure
+
 			 measurevalues=[]
 			 genie_key=self.field
 			 if self.name== "Blood Pressure"
@@ -108,9 +109,9 @@ class Measure < ActiveRecord::Base
 				 	end
 				 	chart[:diff]=chart[:diff].round(2)
 				 end
-
+			
 				 if target
-						chart[:gap] = measurevalues[0][genie_key] - target
+						chart[:gap] = measurevalues[0][genie_key].to_f - target
 
 
 					 	chart[:caretgap]=""

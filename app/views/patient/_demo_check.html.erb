@@ -1,0 +1,59 @@
+    	               <div class="row">
+                        <div class="col-md-5">
+                        DOB: 
+                        </div>
+                        <div class="col-md-4">
+                        <%= @patient.dob.strftime("%d/%m/%y") %>
+                        </div>
+                        <div class="col-md-1">
+                        Age: 
+                        </div>
+                        <div class="col-md-2">
+                        <%= @patient.age %>
+                        </div>
+                     </div>
+                     <div class="row">
+                        <div class="col-md-5">
+                        Address: 
+                        </div>
+                        <div class="col-md-7">
+                        <%= @patient.addressline1 + "," if @patient.addressline1 !="" %>
+                        <%= @patient.addressline2 + "," if @patient.addressline2 !="" %>
+                        <%= @patient.suburb %>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-5">
+                        Phone: 
+                        </div>
+                        <div class="col-md-7">
+                        <%= @patient.homephone if @patient.homephone !="" %>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-5">
+                        Mobile: 
+                        </div>
+                        <div class="col-md-7">
+                        <%= @patient.mobilephone if @patient.mobilephone !="" %>
+                        </div>
+                    </div>
+                     <div class="row">
+                        <div class="col-md-5">
+                        Email: 
+                        </div>
+                        <div class="col-md-7">
+                        <%= @patient.email %>
+                        </div>
+                    </div>
+                     <div class="row">
+                        <div class="col-md-5">
+                        Aboriginal or TSI: 
+                        </div>
+                        <div class="col-md-7">
+                        <%= @patient.atsi ==1 ? "Yes" : "No" %>
+                        </div>
+                    </div>
+                    <div class="row">
+                    <hr>
+                    </div>

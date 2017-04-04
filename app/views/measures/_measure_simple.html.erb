@@ -1,0 +1,18 @@
+
+ <div id="measure-html-<%= @measure.id %>">
+
+	 <% @chart = @measure.chart_genie(@bps,130) if @measure.name =="Blood Pressure" %>
+	 <% @chart = @measure.chart_genie(@lipids,4) if @measure.name =="Lipids" %>
+	 <% @chart = @measure.chart_genie(@all_measures) if (@measure.name !="Lipids" and  @measure.name !="Blood Pressure") %>
+
+
+ 
+
+
+
+ <% if @chart %> 
+  	<%= render "measures/chart" %>
+ <% else %>
+  	No values recorderd for <%= @measure.name %>
+ <% end %>
+ </div>

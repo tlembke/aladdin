@@ -1,0 +1,13 @@
+			<!--   Medciations Full Screen  -->
+
+         		<% if @medications.count > 0 %>
+
+         			<%= meds_by_cat(@medications,"C","Long term") %>
+         			<%= meds_by_cat(@medications,"S","Short term") %>
+         			<%= meds_by_cat(@medications,"P","When required") %>
+         			<%= meds_by_cat(@medications,"","Not defined") %>
+         		<% else %>
+         			Nil medications<p>
+         		<% end %>
+    
+         <!--   End Medciations Full Screen  -->

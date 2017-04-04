@@ -1,14 +1,17 @@
        		           <!--   problems  -->
 						
 	
-						Procedures and Operations<p>
+						Procedures and Operations
 						<ul>
 						<% if @procedures.count > 0  %>
 							
 					 		<% @procedures.each do |problem| %>
+
+					 		<% if problem['CONFIDENTIAL'] == "false" %>
 					 			<li>
 								<%= problem['HISTORY'] %> <%= "(" + problem['CREATIONDATE'].strftime("%d/%m/%Y") + ")" if problem['CREATIONDATE']%>
 								</li>
+								<% end %>
 							<% end %>
 						
 					    <% else %>
@@ -17,14 +20,16 @@
 					    </li>
 						<% end %>
 						</ul>
-						Medical Events<p>
+						Medical Events
 						<ul>
 						<% if @events.count > 0  %>
 							
 					 		<% @events.each do |problem| %>
+					 		<% if problem['CONFIDENTIAL'] == "false" %>
 					 		<li>
 								<%= problem['HISTORY'] %> <%= "(" + problem['CREATIONDATE'].strftime("%d/%m/%Y") + ")" if problem['CREATIONDATE']%>
 							</li>
+							<% end %>
 							<% end %>
 							
 					    <% else %>
