@@ -5,3 +5,9 @@
 #
 #   cities = City.create([{ name: 'Chicago' }, { name: 'Copenhagen' }])
 #   Mayor.create(name: 'Emanuel', city: cities.first)
+Pref.delete_all
+Pref.create(name: "clinic", value: "Acme Clinic")
+Pref.create(name: "address", value: "61 Main St")
+Pref.create(name: "suburb", value: "AladdinVille")
+Pref.create(name: "phone", value: "02 66280505")
+
