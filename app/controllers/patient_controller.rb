@@ -464,7 +464,7 @@ class PatientController < ApplicationController
 
                 @mam = {:color => "green", :msg => "Not required" }
                 if @patient.age >49 and @patient.age <71
-                    @mam = {:color => "red", :msg => "Mammogram recommended" } if @last_mam ==0 or @last_mam < 2.years.ago
+                    @mam = {:color => "red", :msg => "Mammogram recommended" } if @last_mam ==0 or (@last_mam != 0 and @last_mam < 2.years.ago)
                     @mam = {:color => "green", :msg => "Mammogram Up To Date" } if @last_mam !=0 and @last_mam >  1.years.ago
                     @mam = {:color => "orange", :msg => "Mammogram Due next 12 months" } if @last_mam !=0 and @last_mam < 1.years.ago and @last_mam > 2.years.ago
 
