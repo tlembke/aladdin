@@ -460,7 +460,7 @@ class PatientController < ApplicationController
 
                 @last_mam = @last_scanned_mammogram if @last_mam != 0 and @last_scanned_mammogram !=0  and @last_scanned_mammogram > @last_mam
                
-                @last_mam = @last_results_mammogram if @last_mam == 0 or  (@last_results_mammogram > @last_mam)
+                @last_mam = @last_results_mammogram if @last_mam == 0 or  (@last_mam !=0 and @last_results_mammogram > @last_mam)
 
                 @mam = {:color => "green", :msg => "Not required" }
                 if @patient.age >49 and @patient.age <71

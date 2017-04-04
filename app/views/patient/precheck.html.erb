@@ -118,7 +118,8 @@ This is the information about you in our records. Please check that this is corr
                </tr>
 
               <tr><td width=50%>Faecal Blood Test</td>
-                <% if @lastFHH  %>
+
+                <% if @lastFHH %>
 
                        <td><%= @lastFHH.strftime("%d/%m/%Y") %></td>
                        <td>
