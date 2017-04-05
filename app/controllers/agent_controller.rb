@@ -12,7 +12,14 @@ class AgentController < ApplicationController
     	  			@p=params[:p]
     		  		#bits=@p.match(/?<name>.*)\((?<day>\d{1,2})\/(?<month>\d{1,2})\/(?<year>\d{4}/)
     		  		#bits=@p.match(/(.*)\((\d+)\/(\d+)\/(\d+)/)
-    		  		bits=@p.match(/(?<name>.*)\s\((?<day>\d+)\/(?<month>\d+)\/(?<year>\d+)/)
+
+              #get the name
+              bits=@p.match(/(?<name>.*)\s\((Type)/)
+              windowMatch="consult"
+              unless bits
+    		  		  bits=@p.match(/(?<name>.*)\s\((?<day>\d+)\/(?<month>\d+)\/(?<year>\d+)/)
+                windowMatch="patient"
+              end
               if bits
               		  		titles=%w(Mr Mrs Ms Miss Dr Prof Master)
               		  		@names=bits['name'].split
@@ -25,25 +32,37 @@ class AgentController < ApplicationController
               		  		# now find patient 
               		  		# first name starts with @name[0]
               		  		# surname end with @name.last
+
+                        #May not have a DOB
               		  		# dob is bits['day']/bits['month']/bits['year']
               		  		surname= "%" + @names.last
               		  		firstname = @names[0] + "%"
               		  		where_clause = "Surname LIKE '" + surname + "' and FirstName LIKE '" + firstname + "'"
-              		  		year = 2000 + bits['year'].to_i
-              		  		if year > Time.now.year
-              		  			year = year -100
-              		  		end
-              		  		dob = Date.new(year,bits['month'].to_i,bits['day'].to_i)
-              		  		where_clause += " and DOB = '"+dob.to_s(:db)+"'"
+                        if windowMatch=="patient"
+                  		  		year = 2000 + bits['year'].to_i
+                  		  		if year > Time.now.year
+                  		  			year = year -100
+                  		  		end
+                  		  		dob = Date.new(year,bits['month'].to_i,bits['day'].to_i)
+                  		  		where_clause += " and DOB = '"+dob.to_s(:db)+"'"
+                        end
               		  		sql = "SELECT id FROM Patient WHERE " + where_clause
                         puts sql
                         sth = dbh.run(sql)
                         @id=0
+                        i=0
                         sth.fetch do |row|
                           		  @id = row[0]
+                                i=i+1
                         end
+                        @id=0 if i>1  # more than one patient found so be safe and return noone
+
 
                         sth.drop
+
+
+
+             
                           
 
                         d=params[:d]

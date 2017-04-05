@@ -90,7 +90,9 @@ class PatientController < ApplicationController
           puts sql
           sth = dbh.run(sql)
            sth.fetch_hash do |row|
-            row['CONSULTDATE']=Date.strptime(row['CONSULTDATE'],"%d/%m/%y")
+            row['CONSULTDATE']= row['CONSULTDATE'].to_date
+            #row['CONSULTDATE']=Date.strptime(row['CONSULTDATE'].to_s,"%d/%m/%y")
+
             @consult = row
           end
           sth.drop
@@ -101,7 +103,7 @@ class PatientController < ApplicationController
           puts sql
           sth = dbh.run(sql)
            sth.fetch_hash do |row|
-            row['CONSULTDATE']=Date.strptime(row['CONSULTDATE'],"%d/%m/%y")
+            row['CONSULTDATE']=row['CONSULTDATE'].to_date
             @recent_consults << row
           end
           sth.drop
@@ -522,7 +524,7 @@ class PatientController < ApplicationController
           redirect_to  action: "login"
     end
 
-  
+    @print = true
 
     respond_to do |format|
         format.html{
