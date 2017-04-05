@@ -21,7 +21,7 @@ class AgentController < ApplicationController
                 windowMatch="patient"
               end
               if bits
-              		  		titles=%w(Mr Mrs Ms Miss Dr Prof Master)
+              		  		titles=%w(READ\ ONLY\ -\  Mr Mrs Ms Miss Dr Prof Master)
               		  		@names=bits['name'].split
               		  		titles.each do |title|
               		  			if @names[0]==title
