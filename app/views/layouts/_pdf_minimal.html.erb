@@ -48,18 +48,18 @@
 
 
 
-    <%= wicked_pdf_javascript_include_tag "jquery" %>
-    <%= wicked_pdf_javascript_include_tag "jquery_ujs" %>
-    <%= wicked_pdf_javascript_include_tag  "modernizr" %>
-    <%= wicked_pdf_javascript_include_tag  "raphael" %>
-    <%= wicked_pdf_javascript_include_tag  "morris" %>
-    <%= wicked_pdf_javascript_include_tag "application" %>
-    <%= wicked_pdf_javascript_include_tag "dresssed" %>
-    <%= wicked_pdf_javascript_include_tag "bootstrap-editable" %>
-    <%= wicked_pdf_javascript_include_tag "bootstrap-editable-rails" %>
+    <%= javascript_include_tag "jquery" %>
+    <%= javascript_include_tag "jquery_ujs" %>
+    <%= javascript_include_tag  "modernizr" %>
+    <%= javascript_include_tag  "raphael" %>
+    <%= javascript_include_tag  "morris" %>
+    <%= javascript_include_tag "application" %>
+    <%= javascript_include_tag "dresssed" %>
+    <%= javascript_include_tag "bootstrap-editable" %>
+    <%= javascript_include_tag "bootstrap-editable-rails" %>
    
 
-    <%= yield :javascript %>
+     <%= yield :javascript %>
 
 
   </body>

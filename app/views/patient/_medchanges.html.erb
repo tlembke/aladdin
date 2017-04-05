@@ -1,13 +1,14 @@
 							<!--   Med Changes -->
-				        <% if meds.count > 0 %>
-
+				        <% if meds.count > 0 or @changes.count> 0 %>
+				        <hr>
 
 				        <legend><i class="fa fa-exchange"></i>  Medication Changes</legend>
+
 				        <ul>
 				        <% meds.each do |task| %>
 				        	<li><%= task %></li>
 				        <% end %>
-				        <% @prescription_history.each do |change| %>
+				         <% @changes.each do |change| %>
 
 				        	<li><%= change['Change'] %> - <%= change['DrugName'] %> <%= change['Dose'] %> <%= change['Reason'] %></li>
 				        <% end %>

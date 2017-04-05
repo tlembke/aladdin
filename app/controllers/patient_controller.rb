@@ -90,7 +90,7 @@ class PatientController < ApplicationController
           puts sql
           sth = dbh.run(sql)
            sth.fetch_hash do |row|
-            row['CONSULTDATE']=row['CONSULTDATE'].to_date
+            row['CONSULTDATE']=Date.strptime(row['CONSULTDATE'],"%d/%m/%y")
             @consult = row
           end
           sth.drop
@@ -101,6 +101,7 @@ class PatientController < ApplicationController
           puts sql
           sth = dbh.run(sql)
            sth.fetch_hash do |row|
+            row['CONSULTDATE']=Date.strptime(row['CONSULTDATE'],"%d/%m/%y")
             @recent_consults << row
           end
           sth.drop
@@ -126,6 +127,8 @@ class PatientController < ApplicationController
                 @consult['DIAGNOSIS']="Consultation"
             end
           end
+          @changes= Patient.prescription_history(@id,dbh,@consult['CONSULTDATE'].strftime("%Y-%m-%d"))
+
           tasks_array=extract_tasks(@consult['PLAN'])
           @tasks=tasks_array[0]
           @meds=tasks_array[1]
@@ -339,7 +342,7 @@ class PatientController < ApplicationController
           end
           sth.drop
 
-          @prescription_history= Patient.prescription_history(@patient.id,dbh,Date.today.strftime("%Y-%m-%d"))
+          @changes= Patient.prescription_history(@patient.id,dbh,Date.today.strftime("%Y-%m-%d"))
 
           tasks_array=extract_tasks(@consult['PLAN'])
           @tasks=tasks_array[0]
@@ -526,6 +529,22 @@ class PatientController < ApplicationController
             if params[:precheck]
                   render :precheck
                   return
+            end
+        }
+        format.pdf{
+            if params[:precheck]
+                  render pdf: 'precheck',
+                  layout: '_pdf_minimal.html.erb',
+                  template: "patient/precheck.html.erb",
+                  viewport_size: '1280x1024',
+                  show_as_html: params.key?('debug')
+            else
+                  render pdf: 'annual',
+                  layout: '_pdf_minimal.html.erb',
+                  template: "patient/annual.html.erb",
+                  viewport_size: '1280x1024',
+                  show_as_html: params.key?('debug')
+
             end
         }
 
@@ -810,7 +829,7 @@ class PatientController < ApplicationController
         }
         format.pdf {
                   render pdf: 'care_plan',
-                  layout: 'layouts/pdf.html.erb',
+                  layout: 'layouts/_pdf_minimal.html.erb',
                   template: "patient/careplanprint.html.erb",
                   show_as_html: params.key?('debug')
         }
