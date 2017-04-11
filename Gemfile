@@ -31,9 +31,9 @@ gem 'bootstrap-editable-rails'
 
 gem 'rubyzip'
 
-#gem 'wicked_pdf'
+gem 'wicked_pdf'
 
-#gem 'wkhtmltopdf-binary'
+gem 'wkhtmltopdf-binary-edge', '~> 0.12.2.1'
 
 
 
@@ -59,7 +59,7 @@ group :development do
   gem 'spring'
 end
 
-source "https://dresssed.com/gems/" do
+source "https://dresssed.com/gems//" do
   gem "dresssed-ives", "~> 1.0.48"
 end
 
