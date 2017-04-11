@@ -1,0 +1,20 @@
+            <div class= "no-page-break-inside">
+            <legend class="panel-title"><i class="fa fa-flag"></i>Lifestyle</legend>
+         
+             <div class="panel-body">
+             <table class='table table-striped table-bordered table-condensed'>
+             <tr><td width=50%>Exercise</td><td></td></tr>
+             <tr><td width=50%>Alcohol</td><td>
+             <%= @patient.etoh ? "Yes" : "No" %> -  <%= @patient.etohinfo %>
+             </p></td></tr>
+             <tr><td width=50%>Diet</td><td></td></tr>
+            
+             <tr><td width=50%>Smoking</td><td>
+                 <%= status_symbol("green","Not Smoking") if @patient.smoking.to_i > 3 %>
+                 <%= status_symbol("red","Smoking") if @patient.smoking.to_i  < 4 and @patient.smoking.to_i >0%>
+                 <%= status_symbol("orange","Not recorded") if @patient.smoking.to_i == 0%>
+             </td></tr>
+             </table>
+            </div>
+
+             </div> <!-- end no page break -->

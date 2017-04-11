@@ -1,0 +1,24 @@
+<% content_for :head do %>
+<script type="text/javascript"> 
+    window.onload = function() { window.print(); } 
+    window.onfocus=function(){ window.close();}
+</script>
+
+<% end %>
+<div class="row noprint">
+
+
+<div class="col-md-6 col-md-offset-6">
+
+<% unless @id %>
+<b> There are <%= pluralize(@patients.count , "people") %> having a General Check today </b>
+<% end %>
+<a href="#" class="btn btn-primary noprint" onclick="window.print();return false;"><i class="fa fa-print"></i></a>
+</div></div>
+
+<% @patients.each do |patient| %>
+        <% @patient = patient %>
+        <%= render "precheck" %>
+        <div class="row  page-break-before"></div>
+
+<% end %>

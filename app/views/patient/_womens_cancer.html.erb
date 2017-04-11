@@ -1,0 +1,26 @@
+            <% if @patient.sex == "F" %>
+            <div  class= "no-page-break-inside">
+            
+          <legend class="panel-title"><i class="fa fa-medkit"></i> Womens Cancer Screening</legend>
+       
+            <div class="panel-body">
+            <table class='table table-striped table-bordered table-condensed'>
+            <% @last_mam = @patient.last_mam %>
+            <% @mam = @patient.mam_msg %>
+            <tr><td width=50%>Last Mammogram</td><td><%= @last_mam.strftime("%d/%m/%Y") if @last_mam != 0 %> <%= status_symbol(@mam[:color],@mam[:msg])%>
+
+            <% if @mode="precheck" and ((@mammogram == 0 and @last_mam != 0) or  (@mammogram !=0 and @last_mam > @mammogram)) %>
+                <p>
+                NB. Found a mammogram in chart perfomed on <%= @last_mam.strftime("%d/%m/%Y") %> that is not recorded in 'Last Mammogram' field in Genie 
+
+            <% end %>
+            </td>
+            </tr>
+
+             <tr><td width=50%>Cervical Screening</td><td><%= @patient.pap.strftime("%d/%m/%Y") if @patient.pap %> <%= status_symbol(@pap[:color],@pap[:msg]) %></td></tr>
+            </table>
+            </div>
+
+            
+            </div> <!-- end no page break -->
+            <% end %>

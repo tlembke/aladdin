@@ -320,9 +320,302 @@ class PatientController < ApplicationController
 
   end
 
+  def getall_patient(id,dbh,mode)
+          
+          @patient=get_patient(id,dbh)
+          @patient.medications = get_medications(id,dbh)
+          @patient.allergies=get_allergies(id,dbh)
+
+
+          @patient.current_problems = get_current_problems(id,dbh)
+          history_array = get_history(id,dbh)
+          @patient.colonoscopy = last_colonoscopy(history_array)
+          @patient.procedures=history_array[0]
+          @patient.events=history_array[1]
+
+          @diabetes=has_condition?("diabetes",@patient.current_problems)
+          @ihd=has_condition?("ihd",@patient.current_problems)
+          unless @ihd
+              @ihd=has_condition?("ihd",@patient.procedures)
+          end
+          unless @ihd
+              @ihd=has_condition?("ihd",@patient.events)
+          end
+          @ckd = has_condition?("ckd",@patient.current_problems)
+
+          bpsweights=get_bps(id,dbh,50)
+          bps=bpsweights[0]
+          @patient.bps=bps
+          weights=bpsweights[1]
+          heights=bpsweights[2]
+          bp=0
+          if bps.count > 0
+            bp=bps[0]["SYSTOLIC"]
+            bpd=bps[0]["DIASTOLIC"]
+            bp_date=bps[0]["MEASUREMENTDATE"]
+          end
+          weight=0
+          if weights.count>0
+            weight=weights[0]["WEIGHT"]
+            weight_date=weights[0]["MEASUREMENTDATE"]
+          end
+          height=0
+          if heights.count > 0 
+            height=heights[0]["HEIGHT"]
+            height_date=heights[0]["MEASUREMENTDATE"]
+          end
+
+
+          @patient.bmi=get_bmi(height,weight)
+          @patient.height=[height,height_date]
+          @patient.weight=[weight,weight_date]
+          @patient.bp=[bp,bpd,bp_date]
+
+          @patient.careteam=get_careteam(id,dbh)
+
+
+          @patient.ecg =  get_last_ecg(id,dbh)
+
+       
+
+
+           if @patient.sex == "F"
+            @mammogram = @patient.mammogram
+            @last_scanned_mammogram = get_last_mammogram_scans(id,dbh)
+          end
+          results_check=get_last_mammogram_fhh_results(id,dbh,@patient.sex)
+          @last_results_mammogram=results_check[0]
+          @patient.lastFHH=results_check[1]
+
+          if @patient.sex =="F"
+
+                #first which is most recent s can or results or both 0
+                @mammogram= 0 if @mammogram == nil
+                @last_mam = @mammogram
+
+
+                @last_mam = @last_scanned_mammogram if @last_mam != 0 and @last_scanned_mammogram !=0  and @last_scanned_mammogram > @last_mam
+               
+                @last_mam = @last_results_mammogram if @last_mam == 0 or  (@last_mam !=0 and @last_results_mammogram !=0 and @last_results_mammogram > @last_mam)
+
+                @mam = {:color => "green", :msg => "Not required" }
+                if @patient.age >49 and @patient.age <71
+                    @mam = {:color => "red", :msg => "Mammogram recommended" } if @last_mam ==0 or (@last_mam != 0 and @last_mam < 2.years.ago)
+                    @mam = {:color => "green", :msg => "Mammogram Up To Date" } if @last_mam !=0 and @last_mam >  1.years.ago
+                    @mam = {:color => "orange", :msg => "Mammogram Due next 12 months" } if @last_mam !=0 and @last_mam < 1.years.ago and @last_mam > 2.years.ago
+
+
+                end
+                
+                @patient.last_mam = @last_mam
+                @patient.mam_msg=@mam
+
+                 if @patient.age < 20 or @patient.age > 70 or @patient.pap_recall 
+                        @pap = {:color => "green", :msg => "No PAP recall" }
+                 else
+
+                      @pap = {:color => "green", :msg => "PAP up to date" } if @patient.pap and @patient.pap >  2.years.ago
+                      @pap = {:color => "red", :msg => "PAP due" } if @patient.pap ==nil or @patient.pap <  2.years.ago
+                end
+                @patient.pap_msg  = @pap
+         end
+
+
+
+          @lipids=get_lipids(id,dbh,20)
+          @chol=0
+          @hdl=0
+          if @lipids.count > 0 
+            @chol=@lipids[0]["CHOLESTEROL"]
+            @chol_date=@lipids[0]["MEASUREMENTDATE"]
+            flag=0
+            @lipids.each do |lipid|
+              if flag==0
+                    if lipid["HDL"]
+                      @hdl=lipid["HDL"]
+                      @hdl_date=lipid["MEASUREMENTDATE"]
+                      flag=1
+                    end
+               end
+            end
+          end
+          @patient.chol = [@chol,@chol_date]
+          @patient.hdl = [@hdl,@hdl_date]
+          @patient.lipids = @lipids
+
+           
+
+          @patient.smoking.to_i > 3 ? smokingflag=0 : smokingflag = 1
+
+
+          if @diabetes and @patient.age > 60
+                @score = { :value => 100, :color => "orange", :cat => "aged over 60 and presence of diabetes" }
+            elsif @ckd
+                 @score = { :value => 100, :color => "orange", :cat => "presence of Chronic Kidney Disease" }
+            elsif @ihd
+                 @score = { :value => 200, :color => "orange", :cat => "Ischaemic Heart Disease already documented" }
+            elsif @patient.atsi==1 and @patient.age > 75
+                 @score = { :value => 100, :color => "orange", :cat => "aged over 75 and ATSI" }
+            elsif @chol.to_f > 7.5
+                 @score = { :value => 100, :color => "orange", :cat => "Cholesterol over 7.5"}
+            elsif bp > 180
+                 @score = { :value => 100, :color => "orange", :cat => "Blood pressure > 180" }
+            else  
+                 if @chol.to_f > 0  and @hdl.to_f  > 0 and bp.to_i > 0 
+                        @score=get_cardiac_risk(@patient.age,@patient.sex,@chol, @hdl,bp, smokingflag)
+                 else
+                      msg="Unable to calculate Absolute cardiac risk as missing"
+                      msg= msg+ " Cholesterol" unless @chol.to_i > 0 
+                      msg= msg+ " HDL" unless @hdl.to_i > 0 
+                      msg= msg+ " BP" unless bp.to_i > 0
+                      @score = { :value => 200, :color => "orange", :cat => msg }
+                 end 
+
+
+            end
+            @patient.score=@score
+
+
+          # Tetanus true if never given or if last booster more than 15 years ago unless given over age 65
+          @immunisations=get_immunisations(id,dbh)
+          @tetanus = get_tetanus(@immunisations)
+          @tetanus_msg = false
+          if @tetanus
+            last_given_age = @patient.age.to_i - @tetanus.year
+          else
+            last_given_age = 0
+            @tetanus_msg = true unless @patient.age < 30
+          end
+          if @tetanus and @tetanus < 15.years.ago and last_given_age <65 and @patient.age > 30
+                   @tetanus_msg = true
+          end
+          @patient.tetanus = @tetanus
+          @patient.tetanus_msg = @tetanus_msg
+
+
+          
+
+         
+
+
+
+      return @patient
+  end
+
+  def prechecks
+    # get all the patients who have an annual check appt today
+    connect_array=connect()
+    @error_code=connect_array[1]
+    if (@error_code==0)
+          dbh=connect_array[0]
+          sql = "SELECT Pt_ID_FK as ID FROM Appt WHERE Reason = '" + Pref.checkup + "' AND StartDate = '" + Date.today.to_s(:db) +  "' ORDER BY StartTime"
+          puts sql
+          patient_array=[]
+          @mode="precheck"
+          sth = dbh.run(sql)
+           sth.fetch_hash do |row|
+            patient_array<<row['ID'].to_s
+          end
+          @patients=[]
+          patient_array.each do |patient|
+            @patients<<getall_patient(patient,dbh,"precheck")
+          end
+          sth.drop
+
+    else    # lost connection to database
+          flash[:notice]=connect_array[2]
+          redirect_to  action: "login"
+    end
+
+
+
+  end
+
+
+  def precheck
+    @id=params[:id]
+    connect_array=connect()
+    @error_code=connect_array[1]
+    if (@error_code==0)
+          dbh=connect_array[0]
+          @patients=[]
+          @mode="precheck"
+          @patients<<getall_patient(@id,dbh,"precheck")
+    else    # lost connection to database
+          flash[:notice]=connect_array[2]
+          redirect_to  action: "login"
+    end
+
+    render "prechecks"
+
+
+
+
+  end
 
   def annual
+    @id=params[:id]
+    connect_array=connect()
+    @error_code=connect_array[1]
+    if (@error_code==0)
+          dbh=connect_array[0]
+          @mode="annual"
+          @patient = getall_patient(@id,dbh,"annual")
 
+
+
+            sql = "SELECT ConsultDate, DoctorName,Plan,Diagnosis,History, Examination, Id FROM Consult WHERE PT_Id_FK = " + @id + " ORDER BY ConsultDate DESC LIMIT 1"
+          
+            puts sql
+            sthz = dbh.run(sql)
+             sthz.fetch_hash do |row|
+              row['CONSULTDATE']=row['CONSULTDATE'].to_date
+              @consult = row
+            end
+            sthz.drop
+
+            @changes= Patient.prescription_history(@patient.id,dbh,Date.today.strftime("%Y-%m-%d"))
+
+            tasks_array=extract_tasks(@consult['PLAN'])
+
+            @tasks=tasks_array[0]
+            @meds=tasks_array[1]
+            @notes=tasks_array[2]
+            plan = tasks_array[3]
+            tests_array= get_tests(plan)
+            @tests= tests_array[0]
+            @plan= tests_array[1]
+
+            @appointments = get_appointments(@id,dbh)
+
+
+            @phonetime = get_phonetime(session[:id])
+            @bps=@patient.bps
+            @lipids=@patient.lipids
+            @all_measures=get_all_measurements(@id,dbh,50)
+
+            measure_list=["Blood Pressure","Weight","Lipids"]
+             @measures=[]
+            measure_list.each do |next_measure|
+                @this_measure = Measure.find_by Name: next_measure
+                @measures << @this_measure
+            end
+          
+            # @patient.measures = get_measures(id,dbh)
+
+    else    # lost connection to database
+          flash[:notice]=connect_array[2]
+          redirect_to  action: "login"
+    end
+
+    render "annual"
+
+  end
+
+
+
+  def annualOld
+    @precheck = false
     @id=params[:id]
     connect_array=connect()
     @error_code=connect_array[1]
@@ -1468,7 +1761,9 @@ end
           sth.fetch_hash do |row|
 
             # Should we update local model here instead
-            current_problems<< row
+            if row['CONFIDENTIAL'] == "false"
+                 current_problems<< row
+            end
           end
 
          
@@ -1565,7 +1860,7 @@ end
                   returnMAM = row['COLLECTIONDATE']
               end
             end
-            if row['TEST'].downcase.include? "faecal blood" and returnFHH==0
+            if (row['TEST'].downcase.include? "faecal blood" or row['TEST'].downcase.include? "misc. microbiology") and returnFHH==0
                 returnFHH = row['COLLECTIONDATE']
             end
 
@@ -1612,11 +1907,12 @@ end
           procedures=[]
           events=[]
           sth.fetch_hash do |row|
-
-            if row["PROCEDURE"]=="true"
-              procedures<< row
-            else
-              events << row
+            if row["CONFIDENTIAL"] == false
+              if row["PROCEDURE"]=="true"
+                procedures<< row
+              else
+                events << row
+              end
             end
           end
           sth.drop

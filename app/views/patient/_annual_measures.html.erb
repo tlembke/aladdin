@@ -1,0 +1,32 @@
+         <legend class="panel-title"><i class="fa fa-medkit"></i>  Measures</legend>
+       
+            <div class="panel-body">
+            <table class='table table-striped table-bordered table-condensed'>
+            <% @height = @patient.height[0] %>
+			<% @height_date = @patient.height[1] %>
+			<% @weight = @patient.weight[0] %>
+			<% @weight_date = @patient.weight[1] %>
+
+            <tr><td width=50%>Height</td><td><%= @height if @height>0 %></td><td><%= status_symbol("orange","Not recorded") unless @height >0%>
+            <%= status_symbol("orange",@height_date.strftime("%d/%m/%Y")) if @height>0 and @height_date < 2.months.ago %>
+            <%= status_symbol("green",@height_date.strftime("%d/%m/%Y")) if @height>0 and @height_date > 2.months.ago %>
+            </td></tr>
+            <tr><td width=50%>Weight</td><td><%= @weight if @weight > 0 %></td><td><%= status_symbol("orange","Not recorded") unless @weight >0  %>
+            <%= status_symbol("orange",@weight_date.strftime("%d/%m/%Y")) if @weight>0 and @weight_date < 2.months.ago %>
+            <%= status_symbol("green",@weight_date.strftime("%d/%m/%Y")) if @weight>0 and @weight_date > 2.months.ago %>
+            </td></tr>
+            <% if @patient.bmi[:value] >  0 %>
+
+            <tr><td width=50%>Body Mass Index (BMI)</td><td><%= @patient.bmi[:value].to_s %></td>
+            <td><%= status_symbol(@patient.bmi[:color],"Ideal Weight " + @patient.bmi[:range]) %></td>
+            </tr>
+
+            <% end %>
+
+
+
+ 
+
+
+            </table>
+            </div> <!--end panel-body -->

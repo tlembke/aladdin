@@ -1,5 +1,6 @@
 	       		           <!--   Appointments  -->
 						<legend><i class="fa fa-calendar"></i>  Upcoming Appointments </legend>
+						<% @appointments = appointments unless @appointments %>
 						<% if @appointments.count > 0  %>
 					 		<% @appointments.each do |row| %>
 								<%= row['PROVIDERNAME'] %> on <%= row['STARTDATE'].to_time.strftime("%b %d, %Y") %> at <%= row['STARTTIME'].strftime("%l:%M %p") %>

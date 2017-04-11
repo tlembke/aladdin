@@ -13,9 +13,9 @@
 
 
 
-
-</div>
 <hr>
+</div>
+
 
  <div class="row"> <!-- Full screen row -->
 <div class="col-md-6">
@@ -23,6 +23,7 @@
  
           <legend class="panel-title"><i class="fa fa-heartbeat"></i>  Current Conditions</legend>
       <div class="panel-body">
+                <% @current_problems = @patient.current_problems %>
                 <%= render "problems_list" %>
        </div>
 
@@ -35,6 +36,8 @@
           <legend class="panel-title"><i class="fa fa-hospital-o"></i>  Medical History</legend>
      
              <div class="panel-body">
+                <% @procedures = @patient.procedures %>
+                 <% @events = @patient.events %>
                  <%= render "history_list" %>
             </div>
 
@@ -48,6 +51,7 @@
           <legend class="panel-title"><i class="fa fa-medkit"></i>  Medications</legend>
        
             <div class="panel-body">
+                <% @medications = @patient.medications %>
                 <% if @medications.count > 0 %>
                 (Please check this medication list is up to date and let us know of any changes that should be made to our record)<br><br>
                 <% end %>
@@ -60,6 +64,7 @@
             <legend class="panel-title"><i class="fa fa-flag"></i> Allergies</legend>
          
              <div class="panel-body">
+             <% @allergies = @patient.allergies %>
                     <%= render "allergies" %>
             </div>
 
@@ -70,35 +75,10 @@
 <div class="row no-page-break-inside"> <!-- Full screen row -->
 <div class="col-md-12">
 
-             <legend class="panel-title"><i class="fa fa-medkit"></i>  Measures</legend>
-       
-            <div class="panel-body">
-            <table class='table table-striped table-bordered table-condensed'>
+<%= render "annual_measures" %>
 
 
-            <tr><td width=50%>Height</td><td><%= @height if @height>0 %></td><td><%= status_symbol("orange","Not recorded") unless @height >0%>
-            <%= status_symbol("orange",@height_date.strftime("%d/%m/%Y")) if @height>0 and @height_date < 2.months.ago %>
-            <%= status_symbol("green",@height_date.strftime("%d/%m/%Y")) if @height>0 and @height_date > 2.months.ago %>
-            </td></tr>
-            <tr><td width=50%>Weight</td><td><%= @weight if @weight > 0 %></td><td><%= status_symbol("orange","Not recorded") unless @weight >0  %>
-            <%= status_symbol("orange",@weight_date.strftime("%d/%m/%Y")) if @weight>0 and @weight_date < 2.months.ago %>
-            <%= status_symbol("green",@weight_date.strftime("%d/%m/%Y")) if @weight>0 and @weight_date > 2.months.ago %>
-            </td></tr>
-            <% if @bmi[:value] >  0 %>
-
-            <tr><td width=50%>Body Mass Index (BMI)</td><td><%= @bmi[:value].to_s %></td>
-            <td><%= status_symbol(@bmi[:color],"Ideal Weight " + @bmi[:range]) %></td>
-            </tr>
-
-            <% end %>
-
-
-
- 
-
-
-            </table>
-            </div>
+            <%= render "bowel" %>
 
 
 
@@ -107,110 +87,15 @@
 
 
 
-             <div  class= "no-page-break-inside">
-            <legend class="panel-title"><i class="fa fa-medkit"></i>  Bowel Cancer Screening</legend>
 
-       
-            <div class="panel-body">
-             <table class='table table-striped table-bordered table-condensed'>
-        
-            <tr><td width=50%>
-                <% if @colonoscopy[0] %>
-                        <%= @colonoscopy[0] %>
-                </td><td><%= @colonoscopy[1].strftime("%d/%m/%Y") %> </td><td>
-                      <%= status_symbol if @colonoscopy[1] > 3.years.ago %>
-                    <%= status_symbol("orange","Possibly Due") if @colonoscopy[1] < 3.years.ago %>
+                        <%= render "womens_cancer" %>
 
 
-                </td>
-                <% else %>
-                Colonscopy</td><td>None recorded</td><td></td>
-                <% end %>
-               </tr>
+                        <%= render "cardiac_risk" %>
 
-              <tr><td width=50%>Faecal Blood Test</td>
-                <% if @lastFHH  %>
+            <%= render "lifestyle_check" %>
+           
 
-                       <td><%= @lastFHH.strftime("%d/%m/%Y") %></td>
-                       <td>
-                      <%= status_symbol if @colonoscopy[0] and @colonoscopy[1] > 3.years.ago %>
-                      <%= status_symbol if @colonoscopy[0] == false and @lastFHH >  2.years.ago %>
-                    <%= status_symbol("red","Due") if @colonoscopy[0] == false  and @lastFHH < 2.years.ago %>
-                    <%= status_symbol("orange","Possibly Due") if @colonoscopy[0]and @colonoscopy[1] < 5.years.ago and @lastFHH < 2.years.ago%>
-                    </td>
-                <% else %>
-                   
-                    <% if @patient.age < 50 %>
-                        <td>Usual start age 50</td>
-                        <td></td>
-                    <% else %>
-                        <td>Not recorded </td>
-                        <td>
-                        <%= status_symbol if @colonoscopy[0] and @colonoscopy[1] > 3.years.ago %>
-                        <%= status_symbol("red","Due") unless @colonoscopy[0] %>
-                        <%= status_symbol("orange","Possibly Due") if @colonoscopy[0]and @colonoscopy[1] < 5.years.ago %>
-                        </td>
-                    <% end %>
-                    
-                <% end %>
-               </tr>
-                
-            </table>
-            </div>
-            </div>
-
-
-
-            <div  class= "no-page-break-inside">
-            <% if @patient.sex == "F" %>
-          <legend class="panel-title"><i class="fa fa-medkit"></i> Womens Cancer Screening</legend>
-       
-            <div class="panel-body">
-            <table class='table table-striped table-bordered table-condensed'>
-            <tr><td width=50%>Last Mammogram</td><td><%= @last_mam.strftime("%d/%m/%Y") if @last_mam != 0 %> <%= status_symbol(@mam[:color],@mam[:msg])%>
-
-            <% if ((@mammogram == 0 and @last_mam != 0) or  (@mammogram !=0 and @last_mam > @mammogram)) %>
-                <p>
-                NB. Found a mammogram in chart perfomed on <%= @last_mam.strftime("%d/%m/%Y") %> that is not recorded in 'Last Mammogram' field in Genie 
-
-            <% end %>
-            </td>
-            </tr>
-
-             <tr><td width=50%>Cervical Screening</td><td><%= @patient.pap.strftime("%d/%m/%Y") if @patient.pap %> <%= status_symbol(@pap[:color],@pap[:msg]) %></td></tr>
-            </table>
-            </div>
-
-            <% end %>
-            </div>
-
-              <div  class= "no-page-break-inside">
-            <legend class="panel-title"><i class="fa fa-flag"></i>Cardiovascular Risk</legend>
-         
-             <div class="panel-body">
-
-                    <%= render "cardiac_risk" %>
-            </div>
-
-
-            <legend class="panel-title"><i class="fa fa-flag"></i>Lifestyle</legend>
-         
-             <div class="panel-body">
-             <table class='table table-striped table-bordered table-condensed'>
-             <tr><td width=50%>Exercise</td><td></td></tr>
-             <tr><td width=50%>Alcohol</td><td>
-             <%= @alcohol ? "Yes" : "No" %> -  <%= @alcoholinfo %>
-             </p></td></tr>
-             <tr><td width=50%>Diet</td><td></td></tr>
-             <tr><td width=50%>Smoking</td><td>
-                 <%= status_symbol("green","Not Smoking") if @smoking.to_i > 3 %>
-                 <%= status_symbol("red","Smoking") if @smoking.to_i  < 4 and @smoking.to_i >0%>
-                 <%= status_symbol("orange","Not recorded") if @smoking.to_i == 0%>
-             </td></tr>
-             </table>
-            </div>
-
-             </div>
 
 
 </div> <!-- col -->
@@ -218,6 +103,8 @@
 
 <div class="row no-page-break-inside"> <!-- Full screen row -->
 <div class="col-md-12">
+
+
 
             <legend class="panel-title"><i class="fa fa-medkit"></i>  Immunisations</legend>
        
@@ -262,10 +149,11 @@
 <div class="col-md-12">
 
            <%= render partial: "tasks", locals: {tasks: @tasks} %>
-            <%= render partial: "medchanges", locals: {meds: @meds} %> 
+           
+            <%= render partial: "medchanges", locals: {meds: @meds, changes: @changes} %> 
             <%= render partial: "notes",locals: {notes: @notes} %> 
-            <%= render "tests" %>
-             <%=render "appointments" %>
+            <%= render partial: "tests",locals: {tests: @tests} %>
+             <%=render partial: "appointments",locals: {appointments: @appointments} %>
 
 </div> <!-- col -->
 </div> <!--  row -->

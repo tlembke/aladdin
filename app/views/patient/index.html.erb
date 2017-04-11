@@ -32,7 +32,7 @@
     <%= link_to "Sum", healthsummary_patient_path(:id=> patient['ID']),{:class => "btn btn-primary btn-xs"} %>
  		<%= link_to "CP", careplan_patient_path(:id=> patient['ID']),{:class => "btn btn-primary btn-xs"} %>
     <%= link_to "An", annual_patient_path(:id=> patient['ID']),{:class => "btn btn-primary btn-xs"} %>
-    <%= link_to "Pre", annual_patient_path(:id=> patient['ID'],:precheck => "true"),{:class => "btn btn-primary btn-xs"} %>
+    <%= link_to "Pre", precheck_patient_path(:id=> patient['ID']),{:class => "btn btn-primary btn-xs"} %>
  		<br>
 
  	<% end %>

@@ -10,7 +10,7 @@
                     <%= link_to 'Careplan', careplan_patient_path(@patient.id), {:class => "btn btn-lg btn-primary"} %>
                     <%= link_to 'Summary', healthsummary_patient_path(@patient.id), {:class => "btn btn-lg btn-primary"} %>
                      <%= link_to 'Annual', annual_patient_path(@patient.id), {:class => "btn btn-lg btn-primary"} %>
-                     <%= link_to 'Pre', annual_patient_path(@patient.id,:precheck => true), {:class => "btn btn-lg btn-primary"} %>
+                     <%= link_to 'Pre', precheck_patient_path(@patient.id), {:class => "btn btn-lg btn-primary"} %>
     	 			</div>
                     <hr>
                     </div>

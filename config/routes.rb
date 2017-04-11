@@ -40,10 +40,13 @@ Rails.application.routes.draw do
         get 'index'
         post 'index'
         get 'orion'
+        get 'prechecks'
+
     end
     member do
         get 'careplan'
         get 'annual'
+        get 'precheck'
         get 'epc'
         get 'healthsummary'
         get 'import_goals'

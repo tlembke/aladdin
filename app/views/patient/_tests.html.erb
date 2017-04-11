@@ -1,4 +1,5 @@
         <!-- Tests -->
+        <% @tests = tests unless @tests %>
         <% if @tests.count> 1 %>
         <legend><i class="fa fa-flask"></i>  Tests Ordered</legend>
         	<% @tests.each do |row| %>

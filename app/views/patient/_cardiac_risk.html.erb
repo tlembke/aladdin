@@ -1,30 +1,53 @@
 
+            <div  class= "no-page-break-inside">
+            <legend class="panel-title"><i class="fa fa-flag"></i>Cardiovascular Risk</legend>
+         
+             <div class="panel-body">
+
+
+
+
 
 <table class='table table-striped table-bordered table-condensed'>
-                       <tr><td width=50%>Blood Pressure</td><td><%= @bp.to_s +  "/" + @bpd.to_s if @bp > 0 %><%= status_symbol("orange","Not recorded") unless @bp > 0  %></td>
+                       <tr><td width=50%>Blood Pressure</td><td><%= @patient.bp[0].to_s +  "/" + @patient.bp[1].to_s if @patient.bp[0]> 0 %><%= status_symbol("orange","Not recorded") unless @patient.bp[0] > 0  %></td>
             <td>
 
-            <%= status_symbol("orange",@bp_date.strftime("%d/%m/%Y")) if @bp > 0 and @bp_date != Date.today %>
-            <%= status_symbol("green",@bp_date.strftime("%d/%m/%Y")) if @bp > 0 and @bp_date == Date.today %>
+            <%= status_symbol("orange",@patient.bp[2].strftime("%d/%m/%Y")) if @patient.bp[0] > 0 and @patient.bp[2] != Date.today %>
+            <%= status_symbol("green",@patient.bp[2].strftime("%d/%m/%Y")) if @patient.bp[0] > 0 and @patient.bp[2] == Date.today %>
 
                 
             </td></tr>
 <tr>
-<td width=50%> Cholesterol </td><td><%= @chol %></td><td></td>
+<td width=50%> Cholesterol </td><td><%= @patient.chol[0]%></td><td><%= @patient.chol[1].strftime("%d/%m/%Y") %></td>
 </tr>
 <tr>
-<td width=50%> HDL (Good)Cholesterol </td><td><%= @hdl %></td><td></td>
+<td width=50%> HDL (Good)Cholesterol </td><td><%= @patient.hdl[0] if @patient.hdl[0] !=0 %></td><td><%= @patient.hdl[1].strftime("%d/%m/%Y") if @patient.hdl[1] %></td>
 
 </tr>
-<% if params[:precheck] == "true" %>
 <tr>
-<td width=50%> ECG</td><td><%= @ecg.strftime("%d/%m/%Y") if @ecg > 0 %></td><td><%= distance_of_time_in_words(@ecg,Date.today)  if @ecg > 0 %><%= status_symbol("orange","Not done") if @ecg==0 %></td>
+<td width=50%> Smoking</td><td>
+                 <%= status_symbol("green","Not Smoking") if @patient.smoking.to_i > 3 %>
+                 <%= status_symbol("red","Smoking") if @patient.smoking.to_i  < 4 and @patient.smoking.to_i >0%>
+                 <%= status_symbol("orange","Not recorded") if @patient.smoking.to_i == 0%>
+                 	
+                 </td>
+                 <td></td>
+
+</tr>
+
+
+
+
+
+<% if @precheck == "true" %>
+<tr>
+<td width=50%> ECG</td><td><%= @patient.ecg.strftime("%d/%m/%Y") if @patient.ecg > 0 %></td><td><%= distance_of_time_in_words(@patient.ecg,Date.today)  if @patient.ecg > 0 %><%= status_symbol("orange","Not done") if @patient.ecg==0 %></td>
 
 </tr>
 <% end %>
 <tr><td width=50%>Absolute Cardiac Risk</td>
 
-
+<% @score = @patient.score %>
 <% if @score[:value] == 100 %>
 	<td colspan=2> status_symbol("red","HIGH - @score[:cat]) %></td>
 <% elsif @score[:value] ==200 %>
@@ -35,4 +58,7 @@
 <% end %>
 </tr>
 </table>
+
+</div>
+</div> <!-- end row -->
 

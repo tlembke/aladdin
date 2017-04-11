@@ -1,0 +1,86 @@
+<div class="row">
+
+
+                <div class="col-md-5">
+                        <h3><%= @patient.fullname%></h3>
+                </div>
+                 <div class="col-md-7">
+                        <h3>Annual Check - Pre Check Questions  </h3>
+                        
+
+
+                </div>
+                <div class="col-md-12">
+This is the information about you in our records. Please check that this is correct. You can mark any changes that we need to update on this page.
+                </div>
+
+
+
+</div> <!-- end row -->
+
+
+<div class="row">
+<div class="col-xs-12">
+
+
+   <div class="panel-body">
+      <%= render "demo_check" %>
+   </div>
+</div> <!-- col -->
+</div> <!--  row -->
+
+
+
+<div class="row no-page-break-inside"> <!-- Full screen row -->
+
+
+
+<div class="col-xs-6">
+
+          <legend class="panel-title"><i class="fa fa-medkit"></i>  Medications</legend>
+       
+            <div class="panel-body">
+                <% if @patient.medications.count > 0 %>
+                (Please check this medication list is up to date and let us know of any changes that should be made to our record)<br><br>
+                <% end %>
+                	<% @medications = @patient.medications %>
+                    <%= render "medications_no_legend" %>
+            </div>
+
+</div>
+<div class="col-xs-6">
+
+            <legend class="panel-title"><i class="fa fa-flag"></i> Allergies</legend>
+         
+             <div class="panel-body">
+             		<% @allergies = @patient.allergies %>
+                    <%= render "allergies" %>
+            </div>
+
+</div> <!-- col -->
+</div> <!--  row -->
+
+
+
+<div class="row no-page-break-inside"> <!-- Full screen row -->
+<div class="col-xs-12">
+
+            <%= render "annual_measures" %>
+
+            <%= render "bowel" %>
+
+            <%= render "womens_cancer" %>
+            <%= render "cardiac_risk" %>
+
+            <%= render "lifestyle_check" %>
+            <%= render "immunisations" %>
+            
+
+
+
+
+
+
+ </div> <!-- col -->
+</div> <!--  row -->
+

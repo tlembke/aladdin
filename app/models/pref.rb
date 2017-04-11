@@ -11,6 +11,7 @@ class Pref < ActiveRecord::Base
       :suburb=>{:name=>'Suburb',:default=>'Alstonville'},
       :postcode=>{:name=>'Postcode',:default=>'9994'},
       :active=>{:name=>'Active',:default => "true"},
+      :checkup=>{:name=>'Checkp Up Term',:default => "General Chec"},
 
     }
   end
