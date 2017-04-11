@@ -6,7 +6,8 @@
 
 						<% if @careteam.count > 0   %>
 							<!--  select user for EPC form -->
-
+							
+							<% unless @print %>
 							<div class="row">
 								<div class="col-md-3 col-md-offset-9">
 									<div class='form-group'>
@@ -15,19 +16,19 @@
 									</div>
 								</div>
 							</div>
-
+							<% end %>
 
 
 							
 					 		<% @careteam.each do |member| %>
 					 		 <div class="row">
 					 		<% @member=member['member'] %>
-					 		<div class="col-md-2">
+					 		<div class="col-md-3">
 								<%= member['PROVIDERNAME'] %>
 				
 								
 							</div>
-							<div class="col-md-8">
+							<div class="col-md-7">
 								<%= member['PROVIDERTYPE']%>  (<%= member['PROVIDERPHONE']%>) <p>
 								
 						<a href="#" id="note_<%=@member.id%>" class="editable" data-defaultValue="Add role, review times, notes etc" data-type="textarea" data-emptytext= "Notes" data-pk="1" data-resource="member" data-name="note" data-url="/members/<%=@member.id%>" data-placeholder="Your notes here..." data-original-title="Enter notes"><%= textarea_format(@member.note) %> </a>
@@ -38,8 +39,9 @@
 							<% if @ahp_items.has_key?(member['PROVIDERTYPE']) %>
 									
 		EPC : <a href="#" id="epc_<%=@member.id%>" class="editable" data-defaultValue="Enter EPC referral count" data-type="text" data-pk="1" data-resource="member" data-name="epc" data-url="/members/<%=@member.id%>" data-placeholder="EPC referrals..." data-original-title="EPC Referrals"><%= @member.epc %> </a><p>
+								<% unless @print %>
 									<%= link_to "EPC Form",epc_patient_path(:member=> member['address_book_id'].to_s),{:class => 'epclink noprint',"data-member" => "epc_" + @member.id.to_s} %>
-
+									<% end %>
 						   <% end %>
 							
 							</div>

@@ -1,5 +1,6 @@
 Rails.application.routes.draw do
 
+  resources :prefs
   get 'agent/index'
 
   resources :billing do
@@ -38,7 +39,7 @@ Rails.application.routes.draw do
     collection do
         get 'index'
         post 'index'
-        get 'fhirlist'
+        get 'orion'
     end
     member do
         get 'careplan'

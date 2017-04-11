@@ -6,9 +6,11 @@
     	 		<div class="col-md-5">
     	 			<div class="row">
                     <div class="btn-group btn-group-justified">
-                    <%= link_to 'Print Patient Copy',patient_path(@patient.id, :consult_id=> @consult['ID'], :print => "true"),{:class => "btn btn-lg btn-primary"} %>
+                    <%= link_to 'Print',patient_path(@patient.id, :consult_id=> @consult['ID'], :print => "true"),{:class => "btn btn-lg btn-primary"} %>
                     <%= link_to 'Careplan', careplan_patient_path(@patient.id), {:class => "btn btn-lg btn-primary"} %>
                     <%= link_to 'Summary', healthsummary_patient_path(@patient.id), {:class => "btn btn-lg btn-primary"} %>
+                     <%= link_to 'Annual', annual_patient_path(@patient.id), {:class => "btn btn-lg btn-primary"} %>
+                     <%= link_to 'Pre', annual_patient_path(@patient.id,:precheck => true), {:class => "btn btn-lg btn-primary"} %>
     	 			</div>
                     <hr>
                     </div>
@@ -60,7 +62,7 @@
            
             <%= render "consults" %>
             <%= render partial: "tasks", locals: {tasks: @tasks} %>
-            <%= render partial: "medchanges", locals: {meds: @meds} %> 
+            <%= render partial: "medchanges", locals: {meds: @meds, prescription_history: @prescription_history} %> 
             <%= render partial: "notes",locals: {notes: @notes} %> 
                      <%= render "misc" %> 
              <%=render "appointments" %>

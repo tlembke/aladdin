@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170312102434) do
+ActiveRecord::Schema.define(version: 20170318224445) do
 
   create_table "goals", force: :cascade do |t|
     t.string   "title"
@@ -21,9 +21,9 @@ ActiveRecord::Schema.define(version: 20170312102434) do
     t.integer  "measure_id"
     t.integer  "active"
     t.integer  "parent"
-    t.integer  "master_id"
     t.datetime "created_at",   null: false
     t.datetime "updated_at",   null: false
+    t.integer  "master_id"
     t.decimal  "target"
   end
 
@@ -70,6 +70,13 @@ ActiveRecord::Schema.define(version: 20170312102434) do
   create_table "phonetimes", force: :cascade do |t|
     t.integer  "doctor_id"
     t.text     "message"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "prefs", force: :cascade do |t|
+    t.string   "name"
+    t.string   "value"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end

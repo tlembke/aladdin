@@ -1,45 +1,34 @@
 
 <div class="row">
 
+                <div class="col-md-5">
+                        <h2><%= @patient.fullname%></h2>
+                </div>
+                 <div class="col-md-7">
+                        <h2>Annual Check - Pre Check Questions <a href="#" class="btn btn-primary noprint" onclick="window.print();return false;"><i class="fa fa-print"></i></a> </h2>
+                        
 
-   <div class="col-md-6">
-      <%= render "patient" %>
-   </div>
-                 <div class="col-md-6">
-                        <h2>Annual Check - Pink Slip <a href="#" class="btn btn-primary noprint" onclick="window.print();return false;"><i class="fa fa-print"></i></a> </h2>
 
-
+                </div>
+                <div>
+This is the information about you in our records. Please check that this is correct. You can mark any changes that we need to update on this page.
                 </div>
 
 
 
-
 </div>
-<hr>
 
- <div class="row"> <!-- Full screen row -->
-<div class="col-md-6">
+<div class="row">
+<div class="col-md-12">
 
- 
-          <legend class="panel-title"><i class="fa fa-heartbeat"></i>  Current Conditions</legend>
-      <div class="panel-body">
-                <%= render "problems_list" %>
-       </div>
 
-</div> <!-- col -->
-
-<div class="col-md-6">
-     
-   
-
-          <legend class="panel-title"><i class="fa fa-hospital-o"></i>  Medical History</legend>
-     
-             <div class="panel-body">
-                 <%= render "history_list" %>
-            </div>
-
+   <div class="panel-body">
+      <%= render "demo_check" %>
+   </div>
 </div> <!-- col -->
 </div> <!--  row -->
+
+
 
 <div class="row no-page-break-inside"> <!-- Full screen row -->
 
@@ -70,7 +59,7 @@
 <div class="row no-page-break-inside"> <!-- Full screen row -->
 <div class="col-md-12">
 
-             <legend class="panel-title"><i class="fa fa-medkit"></i>  Measures</legend>
+         <legend class="panel-title"><i class="fa fa-medkit"></i>  Measures</legend>
        
             <div class="panel-body">
             <table class='table table-striped table-bordered table-condensed'>
@@ -212,18 +201,13 @@
 
              </div>
 
-
-</div> <!-- col -->
-</div> <!--  row -->
-
-<div class="row no-page-break-inside"> <!-- Full screen row -->
-<div class="col-md-12">
-
-            <legend class="panel-title"><i class="fa fa-medkit"></i>  Immunisations</legend>
+               <div  class= "no-page-break-inside">
+                     <legend class="panel-title"><i class="fa fa-medkit"></i>  Immunsiations</legend>
        
             <div class="panel-body">
              <table class='table table-striped table-bordered table-condensed'>
                          <tr><td width=50%>Tetanus status</td><td><%= "Given on " + @tetanus.strftime("%d/%m/%Y") if @tetanus %><%= "No record" unless @tetanus %>
+                         </td><td>
                 <% if @tetanus_msg %>
                          <a class="btn btn-warning"> Boostrix Due </a>
                 <% else %>
@@ -232,40 +216,11 @@
                 <% end %>
 
             </td></tr>
-
-             <% @immunisations.each do |immunisation | %>
-            <tr><td width=50%><%= immunisation["GIVENDATE"].strftime("%d/%m/%Y") %></td><td><%= immunisation["VACCINE"] %></td></tr>
-            <% end %>
+            
             </table>
             </div>
-
-</div> <!-- col -->
-</div> <!--  row -->
-
-
-<div class="row page-break-before"> <!-- Full screen row -->
-<div class="col-md-12">
-
-            <legend class="panel-title"><i class="fa fa-medkit"></i>  Charts</legend>
-       
-            <div class="panel-body">
-            <% @measures.each do |measure| %>
-                    <% @measure = measure %>
-
-                 <%= render partial: "measures/measure_simple", object: @measure %>
-            <% end %>
             </div>
-</div> <!-- col -->
-</div> <!--  row -->
-
-<div class="row page-break-before"> <!-- Full screen row -->
-<div class="col-md-12">
-
-           <%= render partial: "tasks", locals: {tasks: @tasks} %>
-            <%= render partial: "medchanges", locals: {meds: @meds} %> 
-            <%= render partial: "notes",locals: {notes: @notes} %> 
-            <%= render "tests" %>
-             <%=render "appointments" %>
+           
 
 </div> <!-- col -->
 </div> <!--  row -->

@@ -8,7 +8,6 @@ class Patient
   def self.get_patient(patient,dbh)
           # ? deprecated
             # Get info about this patient
-            sdfsgsgs
          sql = "SELECT Surname,FirstName,FullName,LastSeenDate,LastSeenBy,AddressLine1, AddressLine2,Suburb,DOB, Age, Sex, Scratchpad, FamilyHistory FROM Patient WHERE id = "+patient       
          puts sql
           sth = dbh.run(sql)

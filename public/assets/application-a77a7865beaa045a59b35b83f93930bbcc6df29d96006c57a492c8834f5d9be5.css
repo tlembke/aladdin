@@ -32694,9 +32694,21 @@ footer .suggested-article h3 {
 	.page-break-before	{page-break-before: always; }
 	.no-page-break-inside {page-break-inside: avoid;}
 	.page-break-after	{ page-break-after: always; }
-	body {
-		font-size: 12px !important;
-	}
+  body, panel-body,table {
+    font-size: 10px !important;
+  }
+  td{
+    font-size: 10px !important;
+    padding: 1px !important;
+  }
+  .btn {
+    padding: 6px 6px !important; 
+    font-size: 10px !important;
+    line-height: 1 !important;
+    border-radius: 1px !important;;
+
+  }
+
 
 	
 	.noprint {visibility: hidden;}
