@@ -32,7 +32,7 @@ class PrefsController < ApplicationController
   # POST /prefs.json
   def create
     @pref = Pref.new(pref_params)
-    debugger
+    #debugger
     respond_to do |format|
       if @pref.save
         format.html { redirect_to @pref, notice: 'Pref was successfully created.' }

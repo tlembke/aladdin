@@ -32,22 +32,6 @@
 			         	<%= @patient.suburb %>
 			         	</div>
          			</div>
-                    <div class="row">
-                        <div class="col-md-5">
-                        Phone: 
-                        </div>
-                        <div class="col-md-7">
-                        <%= @patient.homephone if @patient.homephone !="" %>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-5">
-                        Mobile: 
-                        </div>
-                        <div class="col-md-7">
-                        <%= @patient.mobilephone if @patient.mobilephone !="" %>
-                        </div>
-                    </div>
          			<div class="row">
     	 			<hr>
     	 			</div>
@@ -78,7 +62,7 @@
            
             <%= render "consults" %>
             <%= render partial: "tasks", locals: {tasks: @tasks} %>
-            <%= render partial: "medchanges", locals: {meds: @meds} %> 
+            <%= render partial: "medchanges", locals: {meds: @meds, prescription_history: @prescription_history} %> 
             <%= render partial: "notes",locals: {notes: @notes} %> 
                      <%= render "misc" %> 
              <%=render "appointments" %>

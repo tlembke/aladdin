@@ -31,9 +31,12 @@ gem 'bootstrap-editable-rails'
 
 gem 'rubyzip'
 
+<<<<<<< HEAD
 gem 'wicked_pdf'
 
 gem 'wkhtmltopdf-binary-edge', '~> 0.12.2.1'
+=======
+>>>>>>> origin/master
 
 
 
@@ -60,6 +63,7 @@ group :development do
 end
 
 source "https://dresssed.com/gems//" do
+
   gem "dresssed-ives", "~> 1.0.48"
 end
 
