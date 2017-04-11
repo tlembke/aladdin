@@ -508,7 +508,7 @@ class PatientController < ApplicationController
     @error_code=connect_array[1]
     if (@error_code==0)
           dbh=connect_array[0]
-          sql = "SELECT Pt_ID_FK as ID FROM Appt WHERE Reason = '" + Pref.checkup + "' AND StartDate = '" + Date.today.to_s(:db) +  "' ORDER BY StartTime"
+          sql = "SELECT DISTINCT Pt_ID_FK as ID FROM Appt WHERE Reason = '" + Pref.checkup + "' AND StartDate = '" + Date.today.to_s(:db) +  "' ORDER BY StartTime"
           puts sql
           patient_array=[]
           @mode="precheck"
