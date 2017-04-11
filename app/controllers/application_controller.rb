@@ -125,7 +125,7 @@ def connect
           task=task.strip
           task[0] = task[0,1].upcase
           task=expand_time(task)
-
+       
 
           if short== "n"
             notes<< task
@@ -134,6 +134,7 @@ def connect
           else
             tasks<< task
           end
+          short=""
           # and remove task from plan
           plan=plan.sub task1[0],'' 
           plan=plan.strip
