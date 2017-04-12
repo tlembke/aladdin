@@ -1567,11 +1567,12 @@ def healthsummary
     return flag
 end 
 
- def last_colonoscopy(history)
+ def last_colonoscopy(pathistory)
     colon=false
     colon_date=Date.new(1980,1,1)
-    history.each do | problemlist |
+    pathistory.each do | problemlist |
         problemlist.each do | problem |
+
           if problem["HISTORY"].downcase.include?("colonoscopy")
                 if problem["CREATIONDATE"] > colon_date
                   colon=problem["HISTORY"]
@@ -1907,7 +1908,7 @@ end
           procedures=[]
           events=[]
           sth.fetch_hash do |row|
-            if row["CONFIDENTIAL"] == false
+            if row["CONFIDENTIAL"] == "false"
               if row["PROCEDURE"]=="true"
                 procedures<< row
               else
