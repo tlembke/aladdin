@@ -1861,7 +1861,7 @@ end
                   returnMAM = row['COLLECTIONDATE']
               end
             end
-            if (row['TEST'].downcase.include? "faecal blood" or row['TEST'].downcase.include? "misc. microbiology") and returnFHH==0
+            if (row['TEST'].downcase.include?("faecal blood") or row['TEST'].downcase.include?("misc. microbiology")) and returnFHH==0
                 returnFHH = row['COLLECTIONDATE']
             end
 
