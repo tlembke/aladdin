@@ -22,7 +22,7 @@
 
               <tr><td width=50%>Faecal Blood Test</td>
               		<% @lastFHH = @patient.lastFHH %>
-                <% if @lastFHH %>
+                <% if @lastFHH and @lastFHH !=0 %>
 
                        <td><%= @lastFHH.strftime("%d/%m/%Y") %></td>
                        <td>

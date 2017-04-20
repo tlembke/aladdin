@@ -103,9 +103,15 @@ class AgentController < ApplicationController
           flash[:notice]=connect_array[2]
           redirect_to  action: "login" and return
     	end	
+
+      @action=="show" ? print="true" : print = "false"
       
     	if @id != 0 
-    	       redirect_to  controller: @controller, action: @action, id: @id
+              if @action=="show"
+    	               redirect_to  controller: @controller, action: @action, id: @id, print: "true"
+              else
+                     redirect_to  controller: @controller, action: @action, id: @id 
+              end
       else
              redirect_to  controller: "patient", action: "index"
       end

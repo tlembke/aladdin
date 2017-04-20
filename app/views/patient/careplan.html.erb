@@ -1,4 +1,14 @@
 <%= render "new_goal" %>
+
+
+
+
+
+
+
+
+
+
 <div class="row">
                 <div class="col-md-3">
                         <h2>Care Plan</h2>
@@ -8,6 +18,12 @@
     					<%= render "patient" %>
     	 		</div>
           <div class="col-md-4">
+ <div class="btn-group btn-group-justified">
+                     <%= link_to 'Consult', patient_path(@patient.id), {:class => "btn btn-lg btn-primary"} %>
+                    <%= link_to 'Sum', healthsummary_patient_path(@patient.id), {:class => "btn btn-lg btn-primary"} %>
+                     <%= link_to 'Annual', annual_patient_path(@patient.id), {:class => "btn btn-lg btn-primary"} %>
+                     <%= link_to 'Pre', precheck_patient_path(@patient.id), {:class => "btn btn-lg btn-primary"} %>
+          </div>
           <div class="btn-group btn-group-justified">
 <%= link_to 'Import Goals', import_goals_patient_path(@patient.id), {:class => "btn btn-lg btn-primary", "data-no-turbolink" => "true"} %>
 <%= link_to 'Print',careplan_patient_path(@patient.id, :print => "true"),{:class => "btn btn-lg btn-primary"} %>

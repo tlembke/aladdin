@@ -41,7 +41,7 @@ class PatientController < ApplicationController
               where_clause = surname_text + firstname_text
               puts "Where is " + where_clause
               if where_clause!=""
-                sql = "SELECT Surname,FirstName,LastSeenDate,id FROM Patient WHERE " + where_clause + "ORDER BY Surname"
+                sql = "SELECT Surname,FirstName,LastSeenDate,id FROM Patient WHERE " + where_clause + "ORDER BY Surname, FirstName"
                 puts sql
 
                 sth = dbh.run(sql)
@@ -1845,7 +1845,7 @@ end
 
         def get_last_mammogram_fhh_results(patient,dbh,sex)
 
-        sql = "SELECT Test, CollectionDate FROM  DownloadedResult where PT_Id_FK = " + patient + " ORDER BY CollectionDate DESC"
+        sql = "SELECT Test, CollectionDate, HL7Type FROM  DownloadedResult where PT_Id_FK = " + patient + " ORDER BY CollectionDate DESC"
  
           puts sql
          
@@ -1861,10 +1861,13 @@ end
                   returnMAM = row['COLLECTIONDATE']
               end
             end
-            
-            if (row['TEST'].downcase.include?("faecal blood") or row['TEST'].downcase.include?("misc. microbiology")) and returnFHH==0
+
+            if (row['TEST'].downcase.include?("faecal blood") or row['TEST'].downcase.include?("tumour marker") or row['TEST'].downcase.include?("misc. microbiology")) and returnFHH==0
+
                 returnFHH = row['COLLECTIONDATE']
             end
+
+
 
           end
          
