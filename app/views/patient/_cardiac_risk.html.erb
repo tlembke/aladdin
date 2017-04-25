@@ -18,7 +18,7 @@
                 
             </td></tr>
 <tr>
-<td width=50%> Cholesterol </td><td><%= @patient.chol[0]%></td><td><%= @patient.chol[1].strftime("%d/%m/%Y") %></td>
+<td width=50%> Cholesterol </td><td><%= @patient.chol[0]%></td><td><%= @patient.chol[1].strftime("%d/%m/%Y") if @patient.chol[1]%></td>
 </tr>
 <tr>
 <td width=50%> HDL (Good)Cholesterol </td><td><%= @patient.hdl[0] if @patient.hdl[0] !=0 %></td><td><%= @patient.hdl[1].strftime("%d/%m/%Y") if @patient.hdl[1] %></td>

@@ -8,7 +8,7 @@
             <% @last_mam = @patient.last_mam %>
             <% @mam = @patient.mam_msg %>
             <tr><td width=50%>Last Mammogram</td><td><%= @last_mam.strftime("%d/%m/%Y") if @last_mam != 0 %> <%= status_symbol(@mam[:color],@mam[:msg])%>
-            New is <%= @last_results_mammogram_new %>
+           
 
             <% if @mode="precheck" and ((@mammogram == 0 and @last_mam != 0) or  (@mammogram !=0 and @last_mam > @mammogram)) %>
                 <p>
