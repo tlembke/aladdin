@@ -54,7 +54,10 @@
 	<td colspan=2><%= status_symbol(@score[:color],@score[:cat]).html_safe %></td>
 <% else %>
 
-	<td><%= @score[:value].round(1) %>% </td><td><%= status_symbol(@score[:color],@score[:cat]) %></td>
+	<td><%= @score[:value].round(1) %>% </td><td><%= status_symbol(@score[:color],@score[:cat]) %>
+     
+    NNT <%= @score[:nnt].round(0) %>   
+    </td>
 <% end %>
 </tr>
 </table>

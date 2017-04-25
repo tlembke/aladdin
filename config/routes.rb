@@ -9,6 +9,7 @@ Rails.application.routes.draw do
       get 'ccp'
       get 'paeds'
       get 'assessments'
+      get 'test'
 
     end
 

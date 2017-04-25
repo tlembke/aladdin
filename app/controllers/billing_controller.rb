@@ -5,6 +5,51 @@ class BillingController < ApplicationController
 
   end
 
+  def test
+      # get appointments
+     @username = session[:username]
+     @password = session[:password]
+     @id=session[:id]
+     @name=session[:name]
+
+     connect_array=connect()
+     @error_code=connect_array[1]
+     if (@error_code==0)
+         dbh=connect_array[0]
+          params.has_key?(:month) ? month = params[:month] :  month=Date.today.month
+          params.has_key?(:year) ? year = params[:year] :  year=Date.today.year
+      
+          @startDate = Date.new(year.to_i, month.to_i, 1)
+          @endDate = @startDate + 1.month
+
+
+          params.has_key?(:ageUnder) ? @ageUnder = params[:ageUnder] : @ageUnder = 0
+          params.has_key?(:ageOver) ? @ageOver = params[:ageOver] : @ageOver = 0
+          @items=[]
+          @initems=[23,36,44]
+          @outitems=[]
+          @item=get_bb(dbh,@ageUnder,@ageOver,@startDate.strftime("%Y-%m-%d"),@endDate.strftime("%Y-%m-%d"),@initems,@outitems)
+          @charts=[]
+
+
+          dbh.disconnect
+     else
+          flash[:alert] = "Unable to connect to database. "+ get_odbc
+          flash[:notice] = connect_array[2]
+          redirect_to  action: "login"
+     end
+
+     respond_to do |format|
+        format.html 
+        format.csv { 
+         send_data csv_file, filename: "billing.csv" 
+        }
+    end
+  end
+
+
+ 
+
   def paeds
      # get appointments
      @username = session[:username]
@@ -164,8 +209,13 @@ class BillingController < ApplicationController
           dateString = " AND Sale.ServiceDate >= '" + startdate + "' and Sale.ServiceDate < '" + enddate +"' " 
           ageString=""
           if ageunder!=0 or ageover !=0
-            ageString = " AND Patient.age <= "+ ageunder.to_s + " AND  Patient.age >= "+ageover.to_s + " "
+            ageString += " AND Patient.age <= "+ ageunder.to_s
           end
+  
+          if ageover !=0
+            ageString += " AND  Patient.age >= "+ageover.to_s + " "
+          end
+
           inItemsString = ''
           if initems.count>0
             inItemsString =" AND ("
@@ -207,7 +257,10 @@ class BillingController < ApplicationController
             returnArray[3]=row[1].to_i
       
           end
-
+          # 1 = SumTotal
+          # 2 = Count
+          # 3 = SumTotalBB
+          # 4 = CountBB
 
 
 
@@ -232,6 +285,8 @@ class BillingController < ApplicationController
 
   end
 
+
+ # get patients being managed under care plan and their total billing last 12 months
  def get_cpp(dbh)
           today=Date.today.to_s(:db)
           lastyear=1.year.ago.to_s(:db)

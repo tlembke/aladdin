@@ -1,0 +1,33 @@
+<!-- _problems_notes.html.erb -->
+						<div class="row">
+							<% if @patient.current_problems.count > 0   %>
+
+						 		<% @patient.current_problems.each do |problem| %>
+						 		
+						 		
+						 			<div class="col-md-12">
+									<b><%=problem['PROBLEM'] + " "%></b><%=  ("<span class='small'>(" + problem['DIAGNOSISDATE'].strftime("%d/%m/%y") + ")</span>").html_safe if problem['DIAGNOSISDATE'] %>
+
+					
+									</div>
+									<div class="col-md-11 col-md-offset-1">
+									<%= simple_format(problem['NOTE'],{class: 'small'},wrapper_tag: "span")%>
+											<!----------- -->
+									<% @status=get_status(problem['ID'],@patient.id) %>
+
+										<% if @status.progress !="" %>
+										<span class='small'>Progress:</span>
+											<%= simple_format(@status.progress,{class: 'small'},wrapper_tag: "span") %>
+										<% end %>
+
+									</div>
+							
+								
+								<% end %> <!-- end current_problems -->
+
+							<% else %> <!-- end if -->
+								    <div class='col-md-11 col-md-offset-1'>
+								    		Nil recorded
+								    </div>
+							<% end %> 
+						</div> <!-- end row -->

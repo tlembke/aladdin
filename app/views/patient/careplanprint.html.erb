@@ -1,9 +1,17 @@
+<% content_for :head do %>
+<script type="text/javascript"> 
+    window.onload = function() { window.print(); } 
+    window.onfocus=function(){ window.close();}
+</script>
+
+<% end %>
+
 <div class="row">
                 <div class="col-xs-3">
-                        <b>Care Plan</b>
+                        <h2>Care Plan</h2>
 
                 </div>
-    			<div class="col-xs-5">
+    			<div class="col-xs-9">
     					<%= render "patient" %>
     	 		</div>
 
@@ -11,7 +19,7 @@
 </div>
 
 <div class="row">
-<div class="col-xs-12">
+<div class="col-md-12">
 
 
       
@@ -21,38 +29,65 @@
 
 
       <%= render "introduction" %>
+      <hr>
 
 </div> <!-- col -->
 </div> <!--  row -->
+
+
 
  <div class="row page-break-before"> <!-- Full screen row -->
-<div class="col-xs-12">
+
+
+
+   <div class="col-md-12">
+    <%= @patient.fullname %>
+      <legend><i class="fa fa-medkit"></i>  Health Summary</legend>
+      
+   </div>
+
+
+
+
+  <div class="col-md-6">
 
  
-          <legend class="panel-title"><i class="fa fa-heartbeat"></i>  Current Conditions</legend>
+      <legend class="panel-title"><i class="fa fa-heartbeat"></i>  Current Conditions</legend>
       <div class="panel-body">
-                <%= render "problems_no_goals" %>
-       </div>
 
-</div> <!-- col -->
-</div> <!--  row -->
-<div class="row no-page-break-inside"> <!-- Full screen row -->
-<div class="col-xs-12">
+                <%= render "problems_notes" %>
+      </div>
+
+  </div> <!-- col -->
+
+<div class="col-md-6">
      
    
 
-          <div class="panel-title"><i class="fa fa-hospital-o"></i>  Medical History</div>
+         <legend class="panel-title"><i class="fa fa-hospital-o"></i>  Medical History</legend>
+
      
              <div class="panel-body">
-                 <%= render "history" %>
+                  <%= render "history_notes" %>
             </div>
 
 </div> <!-- col -->
+   <div class="col-md-12">
+      <hr>
+      
+   </div>
 </div> <!--  row -->
+
+
+
+
+
 <div class="row no-page-break-inside"> <!-- Full screen row -->
 <div class="col-xs-12">
+          <%= @patient.fullname %>
 
-          <legend class="panel-title"><i class="fa fa-medkit"></i>  Medications</legend>
+          <legend><i class="fa fa-medkit"></i>  Medications</legend>
+          
        
             <div class="panel-body">
                     <%= render "medications" %>
@@ -71,8 +106,8 @@
 
  <div class="row page-break-before"> <!-- Full screen row -->
 <div class="col-xs-12">
-
-    <legend class="panel-title"><i class="fa fa-heartbeat"></i>  Challenges and Goals</legend>
+  <%= @patient.fullname %>
+    <legend><i class="fa fa-heartbeat"></i>  Challenges and Goals</legend>
 
 
         <%= render "general" %>
@@ -84,8 +119,8 @@
  <div class="row page-break-before"> <!-- Full screen row -->
 <div class="col-xs-12">
 
-
-          <legend class="panel-title"><i class="fa fa-user"></i>   Care Team</legend>
+          <%= @patient.fullname %>
+          <legend><i class="fa fa-user"></i>   Care Team</legend>
          
             <div class="panel-body">
                     <%= render "careteam" %>
@@ -94,10 +129,10 @@
 </div> <!-- col -->
 </div> <!--  row -->
 
-<div class="row page-break-before"> <!-- Full screen row -->
+<div class="row"> <!-- Full screen row -->
 <div class="col-xs-12">
-
-          <legend class="panel-title"><i class="fa fa-flag"></i> Calendar</legend>
+            <%= @patient.fullname %>
+          <legend><i class="fa fa-flag"></i> Calendar</legend>
          
             <div class="panel-body">
               <%= render "appointments" %>

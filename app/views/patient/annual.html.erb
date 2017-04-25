@@ -24,7 +24,7 @@
           <legend class="panel-title"><i class="fa fa-heartbeat"></i>  Current Conditions</legend>
       <div class="panel-body">
                 <% @current_problems = @patient.current_problems %>
-                <%= render "problems_list" %>
+                <%= render "problems_notes" %>
        </div>
 
 </div> <!-- col -->
@@ -38,10 +38,16 @@
              <div class="panel-body">
                 <% @procedures = @patient.procedures %>
                  <% @events = @patient.events %>
-                 <%= render "history_list" %>
+                 <%= render "history_notes" %>
             </div>
 
 </div> <!-- col -->
+
+
+<div class="col-md-12">
+<hr>
+</div>
+
 </div> <!--  row -->
 
 <div class="row no-page-break-inside"> <!-- Full screen row -->

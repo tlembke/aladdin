@@ -1,15 +1,23 @@
        		           <!--   allergies -->
-						
-						<% if @allergies.count > 0   %>
-							<dl class="dl-horizontal">
-					 		<% @allergies.each do |problem| %>
-								<dt><%= problem['ALLERGY'] %></dt>
-								<dd><%= simple_format(problem['DETAIL'])%></dd>
-							<% end %>
-							</dl>
-						<% else %>
-							Nil Recorded Allergies
-						<% end %>
+						<div class='row'>
+						<% if @patient.allergies.count > 0   %>
 
+						
+
+					 		<% @patient.allergies.each do |problem| %>
+					 			<div class='col-md-3'>
+								<b><%= problem['ALLERGY'] %></b>
+								</div>
+								<div class='col-md-9'>
+								<%= simple_format(problem['DETAIL'],{class: 'small'},wrapper_tag: "span")%>
+								</div>
+							<% end %>
+						
+						<% else %>
+						<div class='col-md-12'>
+							Nil Recorded Allergies
+						</div>
+						<% end %>
+						</div> <!-- end row -->
 					
 						<!--   End allergies -->

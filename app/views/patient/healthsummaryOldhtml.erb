@@ -1,0 +1,66 @@
+<div class="row">
+                <div class="col-md-3">
+                        <h2>Health Summary</h2>
+
+                </div>
+    			<div class="col-md-5">
+    					<%= render "patient" %>
+    	 		</div>
+
+
+</div>
+
+<div class="row">
+<div class="col-md-12">
+
+
+   <div class="panel-body">
+      <%= render "introduction" %>
+   </div>
+</div> <!-- col -->
+</div> <!--  row -->
+
+ <div class="row"> <!-- Full screen row -->
+<div class="col-md-12">
+
+ 
+          <legend class="panel-title"><i class="fa fa-heartbeat"></i>  Current Conditions</legend>
+      <div class="panel-body">
+                <%= render "problems_no_goals" %>
+       </div>
+
+</div> <!-- col -->
+</div> <!--  row -->
+<div class="row"> <!-- Full screen row -->
+<div class="col-md-12">
+     
+   
+
+          <div class="panel-title"><i class="fa fa-hospital-o"></i>  Medical History</div>
+     
+             <div class="panel-body">
+                 <%= render "history" %>
+            </div>
+
+</div> <!-- col -->
+</div> <!--  row -->
+
+<div class="row no-page-break-inside"> <!-- Full screen row -->
+<div class="col-md-12">
+
+          <legend class="panel-title"><i class="fa fa-medkit"></i>  Medications</legend>
+       
+            <div class="panel-body">
+                    <%= render "medications" %>
+            </div>
+
+
+
+            <legend class="panel-title"><i class="fa fa-flag"></i> Allergies</legend>
+         
+             <div class="panel-body">
+                    <%= render "allergies" %>
+            </div>
+
+</div> <!-- col -->
+</div> <!--  row -->

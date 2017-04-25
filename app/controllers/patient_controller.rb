@@ -131,6 +131,8 @@ class PatientController < ApplicationController
           end
           @changes= Patient.prescription_history(@id,dbh,@consult['CONSULTDATE'].strftime("%Y-%m-%d"))
 
+
+
           tasks_array=extract_tasks(@consult['PLAN'])
           @tasks=tasks_array[0]
           @meds=tasks_array[1]
@@ -139,15 +141,12 @@ class PatientController < ApplicationController
           tests_array= get_tests(@plan)
           @tests= tests_array[0]
           @plan= tests_array[1]
-          @medications = get_medications(@id,dbh)
+
+          @patient = getall_patient(@id,dbh,"annual")
+
           @appointments = get_appointments(@id,dbh)
           @measures = get_measures(@id,dbh)
-          @current_problems = get_current_problems(@id,dbh)
-          history_array = get_history(@id,dbh)
-          @procedures=history_array[0]
-          @events=history_array[1]
-          @allergies=get_allergies(@id,dbh)
-          @careteam=get_careteam(@id,dbh)
+
           @phonetime = get_phonetime(session[:id])
           @registers=Register.all
           dbh.disconnect
@@ -383,9 +382,12 @@ class PatientController < ApplicationController
             @mammogram = @patient.mammogram
             @last_scanned_mammogram = get_last_mammogram_scans(id,dbh)
           end
-          results_check=get_last_mammogram_fhh_results(id,dbh,@patient.sex)
-          @last_results_mammogram=results_check[0]
-          @patient.lastFHH=results_check[1]
+          #depreccated
+          #results_check=get_last_mammogram_fhh_results(id,dbh,@patient.sex)
+          #@last_results_mammogram=results_check[0]
+         # @patient.lastFHH=results_check[1]
+          @last_results_mammogram=get_last_mammogram_results(id,dbh)
+          @patient.lastFHH = get_last_fhh_results(id,dbh)
 
           if @patient.sex =="F"
 
@@ -880,10 +882,12 @@ class PatientController < ApplicationController
 
   end
 
-  def get_cardiac_risk(age,sex,chol,hdl,bp,smoking=0, htmed=0)
+  def get_cardiac_risk1(age,sex,chol,hdl,bp,smoking=0, htmed=0)
+          # using Dubbo formula
          total_score=0
 
           # Age
+
           sex=="M" ? s=1 : s=0
           k = 0.057*age - 8.65 + 0.008*bp + 0.18*chol.to_f + 0.234*hdl.to_f + 0.61*s + 0.458*smoking + 0.749*htmed
           k = - k 
@@ -905,6 +909,33 @@ class PatientController < ApplicationController
 
   end
 
+  def get_cardiac_risk(age,sex,chol,hdl,bp,smoking=0, diabetes=0, lvh=0, t=5)
+         # using NPS formula
+
+
+          sex=="M" ? s=0 : s=1
+          mu = 18.8144 - 1.2146 * s - 1.8443 * Math.log(age) + 0.3668 * Math.log(age) * s - 1.4032 * Math.log(bp) - 0.3899 * smoking - 0.5390 * Math.log(chol.to_f/hdl.to_f) - 0.3036 * diabetes - 0.1697 * diabetes * s -0.3362 * lvh
+          sigma = Math.exp(0.6536 + (-0.2402 * mu))
+          upsilon = (Math.log(t) - mu) / sigma
+          risk = 1 - (Math.exp(-Math.exp(upsilon)))
+          nnt = 1 / (0.33 * risk)
+          risk = risk * 100
+          
+          if risk < 10
+                  color="green"
+                  cat="Low"
+          elsif risk <15
+                  color="orange"
+                  cat = "Moderate"
+          else
+                  color="red"
+                  cat = "High"
+          end
+          score = { :value => risk, :color => color, :cat => cat, :nnt => nnt }
+          return score
+
+  end
+
   def get_tetanus(immunisations)
     givenDate = false
     immunisations.each do |imm|
@@ -919,6 +950,7 @@ class PatientController < ApplicationController
   end
 
   def get_cardiac_risk2(age,sex,chol,hdl,bp)
+      # using tables
        total_score=0
           # Age
 
@@ -1067,6 +1099,7 @@ class PatientController < ApplicationController
           dbh=connect_array[0]
         # Get info about this patient
           @patient=get_patient(@id,dbh)
+          @patient = getall_patient(@id,dbh,"careplan")
           #tasks_array=extract_tasks(@consult['PLAN'])
           #@tasks=tasks_array[0]
           #@meds=tasks_array[1]
@@ -1077,15 +1110,15 @@ class PatientController < ApplicationController
           #@plan= tests_array[1]
           @provider = session[:provider]
           @username = session[:username]
-          @medications = get_medications(@id,dbh)
+          #@medications = get_medications(@id,dbh)
           @appointments = get_appointments(@id,dbh)
           # @measures = get_measures(@id,dbh)
-          @current_problems = get_current_problems(@id,dbh)
-          history_array = get_history(@id,dbh)
-          @procedures=history_array[0]
-          @events=history_array[1]
-          @allergies=get_allergies(@id,dbh)
-          @careteam=get_careteam(@id,dbh)
+          #@current_problems = get_current_problems(@id,dbh)
+          #history_array = get_history(@id,dbh)
+          #@procedures=history_array[0]
+          #@events=history_array[1]
+          #@allergies=get_allergies(@id,dbh)
+          #@careteam=get_careteam(@id,dbh)
           @ahp_items=get_ahp_items
           bpsweights=get_bps(@id,dbh,50)
           @bps=bpsweights[0]
@@ -1151,15 +1184,15 @@ def healthsummary
           #tests_array= get_tests(@plan)
           #@tests= tests_array[0]
           #@plan= tests_array[1]
-          @medications = get_medications(@id,dbh)
+          @patient.medications = get_medications(@id,dbh)
           @appointments = get_appointments(@id,dbh)
           # @measures = get_measures(@id,dbh)
-          @current_problems = get_current_problems(@id,dbh)
+          @patient.current_problems = get_current_problems(@id,dbh)
           history_array = get_history(@id,dbh)
-          @procedures=history_array[0]
-          @events=history_array[1]
-          @allergies=get_allergies(@id,dbh)
-          @careteam=get_careteam(@id,dbh)
+          @patient.procedures=history_array[0]
+          @patient.events=history_array[1]
+          @patient.allergies=get_allergies(@id,dbh)
+          @patient.careteam=get_careteam(@id,dbh)
           
           dbh.disconnect
 
@@ -1843,6 +1876,62 @@ end
 
   end 
 
+  def get_last_mammogram_results(patient,dbh)
+        sql = "SELECT Test, CollectionDate, HL7Type, Result FROM  DownloadedResult where PT_Id_FK = " + patient + " and lower(Test) LIKE  '%xr breasts%' ORDER BY CollectionDate DESC"
+ 
+          puts sql
+         
+
+          sth = dbh.run(sql)
+               
+          returnMAM=0
+
+          if sth.nrows>0
+                row= sth.fetch_first
+
+                returnMAM = row[1]
+          end
+
+         
+
+         
+          sth.drop
+          return returnMAM
+
+  end
+
+  def get_last_fhh_results(patient,dbh)
+
+         sql = "SELECT Test, CollectionDate, HL7Type, Result FROM  DownloadedResult where PT_Id_FK = " + patient + " and (lower(Test) LIKE  '%faecal blood%' or lower(Test) LIKE  '%tumour marker%' or lower(Test) LIKE  '%misc. microbiology%') ORDER BY CollectionDate DESC"
+ 
+
+          puts sql
+         
+
+          sth = dbh.run(sql)
+               
+
+          returnFHH=0
+          if sth.nrows>0
+            sth.fetch_hash do |row|
+             
+              if returnFHH==0
+                if row['RESULT'].downcase.include?("faecal") 
+                    returnFHH = row['COLLECTIONDATE']      
+                end
+              end
+             end
+
+
+          end
+         
+
+         
+          sth.drop
+          return returnFHH
+
+  end 
+
         def get_last_mammogram_fhh_results(patient,dbh,sex)
 
         sql = "SELECT Test, CollectionDate, HL7Type FROM  DownloadedResult where PT_Id_FK = " + patient + " ORDER BY CollectionDate DESC"
@@ -1861,10 +1950,13 @@ end
                   returnMAM = row['COLLECTIONDATE']
               end
             end
-
-            if (row['TEST'].downcase.include?("faecal blood") or row['TEST'].downcase.include?("tumour marker") or row['TEST'].downcase.include?("misc. microbiology")) and returnFHH==0
-
-                returnFHH = row['COLLECTIONDATE']
+            if returnFHH==0
+              if row['TEST'].downcase.include?("faecal blood") 
+                  returnFHH = row['COLLECTIONDATE']
+              elsif row['TEST'].downcase.include?("tumour marker") or row['TEST'].downcase.include?("misc. microbiology")
+                  returnFHH = row['COLLECTIONDATE']
+                
+              end
             end
 
 

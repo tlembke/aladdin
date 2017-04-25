@@ -1,45 +1,46 @@
+
 <div class="row">
-                <div class="col-md-3">
-                        <h2>Health Summary</h2>
+
+
+   <div class="col-md-6">
+      <%= render "patient" %>
+   </div>
+                 <div class="col-md-6">
+                        <h2>Health Summary<a href="#" class="btn btn-primary noprint" onclick="window.print();return false;"><i class="fa fa-print"></i></a> </h2>
+
 
                 </div>
-    			<div class="col-md-5">
-    					<%= render "patient" %>
-    	 		</div>
 
 
+
+<hr>
 </div>
 
-<div class="row">
-<div class="col-md-12">
-
-
-   <div class="panel-body">
-      <%= render "introduction" %>
-   </div>
-</div> <!-- col -->
-</div> <!--  row -->
 
  <div class="row"> <!-- Full screen row -->
-<div class="col-md-12">
+
+ <hr>
+<div class="col-md-6">
 
  
           <legend class="panel-title"><i class="fa fa-heartbeat"></i>  Current Conditions</legend>
       <div class="panel-body">
-                <%= render "problems_no_goals" %>
+                <% @current_problems = @patient.current_problems %>
+                <%= render "problems_notes" %>
        </div>
 
 </div> <!-- col -->
-</div> <!--  row -->
-<div class="row"> <!-- Full screen row -->
-<div class="col-md-12">
+
+<div class="col-md-6">
      
    
 
-          <div class="panel-title"><i class="fa fa-hospital-o"></i>  Medical History</div>
+          <legend class="panel-title"><i class="fa fa-hospital-o"></i>  Medical History</legend>
      
              <div class="panel-body">
-                 <%= render "history" %>
+                <% @procedures = @patient.procedures %>
+                 <% @events = @patient.events %>
+                 <%= render "history_notes" %>
             </div>
 
 </div> <!-- col -->
@@ -47,20 +48,42 @@
 
 <div class="row no-page-break-inside"> <!-- Full screen row -->
 <div class="col-md-12">
+<hr>
+</div>
+
+<div class="col-md-6">
 
           <legend class="panel-title"><i class="fa fa-medkit"></i>  Medications</legend>
        
             <div class="panel-body">
-                    <%= render "medications" %>
+                <% @medications = @patient.medications %>
+                <% if @medications.count > 0 %>
+                (Please check this medication list is up to date and let us know of any changes that should be made to our record)<br><br>
+                <% end %>
+                    <%= render "medications_no_legend" %>
             </div>
 
-
+</div>
+<div class="col-md-6">
 
             <legend class="panel-title"><i class="fa fa-flag"></i> Allergies</legend>
          
              <div class="panel-body">
+             <% @allergies = @patient.allergies %>
                     <%= render "allergies" %>
             </div>
+
+
+
+            <% if @patient.careteam.count > 0 %>
+            <hr>
+                  <legend class="panel-title"><i class="fa fa-user"></i> Care Team</legend>
+             
+                 <div class="panel-body">
+                 <% @careteam = @patient.careteam %>
+                        <%= render "care_team_list" %>
+                </div>
+            <% end %> <!-- care team count -->
 
 </div> <!-- col -->
 </div> <!--  row -->

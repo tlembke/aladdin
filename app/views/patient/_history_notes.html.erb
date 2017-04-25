@@ -1,0 +1,61 @@
+<!-- _history_notes.html.erb  -->
+						
+					
+					<div class='row'>
+
+					<div class='col-md-12'>
+						<b>Procedures and Operations</b>
+					</div>
+
+
+					<% if @patient.procedures.count > 0  %>
+						
+						
+							
+					 		<% @patient.procedures.each do |problem| %>
+					 		<div class='col-md-11 col-md-offset-1'>
+								<b><%= problem['HISTORY'] %></b> <%= ("<span class='small'>(" + problem['CREATIONDATE'].strftime("%d/%m/%Y") + ")</span>").html_safe if problem['CREATIONDATE']%>
+							</div>
+								<% if problem['NOTE'] != ""%>
+							<div class='col-md-10 col-md-offset-2'>
+								<%= simple_format(problem['NOTE'],{class: 'small'},wrapper_tag: "span")%>
+							</div>
+								<% end %>
+							<% end %>
+						
+					    <% else %>
+					    <div class='col-md-11 col-md-offset-1'>
+					    		Nil recorded
+					    </div>
+						<% end %>
+
+						<div class='col-md-12'>
+							<b>Medical Events</b>
+						</div>
+
+
+						<% if @patient.events.count > 0  %>
+						
+						
+							
+					 		<% @patient.events.each do |problem| %>
+					 		<div class='col-md-11 col-md-offset-1'>
+								<b><%= problem['HISTORY'] %></b> <%= ("<span class='small'>(" + problem['CREATIONDATE'].strftime("%d/%m/%Y") + ")</span>").html_safe if problem['CREATIONDATE']%>
+							</div>
+								<% if problem['NOTE'] != ""%>
+							<div class='col-md-9 col-md-offset-2'>
+
+								<%= simple_format(problem['NOTE'],{class: 'small'},wrapper_tag: "span")%>
+							</div>
+							<div class='col-md-1'></div>
+								<% end %>
+							<% end %>
+							
+					    <% else %>
+					    <div class='col-md-11 col-md-offset-1'>
+					    		Nil recorded
+					    </div>
+						<% end %>
+						</div> <!-- row -->					
+							
+						<!--   End problems  -->

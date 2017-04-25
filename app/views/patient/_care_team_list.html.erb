@@ -1,0 +1,14 @@
+<!-- _care_team_list.html.erb -->
+
+
+	<div class="row">
+	<div class="col-md-12">
+	<ul>
+			<% @patient.careteam.each do |member| %>
+					<li><%= member['PROVIDERNAME'] %>
+					<%= "(" + member['PROVIDERTYPE'] + ")" if member['PROVIDERTYPE']!="" %>
+					</li>
+			<% end %>
+	</ul>
+	</div>
+	</div> <!-- end row -->

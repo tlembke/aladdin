@@ -1,11 +1,11 @@
        		           <!--   problems  -->
 						
 	
-						<h3>Procedures and Operations</h3>
+						<h4>Procedures and Operations</h4>
 						<div class='row'>
-						<% if @procedures.count > 0  %>
+						<% if @patient.procedures.count > 0  %>
 							
-					 		<% @procedures.each do |problem| %>
+					 		<% @patient.procedures.each do |problem| %>
 					 			<div class='col-md-11 col-md-offset-1'>
 								<b><%= problem['HISTORY'] %> <%= "(" + problem['CREATIONDATE'].strftime("%d/%m/%Y") + ")" if problem['CREATIONDATE']%></b>
 								</div>
@@ -20,11 +20,11 @@
 					    </div>
 						<% end %>
 						</div> <!-- row -->
-						<h3>Medical Events</h3>
+						<h4>Medical Events</h4>
 						<div class='row'>
-						<% if @events.count > 0  %>
+						<% if @patient.events.count > 0  %>
 							
-					 		<% @events.each do |problem| %>
+					 		<% @patient.events.each do |problem| %>
 					 		<div class='col-md-11 col-md-offset-1'>
 								<b><%= problem['HISTORY'] %> <%= "(" + problem['CREATIONDATE'].strftime("%d/%m/%Y") + ")" if problem['CREATIONDATE']%></b>
 								</div>

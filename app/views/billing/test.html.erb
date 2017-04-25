@@ -1,0 +1,74 @@
+
+
+
+<h1>Billing Report</h1>
+Age <%= @ageOver %> to <%= @ageUnder %>, Include @items <%= @initems %>,Exclude @items <%= @outitems %><p>
+
+<table class="table table-bordered table-hover">
+<thead>
+<tr>
+<th>Month</th>
+<th>Total</th>
+<th>Sum</th>
+<th>Ave</th>
+<th>BB</th>
+<th>%BB</th>
+<th>Sum</th>
+<th>Sum with bonus</th>
+<th>Ave with bonus</th>
+<th>Non BB</th>
+<th>Sum</th>
+<th>Ave</th>
+<th>Gap/pat</th>
+<th>Gap total</th>
+<th>Extras</th>
+</tr>
+</thead>
+<tbody>
+<% i=0 %>
+<% total=Array.new(4,0) %>
+<% charted_values=[] %>
+<% charted_values[0]=[] %>
+
+
+
+<% total[0]+=@item[0] %>
+<% total[1]+=@item[1] %>
+<% total[2]+=@item[2] %>
+<% total[3]+=@item[3] %>
+
+
+<tr>
+<td><%= (@startDate + i.months).strftime("%m/%Y") %></td>
+<td><%= @item[1] %></td>
+<% value_h ={"DATE" => @startDate+i.months, "VALUE" => @item[1]} %>
+<% charted_values[0] << value_h %>
+
+<td><%= number_to_currency(@item[0] + @item[3] * 9.25) %></td>
+
+<td><%= number_to_currency((@item[0] + @item[3] * 9.25 )/ @item[1]) if @item[1]>0%></td>
+<td><%= @item[3] %></td>
+<td><%= (@item[3] *100 ) / @item[1]  if @item[1]>0%></td>
+<td><%= number_to_currency(@item[2]) %></td>
+<td><%= number_to_currency(@item[2] + @item[3] * 9.25) %></td>
+<td><%= number_to_currency((@item[2] + @item[3] * 9.25 )/ @item[3]) %></td>
+<td><%= @item[1] - @item[3]%></td>
+<td><%= number_to_currency(@item[0] - @item[2]) %></td>
+
+<td><%= number_to_currency((@item[0] - @item[2]) / (@item[1] - @item[3]))  if @item[1] - @item[3]>0%></td>
+
+<td><%= number_to_currency((@item[0] - @item[2]) / (@item[1] - @item[3])-((@item[2] + @item[3] * 9.25 )/ @item[3]))  if @item[1] >0 and @item[3]>0 %></td>
+<td><%= number_to_currency(((@item[0] - @item[2]) / (@item[1] - @item[3])-((@item[2] + @item[3] * 9.25 ) / @item[3]))* (@item[1] - @item[3])) %></td>
+<td><%= ((((@item[0] - @item[2]) / (@item[1] - @item[3])-((@item[2] + @item[3] * 9.25 ) /  @item[3]))* (@item[1] - @item[3]))    /    ((@item[2] + @item[3] * 9.25 )/ @item[3])).round  if @item[1] >0 and @item[3]>0 %></td>
+
+
+</tr>
+
+
+
+
+</tbody>
+</table>
+
+
+

@@ -4,7 +4,7 @@
 					 			
 					
 
-						<% if @careteam.count > 0   %>
+						<% if @patient.careteam.count > 0   %>
 							<!--  select user for EPC form -->
 							
 							<% unless @print %>
@@ -20,7 +20,7 @@
 
 
 							
-					 		<% @careteam.each do |member| %>
+					 		<% @patient.careteam.each do |member| %>
 					 		 <div class="row">
 					 		<% @member=member['member'] %>
 					 		<div class="col-md-3">
