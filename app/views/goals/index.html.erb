@@ -28,6 +28,9 @@ Master Goals are potentially relevant to a large number of patients, and are cat
                                 <%=  "<th>Parent</th>".html_safe if @all %>
 
                                 <th>Master</th>
+                                <% unless @all %>
+                                <th>Autoload</th>
+                                <% end %>
                                 <th></th>
               </tr>
             </thead>
@@ -50,6 +53,13 @@ Master Goals are potentially relevant to a large number of patients, and are cat
                             <td><a href="#" data-xeditable="true" class="editable" data-type="select" data-pk="1" data-model="goal" data-name="goal[master_id]" data-url="<%= goal_url(goal) %>" data-source="<%= @master_items.to_json %>" data-title="Choose Category">
                                   <%= goal.master_id == 0 or goal.master_id == nil ? "Select Catgeory" : goal.master.name %></a>
                                 </td>
+                                <% unless @all %>
+                                 <td><a href="#" data-xeditable="true" class="editable" data-type="select" data-pk="1" data-model="goal" data-name="goal[autoload]" data-url="<%= goal_url(goal) %>" data-source="<%= autoload_select.to_json %>" data-title="Choose Autoload">
+                                  <%= goal.autoload == 0 or goal.autoload == nil ? "No" : goal.autoload %></a>
+                                </td>
+                                <% end %>
+
+
                                 <td class="actions">
                   <%= link_to fa_icon_tag("eye"), goal, rel: 'tooltip', title: 'Show' %>
                   <%= link_to fa_icon_tag("pencil"), edit_goal_path(goal), rel: 'tooltip', title: 'Edit' %>

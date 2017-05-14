@@ -99,7 +99,14 @@ class Patient
       general_goals = Goal.where(patient_id: self.id, condition_id: 0)
       return general_goals
   end
-  
+
+    def has_plan?
+        @goals=Goal.where(patient_id: self.id)
+        @goals.count > 0 ? returnText = true : returnText = false
+        return returnText
+  end
+
+
   def pronoun
   	    self.sex=="F"  ?  pronoun = "She" : pronoun = "He"
 
@@ -209,11 +216,79 @@ class Patient
         return returnText
   end
 
+  def autoload_goals
+        # this is to load automatic goals for patient
+        # egneral goals have condition_id 0
+        # master goals have patient_id = 0 and belong to parent parent
+        # parent will be 0 for general
+
+
+
+        cats= Goal.autoloads
+
+        cats.each do |category|
+            condition_id=self.has_condition(category)
+            
+            if condition_id
+                autoload_goals=Goal.where(patient_id: 0, autoload: category)
+                
+                autoload_goals.each do |master|
+                  newgoal = master.dup
+                  newgoal.patient_id = self.id
+                  newgoal.condition_id = condition_id
+                  newgoal.save!
+                end
+            end
+        end
+
+
+  end
+
+  def has_condition(condition)
+    icpc=""
+    flag=false
+    if condition =="general"
+        flag=0
+    else
+
+        if condition =="ihd"
+            icpc = %w(k74 K75 K76 K54007 K53003 K53009)
+        end
+        if condition =="diabetes"  
+            icpc = %w(T89 T90)
+        end
+        if condition =="ckd"  
+            icpc = %w(U99)
+        end
+        if condition =="prostateca"  
+            icpc = %w(Y77)
+        end
+        if icpc!=""
+          self.current_problems.each do |problem |
+            unless flag
+                icpc.each do |code|
+                  if problem["ICPCCODE"].start_with?(code)
+                    flag=problem["ID"]
+                  end
+                end
+            end
+          end
+        end
+
+    end
+
+    
+    return flag
+end 
+
+
+
   def register(register_id)
       @register = RegisterPatient.where("patient_id= ? and register_id = ?",self.id,register_id)
       @register.count > 0 ? returnText = true : returnText = false
       return returnText
   end
+
 
 
 

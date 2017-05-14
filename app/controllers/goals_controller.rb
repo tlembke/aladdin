@@ -18,6 +18,8 @@ class GoalsController < ApplicationController
         @measure_items << {value: x.id, text: x.name}
       end
 
+
+
     if params[:all] == "true"
       @goals = Goal.all
       @all = true
@@ -136,6 +138,6 @@ class GoalsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def goal_params
-      params.require(:goal).permit(:title, :description, :condition_id, :patient_id, :measure_id, :active, :parent, :master_id, :target)
+      params.require(:goal).permit(:title, :description, :condition_id, :patient_id, :measure_id, :active, :parent, :master_id, :target, :autoload)
     end
 end

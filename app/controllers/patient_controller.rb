@@ -187,15 +187,252 @@ class PatientController < ApplicationController
 
   
 
-  def get_json_stream(id,action)
-              filename = @id+"_"+action+".json"
-              json_string= render_to_string(:action => action, :layout => false)
-              json_object = JSON.parse(json_string) 
-              stream = JSON.pretty_generate(json_object)
-              return [filename,stream]
+
+
+
+   def careplan
+    @id=params[:id]
+    connect_array=connect()
+    @error_code=connect_array[1]
+    if (@error_code==0)
+          dbh=connect_array[0]
+        # Get info about this patient
+          @patient=get_patient(@id,dbh)
+          @patient = getall_patient(@id,dbh,"careplan")
+          #tasks_array=extract_tasks(@consult['PLAN'])
+          #@tasks=tasks_array[0]
+          #@meds=tasks_array[1]
+          #@notes=tasks_array[2]
+          #@plan = tasks_array[3]
+          #tests_array= get_tests(@plan)
+          #@tests= tests_array[0]
+          #@plan= tests_array[1]
+          @provider = session[:provider]
+          @username = session[:username]
+          #@medications = get_medications(@id,dbh)
+          @appointments = get_appointments(@id,dbh)
+          # @measures = get_measures(@id,dbh)
+          #@current_problems = get_current_problems(@id,dbh)
+          #history_array = get_history(@id,dbh)
+          #@procedures=history_array[0]
+          #@events=history_array[1]
+          #@allergies=get_allergies(@id,dbh)
+          #@careteam=get_careteam(@id,dbh)
+          @ahp_items=get_ahp_items
+          bpsweights=get_bps(@id,dbh,50)
+          @bps=bpsweights[0]
+          @weights=bpsweights[1]
+          @lipids=get_lipids(@id,dbh,50)
+          @all_measures=get_all_measurements(@id,dbh,50)
+          @tracked_items=[721,723,732,2517,2521,701,703,900]
+          @item_numbers=get_item_numbers(@id,dbh,@tracked_items)
+          @phonetime = get_phonetime(session[:id])
+          @lastSHS = get_shs_date(@id,dbh)
+          @users = get_users(dbh)
+          @provider = session[:provider]
+          @epc_count = get_epc_count(@id)
+
+           # test about annual chech
+          @last_annual_check=get_last_check(@id,dbh)
+
+          unless @patient.has_plan?
+                @patient.autoload_goals
+          end
+
+          
+          dbh.disconnect
+
+
+    else
+          # lost connection to database
+          flash[:notice]=connect_array[2]
+          redirect_to  action: "login"
+    end
+
+
+
+    respond_to do |format|
+        format.html {
+            if params[:print]
+                  @print = true
+                  render :careplanprint
+                  return
+            end
+
+
+        }
+        format.pdf {
+                  render pdf: 'care_plan',
+                  layout: 'layouts/_pdf_minimal.html.erb',
+                  template: "patient/careplanprint.html.erb",
+                  show_as_html: params.key?('debug')
+        }
+    end
+
+
+
   end
 
-  def orion
+
+def healthsummary
+    @id=params[:id]
+    connect_array=connect()
+    @error_code=connect_array[1]
+    if (@error_code==0)
+          dbh=connect_array[0]
+        # Get info about this patient
+          @patient=get_patient(@id,dbh)
+          #tasks_array=extract_tasks(@consult['PLAN'])
+          #@tasks=tasks_array[0]
+          #@meds=tasks_array[1]
+          #@notes=tasks_array[2]
+          #@plan = tasks_array[3]
+          #tests_array= get_tests(@plan)
+          #@tests= tests_array[0]
+          #@plan= tests_array[1]
+          @patient.medications = get_medications(@id,dbh)
+          @appointments = get_appointments(@id,dbh)
+          # @measures = get_measures(@id,dbh)
+          @patient.current_problems = get_current_problems(@id,dbh)
+          history_array = get_history(@id,dbh)
+          @patient.procedures=history_array[0]
+          @patient.events=history_array[1]
+          @patient.allergies=get_allergies(@id,dbh)
+          @patient.careteam=get_careteam(@id,dbh)
+          
+          dbh.disconnect
+
+
+    else
+          # lost connection to database
+          flash[:notice]=connect_array[2]
+          redirect_to  action: "login"
+    end
+
+    if params[:print]
+          @print = true
+          render :healthsummaryprint
+    end
+
+
+  end
+
+ 
+
+  
+
+  def prechecks
+    # get all the patients who have an annual check appt today
+    connect_array=connect()
+    @error_code=connect_array[1]
+    if (@error_code==0)
+          dbh=connect_array[0]
+          sql = "SELECT DISTINCT Pt_ID_FK as ID FROM Appt WHERE Reason = '" + Pref.checkup + "' AND StartDate = '" + Date.today.to_s(:db) +  "' ORDER BY StartTime"
+          puts sql
+          patient_array=[]
+          @mode="precheck"
+          sth = dbh.run(sql)
+           sth.fetch_hash do |row|
+            patient_array<<row['ID'].to_s
+          end
+          @patients=[]
+          patient_array.each do |patient|
+            @patients<<getall_patient(patient,dbh,"precheck")
+          end
+          sth.drop
+
+    else    # lost connection to database
+          flash[:notice]=connect_array[2]
+          redirect_to  action: "login"
+    end
+
+
+
+  end
+
+
+  def precheck
+    @id=params[:id]
+    connect_array=connect()
+    @error_code=connect_array[1]
+    if (@error_code==0)
+          dbh=connect_array[0]
+          @patients=[]
+          @mode="precheck"
+          @patients<<getall_patient(@id,dbh,"precheck")
+    else    # lost connection to database
+          flash[:notice]=connect_array[2]
+          redirect_to  action: "login"
+    end
+
+    render "prechecks"
+
+
+
+
+  end
+
+  def annual
+    @id=params[:id]
+    connect_array=connect()
+    @error_code=connect_array[1]
+    if (@error_code==0)
+          dbh=connect_array[0]
+          @mode="annual"
+          @patient = getall_patient(@id,dbh,"annual")
+
+
+
+            sql = "SELECT ConsultDate, DoctorName,Plan,Diagnosis,History, Examination, Id FROM Consult WHERE PT_Id_FK = " + @id + " ORDER BY ConsultDate DESC LIMIT 1"
+          
+            puts sql
+            sthz = dbh.run(sql)
+             sthz.fetch_hash do |row|
+              row['CONSULTDATE']=row['CONSULTDATE'].to_date
+              @consult = row
+            end
+            sthz.drop
+
+            @changes= Patient.prescription_history(@patient.id,dbh,Date.today.strftime("%Y-%m-%d"))
+
+            tasks_array=extract_tasks(@consult['PLAN'])
+
+            @tasks=tasks_array[0]
+            @meds=tasks_array[1]
+            @notes=tasks_array[2]
+            plan = tasks_array[3]
+            tests_array= get_tests(plan)
+            @tests= tests_array[0]
+            @plan= tests_array[1]
+
+            @appointments = get_appointments(@id,dbh)
+
+
+            @phonetime = get_phonetime(session[:id])
+            @bps=@patient.bps
+            @lipids=@patient.lipids
+            @all_measures=get_all_measurements(@id,dbh,50)
+
+            measure_list=["Blood Pressure","Weight","Lipids"]
+             @measures=[]
+            measure_list.each do |next_measure|
+                @this_measure = Measure.find_by Name: next_measure
+                @measures << @this_measure
+            end
+          
+            # @patient.measures = get_measures(id,dbh)
+
+    else    # lost connection to database
+          flash[:notice]=connect_array[2]
+          redirect_to  action: "login"
+    end
+    @print=true
+    render "annual"
+
+  end
+
+
+ def orion
     @orions=RegisterPatient.where(register_id: 1)
     if @orions.count >0
         connect_array=connect()
@@ -341,6 +578,9 @@ class PatientController < ApplicationController
               @ihd=has_condition?("ihd",@patient.events)
           end
           @ckd = has_condition?("ckd",@patient.current_problems)
+
+          @prostateca=has_condition?("prostateca",@patient.current_problems)
+
 
           bpsweights=get_bps(id,dbh,50)
           bps=bpsweights[0]
@@ -504,360 +744,16 @@ class PatientController < ApplicationController
       return @patient
   end
 
-  def prechecks
-    # get all the patients who have an annual check appt today
-    connect_array=connect()
-    @error_code=connect_array[1]
-    if (@error_code==0)
-          dbh=connect_array[0]
-          sql = "SELECT DISTINCT Pt_ID_FK as ID FROM Appt WHERE Reason = '" + Pref.checkup + "' AND StartDate = '" + Date.today.to_s(:db) +  "' ORDER BY StartTime"
-          puts sql
-          patient_array=[]
-          @mode="precheck"
-          sth = dbh.run(sql)
-           sth.fetch_hash do |row|
-            patient_array<<row['ID'].to_s
-          end
-          @patients=[]
-          patient_array.each do |patient|
-            @patients<<getall_patient(patient,dbh,"precheck")
-          end
-          sth.drop
-
-    else    # lost connection to database
-          flash[:notice]=connect_array[2]
-          redirect_to  action: "login"
-    end
-
-
-
-  end
-
-
-  def precheck
-    @id=params[:id]
-    connect_array=connect()
-    @error_code=connect_array[1]
-    if (@error_code==0)
-          dbh=connect_array[0]
-          @patients=[]
-          @mode="precheck"
-          @patients<<getall_patient(@id,dbh,"precheck")
-    else    # lost connection to database
-          flash[:notice]=connect_array[2]
-          redirect_to  action: "login"
-    end
-
-    render "prechecks"
 
 
 
 
-  end
-
-  def annual
-    @id=params[:id]
-    connect_array=connect()
-    @error_code=connect_array[1]
-    if (@error_code==0)
-          dbh=connect_array[0]
-          @mode="annual"
-          @patient = getall_patient(@id,dbh,"annual")
-
-
-
-            sql = "SELECT ConsultDate, DoctorName,Plan,Diagnosis,History, Examination, Id FROM Consult WHERE PT_Id_FK = " + @id + " ORDER BY ConsultDate DESC LIMIT 1"
-          
-            puts sql
-            sthz = dbh.run(sql)
-             sthz.fetch_hash do |row|
-              row['CONSULTDATE']=row['CONSULTDATE'].to_date
-              @consult = row
-            end
-            sthz.drop
-
-            @changes= Patient.prescription_history(@patient.id,dbh,Date.today.strftime("%Y-%m-%d"))
-
-            tasks_array=extract_tasks(@consult['PLAN'])
-
-            @tasks=tasks_array[0]
-            @meds=tasks_array[1]
-            @notes=tasks_array[2]
-            plan = tasks_array[3]
-            tests_array= get_tests(plan)
-            @tests= tests_array[0]
-            @plan= tests_array[1]
-
-            @appointments = get_appointments(@id,dbh)
-
-
-            @phonetime = get_phonetime(session[:id])
-            @bps=@patient.bps
-            @lipids=@patient.lipids
-            @all_measures=get_all_measurements(@id,dbh,50)
-
-            measure_list=["Blood Pressure","Weight","Lipids"]
-             @measures=[]
-            measure_list.each do |next_measure|
-                @this_measure = Measure.find_by Name: next_measure
-                @measures << @this_measure
-            end
-          
-            # @patient.measures = get_measures(id,dbh)
-
-    else    # lost connection to database
-          flash[:notice]=connect_array[2]
-          redirect_to  action: "login"
-    end
-
-    render "annual"
-
-  end
-
-
-
-  def annualOld
-    @precheck = false
-    @id=params[:id]
-    connect_array=connect()
-    @error_code=connect_array[1]
-    if (@error_code==0)
-          dbh=connect_array[0]
-          @patient=get_patient(@id,dbh)
-
-
-          # Deafult Get last consult details
-          # Unless otherwise selected
-
-          sql = "SELECT ConsultDate, DoctorName,Plan,Diagnosis,History, Examination, Id FROM Consult WHERE PT_Id_FK = " + @id + " ORDER BY ConsultDate DESC LIMIT 1"
-          
-          puts sql
-          sth = dbh.run(sql)
-           sth.fetch_hash do |row|
-            row['CONSULTDATE']=row['CONSULTDATE'].to_date
-            @consult = row
-          end
-          sth.drop
-
-          @changes= Patient.prescription_history(@patient.id,dbh,Date.today.strftime("%Y-%m-%d"))
-
-          tasks_array=extract_tasks(@consult['PLAN'])
-          @tasks=tasks_array[0]
-          @meds=tasks_array[1]
-          @notes=tasks_array[2]
-          @plan = tasks_array[3]
-          tests_array= get_tests(@plan)
-          @tests= tests_array[0]
-          @plan= tests_array[1]
-          @medications = get_medications(@id,dbh)
-          @appointments = get_appointments(@id,dbh)
-          @measures = get_measures(@id,dbh)
-          @current_problems = get_current_problems(@id,dbh)
-          history_array = get_history(@id,dbh)
-          @procedures=history_array[0]
-          @events=history_array[1]
-          @diabetes=has_condition?("diabetes",@current_problems)
-          @ihd=has_condition?("ihd",@current_problems)
-          unless @ihd
-              @ihd=has_condition?("ihd",@procedures)
-          end
-          unless @ihd
-              @ihd=has_condition?("ihd",@events)
-          end
-          @ckd = has_condition?("ckd",@current_problems)
-
-          @allergies=get_allergies(@id,dbh)
-          @careteam=get_careteam(@id,dbh)
-          @phonetime = get_phonetime(session[:id])
-          @all_measures=get_all_measurements(@id,dbh,50)
-
-          measure_list=["Blood Pressure","Weight","Lipids"]
-          @measures=[]
-          measure_list.each do |next_measure|
-            @this_measure = Measure.find_by Name: next_measure
-            @measures << @this_measure
-          end
-
-          @ecg =  get_last_ecg(@patient.id,dbh)
-
-          @immunisations=get_immunisations(@id,dbh)
-
-          # Tetanus true if never given or if last booster more than 15 years ago unless given over age 65
-          @tetanus = get_tetanus(@immunisations)
-          @tetanus_msg = false
-          if @tetanus
-            last_given_age = @patient.age.to_i - @tetanus.year
-          else
-            last_given_age = 0
-            @tetanus_msg = true unless @patient.age < 30
-          end
-          if @tetanus and @tetanus < 15.years.ago and last_given_age <65 and @patient.age > 30
-                   @tetanus_msg = true
-          end
-             
-          # need to get latest BP, Chol and HDL
-          bpsweights=get_bps(@id,dbh,50)
-          @bps=bpsweights[0]
-          @weights=bpsweights[1]
-          @heights=bpsweights[2]
-          @bp=0
-          if @bps.count > 0
-            @bp=@bps[0]["SYSTOLIC"]
-            @bpd=@bps[0]["DIASTOLIC"]
-            @bp_date=@bps[0]["MEASUREMENTDATE"]
-          end
-          @weight=0
-          if @weights.count>0
-            @weight=@weights[0]["WEIGHT"]
-            @weight_date=@weights[0]["MEASUREMENTDATE"]
-          end
-          @height=0
-          if @heights.count > 0 
-            @height=@heights[0]["HEIGHT"]
-            @height_date=@heights[0]["MEASUREMENTDATE"]
-          end
-
-
-            @bmi=get_bmi(@height,@weight)
-
-
-          @lipids=get_lipids(@id,dbh,20)
-          @chol=0
-          @hdl=0
-          if @lipids.count > 0 
-            @chol=@lipids[0]["CHOLESTEROL"]
-            @chol_date=@lipids[0]["MEASUREMENTDATE"]
-            flag=0
-            @lipids.each do |lipid|
-              if flag==0
-                    if lipid["HDL"]
-                      @hdl=lipid["HDL"]
-                      @hdl_date=lipid["MEASUREMENTDATE"]
-                      flag=1
-                    end
-               end
-            end
-          end
-          
-          @smoking = @patient.smoking
-          @smoking ==1 ? smokingflag=1 : smokingflag = 0
-          @alcohol = @patient.etoh
-          @alcoholinfo = @patient.etohinfo
-          if @patient.sex == "F"
-            @mammogram = @patient.mammogram
-            @last_scanned_mammogram = get_last_mammogram_scans(@id,dbh)
-          end
-          results_check=get_last_mammogram_fhh_results(@id,dbh,@patient.sex)
-          @last_results_mammogram=results_check[0]
-          @last_fhh=results_check[1]
-
-          if @patient.sex =="F"
-
-                #first which is most recent s can or results or both 0
-                @mammogram= 0 if @mammogram == nil
-                @last_mam = @mammogram
-
-
-                @last_mam = @last_scanned_mammogram if @last_mam != 0 and @last_scanned_mammogram !=0  and @last_scanned_mammogram > @last_mam
-               
-                @last_mam = @last_results_mammogram if @last_mam == 0 or  (@last_mam !=0 and @last_results_mammogram !=0 and @last_results_mammogram > @last_mam)
-
-                @mam = {:color => "green", :msg => "Not required" }
-                if @patient.age >49 and @patient.age <71
-                    @mam = {:color => "red", :msg => "Mammogram recommended" } if @last_mam ==0 or (@last_mam != 0 and @last_mam < 2.years.ago)
-                    @mam = {:color => "green", :msg => "Mammogram Up To Date" } if @last_mam !=0 and @last_mam >  1.years.ago
-                    @mam = {:color => "orange", :msg => "Mammogram Due next 12 months" } if @last_mam !=0 and @last_mam < 1.years.ago and @last_mam > 2.years.ago
-
-
-                end
-                
-                 if @patient.age < 20 or @patient.age > 70 or @patient.pap_recall 
-                        @pap = {:color => "green", :msg => "No PAP recall" }
-                 else
-
-                      @pap = {:color => "green", :msg => "PAP up to date" } if @patient.pap and @patient.pap >  2.years.ago
-                      @pap = {:color => "red", :msg => "PAP due" } if @patient.pap ==nil or @patient.pap <  2.years.ago
-                end
-         end
-         
-
-          @colonoscopy = last_colonoscopy(history_array)
-         
-
-            if @diabetes and @patient.age > 60
-                @score = { :value => 100, :color => "orange", :cat => "aged over 60 and presence of diabetes" }
-            elsif @ckd
-                 @score = { :value => 100, :color => "orange", :cat => "presence of Chronic Kidney Disease" }
-            elsif @ihd
-                 @score = { :value => 200, :color => "orange", :cat => "Ischaemic Heart Disease already documented" }
-            elsif @patient.atsi==1 and @patient.age > 75
-                 @score = { :value => 100, :color => "orange", :cat => "aged over 75 and ATSI" }
-            elsif @chol.to_f > 7.5
-                 @score = { :value => 100, :color => "orange", :cat => "Cholesterol over 7.5"}
-            elsif @bp > 180
-                 @score = { :value => 100, :color => "orange", :cat => "Blood pressure > 180" }
-            else  
-                 if @chol.to_f > 0  and @hdl.to_f  > 0 and @bp.to_i > 0 
-                        @score=get_cardiac_risk(@patient.age,@patient.sex,@chol, @hdl,@bp, smokingflag)
-                 else
-                      msg="Unable to calculate Absolute cardiac risk as missing"
-                      msg= msg+ " Cholesterol" unless @chol.to_i > 0 
-                      msg= msg+ " HDL" unless @hdl.to_i > 0 
-                      msg= msg+ " BP" unless @bp.to_i > 0
-                      @score = { :value => 200, :color => "orange", :cat => msg }
-                 end 
-
-
-            end
-
-          dbh.disconnect
-
-
-    else
-          # lost connection to database
-          flash[:notice]=connect_array[2]
-          redirect_to  action: "login"
-    end
-
-    @print = true
-
-    respond_to do |format|
-        format.html{
-            if params[:precheck]
-                  render :precheck
-                  return
-            end
-        }
-        format.pdf{
-            if params[:precheck]
-                  render pdf: 'precheck',
-                  layout: '_pdf_minimal.html.erb',
-                  template: "patient/precheck.html.erb",
-                  viewport_size: '1280x1024',
-                  show_as_html: params.key?('debug')
-            else
-                  render pdf: 'annual',
-                  layout: '_pdf_minimal.html.erb',
-                  template: "patient/annual.html.erb",
-                  viewport_size: '1280x1024',
-                  show_as_html: params.key?('debug')
-
-            end
-        }
-
-
-        format.json { 
-           json_string = render_to_string   
-           json_object = JSON.parse(json_string) 
-           stream = JSON.pretty_generate(json_object)     
-           send_data(stream, :type=>"text/json",:filename => @id+"_patient.json")
-           # as canonical json
-           # stream = render_to_string
-        }
-    end
-    
-
- 
+  def get_json_stream(id,action)
+              filename = @id+"_"+action+".json"
+              json_string= render_to_string(:action => action, :layout => false)
+              json_object = JSON.parse(json_string) 
+              stream = JSON.pretty_generate(json_object)
+              return [filename,stream]
   end
 
   def get_bmi(height,weight)
@@ -882,32 +778,7 @@ class PatientController < ApplicationController
 
   end
 
-  def get_cardiac_risk1(age,sex,chol,hdl,bp,smoking=0, htmed=0)
-          # using Dubbo formula
-         total_score=0
 
-          # Age
-
-          sex=="M" ? s=1 : s=0
-          k = 0.057*age - 8.65 + 0.008*bp + 0.18*chol.to_f + 0.234*hdl.to_f + 0.61*s + 0.458*smoking + 0.749*htmed
-          k = - k 
-          risk = 1 / ( 1 + Math.exp(k) )
-    
-          risk = risk * 100
-          if risk < 10
-                  color="green"
-                  cat="Low"
-          elsif risk <15
-                  color="orange"
-                  cat = "Moderate"
-          else
-                  color="red"
-                  cat = "High"
-          end
-          score = { :value => risk, :color => color, :cat => cat }
-          return score
-
-  end
 
   def get_cardiac_risk(age,sex,chol,hdl,bp,smoking=0, diabetes=0, lvh=0, t=5)
          # using NPS formula
@@ -949,70 +820,7 @@ class PatientController < ApplicationController
 
   end
 
-  def get_cardiac_risk2(age,sex,chol,hdl,bp)
-      # using tables
-       total_score=0
-          # Age
-
-          if sex=="F"
-            value_array=[[34,-9],[39,-4],[44,0],[49,3],[54,6],[59,7],[64,8],[69,8],[74,8],[79,8]]
-          else
-              value_array=[[34,-1],[39,0],[44,1],[49,2],[54,3],[59,4],[64,5],[69,6],[74,7]]
-          end
-
-          total_score = total_score + get_score(value_array,age)
-          puts " Age Score " + total_score.to_s
-
-          # Total Cholesterol
-          if sex =="F"           
-              value_array=[[4.14,-2],[5.17,0],[6.21,1],[7.24,1],[100,3]]        
-          else
-            value_array=[[4.14,-3],[5.17,0],[6.21,1],[7.24,2],[100,3]] 
-          end
-          old_score=total_score
-          total_score = total_score + get_score(value_array,chol)
-          puts "Chol Score " + (total_score - old_score).to_s
-
-          # HDL Cholesterol
-          if sex =="F"           
-              value_array=[[0.9,5],[1.16,2],[1.29,1],[1.55,0],[5,-3]]       
-          else
-            value_array=[[0.9,2],[1.16,1],[1.29,0],[1.55,0],[5,-2]]
-          end
-          old_score=total_score
-          total_score = total_score + get_score(value_array,hdl)
-          puts "HDL Score " + (total_score - old_score).to_s
-
-
-          # Blood Pressure
-          if sex =="F"           
-              value_array=[[120,-3],[129,0],[139,0],[159,2],[300,3]]      
-          else
-                value_array=[[120,0],[129,0],[139,1],[159,2],[300,3]]
-          end
-          old_score=total_score
-          total_score = total_score + get_score(value_array,bp)
-          puts "BP Score" + (total_score - old_score).to_s
-          puts "Total Score is " + total_score.to_s
-
-          # Smoker
-          # +2
-
-          # Diabetes
-          # +2 = High Risk
-
-          # Risk %
-          if sex =="F"           
-            value_array=[[0,2],[1,2],[2,3],[3,3],[4,4],[5,4],[6,5],[7,6],[8,7],[9,8],[10,10],[11,11],[12,13],[13,15],[14,18],[15,20],[16,24],[100,27]]          
-          else
-            value_array=[[0,3],[1,3],[2,4],[3,5],[4,7],[5,8],[6,10],[7,13],[8,16],[9,20],[10,25],[11,31],[12,37],[13,45],[20,53]]          
-          end
-          risk=get_score(value_array,total_score)
-
-
-
-          return risk
-  end
+  
 
 
   def get_score(value_array,value)
@@ -1091,125 +899,7 @@ class PatientController < ApplicationController
 
   end
 
-  def careplan
-    @id=params[:id]
-    connect_array=connect()
-    @error_code=connect_array[1]
-    if (@error_code==0)
-          dbh=connect_array[0]
-        # Get info about this patient
-          @patient=get_patient(@id,dbh)
-          @patient = getall_patient(@id,dbh,"careplan")
-          #tasks_array=extract_tasks(@consult['PLAN'])
-          #@tasks=tasks_array[0]
-          #@meds=tasks_array[1]
-          #@notes=tasks_array[2]
-          #@plan = tasks_array[3]
-          #tests_array= get_tests(@plan)
-          #@tests= tests_array[0]
-          #@plan= tests_array[1]
-          @provider = session[:provider]
-          @username = session[:username]
-          #@medications = get_medications(@id,dbh)
-          @appointments = get_appointments(@id,dbh)
-          # @measures = get_measures(@id,dbh)
-          #@current_problems = get_current_problems(@id,dbh)
-          #history_array = get_history(@id,dbh)
-          #@procedures=history_array[0]
-          #@events=history_array[1]
-          #@allergies=get_allergies(@id,dbh)
-          #@careteam=get_careteam(@id,dbh)
-          @ahp_items=get_ahp_items
-          bpsweights=get_bps(@id,dbh,50)
-          @bps=bpsweights[0]
-          @weights=bpsweights[1]
-          @lipids=get_lipids(@id,dbh,50)
-          @all_measures=get_all_measurements(@id,dbh,50)
-          @tracked_items=[721,723,732,2517,2521,701,703,900]
-          @item_numbers=get_item_numbers(@id,dbh,@tracked_items)
-          @phonetime = get_phonetime(session[:id])
-          @lastSHS = get_shs_date(@id,dbh)
-          @users = get_users(dbh)
-          @provider = session[:provider]
-          @epc_count = get_epc_count(@id)
-
-          
-          dbh.disconnect
-
-
-    else
-          # lost connection to database
-          flash[:notice]=connect_array[2]
-          redirect_to  action: "login"
-    end
-
-
-
-    respond_to do |format|
-        format.html {
-            if params[:print]
-                  @print = true
-                  render :careplanprint
-                  return
-            end
-
-
-        }
-        format.pdf {
-                  render pdf: 'care_plan',
-                  layout: 'layouts/_pdf_minimal.html.erb',
-                  template: "patient/careplanprint.html.erb",
-                  show_as_html: params.key?('debug')
-        }
-    end
-
-
-
-  end
-
-
-def healthsummary
-    @id=params[:id]
-    connect_array=connect()
-    @error_code=connect_array[1]
-    if (@error_code==0)
-          dbh=connect_array[0]
-        # Get info about this patient
-          @patient=get_patient(@id,dbh)
-          #tasks_array=extract_tasks(@consult['PLAN'])
-          #@tasks=tasks_array[0]
-          #@meds=tasks_array[1]
-          #@notes=tasks_array[2]
-          #@plan = tasks_array[3]
-          #tests_array= get_tests(@plan)
-          #@tests= tests_array[0]
-          #@plan= tests_array[1]
-          @patient.medications = get_medications(@id,dbh)
-          @appointments = get_appointments(@id,dbh)
-          # @measures = get_measures(@id,dbh)
-          @patient.current_problems = get_current_problems(@id,dbh)
-          history_array = get_history(@id,dbh)
-          @patient.procedures=history_array[0]
-          @patient.events=history_array[1]
-          @patient.allergies=get_allergies(@id,dbh)
-          @patient.careteam=get_careteam(@id,dbh)
-          
-          dbh.disconnect
-
-
-    else
-          # lost connection to database
-          flash[:notice]=connect_array[2]
-          redirect_to  action: "login"
-    end
-
-    if params[:print]
-          @print = true
-          render :healthsummaryprint
-    end
-
-
-  end
+ 
 
 
 
@@ -1425,6 +1115,23 @@ def healthsummary
           return medications
   end
 
+  def get_last_check(patient,dbh)
+          sql = "SELECT ConsultDate FROM Consult, ConsultationProblem WHERE Consult.PT_Id_FK = " + patient.to_s + " AND ConsultationProblem.CNSLT_Id_FK = Consult.ID AND ConsultationProblem.ICPCCode = 'A30' ORDER BY Consult.ConsultDate DESC"
+          puts sql
+         
+
+          sth = dbh.run(sql)
+               
+          row= sth.fetch_first
+            
+          row ? returnValue= row[0] : returnValue=false
+
+          sth.drop
+      
+          return returnValue
+
+  end
+
     def get_immunisations(patient,dbh)
           sql = "SELECT ACIRCode, GivenDate, Vaccine FROM Vaccination WHERE PT_Id_FK = " + patient.to_s + "ORDER BY GivenDate DESC"
           puts sql
@@ -1584,6 +1291,9 @@ def healthsummary
     if condition =="ckd"  
         icpc = %w(U99)
     end
+    if condition =="prostateca"  
+        icpc = %w(Y77)
+    end
     if icpc!=""
       problems.each do |problem |
         if flag==false
@@ -1602,20 +1312,26 @@ end
 
  def last_colonoscopy(pathistory)
     colon=false
-    colon_date=Date.new(1980,1,1)
+    beginning_of_time=Date.new(1980,1,1)
+    colon_date=beginning_of_time
     pathistory.each do | problemlist |
         problemlist.each do | problem |
 
+
           if problem["HISTORY"].downcase.include?("colonoscopy")
-                if problem["CREATIONDATE"] > colon_date
+                problem["CREATIONDATE"] ? col_date = problem["CREATIONDATE"] : col_date = beginning_of_time
+                if col_date >= colon_date
                   colon=problem["HISTORY"]
-                  colon_date=problem["CREATIONDATE"]
+                  colon_date=col_date
                 end
              
           end
         end
       end
 
+      if colon_date == beginning_of_time
+        colon_date = false
+      end
   
 
 
@@ -1624,6 +1340,7 @@ end
 end 
 
   def get_problems(dbh,consult)
+    # this gets the reason for consulation rather than medical history
           sql = "SELECT Problem FROM ConsultationProblem WHERE CNSLT_Id_FK = " + consult.to_s + " ORDER BY IsPrimaryProblem DESC"
           puts sql
           sth = dbh.run(sql)      

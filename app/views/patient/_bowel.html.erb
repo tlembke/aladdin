@@ -9,12 +9,20 @@
             	<% @colonoscopy = @patient.colonoscopy %>
                 <% if @colonoscopy[0] %>
                         <%= @colonoscopy[0] %>
-                </td><td><%= @colonoscopy[1].strftime("%d/%m/%Y") %> </td><td>
-                      <%= status_symbol if @colonoscopy[1] > 3.years.ago %>
-                    <%= status_symbol("orange","Possibly Due") if @colonoscopy[1] < 3.years.ago %>
-
-
                 </td>
+                    <% if @colonoscopy[1] %>
+                    <td><%= @colonoscopy[1].strftime("%d/%m/%Y") %> </td>
+                    <% else %>
+                        <td>No date recorded</td>
+                   <% end %>
+
+                    <td>
+                          <%= status_symbol if @colonoscopy[1] and @colonoscopy[1] > 3.years.ago %>
+                        <%= status_symbol("orange","Possibly Due") if @colonoscopy[1] == false or (@colonoscopy[1] and @colonoscopy[1] < 3.years.ago) %>
+
+
+                    </td>
+
                 <% else %>
                 Colonscopy</td><td>None recorded</td><td></td>
                 <% end %>
@@ -29,7 +37,7 @@
                       <%= status_symbol if @colonoscopy[0] and @colonoscopy[1] > 3.years.ago %>
                       <%= status_symbol if @lastFHH >  2.years.ago %>
                     <%= status_symbol("red","Due") if @colonoscopy[0] == false  and @lastFHH < 2.years.ago %>
-                    <%= status_symbol("orange","Possibly Due") if @colonoscopy[0]and @colonoscopy[1] < 5.years.ago and @lastFHH < 2.years.ago%>
+                    <%= status_symbol("orange","Possibly Due") if @colonoscopy[0] and (@colonoscopy[1] == false or (@colonoscopy[1] and @colonoscopy[1] < 5.years.ago)) and @lastFHH < 2.years.ago%>
                     </td>
                 <% else %>
                    
@@ -39,9 +47,9 @@
                     <% else %>
                         <td>Not recorded </td>
                         <td>
-                        <%= status_symbol if @colonoscopy[0] and @colonoscopy[1] > 3.years.ago %>
+                        <%= status_symbol if @colonoscopy[0] and @colonoscopy[1] and @colonoscopy[1] > 3.years.ago %>
                         <%= status_symbol("red","Due") unless @colonoscopy[0] %>
-                        <%= status_symbol("orange","Possibly Due") if @colonoscopy[0]and @colonoscopy[1] < 5.years.ago %>
+                        <%= status_symbol("orange","Possibly Due") if @colonoscopy[0] and (@colonoscopy[1]== false or (@colonoscopy[1] and @colonoscopy[1] < 5.years.ago)) %>
                         </td>
                     <% end %>
                     
