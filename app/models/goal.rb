@@ -8,3 +8,4 @@ class Goal < ActiveRecord::Base
 		return theArray
 	end
 end
+ 
