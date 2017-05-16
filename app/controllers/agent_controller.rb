@@ -13,13 +13,19 @@ class AgentController < ApplicationController
     		  		#bits=@p.match(/?<name>.*)\((?<day>\d{1,2})\/(?<month>\d{1,2})\/(?<year>\d{4}/)
     		  		#bits=@p.match(/(.*)\((\d+)\/(\d+)\/(\d+)/)
 
+              if params[:t]
+                bits=@p.match(/(?<name>.*)/)
+                windowMatch="clipboard"
+              else
               #get the name
-              bits=@p.match(/(?<name>.*)\s\((Type)/)
-              windowMatch="consult"
-              unless bits
-    		  		  bits=@p.match(/(?<name>.*)\s\((?<day>\d+)\/(?<month>\d+)\/(?<year>\d+)/)
-                windowMatch="patient"
+                bits=@p.match(/(?<name>.*)\s\((Type)/)
+                windowMatch="consult"
+                unless bits
+      		  		  bits=@p.match(/(?<name>.*)\s\((?<day>\d+)\/(?<month>\d+)\/(?<year>\d+)/)
+                  windowMatch="patient"
+                end
               end
+
               if bits
               		  		titles=%w(READ\ ONLY\ -\  Mr Mrs Ms Miss Dr Prof Master)
               		  		@names=bits['name'].split
@@ -29,14 +35,22 @@ class AgentController < ApplicationController
               		  			end
               		  		end
 
+
+
               		  		# now find patient 
               		  		# first name starts with @name[0]
               		  		# surname end with @name.last
 
                         #May not have a DOB
               		  		# dob is bits['day']/bits['month']/bits['year']
-              		  		surname= "%" + @names.last
-              		  		firstname = @names[0] + "%"
+
+                        if windowMatch=="clipboard"
+                          firstname= "%" + @names.last
+                          surname = @names[0] + "%"
+                        else
+              		  		  surname= "%" + @names.last
+              		  		  firstname = @names[0] + "%"
+                        end
               		  		where_clause = "Surname LIKE '" + surname + "' and FirstName LIKE '" + firstname + "'"
                         if windowMatch=="patient"
                   		  		year = 2000 + bits['year'].to_i
@@ -90,10 +104,11 @@ class AgentController < ApplicationController
                         end
 
                end # end bits
+               dbh.disconnect
             end # end params p
 
 
-            dbh.disconnect
+            
 
     		  	
 
