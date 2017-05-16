@@ -13,9 +13,13 @@ class AgentController < ApplicationController
     		  		#bits=@p.match(/?<name>.*)\((?<day>\d{1,2})\/(?<month>\d{1,2})\/(?<year>\d{4}/)
     		  		#bits=@p.match(/(.*)\((\d+)\/(\d+)\/(\d+)/)
 
-              if params[:t]
+              if params[:t]=="appt"
                 bits=@p.match(/(?<name>.*)/)
                 windowMatch="clipboard"
+              elsif params[:t]=="patient"
+                  bits=@p.match(/(?<name>^\D*)(?<day>\d+)\/(?<month>\d+)\/(?<year>\d+)/)
+                  windowMatch="patient-clipboard"
+
               else
               #get the name
                 bits=@p.match(/(?<name>.*)\s\((Type)/)
@@ -44,7 +48,7 @@ class AgentController < ApplicationController
                         #May not have a DOB
               		  		# dob is bits['day']/bits['month']/bits['year']
 
-                        if windowMatch=="clipboard"
+                        if windowMatch=="clipboard" or windowMatch=="patient-clipboard"
                           firstname= "%" + @names.last
                           surname = @names[0] + "%"
                         else
@@ -52,7 +56,7 @@ class AgentController < ApplicationController
               		  		  firstname = @names[0] + "%"
                         end
               		  		where_clause = "Surname LIKE '" + surname + "' and FirstName LIKE '" + firstname + "'"
-                        if windowMatch=="patient"
+                        if windowMatch=="patient" or windowMatch=="patient-clipboard"
                   		  		year = 2000 + bits['year'].to_i
                   		  		if year > Time.now.year
                   		  			year = year -100
