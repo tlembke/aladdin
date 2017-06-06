@@ -17,6 +17,10 @@
  .shrink {margin: .5em 0 0.5em !important;}
  .hrshrink {margin-top: 5px !important; margin-bottom: 5px !important;}
 
+ pre {
+  font:400 16px/20px 'PT Mono', monospace;
+ }
+
 
 @media print {
 	#content {float:none !important;}

@@ -204,6 +204,82 @@ class BillingController < ApplicationController
     end
   end
 
+
+  def express
+    # get appointments
+     @username = session[:username]
+     @password = session[:password]
+     @id=session[:id]
+     @name=session[:name]
+
+     connect_array=connect()
+     @error_code=connect_array[1]
+     if (@error_code==0)
+          dbh=connect_array[0]
+         @dateArray=[]
+         startDate=Date.new(2017,1,1)
+         endDate=Date.today
+         theDate=startDate
+         @total_charge=0
+         @clinic_days = 0
+         while theDate <= endDate
+
+           
+            @returnArray=get_charge(dbh,theDate)
+            @dateArray <<  @returnArray
+            if @returnArray[0]>0
+                @clinic_days = @clinic_days + 1
+                @total_charge += @returnArray[0]
+            end
+            theDate = theDate + 1.day
+         end
+         dbh.disconnect
+
+
+        
+
+
+
+
+
+          
+     else
+          flash[:alert] = "Unable to connect to database. "+ get_odbc
+          flash[:notice] = connect_array[2]
+          redirect_to  action: "login"
+     end
+
+     respond_to do |format|
+        format.html 
+        format.csv { 
+         send_data csv_file, filename: "billing.csv" 
+        }
+      end
+    end
+
+    def get_charge(dbh,startdate)
+           sql =  "SELECT Charge from Appt WHERE StartDate = '" + startdate.to_s(:db) +"' and ProviderID = 75"
+           puts sql
+           sth= dbh.run(sql)
+           daily_charge=0
+           count=0
+          sth.fetch do |row|
+            charge=row[0].to_s.gsub(/[$,]/,'').to_f
+            daily_charge+=charge
+            count = count+1
+          end
+          sth.drop
+
+          
+          return [daily_charge,count]
+
+
+
+    end
+
+
+         
+
     def get_bb(dbh,ageunder,ageover,startdate,enddate,initems,outitems)
 
           dateString = " AND Sale.ServiceDate >= '" + startdate + "' and Sale.ServiceDate < '" + enddate +"' " 

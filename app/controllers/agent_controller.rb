@@ -15,7 +15,7 @@ class AgentController < ApplicationController
 
               if params[:t]=="appt"
                 bits=@p.match(/(?<name>.*)/)
-                windowMatch="clipboard"
+                windowMatch="appt-clipboard"
               elsif params[:t]=="patient"
                   bits=@p.match(/(?<name>^\D*)(?<day>\d+)\/(?<month>\d+)\/(?<year>\d+)/)
                   windowMatch="patient-clipboard"
@@ -48,7 +48,7 @@ class AgentController < ApplicationController
                         #May not have a DOB
               		  		# dob is bits['day']/bits['month']/bits['year']
 
-                        if windowMatch=="clipboard" or windowMatch=="patient-clipboard"
+                        if windowMatch=="appt-clipboard" or windowMatch=="patient-clipboard"
                           firstname= "%" + @names.last
                           surname = @names[0] + "%"
                         else

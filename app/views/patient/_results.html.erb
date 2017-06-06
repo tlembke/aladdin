@@ -1,0 +1,11 @@
+						        <legend><i class="fa fa-tasks" aria-hidden="true"></i>  Recent Results</legend>
+						        
+						        <ul class="fa-ul">
+						        <% @patient.results.each do |patresult| %>
+						        	<li><i class="fa-li fa fa-square-o"></i> 
+
+<%= link_to consult['CONSULTDATE'].to_date.strftime("%d/%m/%y") + " " + +consult['DOCTORNAME'], patient_path(:id=> @id, :consult_id=> consult['ID'])%>
+
+						        	<%= patresult['COLLECTIONDATE'] %>  <%= patresult['TEST'] %></li>
+						        <% end %>
+						        </ul>

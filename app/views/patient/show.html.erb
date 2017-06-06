@@ -83,7 +83,11 @@
             <%= render partial: "notes",locals: {notes: @notes} %> 
                      <%= render "misc" %> 
              <%=render "appointments" %>
+             <%=render "results/results" %>
+             <%= link_to 'More results', patient_results_path(@id), {:class => "btn btn-lg btn-primary"} %>
+
              <%=render "registers" %>
+          
 
 
 

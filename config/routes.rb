@@ -1,5 +1,9 @@
 Rails.application.routes.draw do
 
+  get 'results/index'
+
+  get 'results/show'
+
   resources :prefs
   get 'agent/index'
 
@@ -10,6 +14,7 @@ Rails.application.routes.draw do
       get 'paeds'
       get 'assessments'
       get 'test'
+      get 'express'
 
     end
 
@@ -37,6 +42,8 @@ Rails.application.routes.draw do
   root 'patient#index', via: [:get, :post]
 
   resources :patient do
+    resources :results
+    
     collection do
         get 'index'
         post 'index'

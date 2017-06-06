@@ -110,6 +110,10 @@ class PatientController < ApplicationController
           
           @problems=get_problems(dbh,@consult['ID'])
 
+
+
+
+
           careplan=false
           if ! params[:consult]
             if params[:careplan]
@@ -143,6 +147,8 @@ class PatientController < ApplicationController
           @plan= tests_array[1]
 
           @patient = getall_patient(@id,dbh,"annual")
+
+
 
           @appointments = get_appointments(@id,dbh)
           @measures = get_measures(@id,dbh)
@@ -580,6 +586,10 @@ def healthsummary
           @ckd = has_condition?("ckd",@patient.current_problems)
 
           @prostateca=has_condition?("prostateca",@patient.current_problems)
+
+
+
+          @patient.results = get_results(id,dbh, 20)
 
 
           bpsweights=get_bps(id,dbh,50)
@@ -1493,10 +1503,7 @@ end
           return lipids
   end
 
-  def get_problem_list(patient,dbh)
-  
 
-  end
 
 
   def get_current_problems(patient,dbh)
@@ -1684,6 +1691,36 @@ end
          
           sth.drop
           return [returnMAM, returnFHH]
+
+  end 
+
+
+
+  def get_results(patient,dbh, limit=50)
+
+        sql = "SELECT Test, CollectionDate, HL7Type, Id FROM  DownloadedResult where PT_Id_FK = " + patient + " ORDER BY CollectionDate DESC LIMIT " +limit.to_s
+ 
+          puts sql
+         
+
+          sth = dbh.run(sql)
+               
+          results=[]
+          sth.fetch_hash do |row|
+
+            results << row
+          end
+
+
+
+
+          
+          
+
+         
+          sth.drop
+          
+          return results
 
   end 
 
