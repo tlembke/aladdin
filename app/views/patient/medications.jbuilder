@@ -37,7 +37,9 @@
             end
 
         end
-        json.dateWritten medication["CREATIONDATE"] ? medication["CREATIONDATE"].strftime("%Y-%m-%d") : ""
+        if medication["CREATIONDATE"]
+          json.dateWritten medication["CREATIONDATE"] ? medication["CREATIONDATE"].strftime("%Y-%m-%d") : ""
+        end
         json.status "active"
         json.patient do
          json.reference "Patient/"+@patient.ihi

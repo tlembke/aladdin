@@ -445,44 +445,75 @@ def healthsummary
         @error_code=connect_array[1]
         if (@error_code==0)
             dbh=connect_array[0]
+            @orionerrors=[]
             compressed_filestream = Zip::OutputStream.write_buffer do |zos|
                   @orions.each do |orion|
                       @id= orion.patient_id.to_s
                       @patient=get_patient(@id,dbh)
                       @hpio = get_hpio(dbh)
-                      @medications = get_medications_amt(@id,dbh)
-                      @current_problems = get_current_problems(@id,dbh)
+                      returnArray= get_medications_amt(@id,dbh)
+                       @medications = returnArray[0]
+                      mederrors=returnArray[1]
+                      if mederrors.count > 0
+                         mederrors.each do |mederror|
+                              @orionerrors << [@patient.fullname,mederror[0],mederror[1]]
+                          end
+                        
+
+                      end
+                      returnArray = get_current_problems_errors(@id,dbh)
+                      @current_problems=returnArray[0]
+                      proberrors=returnArray[1]
+                      if proberrors.count > 0
+                          proberrors.each do |proberror|
+                              @orionerrors << [@patient.fullname,proberror[0],proberror[1]]
+                          end
+                        
+
+                      end
                       @allergies=get_allergies(@id,dbh)
 
-                      json_file=get_json_stream(@id,"medications")
-                      zos.put_next_entry json_file[0]
-                      zos.print json_file[1]
+                      
+                       
 
-                      json_file=get_json_stream(@id,"allergies")
-                      zos.put_next_entry json_file[0]
-                      zos.print json_file[1]
+                        json_file=get_json_stream(@id,"medications")
+                        zos.put_next_entry json_file[0]
+                        zos.print json_file[1]
 
-                      json_file=get_json_stream(@id,"conditions")
-                      zos.put_next_entry json_file[0]
-                      zos.print json_file[1]
+                        json_file=get_json_stream(@id,"allergies")
+                        zos.put_next_entry json_file[0]
+                        zos.print json_file[1]
+
+                        json_file=get_json_stream(@id,"conditions")
+                        zos.put_next_entry json_file[0]
+                        zos.print json_file[1]
 
 
-                      json_file=get_json_stream(@id,"patient")
-                      zos.put_next_entry json_file[0]
-                      zos.print json_file[1]
+                        json_file=get_json_stream(@id,"patient")
+                        zos.put_next_entry json_file[0]
+                        zos.print json_file[1]
+
+                      
                     
 
                   end # do |orion|
              end # do |zos|
              dbh.disconnect
-             compressed_filestream.rewind
-             send_data compressed_filestream.read, filename: "orion.zip", type: 'application/zip'
+             if @orionerrors.count == 0 
+
+         
+              
+                  compressed_filestream.rewind
+                  send_data compressed_filestream.read, filename: "orion.zip", type: 'application/zip'
+                  return
+             end  # proberrors check
+            
              
         end # if error code
 
      end # end if count > 0
-    
-
+     render formats: [:html]
+  
 
   end # end orion
 
@@ -1173,6 +1204,7 @@ def healthsummary
           sth = dbh.run(sql)
           
           medications=[]
+          mederrors=[]
           sth.fetch_hash do |row|
             
              # now we need to find AMT code
@@ -1188,10 +1220,15 @@ def healthsummary
                 row["AMTName"] = row2[1]
               end
               sth2.drop
+
             else
                 row["AMT"]= ""
                 row["AMTName"] = ""
+                
 
+            end
+            if row["AMT"] == nil
+              mederrors << [row['MEDICATION'], "No AMT Code"]
             end
 
             #row["INSTRUCTIONS"]=expand_instruction(row["INSTRUCTIONS"])
@@ -1205,7 +1242,7 @@ def healthsummary
 
 
 
-          return medications
+          return [medications, mederrors]
   end
 
     def get_appointments(patient,dbh)
@@ -1503,9 +1540,6 @@ end
           return lipids
   end
 
-
-
-
   def get_current_problems(patient,dbh)
 
         sql = "SELECT Problem,Note,Confidential,TermCode,ICPCCode,Id,DiagnosisDate,SnomedCode FROM CurrentProblem where PT_Id_FK = " + patient
@@ -1529,6 +1563,39 @@ end
          
           sth.drop
           return current_problems
+
+  end
+
+
+
+  def get_current_problems_errors(patient,dbh)
+
+        sql = "SELECT Problem,Note,Confidential,TermCode,ICPCCode,Id,DiagnosisDate,SnomedCode FROM CurrentProblem where PT_Id_FK = " + patient
+ 
+          puts sql
+         
+
+          sth = dbh.run(sql)
+          proberrors=[] 
+          current_problems=[]
+          sth.fetch_hash do |row|
+
+            # Should we update local model here instead
+            if row['CONFIDENTIAL'] == "false"
+                 current_problems<< row
+            end
+            if row['ICPCCODE'] == ""
+                 errorArray=[row['PROBLEM'],"No code"]
+                 proberrors << errorArray
+                 
+            end
+          end
+
+         
+
+         
+          sth.drop
+          return [current_problems, proberrors]
 
   end
 

@@ -1,14 +1,17 @@
-<% @title = "Showing register" %>
+<% @title = @register.name + " register"%>
 
 <div class="container">
   <div class="row">
     <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-      <div class="form-horizontal">
-                <div class="form-actions col-md-offset-2">
-          <%= link_to fa_icon_tag("pencil") + ' Edit', edit_register_path(@register), class: 'btn btn-primary' %>
-          <%= link_to 'Back', registers_path, class: 'btn' %>
-        </div>
-      </div>
+          <table>
+          <% @patients.each do |patient| %>
+                <tr>
+                  <td><%= patient.fullname %> </td>
+
+                </tr>
+
+         <% end %>
+         </table>
     </div>
   </div>
 </div>

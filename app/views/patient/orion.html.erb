@@ -1,0 +1,24 @@
+Orion file was not downloaded due to the following errors<table>
+<tr>
+<th>Patient</th>
+<th>Field</th>
+<th>Error</th>
+
+</tr>
+
+<% @orionerrors.each do |orionerror| %>
+<tr>
+<td> <%= orionerror[0] %> </td>
+<td> <%= orionerror[1] %> </td>
+<td> <%= orionerror[2] %> </td>
+</tr>
+<% end %>
+</table>
+
+
+
+
+
+
+
+

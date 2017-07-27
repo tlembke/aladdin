@@ -1,3 +1,4 @@
+<% debugger %>
 <div class="row">
 	<div class="col-md-2">
 		GPMP (721)
@@ -25,11 +26,12 @@
 	 EPC Review (732)
 	</div>
 	<div class="col-md-3">
-		<% if @item_numbers['732'] %>
+		<% tag= "span" %>
+		<% if @item_numbers['732'] and @item_numbers['721'] %>
 		<% Time.now <  @item_numbers['721'] + 12.months and Time.now > @item_numbers['732'] + 3.months ? tag= "mark" : tag= "span" %>
-
-		<%= content_tag(tag, @item_numbers['732'].strftime("%d/%m/%y")) %>
 		<% end %>
+		<%= content_tag(tag, @item_numbers['732'].strftime("%d/%m/%y")) %>
+	
 	</div>
 </div>
 <div class="row">

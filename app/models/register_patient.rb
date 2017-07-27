@@ -1,4 +1,4 @@
 class RegisterPatient < ActiveRecord::Base
-	belongs_to :patients
-	belongs_to :registers
+	belongs_to :patient
+	belongs_to :register
 end
