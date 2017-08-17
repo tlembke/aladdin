@@ -99,6 +99,239 @@ class BillingController < ApplicationController
     end
   end
 
+
+
+
+  def pip
+         # get appointments
+     @username = session[:username]
+     @password = session[:password]
+     @id=session[:id]
+     @name=session[:name]
+
+     connect_array=connect()
+     @error_code=connect_array[1]
+     if (@error_code==0)
+        dbh=connect_array[0]
+
+        smearDate = 30.months.ago.to_s(:db)   
+        sql = "SELECT COUNT(id) from Patient where Sex = 'F' and Age > 19 and Age < 66 and Inactive = False and LASTSMEAR > '" + smearDate +"'"
+        puts sql
+        sth = dbh.run(sql)
+        row= sth.fetch_first
+        @smearDone = row[0]
+        sth.drop
+        sql = "SELECT COUNT(id) from Patient where Sex = 'F' and Age > 19 and Age < 66 and Inactive = False"
+        puts sql
+        sth = dbh.run(sql)
+        row= sth.fetch_first
+        @smearTotal= row[0]
+        sth.drop
+
+        mamDate = 24.months.ago.to_s(:db)  
+        sql = "SELECT COUNT(id) from Patient where Sex = 'F' and Age > 49 and Age < 71 and Inactive = False and LASTMAMMOGRAM> '" + mamDate +"'"
+        puts sql
+        sth = dbh.run(sql)
+        row= sth.fetch_first
+        @mamDone= row[0]
+        sth.drop
+        sql = "SELECT COUNT(id) from Patient where Sex = 'F' and Age > 49 and Age < 71 and Inactive = False"
+        puts sql
+        sth = dbh.run(sql)
+        row= sth.fetch_first
+        @mamTotal= row[0]
+        sth.drop
+
+        @users = getProviders(dbh)
+        #@appt_array = getThirdAvailable(dbh,94)
+        #@appts = @appt_array[0]
+        #@nextAppt = @appt_array[1]
+
+
+
+
+
+
+        dbh.disconnect
+     else
+          flash[:alert] = "Unable to connect to database. "+ get_odbc
+          flash[:notice] = connect_array[2]
+          redirect_to  action: "login"
+     end
+
+     respond_to do |format|
+        format.html 
+        format.csv { 
+         send_data csv_file, filename: "billing.csv" 
+        }
+     end
+    
+
+  end
+
+
+  def getProviders(dbh)
+
+          sql = "SELECT  Name, Id FROM Preference  where Inactive = False and ProviderType = 2 and ProviderNum <> '' ORDER BY Surname"
+          puts sql
+         
+
+          sth = dbh.run(sql)
+               
+          users=[]
+          sth.fetch_hash do |row|
+            thirdAvailableArray= getThirdAvailable(dbh,row['ID'])
+           
+            users << [row['NAME'],row['ID'], thirdAvailableArray[0],thirdAvailableArray[1]]
+          end
+
+          sth.drop
+          return users
+
+  end
+
+
+
+  def getThirdAvailable(dbh,doctor,startDate=Date.today)
+            timeNow = DateTime.now
+           endDate = startDate + 2.months
+           sql =  "SELECT StartDate, StartTime, ApptDuration from Appt WHERE StartDate >= '" + startDate.to_s(:db) + "' AND StartDate < '" + endDate.to_s(:db) + "' AND ProviderID = " + doctor.to_s + " ORDER BY StartDate, StartTime"
+           puts sql
+           sth= dbh.run(sql)
+           appts=[]
+           sth.fetch do |row|
+              # genie does a funny thing where the StartTime ddmmyy are wrong, only the time counts !
+              # appt duration is in secs and 900 secs = 15 minutes
+
+             t=row[1]
+             d=row[0]
+             unless d.instance_of?(Date)
+              d=Date.strptime(row[0], '%d/%m/%y')
+             end
+             t=t.change(:year => d.year, :month => d.month,:day => d.day)
+ 
+             appts<<[t, row[2]]
+
+          end
+          sth.drop
+          available=0
+          freeAppt=0
+          dateBlocked={}
+          if appts.count>0
+                    nextAppt = appts[0][0]
+                    freeAppt=nextAppt
+                    appts.each do |appt|
+                        # is the next appt blank
+                            # create Ruby Date from StartDate, StartTime
+                            #t = Time.new(1993, 02, 24, 12, 0, 0, "+09:00")
+                            t=appt[0]
+
+                            
+                            # is this expected appt
+                            while t > nextAppt
+                                # is this part of an ApptBlock eg Annual Leave
+                                # if so, skip to the next day
+
+                                #grades = { "Jane Doe" => 10, "Jim Doe" => 6 }
+                              
+                                thisDay = Date.new(nextAppt.year,nextAppt.month,nextAppt.day)
+                                thisDayKey=thisDay.to_s(:db)
+
+                                
+                                unless dateBlocked.key?(thisDayKey)
+                                    if thisDay.saturday? or thisDay.sunday?
+                                      dateBlocked[thisDayKey] = 1
+                                    else
+
+
+                                      sql =  "SELECT Id from ApptBlock WHERE StartDate = '" + thisDayKey + "' and ProviderID = " + doctor.to_s
+                                      puts sql
+                                      sth= dbh.run(sql)
+                                      dateBlocked[thisDayKey] = sth.nrows
+                                      puts thisDayKey
+                                      puts dateBlocked[thisDayKey]
+                                      sth.drop
+                                    end
+                                end
+                                # is not availbale if no other appts on that day. Will always have lunch etc
+                                # so are there any other appts on this day
+                                # only need to check once per day, so check at 8;30
+                                  if dateBlocked[thisDayKey] == 0 and nextAppt.hour == 8 and nextAppt.min == 30
+
+
+
+                                     sql =  "SELECT Id from Appt WHERE StartDate = '" + thisDayKey + "'  AND ProviderID = " + doctor.to_s
+                                     puts sql
+
+                                      sth= dbh.run(sql)
+                                    
+                                      if sth.nrows == 0 
+                                            # there are no appts on this day so it is not available
+                                          dateBlocked[thisDayKey] = 1
+                                          
+                                      end
+            
+                                      sth.drop
+                                    
+                                end                              
+
+
+
+                                if dateBlocked[thisDayKey]==0
+                                     available = available + 1
+                                     freeAppt = nextAppt unless available > 3
+                                     nextAppt = nextAppt + 900.seconds
+
+                                     if nextAppt.hour == 16 and nextAppt.min > 30
+                                          
+                                          nextAppt = nextAppt + 1.day
+                                          nextAppt= nextAppt.change(:hour => 8, :min=>30)
+                                     end
+                                 else
+                                        nextAppt = nextAppt + 1.day
+                                        nextAppt= nextAppt.change(:hour => 8, :min=>30)
+                                        
+                                        
+                                 end 
+                                 sth.drop
+                            end
+                            
+                            nextAppt = t + appt[1].seconds
+                            if nextAppt.hour == 16 and nextAppt.min > 30
+                                    
+                                    nextAppt = nextAppt + 1.day
+                                    nextAppt= nextAppt.change(:hour => 8, :min=>30)
+                            end
+                            
+                            break if available > 3
+                    end
+          end
+          #how many patients are in the queue?
+          queue = 0
+          if freeAppt != 0 
+
+            endTime = freeAppt.hour.to_s + ":" + freeAppt.min.to_s + ":00"
+           
+            
+  
+           sql =  "SELECT Id from Appt WHERE Status = 7 AND StartDate >= '" + startDate.to_s(:db) + "'  AND (StartDate < '" + freeAppt.to_s(:db) + "' OR (StartDate = '" + freeAppt.to_s(:db) + "' and StartTime < '"+ endTime + "' )) AND ProviderID = " + doctor.to_s + " AND (Reason = '' or Reason = 'General Chec' or Reason = 'LICENCE' or Reason = 'Immunisation')"
+           
+          puts sql
+
+          sth= dbh.run(sql)
+                                    
+          queue = sth.nrows
+
+            
+           sth.drop
+         end
+
+          return [freeAppt,queue]
+
+
+
+  end
+
   def assessments
          # get appointments
      @username = session[:username]
@@ -412,4 +645,7 @@ class BillingController < ApplicationController
     return csv_string
 
   end
+
+
+
 end
