@@ -29,8 +29,9 @@
 		<% tag= "span" %>
 		<% if @item_numbers['732'] and @item_numbers['721'] %>
 		<% Time.now <  @item_numbers['721'] + 12.months and Time.now > @item_numbers['732'] + 3.months ? tag= "mark" : tag= "span" %>
-		<% end %>
 		<%= content_tag(tag, @item_numbers['732'].strftime("%d/%m/%y")) %>
+		<% end %>
+		
 	
 	</div>
 </div>
