@@ -21,9 +21,9 @@ ActiveRecord::Schema.define(version: 20170513044448) do
     t.integer  "measure_id"
     t.integer  "active"
     t.integer  "parent"
-    t.integer  "master_id"
     t.datetime "created_at",   null: false
     t.datetime "updated_at",   null: false
+    t.integer  "master_id"
     t.decimal  "target"
     t.string   "autoload"
   end
