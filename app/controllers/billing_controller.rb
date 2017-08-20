@@ -2,7 +2,7 @@ class BillingController < ApplicationController
  require 'csv'
 
   def index
-
+      
   end
 
   def test
