@@ -1,2 +1,24 @@
-This year, the clinic was held on <%= @clinic_days %> for a total charge of <%=@total_charge %> and an avergae of <%= @total_charge / @clinic_days %>
-<%= @dateArray %>
+<% @title = "Express Clinic" %> 
+<legend><i class="fa fa-line-chart"></i>Express Clinic</legend>
+
+
+<table class='table table-condensed table-striped tab;e-bordered'>
+<thead>
+<tr>
+	<th colspan = 3>Express Clinic</th>
+</tr>
+
+</thead>
+
+	<tbody>
+	<tr><td>Number of Days this year </td><td><%= @clinic_days %></td></tr>
+	<tr><td>Total Billing  </td><td>$<%=@total_charge.round %></td></tr>
+	<tr><td>Daily average Billing  </td><td>$<%= (@total_charge / @clinic_days).round %></td></tr>
+
+
+</tbody>
+</table>
+
+ <%= content_tag :div,"", class: "chart",id: "express", data: {values: @charted_values, labels: ["Total"], xkey: "DATE", ykeys: ["VALUE"], units: "$"   }, style: "min-height: 250px;" %>
+
+

@@ -2,7 +2,7 @@ class BillingController < ApplicationController
  require 'csv'
 
   def index
-      
+
   end
 
   def test
@@ -714,6 +714,7 @@ class BillingController < ApplicationController
          theDate=startDate
          @total_charge=0
          @clinic_days = 0
+         @charted_values=[]
          while theDate <= endDate
 
            
@@ -722,13 +723,16 @@ class BillingController < ApplicationController
             if @returnArray[0]>0
                 @clinic_days = @clinic_days + 1
                 @total_charge += @returnArray[0]
+                value_h ={"DATE" => theDate, "VALUE" => @returnArray[0].round } 
+                @charted_values << value_h
+
+
             end
             theDate = theDate + 1.day
          end
          dbh.disconnect
+         
 
-
-        
 
 
 
