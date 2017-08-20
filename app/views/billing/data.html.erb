@@ -1,0 +1,53 @@
+<% @title = "Data Quality" %> 
+<legend><i class="fa fa-line-chart"></i>Coded Diagnoses</legend>
+<table class='table table-condensed table-striped tab;e-bordered'>
+<tr><td>Total Diagnoses </td><td><%= @diagnosesTotal%> </td></tr>
+<tr><td>Coded Diagnoses </td><td><%= @diagnosesTotal.to_i - @diagnosesUncoded.to_i %> </td></tr>
+<tr><td>Uncoded Diagnoses</td><td> <%= @diagnosesUncoded %> </td></tr>
+<tr><td>Target </td><td> 100% </td></tr>
+<tr><td>Achieved</td><td><%= ((@diagnosesTotal.to_f - @diagnosesUncoded.to_f)/@diagnosesTotal.to_f * 100).to_i %>% </td></tr>
+</table>
+
+
+<legend><i class="fa fa-line-chart"></i>Allergies Recorded</legend>
+<table class='table table-condensed table-striped tab;e-bordered'>
+<tr><td>Total Active Patients </td><td><%= @patientsTotal%> </td></tr>
+<tr><td>Patients with recored allergies </td><td><%= @allergiesCount %> </td></tr>
+<tr><td>Patients without recored allergies </td><td> <%= @patientsTotal.to_i - @allergiesCount.to_i%> </td></tr>
+<tr><td>Target </td><td> 100% </td></tr>
+<tr><td>Achieved</td><td><%= ((@allergiesCount.to_f)/@patientsTotal.to_f * 100).to_i %>% </td></tr>
+</table>
+
+<legend><i class="fa fa-line-chart"></i>Smoking</legend>
+<table class='table table-condensed table-striped tab;e-bordered'>
+<tr><td>Total Active Patients aged >= 18 </td><td><%= @patientsAdult%> </td></tr>
+<tr><td>Smoking Recorded</td><td><%= @smokingRecorded.to_i %> </td></tr>
+<tr><td>Smoking Unrecorded</td><td><%= @smokingUnrecorded.to_i %> </td></tr>
+<tr><td>Target </td><td> 100% </td></tr>
+<tr><td>Achieved</td><td><%= (@smokingRecorded.to_f/@patientsAdult.to_f * 100).to_i %>% </td></tr>
+<tr><td>Non Smokers</td><td><%= @smokingNon %> </td></tr>
+<tr><td>Current Smokers</td><td><%= @smokingCurrent %> </td></tr>
+<tr><td>Smoking Rate</td><td><%= (@smokingCurrent.to_f / @smokingRecorded.to_f * 100).to_i%>%</td></tr>
+</table>
+
+<legend><i class="fa fa-line-chart"></i>Weight Recorded</legend>
+<table class='table table-condensed table-striped tab;e-bordered'>
+<tr><td>Total Active Patients </td><td><%= @patientsTotal%> </td></tr>
+<tr><td>Patients with weight recorded </td><td><%= @weightCount %> </td></tr>
+<tr><td>Patients without weight recorded</td><td> <%= @patientsTotal.to_i - @weightCount.to_i%> </td></tr>
+<tr><td>Target </td><td> 100% </td></tr>
+<tr><td>Achieved</td><td><%= ((@weightCount.to_f)/@patientsTotal.to_f * 100).to_i %>% </td></tr>
+</table>
+
+<legend><i class="fa fa-line-chart"></i>Care Plans</legend>
+<table class='table table-condensed table-striped tab;e-bordered'>
+<tr><td>Total Patients on Care Plan</td><td><%= @cp_uploads[0]%> </td></tr>
+<tr><td>Total Active Patients </td><td><%= @patientsTotal%> </td></tr>
+<tr><td>Percentage on Care Plan</td><td><%= (@cp_uploads[0].to_f/@patientsTotal.to_f * 100).to_i %>% </td></tr>
+<tr><td>Patients on Care Plan with SHS uploaded</td><td><%= @cp_uploads[1] %> </td></tr>
+<tr><td>Target </td><td> 100% </td></tr>
+<tr><td>Achieved</td><td><%= (@cp_uploads[1].to_f/@cp_uploads[0].to_f * 100).to_i %>% </td></tr>
+</table>
+
+
+

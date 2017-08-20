@@ -17,6 +17,7 @@ Rails.application.routes.draw do
       get 'express'
       get 'pip'
       get 'appointments'
+      get 'data'
 
     end
 

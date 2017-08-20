@@ -157,6 +157,125 @@ class BillingController < ApplicationController
     end
   end
 
+  def data
+        # get appointments
+     @username = session[:username]
+     @password = session[:password]
+     @id=session[:id]
+     @name=session[:name]
+
+     connect_array=connect()
+     @error_code=connect_array[1]
+     if (@error_code==0)
+        dbh=connect_array[0]
+
+ 
+        sql = "SELECT Count(Id) FROM Patient where Patient.Inactive = False "
+        sth = dbh.run(sql)
+        row= sth.fetch_first
+        @patientsTotal = row[0]
+        sth.drop
+
+         sql = "SELECT Count(Id) FROM Patient where Patient.Inactive = False and Age > 17"
+        sth = dbh.run(sql)
+        row= sth.fetch_first
+        @patientsAdult = row[0]
+        sth.drop
+
+
+        
+        sql = "SELECT Count(CurrentProblem.Id) FROM CurrentProblem, Patient where CurrentProblem.PT_Id_FK = Patient.Id and Patient.Inactive = False "
+        sth = dbh.run(sql)
+        row= sth.fetch_first
+        @diagnosesTotal = row[0]
+        sth.drop
+        sql = "SELECT Count(CurrentProblem.Id) FROM CurrentProblem, Patient where CurrentProblem.PT_Id_FK = Patient.Id and Patient.Inactive = False and CurrentProblem.ICPCCode = ''"
+         puts sql
+        sth = dbh.run(sql)
+        row= sth.fetch_first
+        @diagnosesUncoded = row[0]
+        sth.drop
+
+
+        sql = "SELECT DISTINCT Patient.ID FROM Allergy,Patient where Allergy.PT_Id_FK = Patient.Id and Patient.Inactive = False"
+        sth = dbh.run(sql)
+        @allergiesCount = sth.nrows
+        sth.drop
+
+        sql = "SELECT COUNT(id) from Patient WHERE SmokingFreq > 0 and Inactive= False and Age > 17"
+        puts sql
+        sth = dbh.run(sql)
+        row= sth.fetch_first
+        @smokingRecorded= row[0]
+        sth.drop
+
+        sql = "SELECT COUNT(id) from Patient WHERE SmokingFreq = 0 and Inactive= False and Age > 17"
+        puts sql
+        sth = dbh.run(sql)
+        row= sth.fetch_first
+        @smokingUnrecorded= row[0]
+        sth.drop
+
+        sql = "SELECT COUNT(id) from Patient WHERE SmokingFreq > 3 and Inactive= False and Age > 17"
+        puts sql
+        sth = dbh.run(sql)
+        row= sth.fetch_first
+        @smokingNon= row[0]
+        sth.drop
+
+        sql = "SELECT COUNT(id) from Patient WHERE SmokingFreq > 0 and SmokingFreq <4 and Inactive= False and Age > 17"
+        puts sql
+        sth = dbh.run(sql)
+        row= sth.fetch_first
+        @smokingCurrent= row[0]
+        sth.drop
+
+        sql = "SELECT DISTINCT Patient.Id from Patient,Measurement where Measurement.PT_Id_FK = Patient.ID and Measurement.Weight > 0 and Patient.Inactive = False "
+        puts sql
+        sth = dbh.run(sql)
+        @weightCount = sth.nrows
+        sth.drop
+
+        @cp_uploads = get_cp_uploads(dbh)
+
+
+
+
+
+
+        
+
+        
+
+
+
+        # @users = getProviders(dbh)
+        #@appt_array = getThirdAvailable(dbh,94)
+        #@appts = @appt_array[0]
+        #@nextAppt = @appt_array[1]
+
+
+
+
+
+
+        dbh.disconnect
+     else
+          flash[:alert] = "Unable to connect to database. "+ get_odbc
+          flash[:notice] = connect_array[2]
+          redirect_to  action: "login"
+     end
+
+     respond_to do |format|
+        format.html 
+        format.csv { 
+         send_data csv_file, filename: "billing.csv" 
+        }
+     end
+
+
+  end
+
 
 
 
@@ -919,6 +1038,39 @@ class BillingController < ApplicationController
           
 
 
+
+  end
+
+
+ # get patients being managed under care plan and their total billing last 12 months
+ def get_cp_uploads(dbh)
+          today=Date.today.to_s(:db)
+          lastyear=1.year.ago.to_s(:db)
+          sql = "SELECT DISTINCT(Patient.Id) FROM Patient,Sale where Patient.Id = Sale.PT_Id_FK  and Sale.ServiceDate > '" + lastyear + "'  AND Patient.Inactive = False and (Sale.ItemNum = '721' or Sale.ItemNum = '723' or Sale.ItemNum ='732')"
+          puts sql
+ 
+         
+
+          sth = dbh.run(sql)
+          cp_total = sth.nrows
+          cp_uploads=0
+          sth.fetch do |row|
+
+
+                sql2 = "SELECT Count(Id) FROM CDA where SentToPCEHR = true and PT_Id_FK = " + row[0].to_s
+                puts sql2
+                sth2 = dbh.run(sql2)
+                row2 = sth2.fetch_first
+                if row2[0].to_i > 0
+                    cp_uploads += 1
+                end
+                sth2.drop
+           end
+    
+           sth.drop
+
+        return [cp_total, cp_uploads]
+          
 
   end
 
