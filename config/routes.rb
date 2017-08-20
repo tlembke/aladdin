@@ -10,7 +10,7 @@ Rails.application.routes.draw do
   resources :billing do
     collection do
       get 'index'
-      get 'ccp'
+      get 'cpp'
       get 'paeds'
       get 'assessments'
       get 'test'
