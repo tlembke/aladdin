@@ -214,6 +214,23 @@ class BillingController < ApplicationController
         @diabeticTotal= row[0]
         sth.drop
 
+        
+        @shs=[]
+        @charted_values = []
+    
+        count=0
+        while count < 24
+            shsCount = shs(dbh, 0, count.months.ago)
+            @shs << shsCount     
+            value_h ={"DATE" => count.months.ago.end_of_quarter, "SHS" => shsCount  } 
+            @charted_values << value_h
+            count = count +3 
+            
+        end
+
+        @shsusers = getUsersSHS(dbh)
+
+        
 
 
 
@@ -243,6 +260,54 @@ class BillingController < ApplicationController
     
 
   end
+
+  def shs(dbh,user=0,indexDate = Date.today)
+    # this gets the number of shs done in his quarter
+    startDate = indexDate.beginning_of_quarter
+    endDate = indexDate.end_of_quarter
+    userStr = ""
+    if user!= 0
+      userStr = "AuthorPersonHPII = '" + user.to_s + "' AND "
+    end
+    sql = "SELECT Count(Id) FROM CDA where " + userStr + "CreationDate >= '" + startDate.to_s(:db) + "' AND CreationDate <= '" + endDate.to_s(:db) + "' AND SentToPCEHR = true"
+    puts sql
+    sth = dbh.run(sql)
+    row = sth.fetch_first
+    
+    sth.drop
+
+    return row[0] ? row[0] : 0
+
+
+  end
+
+
+
+
+    def getUsersSHS(dbh)
+
+          sql = "SELECT  Name, Id, HPII FROM Preference  where Inactive = False and ProviderType = 2 and ProviderNum <> '' ORDER BY Surname"
+          puts sql
+         
+
+          sth = dbh.run(sql)
+               
+          users=[]
+          sth.fetch_hash do |row|
+            shsDone= shs(dbh,row['HPII'])
+            shsDoneLast = shs(dbh,row['HPII'],3.months.ago)
+           
+            users << [row['NAME'],row['HPII'], shsDone, shsDoneLast]
+          end
+
+          sth.drop
+          return users
+
+  end
+
+
+
+
 
 
   def getProviders(dbh)
@@ -723,7 +788,7 @@ class BillingController < ApplicationController
             if @returnArray[0]>0
                 @clinic_days = @clinic_days + 1
                 @total_charge += @returnArray[0]
-                value_h ={"DATE" => theDate, "VALUE" => @returnArray[0].round } 
+                value_h ={"DATE" => theDate, "SUM" => @returnArray[0].round  } 
                 @charted_values << value_h
 
 

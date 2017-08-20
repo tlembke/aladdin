@@ -27,5 +27,34 @@
 
 <p>
 
+<legend><i class="fa fa-line-chart"></i>Shared Health Summary</legend>
+<table class='table table-condensed table-striped tab;e-bordered'>
+<tr><td>Total</td><td><%= @shs[0] %> </td></tr>
+
+<tr><td>Target </td><td> 25 </td></tr>
+<tr><td>Number required</td><td><%= 25 - @shs[0].to_i  %> </td></tr>
+</table>
+
+ <%= content_tag :div,"", class: "chart",id: "shs", data: {values: @charted_values, labels: ["Total"], xkey: "DATE", ykeys: ["SHS"], units: " Uploads" , goals: [25]  }, style: "min-height: 250px;" %>
+
+
+
+ <table class='table table-condensed table-striped tab;e-bordered'>
+<thead>
+<tr>
+	<th>Provider</th><th>Uploads this quarter</th><th>Uploads last quarter</th>
+</tr>
+
+</thead>
+
+	<tbody>
+	<tr><td>Overall </td><td><%= @shs[0] %></td><td><%= @shs[1] %></td>
+<% @shsusers.each do |user| %>
+
+	<tr><td><%= user[0]  %> </td><td><%= user[2] %></td><td><%= user[3] %></td></tr>
+<% end %>
+</tbody>
+</table>
+
 
 

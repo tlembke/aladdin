@@ -103,6 +103,7 @@ $(document).ready(function() {
             parseTime: 'true',
             goals: chart.data('goals'),
             postUnits: chart.data('units'),
+            preUnits: chart.data('preunits'),
             ykeys: chart.data('ykeys'),
             goalLineColors: ['red'],
             labels: chart.data('labels'),

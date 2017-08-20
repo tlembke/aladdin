@@ -19,6 +19,6 @@
 </tbody>
 </table>
 
- <%= content_tag :div,"", class: "chart",id: "express", data: {values: @charted_values, labels: ["Total"], xkey: "DATE", ykeys: ["VALUE"], units: "$"   }, style: "min-height: 250px;" %>
+ <%= content_tag :div,"", class: "chart",id: "express", data: {values: @charted_values, labels: ["Total"], xkey: "DATE", ykeys: ["SUM"], preunits: "$"   }, style: "min-height: 250px;" %>
 
 
