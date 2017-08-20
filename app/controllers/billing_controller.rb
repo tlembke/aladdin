@@ -530,8 +530,10 @@ class BillingController < ApplicationController
            apptTime  = nextAppt.hour.to_s + ":" + nextAppt.min.to_s + ":00"
             prevAppt = nextAppt - 15.minutes
             prevApptTime  = prevAppt.hour.to_s + ":" + prevAppt.min.to_s + ":00"
+            prevprevAppt = prevAppt - 15.minutes
+            prevprevApptTime  = prevprevAppt.hour.to_s + ":" + prevprevAppt.min.to_s + ":00"
 
-            sql =  "SELECT Id from Appt WHERE StartDate = '" + apptDate.to_s(:db) + "' and (StartTime ='" + apptTime + "' or (StartTime ='" + prevApptTime + "' and ApptDuration > 900)) AND ProviderID = " + doctor.to_s
+            sql =  "SELECT Id from Appt WHERE StartDate = '" + apptDate.to_s(:db) + "' and (StartTime ='" + apptTime + "' or (StartTime ='" + prevApptTime + "' and ApptDuration > 900) or (StartTime ='" + prevprevApptTime + "' and ApptDuration > 1800)) AND ProviderID = " + doctor.to_s
             puts sql
             sth= dbh.run(sql)
             if sth.nrows == 0 
