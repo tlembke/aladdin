@@ -27,6 +27,8 @@
     <li><%= link_to "Disconnect", controller: "genie", action: "login" %></li>
   
     <li role="separator" class="divider"></li>
+    <li><%= link_to "Anaylsis", billing_index_path, { "data-no-turbolink" => "true"} %></li>
+    <li role="separator" class="divider"></li>
     <li><%= link_to "Goals",goals_path, { "data-no-turbolink" => "true"} %></li>
     <li><%= link_to "Measures",measures_path, { "data-no-turbolink" => "true"} %></li>
     <li><%= link_to "Masters",masters_path, { "data-no-turbolink" => "true"} %></li>
