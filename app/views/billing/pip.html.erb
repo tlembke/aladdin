@@ -16,15 +16,16 @@
 <tr><td>Acheived</td><td><%= (@mamDone.to_f/@mamTotal.to_f * 100).to_i %>% </td></tr>
 </table>
 
+<legend><i class="fa fa-line-chart"></i>Diabetic Cycles of Care</legend>
+<table class='table table-condensed table-striped tab;e-bordered'>
+<tr><td>Total Diabetics </td><td><%= @diabeticTotal %> </td></tr>
+<tr><td>Total Cycles of Care </td><td><%= @diabeticCycles %> </td></tr>
+
+<tr><td>Target </td><td> 70% </td></tr>
+<tr><td>Acheived</td><td><%= (@diabeticCycles.to_f/@diabeticTotal.to_f * 100).to_i %>% </td></tr>
+</table>
+
 <p>
 
-Third Available Routine Appointments
 
-<table class='table table-condensed table-striped tab;e-bordered'>
-
-<% @users.each do |user| %>
-
-	<tr><td><%= user[0] %></td><td><%= user[1] %></td><td><%= user[2].strftime("%I:%M%p %d/%m/%Y") unless user[2] == 0 %></td><td><%= distance_of_time_in_words_to_now(user[2]) unless user[2] == 0 %></td><td> Queue <%= user[3] %></td></tr>
-<% end %>
-</table>
 

@@ -1,0 +1,21 @@
+<% @title = "Appointments" %> 
+<legend><i class="fa fa-line-chart"></i>Third Available Appointment</legend>
+
+
+<table class='table table-condensed table-striped tab;e-bordered'>
+<thead>
+<tr>
+	<th>Provider</th><th>3AA</th><th>Days</th><th>Queue</th><th>Booked Total</th>
+</tr>
+
+</thead>
+
+	<tbody>
+	<tr><td>Overall </td><td><%= @overall.strftime("%I:%M%p %d/%m/%Y") unless @overall == 0 %></td><td><%= distance_of_time_in_words_to_now(@overall) unless @overall == 0 %></td><td></td><td>@overallTotal</td></tr>
+
+<% @users.each do |user| %>
+
+	<tr><td><%= user[0] %></td><td><%= user[2].strftime("%I:%M%p %d/%m/%Y") unless user[2] == 0 %></td><td><%= distance_of_time_in_words_to_now(user[2]) unless user[2] == 0 %></td><td> Queue <%= user[3] %></td><td> Booked <%= user[4] %></td></tr>
+<% end %>
+</tbody>
+</table>

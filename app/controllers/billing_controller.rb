@@ -47,6 +47,64 @@ class BillingController < ApplicationController
     end
   end
 
+  def appointments
+
+    @username = session[:username]
+     @password = session[:password]
+     @id=session[:id]
+     @name=session[:name]
+
+     connect_array=connect()
+     @error_code=connect_array[1]
+     if (@error_code==0)
+        dbh=connect_array[0]
+
+
+
+           
+            
+  
+           sql =  "SELECT Id from Appt WHERE  StartDate >= '" + Date.today.to_s(:db) + "'  and PT_Id_FK > 0"
+           
+          puts sql
+
+          sth= dbh.run(sql)
+                                    
+          @overallTotal = sth.nrows
+
+            
+           sth.drop
+
+        @overall =  overall3AA(dbh)
+
+
+        @users = getProviders(dbh)
+        #@appt_array = getThirdAvailable(dbh,94)
+        #@appts = @appt_array[0]
+        #@nextAppt = @appt_array[1]
+
+
+
+
+
+
+        dbh.disconnect
+     else
+          flash[:alert] = "Unable to connect to database. "+ get_odbc
+          flash[:notice] = connect_array[2]
+          redirect_to  action: "login"
+     end
+
+     respond_to do |format|
+        format.html 
+
+     end
+    
+
+ 
+
+  end
+
 
  
 
@@ -142,7 +200,24 @@ class BillingController < ApplicationController
         @mamTotal= row[0]
         sth.drop
 
-        @users = getProviders(dbh)
+        lastYear = 1.year.ago.to_s(:db)  
+        sql = "SELECT COUNT(id) FROM Patient WHERE Diabetic = True and Inactive= False and DiabetesCycleDate > '" + lastYear +"'"
+        puts sql
+        sth = dbh.run(sql)
+        row= sth.fetch_first
+        @diabeticCycles = row[0]
+        sth.drop
+        sql = "SELECT COUNT(id) from Patient WHERE Diabetic = True and Inactive= False"
+        puts sql
+        sth = dbh.run(sql)
+        row= sth.fetch_first
+        @diabeticTotal= row[0]
+        sth.drop
+
+
+
+
+        # @users = getProviders(dbh)
         #@appt_array = getThirdAvailable(dbh,94)
         #@appts = @appt_array[0]
         #@nextAppt = @appt_array[1]
@@ -182,7 +257,7 @@ class BillingController < ApplicationController
           sth.fetch_hash do |row|
             thirdAvailableArray= getThirdAvailable(dbh,row['ID'])
            
-            users << [row['NAME'],row['ID'], thirdAvailableArray[0],thirdAvailableArray[1]]
+            users << [row['NAME'],row['ID'], thirdAvailableArray[0],thirdAvailableArray[1],thirdAvailableArray[2]]
           end
 
           sth.drop
@@ -194,11 +269,17 @@ class BillingController < ApplicationController
 
   def getThirdAvailable(dbh,doctor,startDate=Date.today)
             timeNow = DateTime.now
+
+            providerStr = ""
+            if doctor != 0
+              providerStr =  " AND ProviderID = " + doctor.to_s
+            end 
            endDate = startDate + 2.months
-           sql =  "SELECT StartDate, StartTime, ApptDuration from Appt WHERE StartDate >= '" + startDate.to_s(:db) + "' AND StartDate < '" + endDate.to_s(:db) + "' AND ProviderID = " + doctor.to_s + " ORDER BY StartDate, StartTime"
+           sql =  "SELECT StartDate, StartTime, ApptDuration from Appt WHERE StartDate >= '" + startDate.to_s(:db) + "' AND StartDate < '" + endDate.to_s(:db) + "' " + providerStr + " ORDER BY StartDate, StartTime"
            puts sql
            sth= dbh.run(sql)
            appts=[]
+
            sth.fetch do |row|
               # genie does a funny thing where the StartTime ddmmyy are wrong, only the time counts !
               # appt duration is in secs and 900 secs = 15 minutes
@@ -217,9 +298,10 @@ class BillingController < ApplicationController
           available=0
           freeAppt=0
           dateBlocked={}
+
           if appts.count>0
                     nextAppt = appts[0][0]
-                    freeAppt=nextAppt
+                    # freeAppt=nextAppt
                     appts.each do |appt|
                         # is the next appt blank
                             # create Ruby Date from StartDate, StartTime
@@ -241,17 +323,19 @@ class BillingController < ApplicationController
                                 unless dateBlocked.key?(thisDayKey)
                                     if thisDay.saturday? or thisDay.sunday?
                                       dateBlocked[thisDayKey] = 1
-                                    else
-
-
-                                      sql =  "SELECT Id from ApptBlock WHERE StartDate = '" + thisDayKey + "' and ProviderID = " + doctor.to_s
-                                      puts sql
-                                      sth= dbh.run(sql)
-                                      dateBlocked[thisDayKey] = sth.nrows
-                                      puts thisDayKey
-                                      puts dateBlocked[thisDayKey]
-                                      sth.drop
                                     end
+                                end
+                                unless dateBlocked.key?(thisDayKey)
+                                      if doctor != 0
+                                        sql =  "SELECT Id from ApptBlock WHERE StartDate = '" + thisDayKey + "' and ProviderID = " + doctor.to_s
+                                        puts sql
+                                        sth= dbh.run(sql)
+                                        dateBlocked[thisDayKey] = sth.nrows
+                                        puts thisDayKey
+                                        puts dateBlocked[thisDayKey]
+                                        sth.drop
+                                      end
+                                    
                                 end
                                 # is not availbale if no other appts on that day. Will always have lunch etc
                                 # so are there any other appts on this day
@@ -260,7 +344,7 @@ class BillingController < ApplicationController
 
 
 
-                                     sql =  "SELECT Id from Appt WHERE StartDate = '" + thisDayKey + "'  AND ProviderID = " + doctor.to_s
+                                     sql =  "SELECT Id from Appt WHERE StartDate = '" + thisDayKey + "'  " + providerStr
                                      puts sql
 
                                       sth= dbh.run(sql)
@@ -308,7 +392,7 @@ class BillingController < ApplicationController
           end
           #how many patients are in the queue?
           queue = 0
-          if freeAppt != 0 
+          if freeAppt != 0  and doctor != 0 
 
             endTime = freeAppt.hour.to_s + ":" + freeAppt.min.to_s + ":00"
            
@@ -326,11 +410,184 @@ class BillingController < ApplicationController
            sth.drop
          end
 
-          return [freeAppt,queue]
+         queueTotal = 0
+
+           
+            
+  
+           sql =  "SELECT Id from Appt WHERE StartDate >= '" + startDate.to_s(:db) + "' AND ProviderID = " + doctor.to_s + " and PT_Id_FK > 0"
+           
+          puts sql
+
+          sth= dbh.run(sql)
+                                    
+          queueTotal = sth.nrows
+
+            
+           sth.drop
+         
+
+
+          return [freeAppt,queue,queueTotal]
 
 
 
   end
+
+  def overall3AA(dbh,startTime=Time.now)
+    # this requires a different approach - going through user by user
+    # get startDate and time
+    
+
+     sql = "SELECT  Id FROM Preference  where Inactive = False and ProviderType = 2 and ProviderNum <> ''"
+     puts sql
+         
+
+    sth = dbh.run(sql)
+         
+    users=[]
+    sth.fetch_hash do |row|
+     
+      users << row['ID']
+    end
+
+    sth.drop
+    
+    # convert start time to next 15 minute spot
+    array = startTime.to_a
+    quarter = ((array[1] % 60) / 15.0).floor
+    array[1] = (quarter * 15) % 60
+    nextAppt = Time.local(*array) + (quarter == 4 ? 3600 : 0)
+    while nextAppt.saturday? or nextAppt.sunday?
+                nextAppt = nextAppt + 1.day
+                nextAppt= nextAppt.change(:hour => 8, :min=>15)
+    end
+
+    apptCount = 0
+    prevCheckDate=0
+
+    while apptCount <3
+
+            nextAppt = nextAppt + 900.seconds
+
+          # If after 4.30 pm will need to be 8.30 next weekday
+
+
+
+          if nextAppt.hour > 16 or (nextAppt.hour == 16 and nextAppt.min > 30)
+                
+                nextAppt = nextAppt + 1.day
+                while nextAppt.saturday? or nextAppt.sunday?
+                      nextAppt = nextAppt + 1.day
+                end
+                
+                nextAppt= nextAppt.change(:hour => 8, :min=>30)
+          end
+          nextDate = Date.new(nextAppt.year,nextAppt.month,nextAppt.day)
+          if prevCheckDate==0 or prevCheckDate != nextDate            
+            # check which users are away to speed things up
+              prevCheckDate  = nextDate
+              userHere={}
+              users.each do |user|
+                  sql =  "SELECT Id from Appt WHERE StartDate = '" + nextDate.to_s(:db) + "'  AND ProviderID = " + user.to_s
+                  puts sql
+                  sth = dbh.run(sql)
+                  apptsTotal = sth.nrows
+                  sth.drop
+                  userHere[user] = apptsTotal
+                  puts apptsTotal
+               end
+
+          end
+
+
+      
+
+
+          # how many providers have a free appointment at this time
+          users.each do |user|
+              if userHere[user] >0 and userHere[user]< 34
+                  apptCount = apptCount + checkFreeAppt(dbh, user, nextAppt)
+              end
+
+          end
+          
+
+      end
+      return nextAppt
+    
+
+
+
+  end
+
+  def checkFreeAppt(dbh, doctor, nextAppt)
+          # does this doctor have a free appt at this time
+          # 1 does he have an appt already booked?
+           apptCount=0
+           apptDate= Date.new(nextAppt.year,nextAppt.month,nextAppt.day)
+
+           apptTime  = nextAppt.hour.to_s + ":" + nextAppt.min.to_s + ":00"
+            prevAppt = nextAppt - 15.minutes
+            prevApptTime  = prevAppt.hour.to_s + ":" + prevAppt.min.to_s + ":00"
+
+            sql =  "SELECT Id from Appt WHERE StartDate = '" + apptDate.to_s(:db) + "' and (StartTime ='" + apptTime + "' or (StartTime ='" + prevApptTime + "' and ApptDuration > 900)) AND ProviderID = " + doctor.to_s
+            puts sql
+            sth= dbh.run(sql)
+            if sth.nrows == 0 
+                    apptCount=1
+            end
+            sth.drop
+
+            
+           
+ 
+           
+
+
+           return apptCount
+
+
+
+  end
+
+    def coc(dbh)
+         # get appointments
+                # step one - get all patients who are diabetic
+        
+         sql = "SELECT Id FROM Patient WHERE Diabetic = True and Inactive = False"   
+         puts sql
+          sth = dbh.run(sql)
+          @diabetics=sth.nrows
+
+          @cocCount=0
+          sth.fetch do |row|
+              # now see if that patient has ever had health assessment
+              sql2 =  "SELECT ServiceDate FROM Sale WHERE PT_Id_FK =" + row[0].to_s + " AND (ItemNum = '2517' or ItemNum ='2521') order by ServiceDate DESC"
+              sth2 = dbh.run(sql2)
+              row2 = sth2.fetch_first
+                if sth2.nrows > 0 and row2[0] > 1.year.ago
+                @cocCount+=1
+              end
+              
+              sth2.drop
+       
+
+          end
+          sth.drop
+          lastYear = 1.year.ago
+
+         sql = "SELECT Id FROM Patient WHERE Diabetic = True and Inactive= False and DiabetesCycleDate > '" + lastYear.to_s(:db) +"'"
+         puts sql
+          sth = dbh.run(sql)
+          @diabeticCycles=sth.nrows
+
+
+
+    return[@diabetics,@cocCount,@diabeticCycles]
+
+  end
+
 
   def assessments
          # get appointments
