@@ -151,6 +151,12 @@
          <div id="collapse7" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading7">
             <div class="panel-body">
 
+                        <%= render partial: "tasks", locals: {tasks: @tasks} %>
+            
+            <%= render partial: "notes",locals: {notes: @notes} %> 
+
+            <%= render partial: "medchanges", locals: {meds: @meds, prescription_history: @prescription_history} %> 
+
 
 
 
@@ -174,6 +180,8 @@
                         <%= render "cardiac_risk" %>
 
             <%= render "lifestyle_check" %>
+
+
            
 
 

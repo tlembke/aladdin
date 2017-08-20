@@ -240,6 +240,14 @@ class PatientController < ApplicationController
 
            # test about annual chech
           @last_annual_check=get_last_check(@id,dbh)
+          @plan_text = get_all_tasks_for_today(dbh,@id)
+          tasks_array=extract_tasks(@plan_text)
+          @tasks=tasks_array[0]
+          @meds=tasks_array[1]
+          @notes=tasks_array[2]
+          @plan = tasks_array[3]
+          @changes= Patient.prescription_history(@id,dbh,Date.today.strftime("%Y-%m-%d"))
+
 
           unless @patient.has_plan?
                 @patient.autoload_goals
@@ -1097,6 +1105,22 @@ def healthsummary
  end
 
   private
+
+  def get_all_tasks_for_today(dbh,patient)
+            sql = "SELECT Plan FROM Consult WHERE PT_Id_FK = " + patient + " and ConsultDate = '" + Date.today.to_s(:db)+ "'"
+          
+            puts sql
+            plan_text=""
+            sth = dbh.run(sql)
+             sth.fetch do |row|
+              plan_text = plan_text + row[0]
+            end
+            sth.drop
+            return plan_text
+
+
+
+  end
 
   def get_users(dbh)
           sql = "SELECT  Name, ProviderNum FROM Preference  where Inactive = False and ProviderType = 2 and ProviderNum <> '' ORDER BY Surname"

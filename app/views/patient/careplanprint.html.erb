@@ -18,18 +18,26 @@
 
 </div>
 
-<div class="row">
+<div class="row" ">
+
 <div class="col-md-12">
 
 
       
 
 
-    <legend class="panel-title"></i>  Summary</a></legend>
+   
+    <legend><i class="fa fa-medkit" aria-hidden="true"></i>  Summary</legend>
 
 
       <%= render "introduction" %>
       <hr>
+      <div class="col-xs-12" style="height:200px;"></div>
+                  <%= render partial: "tasks", locals: {tasks: @tasks} %>
+            
+            <%= render partial: "notes",locals: {notes: @notes} %> 
+
+            <%= render partial: "medchanges", locals: {meds: @meds, prescription_history: @prescription_history} %> 
 
 </div> <!-- col -->
 </div> <!--  row -->
@@ -74,6 +82,7 @@
 </div> <!-- col -->
    <div class="col-md-12">
       <hr>
+
       
    </div>
 </div> <!--  row -->
