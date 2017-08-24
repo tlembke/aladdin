@@ -125,7 +125,7 @@ class BillingController < ApplicationController
               dateTest= dateTest + 1.day
            end
 
-           @bookings =  getApptsForDay(dbh,dateTest)
+           @bookings << getApptsForDay(dbh,dateTest)
            dateTest = dateTest + 1.day
            @noDays = @noDays - 1
         end
