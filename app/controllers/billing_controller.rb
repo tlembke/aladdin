@@ -105,6 +105,44 @@ class BillingController < ApplicationController
 
   end
 
+   def bookings
+
+     @username = session[:username]
+     @password = session[:password]
+     @id=session[:id]
+     @name=session[:name]
+
+     connect_array=connect()
+     @error_code=connect_array[1]
+     if (@error_code==0)
+        dbh=connect_array[0]
+        @dateTest = Date.today
+        @bookings = getApptsForDay(dbh,@dateTest)
+
+        
+
+
+
+
+
+
+        dbh.disconnect
+     else
+          flash[:alert] = "Unable to connect to database. "+ get_odbc
+          flash[:notice] = connect_array[2]
+          redirect_to  action: "login"
+     end
+
+     respond_to do |format|
+        format.html 
+
+     end
+    
+
+ 
+
+  end
+
 
  
 
@@ -614,6 +652,137 @@ class BillingController < ApplicationController
 
           return [freeAppt,queue,queueTotal]
 
+
+
+  end
+
+  def getApptsForDay(dbh,theDate = Date.today)
+    # we are interested in routines booked, annexe booked, acute booked, acute not booked, excisions booked, available routine
+     # 
+
+     sql = "SELECT Count(Id) FROM Appt WHERE StartDate = '" + theDate.to_s(:db) +"' and PT_Id_FK <> 0"
+     puts sql
+     sth = dbh.run(sql)
+     row= sth.fetch_first
+     @total_appts = row[0]
+     sth.drop
+
+
+     sql = "SELECT Count(Id) FROM Appt WHERE StartDate = '" + theDate.to_s(:db) +"' and (Reason = '' or Reason = 'General Chec' or Reason = 'LICENCE' or Reason = 'Immunisation' or Reason = '************' or Reason = 'follow ups')"
+     puts sql
+     sth = dbh.run(sql)
+     row= sth.fetch_first
+     @routines = row[0]
+     sth.drop
+
+
+     sql = "SELECT Count(Id) FROM Appt WHERE StartDate = '" + theDate.to_s(:db) +"' and Reason = 'Acute Only' and PT_Id_FK = 0 "
+     puts sql
+     sth = dbh.run(sql)
+     row= sth.fetch_first
+     @acutes = row[0]
+     sth.drop
+
+    sql = "SELECT Count(Id) FROM Appt WHERE StartDate = '" + theDate.to_s(:db) +"' and Reason = 'Acute Only' and PT_Id_FK <> 0 "
+     puts sql
+     sth = dbh.run(sql)
+     row= sth.fetch_first
+     @acutes_booked = row[0]
+     sth.drop
+     if @acutes_booked == ""
+      @acutes_booked = 0
+    end
+
+
+     # here's the rub - how many doctors are working
+     sql = "SELECT  Id FROM Preference  where Inactive = False and ProviderType = 2 and ProviderNum <> ''"
+     puts sql
+     sth = dbh.run(sql)
+         
+    users=[]
+    sth.fetch_hash do |row|
+     
+      users << row['ID']
+    end
+
+    # a user is working if that have more than 5 appts that day - lunch, Mrs B etc
+     userCount=0
+     freeAppt = 0
+     users.each do |user|
+                  sql =  "SELECT DISTINCT StartTime from Appt WHERE StartDate = '" + theDate.to_s(:db) + "'  AND ProviderID = " + user.to_s + " AND Reason <> 'ON CALL WEEKEND'"
+                  puts sql
+                  sth = dbh.run(sql)
+                  apptsTotal = sth.nrows
+                  sth.drop
+                  if  apptsTotal > 4
+                      userCount +=1 
+                      freeAppt = freeAppt + countBlanks(dbh,user,theDate)
+
+                  end
+                  
+
+                
+      end
+
+
+
+     return [userCount, freeAppt, @total_appts,@routines, @acutes, @acutes_booked]
+               
+          
+
+
+  end
+
+  def countBlanks(dbh,user,theDate)
+         sql =  "SELECT StartDate, StartTime, ApptDuration from Appt WHERE StartDate = '" + theDate.to_s(:db) + "' AND ProviderID = " + user.to_s + " ORDER BY StartTime"
+           puts sql
+           sth= dbh.run(sql)
+           appts=[]
+
+           sth.fetch do |row|
+              # genie does a funny thing where the StartTime ddmmyy are wrong, only the time counts !
+              # appt duration is in secs and 900 secs = 15 minutes
+
+             t=row[1]
+
+             
+             t=t.change(:year => theDate.year, :month => theDate.month,:day => theDate.day)
+
+             appts<<[t, row[2]]
+
+          end
+          sth.drop
+          freeAppt=0
+
+          if appts.count>0
+                    nextAppt = appts[0][0]
+                    # freeAppt=nextAppt
+                    appts.each do |appt|
+                        # is the next appt blank
+                            
+                            t = appt[0]
+                            
+                            # is this expected appt
+                            
+                            while t > nextAppt
+                                     freeAppt = freeAppt + 1
+                                     nextAppt = nextAppt + 900.seconds
+                            end
+                            
+                            nextAppt = t + appt[1].seconds
+
+                    end
+
+
+          end
+          
+          while nextAppt.hour < 16  or (nextAppt.hour == 16 and nextAppt.min < 45)
+                  
+                  freeAppt = freeAppt+1
+                  nextAppt = nextAppt + 900.seconds
+          end
+          
+          return freeAppt
 
 
   end

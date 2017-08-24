@@ -18,6 +18,7 @@ Rails.application.routes.draw do
       get 'pip'
       get 'appointments'
       get 'data'
+      get 'bookings'
 
     end
 

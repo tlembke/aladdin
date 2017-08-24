@@ -1,0 +1,29 @@
+<% @title = "Bookings" %> 
+<legend><i class="fa fa-line-chart"></i>Bookings for <%= @dateTest.strftime("%d/%m/%Y") %></legend>
+
+
+
+<table class='table table-condensed table-striped table-bordered'>
+<thead>
+<tr>
+	<th colspan = '2' >Appointments</th>
+</tr>
+
+</thead>
+
+	<tbody>
+	<tr><td>Doctors</td><td><%= @bookings[0]%></td></tr>
+	<tr><td>Total Booked</td><td><%= @bookings[2]%></td></tr>
+
+	<tr><td>Routines Booked</td><td><%= @bookings[3]%></td></tr>
+
+	<tr><td>Routines Available </td><td><%= @bookings[1]%></td></tr>
+	<tr><td>Acutes Available </td><td><%= @bookings[4]%></td></tr>
+    <tr><td>Acutes Booked </td><td><%= @bookings[5].to_i%></td></tr>
+    <tr><td>Total Available </td><td><%= @bookings[1].to_i + @bookings[4].to_i  %></td></tr>
+
+</tbody>
+</table>
+
+
+
