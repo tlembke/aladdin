@@ -1,29 +1,44 @@
 <% @title = "Bookings" %> 
-<legend><i class="fa fa-line-chart"></i>Bookings for <%= @dateTest.strftime("%d/%m/%Y") %></legend>
+<legend><i class="fa fa-line-chart"></i>Bookings</legend>
 
 
 
 <table class='table table-condensed table-striped table-bordered'>
 <thead>
 <tr>
-	<th colspan = '2' >Appointments</th>
+	<th>Day</th>
+	<th>Number Docs/th>
+	<th>Total Booked</th>
+	<th>Routines Booked</th>
+	<th>Routines Available</th>
+	<th>Acutes Available</th>
+	<th>Acutes Booked</th>
+	<th>Total Available</th>
+
 </tr>
 
 </thead>
 
 	<tbody>
-	<tr><td>Doctors</td><td><%= @bookings[0]%></td></tr>
-	<tr><td>Total Booked</td><td><%= @bookings[2]%></td></tr>
+	<% @bookings.each do |booking| %>
+	<tr>
+    <td><%= booking[0].strftime("%d/%m/%Y") %><td>
+	<td><%= booking[1]%></td></tr>
 
-	<tr><td>Routines Booked</td><td><%= @bookings[3]%></td></tr>
+	<td><%= booking[3]%></td></tr>
 
-	<tr><td>Routines Available </td><td><%= @bookings[1]%></td></tr>
-	<tr><td>Acutes Available </td><td><%= @bookings[4]%></td></tr>
-    <tr><td>Acutes Booked </td><td><%= @bookings[5].to_i%></td></tr>
-    <tr><td>Total Available </td><td><%= @bookings[1].to_i + @bookings[4].to_i  %></td></tr>
+	<td><%= booking[4]%></td></tr>
 
+	<td><%= booking[2]%></td></tr>
+
+	<td><%= booking[5]%></td></tr>
+
+	<td><%= booking[6]%></td></tr>
+
+	<td><%= booking[2].to_i + booking[5].to_i  %></td>
+	</tr>
+	<% end %>
+
+   
 </tbody>
 </table>
-
-
-

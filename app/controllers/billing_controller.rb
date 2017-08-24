@@ -116,8 +116,19 @@ class BillingController < ApplicationController
      @error_code=connect_array[1]
      if (@error_code==0)
         dbh=connect_array[0]
-        @dateTest = Date.today
-        @bookings = getApptsForDay(dbh,@dateTest)
+        dateTest = Date.today
+
+        @noDays=7
+        @bookings =[]
+        while @noDays>0
+          while dateTest.saturday? or dateTest.sunday?
+              dateTest= dateTest + 1.day
+           end
+
+           @bookings =  getApptsForDay(dbh,dateTest)
+           dateTest = dateTest + 1.day
+           @noDays = @noDays - 1
+        end
 
         
 
@@ -704,6 +715,7 @@ class BillingController < ApplicationController
      
       users << row['ID']
     end
+    sth.drop
 
     # a user is working if that have more than 5 appts that day - lunch, Mrs B etc
      userCount=0
@@ -717,16 +729,17 @@ class BillingController < ApplicationController
                   if  apptsTotal > 4
                       userCount +=1 
                       freeAppt = freeAppt + countBlanks(dbh,user,theDate)
+                      puts "done"
 
                   end
                   
 
                 
       end
+      puts "next day"
 
 
-
-     return [userCount, freeAppt, @total_appts,@routines, @acutes, @acutes_booked]
+     return [theDate, userCount, freeAppt, @total_appts,@routines, @acutes, @acutes_booked]
                
           
 
@@ -765,7 +778,9 @@ class BillingController < ApplicationController
                             # is this expected appt
                             
                             while t > nextAppt
+
                                      freeAppt = freeAppt + 1
+                                     puts freeAppt
                                      nextAppt = nextAppt + 900.seconds
                             end
                             
@@ -775,11 +790,13 @@ class BillingController < ApplicationController
 
 
           end
-          
+          puts "4:30"
           while nextAppt.hour < 16  or (nextAppt.hour == 16 and nextAppt.min < 45)
                   
                   freeAppt = freeAppt+1
+                  puts freeAppt
                   nextAppt = nextAppt + 900.seconds
+                  break if freeAppt>100
           end
           
           return freeAppt
