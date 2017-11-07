@@ -960,9 +960,11 @@ class BillingController < ApplicationController
 
   end
 
+    
 
   def assessments
          # get appointments
+
      @username = session[:username]
      @password = session[:password]
      @id=session[:id]
@@ -973,8 +975,15 @@ class BillingController < ApplicationController
      if (@error_code==0)
         dbh=connect_array[0]
                 # step one - get all patients aged 45-49, orderd pckwards by age
-        
-         sql = "SELECT Surname,FirstName,FullName,LastSeenDate,LastSeenBy,MobilePhone, EmailAddress, Age, Sex, Id FROM Patient WHERE Age >44 and Age <50 and Inactive= False  ORDER BY Age DESC"   
+         
+         
+          params[:age] ? @age= params[:age].to_i : @age = 75
+          ageText = " AGE > 74 and AGE < 110"
+          if @age != 75
+             ageText = " AGE > 44 and AGE < 50"
+          end
+
+         sql = "SELECT Surname,FirstName,FullName,LastSeenDate,LastSeenBy,MobilePhone, EmailAddress, Age, Sex, Id FROM Patient WHERE " + ageText + " and Inactive= False  ORDER BY Age DESC"   
          puts sql
           sth = dbh.run(sql)
           @no_ass_patients = []

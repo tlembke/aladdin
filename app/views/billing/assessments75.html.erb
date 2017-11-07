@@ -1,14 +1,8 @@
-<% if @age == 50 %>
-<h1>45 - 49 Year Old Health Assessments</h1>
-<% else %>
-<h1>75 + Year Old Health Assessments</h1>
-<% end %>
+<h1>75 Year Old Health Assessments</h1>
 
-There are <%= @totalCount %> patients in the age range (<%= @age %>). <%= @no_ass_patients.count %> (<%= number_to_percentage(@no_ass_patients.count * 100/ @totalCount, precision: 0)%>) have not had a health assessment performed.<br>
+There are <%= @totalCount %> patients in the age range. <%= @no_ass_patients.count %> (<%= number_to_percentage(@no_ass_patients.count * 100/ @totalCount, precision: 0)%>) have not had a health assessment performed.<br>
 <%= @mobileCount %> of these have a mobile phone number, and <%= @emailCount %> have an email address<p>
-<% if @age == 50 %>
-<%= @F49Count %> have already turned 49!<br>
-<% end %>
+
 
 
 <table class='table table-striped'>
