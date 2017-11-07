@@ -12,6 +12,17 @@ module ApplicationHelper
           return theText.html_safe
   end
 
+  def age(dob)
+    begin
+      now = Time.now.utc.to_date
+      age =  now.year - dob.year - ((now.month > dob.month || (now.month == dob.month && now.day >= dob.day)) ? 0 : 1)
+    rescue
+       
+        age=0
+    end
+    return age
+  end
+
 
 
 end

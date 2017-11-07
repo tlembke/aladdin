@@ -1,10 +1,10 @@
-<% if @age == 50 %>
+<% if @age < 75  %>
 <h1>45 - 49 Year Old Health Assessments</h1>
 <% else %>
 <h1>75 + Year Old Health Assessments</h1>
 <% end %>
 
-There are <%= @totalCount %> patients in the age range (<%= @age %>). <%= @no_ass_patients.count %> (<%= number_to_percentage(@no_ass_patients.count * 100/ @totalCount, precision: 0)%>) have not had a health assessment performed.<br>
+There are <%= @totalCount %> patients in the age range. <%= @no_ass_patients.count %> ( <%= number_to_percentage(@no_ass_patients.count * 100 / @totalCount, precision: 0) %> ) have not had a health assessment performed <%= "in the last 12 months" if @age == 75 %>.<br>
 <%= @mobileCount %> of these have a mobile phone number, and <%= @emailCount %> have an email address<p>
 <% if @age == 50 %>
 <%= @F49Count %> have already turned 49!<br>
@@ -25,9 +25,9 @@ There are <%= @totalCount %> patients in the age range (<%= @age %>). <%= @no_as
 <% @no_ass_patients.each do |patient| %>
 <tr>
 	<td><%= patient["FULLNAME"]%></td>
-	<td><%= patient["AGE"] %></td>
+	<td><%= age(patient["DOB"]) %></td>
 	<td><%= patient["MOBILEPHONE"]%></td>
-	<td><%= patient["LASTSEENDATE"].to_date.strftime("%m/%Y") if patient["LASTSEENDATE"]%></td>
+	<td><%= patient["LASTSEENDATE"].to_date.strftime("%d/%m/%Y") if patient["LASTSEENDATE"]%></td>
 	<td><%= patient["LASTSEENBY"] %></td>
 
 </tr>
@@ -45,7 +45,7 @@ These are the people who have had a health assessment.
 <tr>
 <th>Name</th>
 <th>Age</th>
-<th>Date </th>
+<th>Date</th>
 <th>Done By</th>
 
 </thead>
@@ -53,8 +53,8 @@ These are the people who have had a health assessment.
 <% @ass_patients.each do |patient| %>
 <tr>
 	<td><%= patient["FULLNAME"]%></td>
-	<td><%= patient["AGE"] %></td>
-	<td><%= patient[:SERVICEDATE].to_date.strftime("%m/%Y") %>
+	<td><%= age(patient["DOB"]) %></td>
+	<td><%= patient[:SERVICEDATE].to_date.strftime("%d/%m/%Y") %>
 	<td><%= patient[:PROVIDERID] %></td>
 
 </tr>

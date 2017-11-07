@@ -978,12 +978,18 @@ class BillingController < ApplicationController
          
          
           params[:age] ? @age= params[:age].to_i : @age = 75
-          ageText = " AGE > 74 and AGE < 110"
+          # ages arent updated automatically in Genie so have to resort to DOB instead of this
+          #ageText = " AGE > 74 and AGE < 110"
+          #if @age != 75
+          #   ageText = " AGE > 44 and AGE < 50"
+          #end
+
+          ageText = " DOB < '" + 75.years.ago.to_date.to_s(:db) + "' AND DOB IS NOT NULL "
           if @age != 75
-             ageText = " AGE > 44 and AGE < 50"
+             ageText = " DOB  > '" + 50.years.ago.to_date.to_s(:db) + "' AND DOB < '" + 45.years.ago.to_date.to_s(:db) +"'"
           end
 
-         sql = "SELECT Surname,FirstName,FullName,LastSeenDate,LastSeenBy,MobilePhone, EmailAddress, Age, Sex, Id FROM Patient WHERE " + ageText + " and Inactive= False  ORDER BY Age DESC"   
+         sql = "SELECT Surname,FirstName,FullName,LastSeenDate,LastSeenBy,MobilePhone, EmailAddress, Age, DOB, Sex, Id FROM Patient WHERE " + ageText + " and Inactive= False  ORDER BY DOB"   
          puts sql
           sth = dbh.run(sql)
           @no_ass_patients = []
@@ -993,37 +999,46 @@ class BillingController < ApplicationController
           @emailCount=0
           @F49Count=0
           sth.fetch_hash do |row|
-              @totalCount+=1
-              # now see if that patient has ever had health assessment
-              sql2 =  "SELECT ServiceDate, ProviderId FROM Sale WHERE PT_Id_FK =" + row['ID'].to_s + " AND ItemNum = '703'"
-              sth2 = dbh.run(sql2)
-              if sth2.nrows > 0
-                  row2 = sth2.fetch_first
-                
-                     #this patient has had a health assessment
-                    row[:PROVIDERID] = row2[1]
-                    row[:SERVICEDATE] = row2[0]
-                    @ass_patients << row
-                  
-                   
-              else
-                  # this patient has not had a health assessment
-                  #if row["LASTSEENDATE"]
-                   # row["LASTSEENDATE"]= row["LASTSEENDATE"].to_date
-                  #end
-                  @no_ass_patients << row
-                  if row["MOBILEPHONE"] != "" and row["MOBILEPHONE"] != "no"
-                    @mobileCount+=1
+            if row['DOB']
+                  @totalCount+=1
+                  # now see if that patient has ever had health assessment
+                  sql2 =  "SELECT ServiceDate, ProviderId FROM Sale WHERE PT_Id_FK =" + row['ID'].to_s + " AND ItemNum = '703'"
+                  # if age = 75 then health assessment date has to have been in last 12 month
+                   if @age == 75
+                        sql2 = sql2 + " and ServiceDate > '" + 1.year.ago.to_s(:db) +"'"
                   end
-                  if row["EMAILADDRESS"] != ""
-                    @emailCount+=1
-                  end
-                  if row["AGE"] == 49
-                    @F49Count+=1
-                  end
-                end
+                  puts sql2
+                  sth2 = dbh.run(sql2)
+                  if sth2.nrows > 0
+                      row2 = sth2.fetch_first
+                    
+                         #this patient has had a health assessment
+                        row[:PROVIDERID] = row2[1]
+                        row[:SERVICEDATE] = row2[0]
+                        @ass_patients << row
+                      
+                       
+                  else
+                      # this patient has not had a health assessment
+                      #if row["LASTSEENDATE"]
+                       # row["LASTSEENDATE"]= row["LASTSEENDATE"].to_date
+                      #end
+                      @no_ass_patients << row
+                      if row["MOBILEPHONE"] != "" and row["MOBILEPHONE"] != "no"
+                        @mobileCount+=1
+                      end
+                      if row["EMAILADDRESS"] != ""
+                        @emailCount+=1
+                      end
+                      if row["AGE"] == 49
+                        @F49Count+=1
+                      end
+                    end
+
+                    sth2.drop
+              end
               
-              sth2.drop
+              
        
 
           end
