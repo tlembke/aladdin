@@ -34,7 +34,7 @@
 
                        <td><%= @lastFHH.strftime("%d/%m/%Y") %></td>
                        <td>
-                      <%= status_symbol if @colonoscopy[0] and @colonoscopy[1] > 3.years.ago %>
+                      <%= status_symbol if @colonoscopy[0] and (@colonoscopy[1] and @colonoscopy[1] > 3.years.ago) %>
                       <%= status_symbol if @lastFHH >  2.years.ago %>
                     <%= status_symbol("red","Due") if @colonoscopy[0] == false  and @lastFHH < 2.years.ago %>
                     <%= status_symbol("orange","Possibly Due") if @colonoscopy[0] and (@colonoscopy[1] == false or (@colonoscopy[1] and @colonoscopy[1] < 5.years.ago)) and @lastFHH < 2.years.ago%>
