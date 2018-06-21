@@ -1,0 +1,17 @@
+<div id="goal_<%=@goal.id%>" class="no-page-break-inside">
+<b><%= @goal.title %></b>
+
+
+<br>
+<%= goal.description %><br>
+
+
+
+<% if @goal.measure_id != 0 and @goal.measure_id != nil %>
+	<% @goal.target = @goal.measure.target if @goal.target== nil %>
+	My target for <%= goal.measure.name %> is set at <%= @goal.target %>
+
+	<%= render partial: "measures/measure", object: @goal.measure %>
+<% end %>
+</div> <!-- end id = goal_ -->
+<hr class="hrshrink">

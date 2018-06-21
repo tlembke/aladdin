@@ -25,6 +25,7 @@ class AppointmentsController < ApplicationController
   				flash[:notice] = connect_array[2]
   				redirect_to  action: "login"
   	 end
+     
   end
 
   def show

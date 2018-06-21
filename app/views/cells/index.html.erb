@@ -1,0 +1,57 @@
+<% @title = "Listing cells" %>
+
+<% content_for :description do %>
+<p>Edit this template in <code>app/views/Cells/index.html.erb</code>.</p>
+<% end %>
+
+<% content_for :actions do %>
+<%= link_to new_cell_path, class: 'btn btn-primary btn-large pull-right' do %>
+<%= fa_icon_tag "plus" %> Add Cell
+<% end %>
+<% end %>
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+      <div class="sheet sheet-condensed">
+        <div class="sheet-inner">
+          <table class="table">
+            <thead>
+              <tr>
+                                <th>Register</th>
+                                <th>Patient</th>
+                                <th>Header</th>
+                                <th>Value</th>
+                                <th>Date</th>
+                                <th>Note</th>
+                                <th></th>
+              </tr>
+            </thead>
+            <tbody>
+              <% @cells.each do |cell| %>
+              <tr>
+                                <td><%= cell.register_id %></td>
+                                <td><%= cell.patient_id %></td>
+                                <td><%= cell.header_id %></td>
+                                <td><%= cell.value %></td>
+                                <td><%= cell.date %></td>
+                                <td><%= cell.note %></td>
+                                <td class="actions">
+                  <%= link_to fa_icon_tag("eye"), cell, rel: 'tooltip', title: 'Show' %>
+                  <%= link_to fa_icon_tag("pencil"), edit_cell_path(cell), rel: 'tooltip', title: 'Edit' %>
+                  <%= link_to fa_icon_tag("trash-o"), cell, rel: 'tooltip', title: 'Delete',
+                  data: { confirm: 'Are you sure?' }, method: :delete %>
+                </td>
+              </tr>
+              <% end %>
+              <% if @cells.length == 0 %>
+              <tr><td colspan=42 class='text-center'>No cells.</td></tr>
+              <% end %>
+            </tbody>
+          </table>
+        </div><!-- /.sheet-inner -->
+      </div><!-- /.sheet -->
+
+                </div>
+  </div>
+</div>

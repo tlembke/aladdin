@@ -1,0 +1,23 @@
+       		           <!--   allergies -->
+						<div class='row'>
+						<% if allergies.count > 0   %>
+
+						
+
+					 		<% allergies.each do |problem| %>
+					 			<div class='col-md-3'>
+								<b><%= problem['ALLERGY'] %></b>
+								</div>
+								<div class='col-md-9'>
+								<%= simple_format(problem['DETAIL'],{class: 'small'},wrapper_tag: "span")%>
+								</div>
+							<% end %>
+						
+						<% else %>
+						<div class='col-md-12'>
+							Nil Recorded Allergies
+						</div>
+						<% end %>
+						</div> <!-- end row -->
+					
+						<!--   End allergies -->

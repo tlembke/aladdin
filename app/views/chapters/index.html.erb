@@ -1,0 +1,51 @@
+<% @title = "Listing chapters" %>
+
+<% content_for :description do %>
+<p>Edit this template in <code>app/views/Chapters/index.html.erb</code>.</p>
+<% end %>
+
+<% content_for :actions do %>
+<%= link_to new_chapter_path, class: 'btn btn-primary btn-large pull-right' do %>
+<%= fa_icon_tag "plus" %> Add Chapter
+<% end %>
+<% end %>
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+      <div class="sheet sheet-condensed">
+        <div class="sheet-inner">
+          <table class="table">
+            <thead>
+              <tr>
+                                <th>Chapter</th>
+                                <th>Section</th>
+                                <th>Position</th>
+                                <th></th>
+              </tr>
+            </thead>
+            <tbody>
+              <% @chapters.each do |chapter| %>
+              <tr>
+                                <td><%= chapter.chapter %></td>
+                                <td><%= chapter.section_id %></td>
+                                <td><%= chapter.position %></td>
+                                <td class="actions">
+                  <%= link_to fa_icon_tag("eye"), chapter, rel: 'tooltip', title: 'Show' %>
+                  <%= link_to fa_icon_tag("pencil"), edit_chapter_path(chapter), rel: 'tooltip', title: 'Edit' %>
+                  <%= link_to fa_icon_tag("trash-o"), chapter, rel: 'tooltip', title: 'Delete',
+                  data: { confirm: 'Are you sure?' }, method: :delete %>
+                </td>
+              </tr>
+              <% end %>
+              <% if @chapters.length == 0 %>
+              <tr><td colspan=42 class='text-center'>No chapters.</td></tr>
+              <% end %>
+            </tbody>
+          </table>
+        </div><!-- /.sheet-inner -->
+      </div><!-- /.sheet -->
+
+                </div>
+  </div>
+</div>

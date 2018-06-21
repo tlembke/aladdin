@@ -70,6 +70,7 @@ class NursinghomeController < ApplicationController
           sth.fetch_hash do |row|
           	@patient=Patient.get_patient(row['PatientId'].to_s,dbh)
           	row['MEDICATIONS']=Patient.medications(row['PatientId'].to_s,dbh)
+            row['ALLERGIES']=Patient.allergies(row['PatientId'].to_s,dbh)
           	row['PRESCRIPTION_HISTORY']=Patient.prescription_history(row['PatientId'].to_s,dbh,date)
           	# get med changes from Plan
 	          tasks_array=extract_tasks(row['PLAN'])

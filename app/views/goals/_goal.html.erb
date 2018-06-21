@@ -9,7 +9,7 @@
 
 <% if @goal.measure_id != 0 and @goal.measure_id != nil %>
 	<% @goal.target = @goal.measure.target if @goal.target== nil %>
-	Target for <%= goal.measure.name %> for this patient is set at 
+	My target for <%= goal.measure.name %> is set at 
 	<a href="#" id="editable_goal_target_<%=@goal.id%>" data-defaultValue="New Target" data-emptytext= "0"data-type="text" data-pk="1" data-resource="goal" data-name="target" data-url="/goals/<%=@goal.id%>" data-placeholder="Target here..." data-original-title="Enter target" class="editable"><%= @goal.target %> </a>
 
 	<%= render partial: "measures/measure", object: @goal.measure %>

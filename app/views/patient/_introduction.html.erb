@@ -5,7 +5,7 @@
 
 	<% if @patient.current_problems.count > 0   %>
 	<div class="col-md-4">
-	<%= @patient.pronoun %> is being managed for the following <%= pluralize(@patient.current_problems.count, 'condition') %>
+	I am being managed for the following <%= pluralize(@patient.current_problems.count, 'condition') %>
 	<ul>
 			<% @patient.current_problems.each do |problem| %>
 					<li><%= problem['PROBLEM'] %></li>
@@ -16,7 +16,7 @@
 
 	<% if @patient.careteam.count > 0   %>
 	<div class="col-md-4">
-	<%= @patient.pospronoun %>  care team includes :
+	My care team includes :
 	<ul>
 			<% @patient.careteam.each do |member| %>
 					<li><%= member['PROVIDERNAME'] %>

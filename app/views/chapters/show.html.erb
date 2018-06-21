@@ -1,0 +1,64 @@
+<% @title = "Showing chapter" %>
+
+<% content_for :description do %>
+  <p>Edit this template in <code>app/views/Chapters/show.html.erb</code>.</p>
+  <% end %>
+
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+        <div class="sheet sheet-condensed">
+          <div class="sheet-inner p30">
+            <div class="form-horizontal">
+                              <div class="form-inputs">
+                 <div class="form-group">
+                    <label class="col-md-2 control-label">Chapter</label>
+                    <div class="col-md-8">
+                     <div class="form-control uneditable-input">
+                        <span>
+                          <%= @chapter.chapter %>
+                        </span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+
+                              <div class="form-inputs">
+                 <div class="form-group">
+                    <label class="col-md-2 control-label">Section</label>
+                    <div class="col-md-8">
+                     <div class="form-control uneditable-input">
+                        <span>
+                          <%= @chapter.section_id %>
+                        </span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+
+                              <div class="form-inputs">
+                 <div class="form-group">
+                    <label class="col-md-2 control-label">Position</label>
+                    <div class="col-md-8">
+                     <div class="form-control uneditable-input">
+                        <span>
+                          <%= @chapter.position %>
+                        </span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+
+                            <div class="form-actions col-md-offset-2">
+                <%= link_to fa_icon_tag("pencil") + ' Edit', edit_chapter_path(@chapter), class: 'btn btn-primary' %>
+                <%= link_to 'Back', chapters_path, class: 'btn' %>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>

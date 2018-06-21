@@ -248,6 +248,9 @@ class PatientController < ApplicationController
           @plan = tasks_array[3]
           @changes= Patient.prescription_history(@id,dbh,Date.today.strftime("%Y-%m-%d"))
 
+          # get patient story
+
+
 
           unless @patient.has_plan?
                 @patient.autoload_goals
@@ -354,6 +357,7 @@ def healthsummary
             @patients<<getall_patient(patient,dbh,"precheck")
           end
           sth.drop
+          dbh.disconnect
 
     else    # lost connection to database
           flash[:notice]=connect_array[2]
@@ -374,6 +378,7 @@ def healthsummary
           @patients=[]
           @mode="precheck"
           @patients<<getall_patient(@id,dbh,"precheck")
+          dbh.disconnect
     else    # lost connection to database
           flash[:notice]=connect_array[2]
           redirect_to  action: "login"
@@ -433,6 +438,8 @@ def healthsummary
                 @this_measure = Measure.find_by Name: next_measure
                 @measures << @this_measure
             end
+
+            dbh.disconnect
           
             # @patient.measures = get_measures(id,dbh)
 

@@ -1,5 +1,13 @@
 Rails.application.routes.draw do
 
+  resources :cells do
+      member do
+          post 'toggle'
+      end
+  end
+  resources :headers
+  resources :paragraphs
+  resources :chapters
   get 'results/index'
 
   get 'results/show'

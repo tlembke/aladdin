@@ -1,0 +1,106 @@
+<% @title = "Showing cell" %>
+
+<% content_for :description do %>
+  <p>Edit this template in <code>app/views/Cells/show.html.erb</code>.</p>
+  <% end %>
+
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+        <div class="sheet sheet-condensed">
+          <div class="sheet-inner p30">
+            <div class="form-horizontal">
+                              <div class="form-inputs">
+                 <div class="form-group">
+                    <label class="col-md-2 control-label">Register</label>
+                    <div class="col-md-8">
+                     <div class="form-control uneditable-input">
+                        <span>
+                          <%= @cell.register_id %>
+                        </span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+
+                              <div class="form-inputs">
+                 <div class="form-group">
+                    <label class="col-md-2 control-label">Patient</label>
+                    <div class="col-md-8">
+                     <div class="form-control uneditable-input">
+                        <span>
+                          <%= @cell.patient_id %>
+                        </span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+
+                              <div class="form-inputs">
+                 <div class="form-group">
+                    <label class="col-md-2 control-label">Header</label>
+                    <div class="col-md-8">
+                     <div class="form-control uneditable-input">
+                        <span>
+                          <%= @cell.header_id %>
+                        </span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+
+                              <div class="form-inputs">
+                 <div class="form-group">
+                    <label class="col-md-2 control-label">Value</label>
+                    <div class="col-md-8">
+                     <div class="form-control uneditable-input">
+                        <span>
+                          <%= @cell.value %>
+                        </span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+
+                              <div class="form-inputs">
+                 <div class="form-group">
+                    <label class="col-md-2 control-label">Date</label>
+                    <div class="col-md-8">
+                     <div class="form-control uneditable-input">
+                        <span>
+                          <%= @cell.date %>
+                        </span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+
+                              <div class="form-inputs">
+                 <div class="form-group">
+                    <label class="col-md-2 control-label">Note</label>
+                    <div class="col-md-8">
+                     <div class="form-control uneditable-input">
+                        <span>
+                          <%= @cell.note %>
+                        </span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+
+                            <div class="form-actions col-md-offset-2">
+                <%= link_to fa_icon_tag("pencil") + ' Edit', edit_cell_path(@cell), class: 'btn btn-primary' %>
+                <%= link_to 'Back', cells_path, class: 'btn' %>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>

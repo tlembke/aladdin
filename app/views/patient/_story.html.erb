@@ -1,0 +1,20 @@
+
+	<% Chapter.where(section_id: section).order(:position).each do |chapter| %>
+		<b><%= chapter.chapter %></b> <br>
+
+
+		<% @para = Paragraph.where(patient_id: @patient.id, chapter_id: chapter.id).first %>
+
+		<% unless @para %>
+			<% @para = Paragraph.create(patient_id: @patient.id, chapter_id: chapter.id, paragraph: "") %>
+
+		<% end %>
+
+<a href="#" id="editable_paragraph_paragraph_<%=@para.id%>" data-defaultValue="Add new paragraph" data-type="textarea" data-pk="1" data-resource="paragraph" data-name="paragraph" data-emptytext= "Notes" data-url="/paragraphs/<%=@para.id%>" data-placeholder="Your notes here..." data-original-title="Enter notes" class="editable"><%= textarea_format(@para.paragraph) %> </a><br><br>
+<hr class="hrshrink">
+
+	
+	
+		
+
+	<% end %>

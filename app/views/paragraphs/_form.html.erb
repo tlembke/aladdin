@@ -1,0 +1,50 @@
+
+<%= form_for(@paragraph, html: { class: 'form-horizontal' }) do |f| %>
+  <%= f.error_notification %>
+
+  <div class="form-inputs">
+    <%= f.form_group :patient_id do |f| %>
+      <%= f.label :patient_id, class: 'control-label col-md-2' %>
+      <div class='col-md-8'>
+        <%= f.number_field :patient_id, class: 'form-control' %>
+        <%= f.error_messages %>
+      </div>
+    <% end %>
+
+    <%= f.form_group :chapter_id do |f| %>
+      <%= f.label :chapter_id, class: 'control-label col-md-2' %>
+      <div class='col-md-8'>
+        <%= f.number_field :chapter_id, class: 'form-control' %>
+        <%= f.error_messages %>
+      </div>
+    <% end %>
+
+    <%= f.form_group :paragraph do |f| %>
+      <%= f.label :paragraph, class: 'control-label col-md-2' %>
+      <div class='col-md-8'>
+        <%= f.text_area :paragraph, class: 'form-control' %>
+        <%= f.error_messages %>
+      </div>
+    <% end %>
+
+    <%= f.form_group :show do |f| %>
+      <%= f.label :show, class: 'control-label col-md-2' %>
+      <div class='col-md-8'>
+        <%= f.check_box :show, class: 'form-control' %>
+        <%= f.error_messages %>
+      </div>
+    <% end %>
+
+  </div>
+
+  <div class="form-actions">
+    <div class="form-group">
+      <div class="col-md-2"></div>
+      <div class="col-md-8">
+        <%= f.submit class: 'btn btn-primary' %>
+        <%= link_to "Cancel", paragraphs_path, class: 'btn' %>
+      </div>
+    </div>
+  </div>
+<% end %>
+

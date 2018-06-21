@@ -12,19 +12,27 @@ class RegistersController < ApplicationController
   # GET /registers/1.json
   def show
     # show all the patients in a register
-    
-    connect_array=connect()
-    @error_code=connect_array[1]
-    if (@error_code==0)
-          dbh=connect_array[0]
-          patient_array=@register.members
-          @patients=[]
-          patient_array.each do |patient|
-            @patients<< get_patient(patient.to_s,dbh)
-          end
-          dbh.disconnect
 
+    # do we need to load the register for the first time
+
+
+    if @register.loaded == nil or params[:reload] == 'true'
+      
+        connect_array=connect()
+        @error_code=connect_array[1]
+        if (@error_code==0)
+          dbh=connect_array[0]    
+          @register.load(dbh)
+          dbh.disconnect
+        end
     end
+
+    # get all the cells for the register
+    @patients=@register.members
+    @headers=@register.headers.order(:sort)
+    
+    
+
 
   end
 
@@ -80,20 +88,10 @@ class RegistersController < ApplicationController
   private
 
 
-    def get_patient(patient,dbh)
-            # Get info about this patient
-         sql = "SELECT Surname,FirstName,FullName,LastSeenDate,LastSeenBy,AddressLine1, AddressLine2,Suburb,DOB, Age, Sex, Scratchpad, FamilyHistory, MedicareNum, MedicareRefNum, IHI, HomePhone, MobilePhone, SmokingFreq, Alcohol, AlcoholInfo, LastMammogram, CultureCode, EmailAddress, LastSmear, NoPapRecall FROM Patient WHERE id = "+patient       
-         puts sql
-          sth = dbh.run(sql)
-          sth.fetch_hash do |row|
-            atsi=0
-            row['CULTURECODE'] > 3 ? atsi=0 : atsi=1
 
-            @patient=Patient.new(id: @id, surname: row['SURNAME'], firstname: row['FIRSTNAME'], fullname: row['FULLNAME'], lastseendate: row['LASTSEENDATE'], lastseenby: row['LASTSEENBY'], addressline1: row['ADDRESSLINE1'], addressline2: row['ADDRESSLINE2'],suburb: row['SUBURB'],dob: row['DOB'], age: row['AGE'], sex: row['SEX'], scratchpad: row['SCRATCHPAD'], social: row['FAMILYHISTORY'], ihi: row['IHI'],medicare: row['MEDICARENUM'].to_s + "/" + row['MEDICAREREFNUM'].to_s,homephone: row['HOMEPHONE'],mobilephone: row['MOBILEPHONE'], smoking: row['SMOKINGFREQ'], etoh: row['ALCOHOL'], etohinfo: row['ALCOHOLINFO'], mammogram: row['LASTMAMMOGRAM'], atsi: atsi, email: row['EMAILADDRESS'], pap: row['LASTSMEAR'],pap_recall: row['NOPAPREACLL'])
-          end
-          sth.drop
-          return @patient
-  end
+
+
+
     # Use callbacks to share common setup or constraints between actions.
     def set_register
       @register = Register.find(params[:id])

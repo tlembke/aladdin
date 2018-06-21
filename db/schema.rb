@@ -11,7 +11,26 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170513044448) do
+ActiveRecord::Schema.define(version: 20180620115736) do
+
+  create_table "cells", force: :cascade do |t|
+    t.integer  "register_id"
+    t.integer  "patient_id"
+    t.integer  "header_id"
+    t.string   "value"
+    t.date     "date"
+    t.text     "note"
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
+  end
+
+  create_table "chapters", force: :cascade do |t|
+    t.text     "chapter"
+    t.integer  "section_id"
+    t.integer  "position"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
 
   create_table "goals", force: :cascade do |t|
     t.string   "title"
@@ -21,11 +40,21 @@ ActiveRecord::Schema.define(version: 20170513044448) do
     t.integer  "measure_id"
     t.integer  "active"
     t.integer  "parent"
+    t.integer  "master_id"
     t.datetime "created_at",   null: false
     t.datetime "updated_at",   null: false
-    t.integer  "master_id"
     t.decimal  "target"
     t.string   "autoload"
+  end
+
+  create_table "headers", force: :cascade do |t|
+    t.string   "name"
+    t.string   "code"
+    t.boolean  "special"
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
+    t.integer  "register_id"
+    t.integer  "sort"
   end
 
   create_table "masters", force: :cascade do |t|
@@ -68,6 +97,15 @@ ActiveRecord::Schema.define(version: 20170513044448) do
     t.integer  "epc"
   end
 
+  create_table "paragraphs", force: :cascade do |t|
+    t.integer  "patient_id"
+    t.integer  "chapter_id"
+    t.text     "paragraph"
+    t.boolean  "show"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "phonetimes", force: :cascade do |t|
     t.integer  "doctor_id"
     t.text     "message"
@@ -93,6 +131,7 @@ ActiveRecord::Schema.define(version: 20170513044448) do
     t.string   "name"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.datetime "loaded"
   end
 
   create_table "statuses", force: :cascade do |t|

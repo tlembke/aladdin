@@ -26,6 +26,10 @@
 	<% @changes = patient["PRESCRIPTION_HISTORY"] %>
 	<%= render  partial: "prescription_history",  locals: {meds: patient["MEDCHANGES"]} %>
 
+	<h2><i class="fa fa-medkit"></i>  Allergies </h2>
+ 	<%= render partial: "allergies", locals: {allergies: patient["ALLERGIES"]} %>
+
+
 </div>
 
 <% end %>

@@ -1,0 +1,19 @@
+	<% Chapter.where(section_id: section).order(:position).each do |chapter| %>
+		
+
+
+		<% @para = Paragraph.where(patient_id: @patient.id, chapter_id: chapter.id).first %>
+
+		<% if  @para  and @para.paragraph != "" %>
+
+			<b><%= chapter.chapter %></b> <br>
+
+
+			<%= @para.paragraph %> <br><br>
+			<hr class="hrshrink">
+
+		<% end %>
+	
+		
+
+	<% end %>

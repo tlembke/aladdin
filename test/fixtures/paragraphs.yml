@@ -1,0 +1,13 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  patient_id: 1
+  chapter_id: 1
+  paragraph: MyText
+  show: false
+
+two:
+  patient_id: 1
+  chapter_id: 1
+  paragraph: MyText
+  show: false

@@ -57,6 +57,19 @@
       </div>
   </div>
 
+      <div class="panel panel-default">
+      <div class="panel-heading" role="tab" id="headingEight">
+          <legend class="panel-title">
+                  <a role="button" data-toggle="collapse" data-parent="#accordion"  href="#collapseEight" aria-expanded="false" aria-controls="collapseEight"><i class="fa fa-heartbeat"></i>  My Story</a>
+          </legend>
+        </div>
+        <div id="collapseEight" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingEight">
+            <div class="panel-body">
+                <%= render partial: "story", locals: {section: 1}  %>
+            </div>
+        </div>
+  </div>
+
   <div class="panel panel-default">
       <div class="panel-heading" role="tab" id="headingOne">
           <legend class="panel-title">
@@ -70,6 +83,8 @@
             </div>
         </div>
   </div>
+
+
 
  
 

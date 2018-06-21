@@ -14,7 +14,7 @@ class Patient
          puts sql
           sth = dbh.run(sql)
           sth.fetch_hash do |row|
-            @patient=Patient.new(id: @id, surname: row['SURNAME'], firstname: row['FIRSTNAME'], fullname: row['FULLNAME'], lastseendate: row['LASTSEENDATE'], lastseenby: row['LASTSEENBY'], addressline1: row['ADDRESSLINE1'], addressline2: row['ADDRESSLINE2'],suburb: row['SUBURB'],dob: row['DOB'], age: row['AGE'], sex: row['SEX'], scratchpad: row['SCRATCHPAD'], social: row['FAMILYHISTORY'], smoking: row['SMOKINGFREQ'],etoh: row['ALCOHOL'], etohinfo: row['ALCOHOLINFO'], mammogram: row['LASTMAMMOGRAM'] )
+            @patient=Patient.new(id: patient, surname: row['SURNAME'], firstname: row['FIRSTNAME'], fullname: row['FULLNAME'], lastseendate: row['LASTSEENDATE'], lastseenby: row['LASTSEENBY'], addressline1: row['ADDRESSLINE1'], addressline2: row['ADDRESSLINE2'],suburb: row['SUBURB'],dob: row['DOB'], age: row['AGE'], sex: row['SEX'], scratchpad: row['SCRATCHPAD'], social: row['FAMILYHISTORY'], smoking: row['SMOKINGFREQ'],etoh: row['ALCOHOL'], etohinfo: row['ALCOHOLINFO'], mammogram: row['LASTMAMMOGRAM'] )
           end
           sth.drop
           return @patient
@@ -40,6 +40,36 @@ class Patient
 
           return medications
   end
+
+
+
+    def self.allergies(patient,dbh)
+          sql = "SELECT Allergy,Detail,ClassCode,GenericCode FROM Allergy where PT_Id_FK = " + patient
+ 
+          puts sql
+         
+
+          sth = dbh.run(sql)
+               
+          allergies=[]
+          sth.fetch_hash do |row|
+            allergies<< row
+          end
+
+         
+
+         
+          sth.drop
+
+
+
+          return allergies
+  end
+
+
+
+
+
 
   def self.prescription_history(patient,dbh,date)
           sql = "SELECT * FROM PrescriptionHistory WHERE PT_Id_FK = " + patient + "and  DateOfChange = '" + date + "'"
@@ -107,6 +137,10 @@ class Patient
         return returnText
   end
 
+  def paragraphs
+       @paragraphs=Paragraph.where(patient_id: self.id)
+  end
+
 
   def pronoun
   	    self.sex=="F"  ?  pronoun = "She" : pronoun = "He"
@@ -146,6 +180,8 @@ class Patient
       if match2
             # ok, we have a match for -l or -lives
   		lives+=match2[3]+"<p>"
+      lives.sub(" his ", ' my ')
+      lives.sub(" her ", ' my ')
       end
       social=social.sub match2[0],'' 
       social=social.strip
@@ -176,13 +212,13 @@ class Patient
 
 
 
-    introduction=self.fullname + " is a " + self.age.to_s+ " year old " + identifier + ".<br>"
+    introduction="I am a " + self.age.to_s+ " year old " + identifier + ".<br>"
    
     if lives != ""
     
         lives= lives.sub(/^lives/, '')
     		lives=lives.strip
-    		introduction+= pronoun + " lives " + lives +".<br>"
+    		introduction+= "I live " + lives +".<br>"
     end
 
     if care != ""

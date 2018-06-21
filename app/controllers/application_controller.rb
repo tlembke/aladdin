@@ -6,6 +6,8 @@ class ApplicationController < ActionController::Base
 
   before_filter :require_login, :except => [:login,:error]
 
+  config.time_zone = 'Sydney'
+
 
 
 

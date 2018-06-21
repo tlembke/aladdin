@@ -3,14 +3,29 @@
 <div class="container">
   <div class="row">
     <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-          <table>
-          <% @patients.each do |patient| %>
+        <%= link_to 'Reload',register_path(@register, :reload => "true"),{:class => "btn btn-lg btn-primary"} %> <% if @register.loaded %>
+          Information last updated on <%= @register.loaded.in_time_zone("Sydney").strftime("%e %B, %Y at %k:%M %p") %><p>
+        <% else %>
+          Register hasn't yet been loaded
+        <% end %>
+
+
+          <table class="table table-striped">
+            <thead>
+          <% @headers.each do |header| %>
+            <td><%= header.name.capitalize %></td>
+            <% end %>
+          </thead>
+            <% @patients.each do |patient| %>
                 <tr>
-                  <td><%= patient.fullname %> </td>
-
+                  <% @headers.each do |header| %>
+                  <td>  
+                  <%= displayCell(patient,header) %>
+                  </td>
+                  <% end %>
                 </tr>
-
-         <% end %>
+            <% end %>
+        
          </table>
     </div>
   </div>
