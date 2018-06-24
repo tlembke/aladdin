@@ -3,6 +3,7 @@
 <div class="container">
   <div class="row">
     <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+      <%= link_to 'Headers',headers_path(register: @register.id),{:class => "btn btn-lg btn-primary"} %> 
         <%= link_to 'Reload',register_path(@register, :reload => "true"),{:class => "btn btn-lg btn-primary"} %> <% if @register.loaded %>
           Information last updated on <%= @register.loaded.in_time_zone("Sydney").strftime("%e %B, %Y at %k:%M %p") %><p>
         <% else %>
@@ -12,15 +13,21 @@
 
           <table class="table table-striped">
             <thead>
+              <td>Patient</td>
           <% @headers.each do |header| %>
             <td><%= header.name.capitalize %></td>
             <% end %>
           </thead>
             <% @patients.each do |patient| %>
                 <tr>
+                  <td>
+            
+                    <%= link_to patient.surname + "," + patient.firstname, patient_path(patient.id) %>
+                  </td>
                   <% @headers.each do |header| %>
-                  <td>  
-                  <%= displayCell(patient,header) %>
+                  <td>
+                  <%= displayCell(patient.id,header) %>
+
                   </td>
                   <% end %>
                 </tr>

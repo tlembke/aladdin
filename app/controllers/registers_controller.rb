@@ -14,26 +14,38 @@ class RegistersController < ApplicationController
     # show all the patients in a register
 
     # do we need to load the register for the first time
+     connect_array=connect()
+    @error_code=connect_array[1]
+    if (@error_code==0)
+        dbh=connect_array[0] 
 
 
-    if @register.loaded == nil or params[:reload] == 'true'
-      
-        connect_array=connect()
-        @error_code=connect_array[1]
-        if (@error_code==0)
-          dbh=connect_array[0]    
-          @register.load(dbh)
-          dbh.disconnect
+            
+
+        if @register.loaded == nil or params[:reload] == 'true'
+            @register.load(dbh)
+
+         end
+
+        # get all the cells for the register
+        @members=@register.members# this is not sorted and just contains ids
+        @patients=[]
+        @members.each do |id|
+            patient = Patient.get_patient_name_from_id(id,dbh)
+            @patients << patient
         end
-    end
+        
+        @patients.sort_by!{ |p| [p.surname, p.firstname] }
 
-    # get all the cells for the register
-    @patients=@register.members
-    @headers=@register.headers.order(:sort)
+        @headers=@register.headers.order(:sort)
+        dbh.disconnect
+      else
+          flash[:alert] = "Unable to connect to database. "+get_odbc
+          flash[:notice] = connect_array[2]
+          redirect_to  controller: "genie", action: "login"
+      end
+
     
-    
-
-
   end
 
   # GET /registers/new

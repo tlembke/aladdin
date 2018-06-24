@@ -5,6 +5,13 @@ class ApplicationController < ActionController::Base
   protect_from_forgery with: :exception
 
   before_filter :require_login, :except => [:login,:error]
+  before_filter :populate_registers
+
+
+
+ def populate_registers
+  @registersAll = Register.all
+ end
 
   config.time_zone = 'Sydney'
 
@@ -92,6 +99,8 @@ def connect
           sth.drop
           return @patient
   end
+
+
 
 
 
@@ -234,6 +243,8 @@ def connect
     end
     return instruction
   end
+
+
 
 
 

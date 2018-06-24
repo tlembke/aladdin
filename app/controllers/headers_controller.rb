@@ -4,7 +4,14 @@ class HeadersController < ApplicationController
   # GET /headers
   # GET /headers.json
   def index
-    @headers = Header.all
+    if params[:register]
+       @register=Register.find(params[:register])
+       @headers = Header.where(register_id: @register.id).all
+    else
+      @headers = Header.all
+    end
+   
+
   end
 
   # GET /headers/1
@@ -70,6 +77,6 @@ class HeadersController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def header_params
-      params.require(:header).permit(:name, :code, :special, :register_id, :sort)
+      params.require(:header).permit(:name, :code, :special, :register_id, :sort, :keyword)
     end
 end

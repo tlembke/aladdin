@@ -24,9 +24,15 @@
    <li><%= link_to "Search",root_path, { "data-no-turbolink" => "true"} %></li>
    <li><%= link_to "Appointments",{controller: "appointments"}, { "data-no-turbolink" => "true"} %></li>
     <li><%= link_to "Nursing Home Rounds",nursinghome_index_path, { "data-no-turbolink" => "true"} %></li>
-    <li><%= link_to "Disconnect", controller: "genie", action: "login" %></li>
-  
+
     <li role="separator" class="divider"></li>
+     <li class="dropdown-header">Registers</li>
+    <% @registersAll.each do |r| %>
+          <li><%= link_to r.name,register_path(r), { "data-no-turbolink" => "true"} %></li>
+    <% end %>
+    <li><%= link_to "Add/Edit Registers",registers_path, { "data-no-turbolink" => "true"} %></li>
+    <li role="separator" class="divider"></li>
+  
     <li><%= link_to "Analysis", billing_index_path, { "data-no-turbolink" => "true"} %></li>
     <li role="separator" class="divider"></li>
     <li><%= link_to "Goals",goals_path, { "data-no-turbolink" => "true"} %></li>
@@ -34,12 +40,15 @@
     <li><%= link_to "Masters",masters_path, { "data-no-turbolink" => "true"} %></li>
     <li><%= link_to "Measurements",measurements_path, { "data-no-turbolink" => "true"} %></li>
     <li><%= link_to "Phonetimes",phonetimes_path, { "data-no-turbolink" => "true"} %></li>
-    <li><%= link_to "Registers",registers_path, { "data-no-turbolink" => "true"} %></li>
      <li><%= link_to "Chapters",chapters_path, { "data-no-turbolink" => "true"} %></li>
     <li role="separator" class="divider"></li>
-    <li><%= link_to "Preferences",prefs_path, { "data-no-turbolink" => "true"} %></li>
-    <li role="separator" class="divider"></li>
     <li><%= link_to "Orion download",orion_patient_index_path, { "data-no-turbolink" => "true"} %></li>
+    <li role="separator" class="divider"></li>
+  
+       <li><%= link_to "Preferences",prefs_path, { "data-no-turbolink" => "true"} %></li>
+    <li role="separator" class="divider"></li>
+     
+    <li><%= link_to "Disconnect", controller: "genie", action: "login" %></li>
   </ul>
     <span class="divider">|</span>
 

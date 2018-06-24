@@ -1,7 +1,8 @@
-<% @title = "Listing headers" %>
+<% @title = "Headers" %>
+<% @title +=  " for Register "+ @register.name if @register %>
 
 <% content_for :description do %>
-<p>Edit this template in <code>app/views/Headers/index.html.erb</code>.</p>
+<p>This page is used for adding or editing the headers in a register spreadsheet</p>
 <% end %>
 
 <% content_for :actions do %>
@@ -19,8 +20,11 @@
             <thead>
               <tr>
                                 <th>Name</th>
-                                <th>Register</th>
+                                <% unless @register %>
+                                  <th>Register</th>
+                                <% end %>
                                 <th>Code</th>
+                                <th>Keyword</th>
                                 <th>Sort</th>
                                 <th>Special</th>
                                 <th></th>
@@ -30,8 +34,11 @@
               <% @headers.each do |header| %>
               <tr>
                                 <td><%= header.name %></td>
-                                <td><%= header.register_id %></td>
+                                <% unless register %>
+                                <td><%= header.register.name %></td>
+                                <% end %>
                                 <td><%= header.code %></td>
+                                <td><%= header.keyword %></td>
                                 <td><%= header.sort %></td>
                                 <td><%= header.special %></td>
                                 <td class="actions">

@@ -1901,7 +1901,7 @@ end
 
 
 
-  def get_shs_date(patient,dbh)
+    def get_shs_date(patient,dbh)
       sql = "SELECT CreationDate FROM CDA where PT_Id_FK = " + patient + " AND SentToPCEHR = true ORDER BY CreationDate DESC"
           puts sql
           sth = dbh.run(sql)

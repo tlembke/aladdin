@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180620115736) do
+ActiveRecord::Schema.define(version: 20180624110837) do
 
   create_table "cells", force: :cascade do |t|
     t.integer  "register_id"
@@ -55,6 +55,7 @@ ActiveRecord::Schema.define(version: 20180620115736) do
     t.datetime "updated_at",  null: false
     t.integer  "register_id"
     t.integer  "sort"
+    t.string   "keyword"
   end
 
   create_table "masters", force: :cascade do |t|

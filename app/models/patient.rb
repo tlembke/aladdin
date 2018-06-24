@@ -326,6 +326,53 @@ end
       return returnText
   end
 
+  def get_shs_date(dbh)
+      sql = "SELECT CreationDate FROM CDA where PT_Id_FK = " + self.id + " AND SentToPCEHR = true ORDER BY CreationDate DESC"
+          puts sql
+          sth = dbh.run(sql)
+          lastSHS = nil
+          sth.fetch_hash do |row|
+            lastSHS = row['CREATIONDATE']
+          end
+          sth.drop
+          return lastSHS
+  end
+
+  def get_epc_count
+          epc_count=Member.where(patient_id: self.id).sum(:epc)
+          return epc_count
+
+  end
+
+   def self.get_patient_name_from_id(patient,dbh)
+            # Get info about this patient
+         sql = "SELECT Surname,FirstName FROM Patient WHERE id = " + patient.to_s   
+         puts sql
+          sth = dbh.run(sql)
+          sth.fetch_hash do |row|
+            @patient=Patient.new(id: patient, surname: row['SURNAME'], firstname: row['FIRSTNAME'])
+          end
+          sth.drop
+          return @patient
+  end
+
+    def get_last_consult_for_reason(patient,reason,dbh)
+          sql = "SELECT ConsultDate FROM Consult, ConsultationProblem WHERE Consult.PT_Id_FK = " + patient.to_s + " AND ConsultationProblem.CNSLT_Id_FK = Consult.ID AND ConsultationProblem.Problem ='"+ reason + "' ORDER BY Consult.ConsultDate DESC"
+          puts sql
+         
+
+          sth = dbh.run(sql)
+               
+          row= sth.fetch_first
+            
+          row ? returnValue= row[0] : returnValue=false
+
+          sth.drop
+      
+          return returnValue
+
+  end
+
 
 
 
