@@ -62,7 +62,8 @@ class Register < ActiveRecord::Base
 					elsif header.name == "epc"
 						@epc =  patient.get_epc_count
 
-						Cell.create(patient_id: patient.id, header_id: header.id, value: @epc, date: date, note: note )
+						Cell.create(patient_id: patient.id, header_id: header.id, value: @epc, date: nil, note: note )
+						
 					elsif header.code = "consult"
 						@lastConsult = patient.get_last_consult_for_reason(patient.id,header.keyword,dbh)
 						Cell.create(patient_id: patient.id, header_id: header.id, value: "", date: @lastConsult, note: "" )

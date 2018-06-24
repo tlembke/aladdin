@@ -9,7 +9,7 @@ class Cell < ActiveRecord::Base
 		
 		if header.code == "cb"
 			self.value == "1" ? value = "1" : value ="0"
-		elsif header.code =="date" or header.code="consult"
+		elsif header.code =="date" or header.code=="consult"
 			value=self.date.to_s(:dmy) if self.date
 
 		else
