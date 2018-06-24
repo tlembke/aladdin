@@ -34,7 +34,7 @@
               <% @headers.each do |header| %>
               <tr>
                                 <td><%= header.name %></td>
-                                <% unless register %>
+                                <% unless @register %>
                                 <td><%= header.register.name %></td>
                                 <% end %>
                                 <td><%= header.code %></td>

@@ -332,7 +332,7 @@ end
           sth = dbh.run(sql)
           lastSHS = nil
           sth.fetch_hash do |row|
-            lastSHS = row['CREATIONDATE']
+            lastSHS = row['CREATIONDATE'].to_date
           end
           sth.drop
           return lastSHS
