@@ -17,24 +17,24 @@
     <%= link_to "PreChecks",prechecks_patient_index_path, { "data-no-turbolink" => "true"} %>
 <span class="divider">|</span>
 
-
-
-  <a class="dropdown-toggle" data-toggle="dropdown" href="#"><i class="fa fa-cogs"></i></a>
-  <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
-   <li><%= link_to "Search",root_path, { "data-no-turbolink" => "true"} %></li>
-   <li><%= link_to "Appointments",{controller: "appointments"}, { "data-no-turbolink" => "true"} %></li>
-    <li><%= link_to "Nursing Home Rounds",nursinghome_index_path, { "data-no-turbolink" => "true"} %></li>
-
-    <li role="separator" class="divider"></li>
-     <li class="dropdown-header">Registers</li>
+  <div class="btn-group">
+  <a class="dropdown-toggle" data-toggle="dropdown" id="dropdownMenu2" href="#" ><i class="fa fa-table"></i></a>
+  <ul class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenu2">
+    <li class="dropdown-header">Registers</li>
     <% @registersAll.each do |r| %>
           <li><%= link_to r.name,register_path(r), { "data-no-turbolink" => "true"} %></li>
     <% end %>
     <li><%= link_to "Add/Edit Registers",registers_path, { "data-no-turbolink" => "true"} %></li>
-    <li role="separator" class="divider"></li>
+  </ul>
+</div>
+<span class="divider">|</span>
+ <div class="btn-group">
+  <a class="dropdown-toggle" data-toggle="dropdown" id="dropdownMenu1" href="#"><i class="fa fa-cogs"></i></a>
+  <ul class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenu1">
   
     <li><%= link_to "Analysis", billing_index_path, { "data-no-turbolink" => "true"} %></li>
     <li role="separator" class="divider"></li>
+     <li class="dropdown-header">Editors</li>
     <li><%= link_to "Goals",goals_path, { "data-no-turbolink" => "true"} %></li>
     <li><%= link_to "Measures",measures_path, { "data-no-turbolink" => "true"} %></li>
     <li><%= link_to "Masters",masters_path, { "data-no-turbolink" => "true"} %></li>
@@ -50,6 +50,7 @@
      
     <li><%= link_to "Disconnect", controller: "genie", action: "login" %></li>
   </ul>
+</div>
     <span class="divider">|</span>
 
      <%= link_to ("<i class='fa fa-refresh'></i>").html_safe, url_for(params), { "data-no-turbolink" => "true"} %>

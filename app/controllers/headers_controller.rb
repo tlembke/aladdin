@@ -4,9 +4,9 @@ class HeadersController < ApplicationController
   # GET /headers
   # GET /headers.json
   def index
-    if params[:register]
-       @register=Register.find(params[:register])
-       @headers = Header.where(register_id: @register.id).all
+    if params[:register_id]
+       @register=Register.find(params[:register_id])
+       @headers = Header.where(register_id: @register.id, special: false).all
     else
       @headers = Header.all
     end
@@ -21,7 +21,9 @@ class HeadersController < ApplicationController
 
   # GET /headers/new
   def new
+
     @header = Header.new
+    @header.register_id = params[:register_id]
   end
 
   # GET /headers/1/edit

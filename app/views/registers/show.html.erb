@@ -3,12 +3,13 @@
 <div class="container">
   <div class="row">
     <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-      <%= link_to 'Headers',headers_path(register: @register.id),{:class => "btn btn-lg btn-primary"} %> 
-        <%= link_to 'Reload',register_path(@register, :reload => "true"),{:class => "btn btn-lg btn-primary"} %> <% if @register.loaded %>
-          Information last updated on <%= @register.loaded.in_time_zone("Sydney").strftime("%e %B, %Y at %k:%M %p") %><p>
+      
+        <%= link_to "<i class='fa fa-refresh'></i> Reload".html_safe,register_path(@register, :reload => "true"),{:class => "btn btn-lg btn-primary"} %> <% if @register.loaded %>
+          Information last updated on <%= @register.loaded.in_time_zone("Sydney").strftime("%e %B, %Y at %k:%M %p") %>
         <% else %>
           Register hasn't yet been loaded
         <% end %>
+        <%= link_to 'Edit Headers',register_headers_path(register_id: @register.id),{:class => "btn btn-primary btn-large pull-right"} %> 
 
 
           <table class="table table-striped">

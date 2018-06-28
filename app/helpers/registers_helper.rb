@@ -11,7 +11,7 @@ module RegistersHelper
 		if header.code == "cb"
 			return_text = check_box_tag 'cell', @cell.id, @cell.value=="1", data: {
         remote: true, url: toggle_cell_path(@cell), method: "POST" }
-		elsif header.code =="string" and not header.special
+		elsif header.code =="string" or header.code=="note" and not header.special
 			return_text = "<a href='#' id='editable_cell_value_" + @cell.id.to_s + "' data-defaultValue='Add new paragraph' data-type='textarea' data-pk='1' data-resource='cell' data-name='value' data-emptytext= 'Notes' data-url='/cells/" + @cell.id.to_s +  "' data-placeholder='Your notes here...' data-original-title='Enter notes' class='editable'>" + textarea_format(@cell.value)+ "</a>"
 		else
 			return_text = value

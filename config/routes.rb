@@ -43,7 +43,10 @@ Rails.application.routes.draw do
   resources :goals
   resources :members
   resources :statuses
-  resources :registers
+  resources :registers do
+    resources :headers
+  end
+
 
   get 'genie/home'
 

@@ -91,8 +91,9 @@
 
 
                             <div class="form-actions col-md-offset-2">
-                <%= link_to fa_icon_tag("pencil") + ' Edit', edit_header_path(@header), class: 'btn btn-primary' %>
-                <%= link_to 'Back', headers_path, class: 'btn' %>
+                <%= link_to fa_icon_tag("pencil") + ' Edit', edit_register_header_path(id: @header.id, register_id: @header.register_id), class: 'btn btn-primary' %>
+                <%= link_to 'Back', register_headers_path(register_id: @header.register_id), {class: 'btn'} %>
+
               </div>
             </div>
           </div>

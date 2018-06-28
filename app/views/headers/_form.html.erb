@@ -11,21 +11,29 @@
       </div>
     <% end %>
 
-        <%= f.form_group :register_id do |f| %>
-      <%= f.label :register_id, class: 'control-label col-md-2' %>
-      <div class='col-md-8'>
-        <%= f.text_field :register_id, class: 'form-control' %>
-        <%= f.error_messages %>
-      </div>
-    <% end %>
+    
+
+    <%= f.hidden_field :register_id,  class: 'form-control' %>
 
     <%= f.form_group :type do |f| %>
       <%= f.label :code, class: 'control-label col-md-2' %>
       <div class='col-md-8'>
-        <%= f.text_field :code, class: 'form-control' %>
+        
+        <%= f.select(:code, [['Checkbox', 'cb'], ['Note (small)', 'string'], ['Note (large)','note']], {class: 'form-control'}) %>
         <%= f.error_messages %>
       </div>
     <% end %>
+
+
+        <%= f.form_group :type do |f| %>
+      <%= f.label :sort, class: 'control-label col-md-2' %>
+      <div class='col-md-8'>
+        <%= f.number_field :sort, class: 'form-control' %>
+        <%= f.error_messages %>
+      </div>
+    <% end %>
+
+      Fields below for admin only :
         <%= f.form_group :type do |f| %>
       <%= f.label :keyword, class: 'control-label col-md-2' %>
       <div class='col-md-8'>
@@ -34,13 +42,6 @@
       </div>
     <% end %>
 
-        <%= f.form_group :type do |f| %>
-      <%= f.label :sort, class: 'control-label col-md-2' %>
-      <div class='col-md-8'>
-        <%= f.text_field :sort, class: 'form-control' %>
-        <%= f.error_messages %>
-      </div>
-    <% end %>
 
     <%= f.form_group :special do |f| %>
       <%= f.label :special, class: 'control-label col-md-2' %>
@@ -57,7 +58,7 @@
       <div class="col-md-2"></div>
       <div class="col-md-8">
         <%= f.submit class: 'btn btn-primary' %>
-        <%= link_to "Cancel", headers_path, class: 'btn' %>
+        <%= link_to "Cancel", register_headers_path(register_id: @header.register_id), class: 'btn' %>
       </div>
     </div>
   </div>
