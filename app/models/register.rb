@@ -2,6 +2,7 @@ class Register < ActiveRecord::Base
 	has_and_belongs_to_many :patients
 	has_many :headers
 
+
 	def members
 		regpats=RegisterPatient.where(register_id: self.id)
 		members=[]
@@ -53,7 +54,11 @@ class Register < ActiveRecord::Base
 						end
 						Cell.create(patient_id: patient.id, header_id: header.id, value: value, date: date, note: note )
 
+					elsif header.name == "name"
+						name = patient.surname + "," + patient.firstname
 
+						Cell.create(patient_id: patient.id, header_id: header.id, value: name, date: nil, note: note )
+						
 					
 					elsif header.name == "shs"
 						@shs =  patient.get_shs_date(dbh)
@@ -64,10 +69,27 @@ class Register < ActiveRecord::Base
 
 						Cell.create(patient_id: patient.id, header_id: header.id, value: @epc, date: nil, note: note )
 						
-					elsif header.code = "consult"
-						@lastConsult = patient.get_last_consult_for_reason(patient.id,header.keyword,dbh)
+					elsif header.code == "consult"
+						@lastConsult = patient.get_last_consult_for_reason(header.keyword,dbh)
 						Cell.create(patient_id: patient.id, header_id: header.id, value: "", date: @lastConsult, note: "" )
-	
+					elsif header.name == "last"
+
+							appt = patient.lastseendate.to_s(:dmy)
+							apptBy = patient.lastseenby
+							appt = "<a title=' By " + apptBy + "'>" + appt + "</a>"
+						
+						Cell.create(patient_id: patient.id, header_id: header.id, value: appt, date: patient.lastseendate, note: "" )	
+					
+					elsif header.name == "next"
+						appt=""
+						@nextConsult = patient.get_next_appointment(dbh)
+						if @nextConsult
+							nextDate = @nextConsult['STARTDATE'].to_date
+							appt = @nextConsult['STARTDATE'].to_s(:dmy)
+							apptTime = @nextConsult['STARTTIME'].to_time.strftime("%H:%M")
+							appt = "<a title=' At " + apptTime + " with " + @nextConsult['PROVIDERNAME'] + " for " + @nextConsult['REASON'] + "'>" + appt + "</a>"
+						end
+						Cell.create(patient_id: patient.id, header_id: header.id, value: appt, date: nextDate, note: "" )
 					end
 
 				

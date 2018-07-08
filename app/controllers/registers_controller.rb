@@ -6,6 +6,7 @@ class RegistersController < ApplicationController
   def index
     @registers = Register.all
 
+
   end
 
   # GET /registers/1
@@ -25,19 +26,41 @@ class RegistersController < ApplicationController
         if @register.loaded == nil or params[:reload] == 'true'
             @register.load(dbh)
 
-         end
+        end
 
         # get all the cells for the register
         @members=@register.members# this is not sorted and just contains ids
-        @patients=[]
-        @members.each do |id|
-            patient = Patient.get_patient_name_from_id(id,dbh)
-            @patients << patient
+        #@patients=[]
+
+        # sort by.header
+        #which heaeder are we sorting by
+        if params[:header] 
+              sort_header = Header.find(params[:header])
+        else
+              sort_header =Header.where(name: :name, register_id: @register.id).first
         end
-        
-        @patients.sort_by!{ |p| [p.surname, p.firstname] }
+        params[:direction] ? sort_direction = params[:direction] : sort_direction = "asc"
+
+
+        if sort_header.code == "date"
+              @cells= Cell.where(header_id: sort_header.id).order(date:  sort_direction)
+        else 
+              @cells= Cell.where(header_id: sort_header.id).order(value:  sort_direction)
+        end
+
+        @patients=[]
+
+        @cells.each do |cell|
+              if @members.include?(cell.patient_id)
+                 @patients << cell.patient_id
+              end
+        end
+      
+
+
 
         @headers=@register.headers.order(:sort)
+
         dbh.disconnect
       else
           flash[:alert] = "Unable to connect to database. "+get_odbc
@@ -98,6 +121,9 @@ class RegistersController < ApplicationController
   end
 
   private
+
+
+
 
 
 

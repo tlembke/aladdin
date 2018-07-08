@@ -6,9 +6,11 @@
 <% end %>
 
 <% content_for :actions do %>
+<% if @register %>
 <%= link_to 'Back', register_path(@register), {class: 'btn btn-primary btn-large pull-right'} %>
 <%= link_to new_register_header_path(register_id: @register.id), {class: 'btn btn-primary btn-large pull-right'} do %>
 <%= fa_icon_tag "plus" %> Add Header
+<% end %>
 <% end %>
 <% end %>
 

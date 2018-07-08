@@ -14,20 +14,16 @@
 
           <table class="table table-striped">
             <thead>
-              <td>Patient</td>
+
           <% @headers.each do |header| %>
-            <td><%= header.name.capitalize %></td>
+            <td><%= sort_link(header) %></td>
             <% end %>
           </thead>
             <% @patients.each do |patient| %>
                 <tr>
-                  <td>
-            
-                    <%= link_to patient.surname + "," + patient.firstname, patient_path(patient.id) %>
-                  </td>
                   <% @headers.each do |header| %>
                   <td>
-                  <%= displayCell(patient.id,header) %>
+                  <%= displayCell(patient,header) %>
 
                   </td>
                   <% end %>

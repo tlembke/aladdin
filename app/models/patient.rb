@@ -356,8 +356,8 @@ end
           return @patient
   end
 
-    def get_last_consult_for_reason(patient,reason,dbh)
-          sql = "SELECT ConsultDate FROM Consult, ConsultationProblem WHERE Consult.PT_Id_FK = " + patient.to_s + " AND ConsultationProblem.CNSLT_Id_FK = Consult.ID AND ConsultationProblem.Problem ='"+ reason + "' ORDER BY Consult.ConsultDate DESC"
+    def get_last_consult_for_reason(reason,dbh)
+          sql = "SELECT ConsultDate FROM Consult, ConsultationProblem WHERE Consult.PT_Id_FK = " + self.id.to_s + " AND ConsultationProblem.CNSLT_Id_FK = Consult.ID AND ConsultationProblem.Problem ='"+ reason + "' ORDER BY Consult.ConsultDate DESC"
           puts sql
          
 
@@ -371,6 +371,23 @@ end
       
           return returnValue
 
+  end
+
+    def get_next_appointment(dbh)
+          sql = "SELECT StartDate, StartTime, ProviderName,Reason FROM Appt WHERE PT_Id_FK = " + self.id.to_s + " AND StartDate > '" + Date.today.to_s(:db) + "' ORDER BY StartDate"
+          puts sql
+         
+
+          sth = dbh.run(sql)
+          appointment = sth.fetch_hash
+          
+
+
+          sth.drop
+
+
+
+          return appointment
   end
 
 
