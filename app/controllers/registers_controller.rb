@@ -42,7 +42,7 @@ class RegistersController < ApplicationController
         params[:direction] ? sort_direction = params[:direction] : sort_direction = "asc"
 
 
-        if sort_header.code == "date" or sort_header.code == "consult" or sort_header.code == "last"  or sort_header.code == "next" 
+        if sort_header.code == "date" or sort_header.code == "consult" or sort_header.name == "last"  or sort_header.name == "next" 
               @cells= Cell.where(header_id: sort_header.id).order(date:  sort_direction)
         else 
               @cells= Cell.where(header_id: sort_header.id).order(value:  sort_direction)
