@@ -11,7 +11,31 @@
     <span class="divider">|</span>
     <%= link_to "Appointments",{controller: "appointments"}, { "data-no-turbolink" => "true"} %>
     <span class="divider">|</span>
-    <%= link_to "NH",nursinghome_index_path, { "data-no-turbolink" => "true"} %>
+
+
+
+  <div class="btn-group">
+  <a class="dropdown-toggle" data-toggle="dropdown" id="dropdownMenu12" href="#" >NH</a>
+  <ul class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenu12">
+   
+        <li><%= link_to "Today's consults",nursinghome_index_path, { "data-no-turbolink" => "true"} %></li>
+
+    <% if @nhAll.count > 0 %>
+    <li class="dropdown-header">Nursing Homes</li>
+    <% @nhAll.each do |r| %>
+          <li><%= link_to r.name,register_path(r), { "data-no-turbolink" => "true"} %></li>
+    <% end %>
+    <% end %>
+
+    <li><%= link_to "Add/Edit Nursing Home",registers_path(code: 1), { "data-no-turbolink" => "true"} %></li>
+  </ul>
+</div>
+
+
+
+
+
+
 <span class="divider">|</span>
 
     <%= link_to "PreChecks",prechecks_patient_index_path, { "data-no-turbolink" => "true"} %>
@@ -24,6 +48,7 @@
     <% @registersAll.each do |r| %>
           <li><%= link_to r.name,register_path(r), { "data-no-turbolink" => "true"} %></li>
     <% end %>
+
     <li><%= link_to "Add/Edit Registers",registers_path, { "data-no-turbolink" => "true"} %></li>
   </ul>
 </div>

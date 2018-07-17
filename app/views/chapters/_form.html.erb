@@ -11,18 +11,14 @@
       </div>
     <% end %>
 
-    <%= f.form_group :section_id do |f| %>
-      <%= f.label :section_id, class: 'control-label col-md-2' %>
-      <div class='col-md-8'>
-        <%= f.number_field :section_id, class: 'form-control' %>
-        <%= f.error_messages %>
-      </div>
-    <% end %>
 
-    <%= f.form_group :position do |f| %>
-      <%= f.label :position, class: 'control-label col-md-2' %>
+
+     <%= f.hidden_field :section_id,  class: 'form-control' %>
+
+    <%= f.form_group :sort do |f| %>
+      <%= f.label :sort, class: 'control-label col-md-2' %>
       <div class='col-md-8'>
-        <%= f.number_field :position, class: 'form-control' %>
+        <%= f.number_field :sort, class: 'form-control' %>
         <%= f.error_messages %>
       </div>
     <% end %>

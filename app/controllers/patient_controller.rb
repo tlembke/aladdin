@@ -453,6 +453,102 @@ def healthsummary
   end
 
 
+def cma
+    @id=params[:id]
+    connect_array=connect()
+    @error_code=connect_array[1]
+    if (@error_code==0)
+          dbh=connect_array[0]
+        # Get info about this patient
+          @patient=get_patient(@id,dbh)
+          @patient = getall_patient(@id,dbh,"careplan")
+          #tasks_array=extract_tasks(@consult['PLAN'])
+          #@tasks=tasks_array[0]
+          #@meds=tasks_array[1]
+          #@notes=tasks_array[2]
+          #@plan = tasks_array[3]
+          #tests_array= get_tests(@plan)
+          #@tests= tests_array[0]
+          #@plan= tests_array[1]
+          @provider = session[:provider]
+          @username = session[:username]
+          #@medications = get_medications(@id,dbh)
+          @appointments = get_appointments(@id,dbh)
+          # @measures = get_measures(@id,dbh)
+          #@current_problems = get_current_problems(@id,dbh)
+          #history_array = get_history(@id,dbh)
+          #@procedures=history_array[0]
+          #@events=history_array[1]
+          #@allergies=get_allergies(@id,dbh)
+          #@careteam=get_careteam(@id,dbh)
+          @ahp_items=get_ahp_items
+          bpsweights=get_bps(@id,dbh,50)
+          @bps=bpsweights[0]
+          @weights=bpsweights[1]
+          @lipids=get_lipids(@id,dbh,50)
+          @all_measures=get_all_measurements(@id,dbh,50)
+          @tracked_items=[721,723,732,2517,2521,701,703,900]
+          @item_numbers=get_item_numbers(@id,dbh,@tracked_items)
+          @phonetime = get_phonetime(session[:id])
+          @lastSHS = get_shs_date(@id,dbh)
+          @users = get_users(dbh)
+          @provider = session[:provider]
+          @epc_count = get_epc_count(@id)
+
+           # test about annual chech
+          @last_annual_check=get_last_check(@id,dbh)
+          @plan_text = get_all_tasks_for_today(dbh,@id)
+          tasks_array=extract_tasks(@plan_text)
+          @tasks=tasks_array[0]
+          @meds=tasks_array[1]
+          @notes=tasks_array[2]
+          @plan = tasks_array[3]
+          @changes= Patient.prescription_history(@id,dbh,Date.today.strftime("%Y-%m-%d"))
+
+          # get patient story
+
+
+
+          unless @patient.has_plan?
+                @patient.autoload_goals
+          end
+
+          
+          dbh.disconnect
+
+
+    else
+          # lost connection to database
+          flash[:notice]=connect_array[2]
+          redirect_to  action: "login"
+    end
+
+
+
+    respond_to do |format|
+        format.html {
+            if params[:print]
+                  @print = true
+                  render :cmaprint
+                  return
+            end
+
+
+        }
+        format.pdf {
+                  render pdf: 'care_plan',
+                  layout: 'layouts/_pdf_minimal.html.erb',
+                  template: "patient/careplanprint.html.erb",
+                  show_as_html: params.key?('debug')
+        }
+    end
+
+
+
+  end
+
+
+
  def orion
     @orions=RegisterPatient.where(register_id: 1)
     if @orions.count >0

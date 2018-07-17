@@ -1,12 +1,13 @@
-<% @title = "Listing registers" %>
+<% @title = "Listing registers" unless @code == "1"%>
+<% @title = "Listing nursing homes" if @code == "1"%>
 
 <% content_for :description do %>
 <p>Edit this template in <code>app/views/Registers/index.html.erb</code>.</p>
 <% end %>
 
 <% content_for :actions do %>
-<%= link_to new_register_path, class: 'btn btn-primary btn-large pull-right' do %>
-<%= fa_icon_tag "plus" %> Add Register
+<%= link_to new_register_path(code: @code), class: 'btn btn-primary btn-large pull-right' do %>
+<%= fa_icon_tag "plus" %> Add <%= @code == "1" ? "Nursing Home" : "Register" %>
 <% end %>
 <% end %>
 
@@ -19,6 +20,7 @@
             <thead>
               <tr>
                                 <th>Name</th>
+                                <th>Type</th>
                                 <th></th>
               </tr>
             </thead>
@@ -27,6 +29,9 @@
               <% @registers.each do |register| %>
               <tr>
               <td><%= register.name %></td>
+              <td><%= register.code == 0 ? "Register" : "Nursing Home" %></td>
+ 
+
 
                                 <td class="actions">
                   <%= link_to fa_icon_tag("eye"), register, rel: 'tooltip', title: 'Show' %>

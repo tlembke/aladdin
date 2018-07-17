@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180624110837) do
+ActiveRecord::Schema.define(version: 20180716222335) do
 
   create_table "cells", force: :cascade do |t|
     t.integer  "register_id"
@@ -27,7 +27,7 @@ ActiveRecord::Schema.define(version: 20180624110837) do
   create_table "chapters", force: :cascade do |t|
     t.text     "chapter"
     t.integer  "section_id"
-    t.integer  "position"
+    t.integer  "sort"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
@@ -130,9 +130,16 @@ ActiveRecord::Schema.define(version: 20180624110837) do
 
   create_table "registers", force: :cascade do |t|
     t.string   "name"
+    t.datetime "created_at",             null: false
+    t.datetime "updated_at",             null: false
+    t.datetime "loaded"
+    t.integer  "code",       default: 0, null: false
+  end
+
+  create_table "sections", force: :cascade do |t|
+    t.string   "name"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.datetime "loaded"
   end
 
   create_table "statuses", force: :cascade do |t|

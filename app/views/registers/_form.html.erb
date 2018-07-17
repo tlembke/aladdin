@@ -12,6 +12,40 @@
     <% end %>
   </div>
 
+
+<% if @register.code %>
+    <%= f.hidden_field :code,  class: 'form-control' %>
+
+
+<% else %>
+    <div class="form-inputs">
+    <%= f.form_group :code do |f| %>
+      <%= f.label :code, class: 'control-label col-md-2' %>
+      <div class='col-md-8'>
+        <%= f.select(:code, [['Register', 0], ['Nursing Home', 1]], {class: 'form-control'}) %>
+        <%= f.error_messages %>
+      </div>
+    <% end %>
+  </div>
+  <% end %>
+
+    <% unless @register.persisted? %>
+      <div class="form-inputs">
+    <%= f.form_group :steal do |f| %>
+      <%= f.label "Steal headers", class: 'control-label col-md-2' %>
+      <div class='col-md-8'>
+        <% if @register.code %>
+        <%= f.collection_select(:steal, Register.where(code: @register.code).all, :id, :name, {include_blank: true, class: 'form-control'}) %>
+        <% else %>
+        <%= f.collection_select(:steal, Register.all, :id, :name, {include_blank: true, class: 'form-control'}) %>
+        <% end %>
+        <%= f.error_messages %>
+      </div>
+    <% end %>
+  </div>
+  <% end %>
+  
+
   <div class="form-actions col-md-offset-2 col-md-10">
     <%= f.submit class: 'btn btn-primary' %>
     <%= link_to "Cancel", registers_path, class: 'btn' %>

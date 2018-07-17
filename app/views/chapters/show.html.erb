@@ -44,7 +44,7 @@
                     <div class="col-md-8">
                      <div class="form-control uneditable-input">
                         <span>
-                          <%= @chapter.position %>
+                          <%= @chapter.sort %>
                         </span>
                     </div>
                   </div>
@@ -53,8 +53,10 @@
 
 
                             <div class="form-actions col-md-offset-2">
-                <%= link_to fa_icon_tag("pencil") + ' Edit', edit_chapter_path(@chapter), class: 'btn btn-primary' %>
-                <%= link_to 'Back', chapters_path, class: 'btn' %>
+                <%= link_to fa_icon_tag("pencil") + ' Edit', edit_section_chapter_path(id: @chapter.id, section_id: @chapter.section_id), class: 'btn btn-primary' %>
+                <%= link_to 'Back', section_chapters_path(section_id: @chapter.section.id), class: 'btn' %>
+
+
               </div>
             </div>
           </div>

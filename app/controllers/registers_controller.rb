@@ -4,7 +4,13 @@ class RegistersController < ApplicationController
   # GET /registers
   # GET /registers.json
   def index
-    @registers = Register.all
+    
+    @code=params[:code]
+    if @code
+        @registers = Register.where(code: @code).all
+    else
+        @registers = Register.all
+    end
 
 
   end
@@ -74,6 +80,7 @@ class RegistersController < ApplicationController
   # GET /registers/new
   def new
     @register = Register.new
+    @register.code = params[:code]
   end
 
   # GET /registers/1/edit
@@ -85,10 +92,39 @@ class RegistersController < ApplicationController
   def create
     @register = Register.new(register_params)
 
+
+    # need to create intital headers
+    if @register.steal == ""
+        # create name age headers
+        Header.create(register_id: @register.id, name: "name", code: "string", sort: 1, special: true )
+        Header.create(register_id: @register.id, name: "age", code: "string", sort: 3, special: true )
+
+    else
+        @headers = Header.where(register_id: @register.steal).all
+        @headers.each do |h|
+        Header.create(register_id: @register.id, name: h.name, code: h.code, keyword: h.keyword, sort: h.sort, special: h.special)
+     end
+    
+
+    end
+
+
+
     respond_to do |format|
       if @register.save
+        if @register.steal == ""
+        # create name age headers
+            Header.create(register_id: @register.id, name: "name", code: "string", sort: 1, special: true )
+            Header.create(register_id: @register.id, name: "age", code: "string", sort: 3, special: true )
+
+        else
+            @headers = Header.where(register_id: @register.steal).all
+            @headers.each do |h|
+                Header.create(register_id: @register.id, name: h.name, code: h.code, keyword: h.keyword, sort: h.sort, special: h.special)
+            end
+        end
         format.html { redirect_to @register, notice: 'Register was successfully created.' }
-        format.json { render :show, status: :created, location: @register }
+        format.json { render :index, status: :created}
       else
         format.html { render :new }
         format.json { render json: @register.errors, status: :unprocessable_entity }
@@ -113,7 +149,7 @@ class RegistersController < ApplicationController
   # DELETE /registers/1
   # DELETE /registers/1.json
   def destroy
-    @register.destroy
+    Register.find(params[:id]).delete
     respond_to do |format|
       format.html { redirect_to registers_url, notice: 'Register was successfully destroyed.' }
       format.json { head :no_content }
@@ -137,6 +173,6 @@ class RegistersController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def register_params
-      params.require(:register).permit(:name )
+      params.require(:register).permit(:name, :code, :keyword, :steal, :special )
     end
 end

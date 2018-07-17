@@ -4,7 +4,13 @@ class ChaptersController < ApplicationController
   # GET /chapters
   # GET /chapters.json
   def index
-    @chapters = Chapter.all
+    if params[:section_id]
+       @section= Section.find(params[:section_id])
+       @chapters = Chapter.where(section_id: @section.id).all
+    else
+      @chapters = Chapter.all
+    end
+
   end
 
   # GET /chapters/1
@@ -15,6 +21,7 @@ class ChaptersController < ApplicationController
   # GET /chapters/new
   def new
     @chapter = Chapter.new
+      @chapter.section_id = params[:section_id]
   end
 
   # GET /chapters/1/edit
@@ -69,6 +76,6 @@ class ChaptersController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def chapter_params
-      params.require(:chapter).permit(:chapter, :section_id, :position)
+      params.require(:chapter).permit(:chapter, :section_id, :sort)
     end
 end

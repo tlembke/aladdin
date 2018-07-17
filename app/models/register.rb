@@ -2,6 +2,8 @@ class Register < ActiveRecord::Base
 	has_and_belongs_to_many :patients
 	has_many :headers
 
+	attr_accessor :steal
+
 
 	def members
 		regpats=RegisterPatient.where(register_id: self.id)
@@ -72,6 +74,12 @@ class Register < ActiveRecord::Base
 					elsif header.code == "consult"
 						@lastConsult = patient.get_last_consult_for_reason(header.keyword,dbh)
 						Cell.create(patient_id: patient.id, header_id: header.id, value: "", date: @lastConsult, note: "" )
+					elsif header.keyword == "item"
+
+						  consultDate = patient.get_item_number_date(dbh,header.name)
+						  Cell.create(patient_id: patient.id, header_id: header.id, value: "", date: consultDate, note: "" )	
+					
+
 					elsif header.name == "last"
 
 							appt = patient.lastseendate.to_s(:dmy)
@@ -80,6 +88,9 @@ class Register < ActiveRecord::Base
 						
 						Cell.create(patient_id: patient.id, header_id: header.id, value: appt, date: patient.lastseendate, note: "" )	
 					
+					
+
+
 					elsif header.name == "next"
 						appt=""
 						@nextConsult = patient.get_next_appointment(dbh)

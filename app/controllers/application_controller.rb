@@ -10,7 +10,8 @@ class ApplicationController < ActionController::Base
 
 
  def populate_registers
-  @registersAll = Register.all
+  @registersAll = Register.where(code: 0).all
+  @nhAll = Register.where(code: 1).all
  end
 
   config.time_zone = 'Sydney'

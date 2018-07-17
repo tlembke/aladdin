@@ -6,7 +6,7 @@ class HeadersController < ApplicationController
   def index
     if params[:register_id]
        @register=Register.find(params[:register_id])
-       @headers = Header.where(register_id: @register.id, special: false).all
+       @headers = Header.where(register_id: @register.id).all
     else
       @headers = Header.all
     end
