@@ -21,8 +21,10 @@ class GenieController < ApplicationController
   			puts "Connecting to " + dsn_name
 
       rescue
-      			flash[:notice]="Unable to find dsn. Have you configured iODBC?"
+      			flash[:notice]="Unable to find dsn. Have you configured iODBC? I will restart Alladin so try again"
+            system ("touch #{Rails.root}/tmp/restart.txt")
       			connect=false
+
       			#redirect_to controller: "genie", action: "login"
       end
       if connect
