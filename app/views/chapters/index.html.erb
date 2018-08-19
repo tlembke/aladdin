@@ -1,12 +1,23 @@
 <% @title = "Listing chapters" %>
+<% @title +=  " for Section "+ @section.name if @register %>
 
 <% content_for :description do %>
 <p>Edit this template in <code>app/views/Chapters/index.html.erb</code>.</p>
 <% end %>
 
+
+
+
+
+
+
+
+<% if @section %>
 <% content_for :actions do %>
-<%= link_to new_chapter_path, class: 'btn btn-primary btn-large pull-right' do %>
+<%= link_to 'Back', section_path(@section), {class: 'btn btn-primary btn-large pull-right'} %>
+<%= link_to new_section_chapter_path(section_id: @section.id), class: 'btn btn-primary btn-large pull-right' do %>
 <%= fa_icon_tag "plus" %> Add Chapter
+<% end %>
 <% end %>
 <% end %>
 
@@ -19,7 +30,9 @@
             <thead>
               <tr>
                                 <th>Chapter</th>
+                                <% unless @section %>
                                 <th>Section</th>
+                                <% end %>
                                 <th>Position</th>
                                 <th></th>
               </tr>
@@ -28,8 +41,11 @@
               <% @chapters.each do |chapter| %>
               <tr>
                                 <td><%= chapter.chapter %></td>
+                                <% unless @section %>
+                                <td><%= chapter.section.name %></td>
+                                <% end %>
                                 <td><%= chapter.section_id %></td>
-                                <td><%= chapter.position %></td>
+                                <td><%= chapter.sort %></td>
                                 <td class="actions">
                   <%= link_to fa_icon_tag("eye"), chapter, rel: 'tooltip', title: 'Show' %>
                   <%= link_to fa_icon_tag("pencil"), edit_chapter_path(chapter), rel: 'tooltip', title: 'Edit' %>

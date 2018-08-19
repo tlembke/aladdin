@@ -8,7 +8,7 @@
 
 <div class="row">
                 <div class="col-xs-3">
-                        <h2>Care Plan</h2>
+                        <h2>Comprehensive Medical Assessment</h2>
                         Updated <%= Date.today.to_s(:long_ordinal) %>
 
                 </div>
@@ -32,19 +32,17 @@
     <legend><i class="fa fa-medkit" aria-hidden="true"></i>  Summary</legend>
 
 
-      <%= render "introduction" %>
+      <%= render "cmaintroduction" %>
       <hr>
-      <div class="col-xs-12" style="height:100px;"></div>
-                  <%= render partial: "tasks", locals: {tasks: @tasks} %>
-            
-            <%= render partial: "notes",locals: {notes: @notes} %> 
 
-            <%= render partial: "medchanges", locals: {meds: @meds, prescription_history: @prescription_history} %> 
-
-</div> <!-- col -->
 </div> <!--  row -->
 
- <% if Paragraph.where(patient_id: @patient.id).where.not(paragraph: [nil, ""]).joins(:chapter).where("Chapters.section_id = 1").count > 0 %>
+
+
+  <% if Paragraph.where(patient_id: @patient.id).where.not(paragraph: [nil, ""]).joins(:chapter).where("Chapters.section_id = 1").count > 0 %>
+
+
+
 
  <div class="row page-break-before"> <!-- Full screen row -->
 <div class="col-xs-12">
@@ -71,7 +69,7 @@
 
    <div class="col-md-12">
     <%= @patient.fullname %>
-      <legend><i class="fa fa-medkit"></i>  My Health Summary</legend>
+      <legend><i class="fa fa-medkit"></i>  Health Summary</legend>
       
    </div>
 
@@ -116,7 +114,7 @@
 <div class="col-xs-12">
           <%= @patient.fullname %>
 
-          <legend><i class="fa fa-medkit"></i>  My Medications</legend>
+          <legend><i class="fa fa-medkit"></i> Medications</legend>
           
        
             <div class="panel-body">
@@ -125,7 +123,7 @@
 
 
 
-            <legend class="panel-title"><i class="fa fa-flag"></i> My Allergies</legend>
+            <legend class="panel-title"><i class="fa fa-flag"></i> Allergies</legend>
          
              <div class="panel-body">
                     <%= render "allergies" %>
@@ -134,15 +132,30 @@
 </div> <!-- col -->
 </div> <!--  row -->
 
+ <% if Paragraph.where(patient_id: @patient.id).where.not(paragraph: [nil, ""]).joins(:chapter).where("Chapters.section_id = 3").count > 0 %>
+
  <div class="row page-break-before"> <!-- Full screen row -->
 <div class="col-xs-12">
   <%= @patient.fullname %>
-    <legend><i class="fa fa-heartbeat"></i>  My Challenges and Goals</legend>
+    <legend><i class="fa fa-heartbeat"></i>  Key Issues</legend>
 
 
-        <%= render "general" %>
         
-        <%= render "problems_goals_only" %>
+         <%= render partial: "storyprint", locals: {section: 3}  %>
+
+
+</div> <!-- col -->
+</div> <!--  row -->
+<% end %>
+
+ <div class="row page-break-before"> <!-- Full screen row -->
+<div class="col-xs-12">
+  <%= @patient.fullname %>
+    <legend><i class="fa fa-heartbeat"></i>  Examination</legend>
+
+
+            <%= render "annual_measures" %>
+            <%= render partial: "story", locals: {section: 4}  %>
 
 
 </div> <!-- col -->
@@ -160,21 +173,30 @@
 </div> <!-- col -->
 </div> <!--  row -->
 
-<div class="row"> <!-- Full screen row -->
-<div class="col-xs-12">
-            <%= @patient.fullname %>
-          <legend><i class="fa fa-flag"></i> Calendar</legend>
-         
+<div class="row no-page-break-inside"> <!-- Full screen row -->
+<div class="col-md-12">
+
+
+
+            <legend class="panel-title"><i class="fa fa-medkit"></i>  Immunisations</legend>
+       
             <div class="panel-body">
-              <%= render "appointments" %>
-              <hr>
-               <%= render "phonetime" %> 
-               <hr>
-                <%= render "urgent" %> 
-                  
+             <table class='table table-striped table-bordered table-condensed'>
+                         <tr><td width=50%>Tetanus status</td><td><%= "Given on " + @tetanus.strftime("%d/%m/%Y") if @tetanus %><%= "No record" unless @tetanus %>
+                <% if @tetanus_msg %>
+                         <a class="btn btn-warning"> Boostrix Due </a>
+                <% else %>
+                        <a class="btn btn-success"> Up to Date </a>
+
+                <% end %>
+
+            </td></tr>
+
+             <% @immunisations.each do |immunisation | %>
+            <tr><td width=50%><%= immunisation["GIVENDATE"].strftime("%d/%m/%Y") %></td><td><%= immunisation["VACCINE"] %></td></tr>
+            <% end %>
+            </table>
             </div>
 
-
-
-</div>
-</div>
+</div> <!-- col -->
+</div> <!--  row -->

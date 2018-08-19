@@ -1,5 +1,8 @@
 Rails.application.routes.draw do
 
+  resources :sections do
+    resources :chapters
+  end
   resources :cells do
       member do
           post 'toggle'
@@ -69,6 +72,7 @@ Rails.application.routes.draw do
     member do
         get 'careplan'
         get 'annual'
+        get 'cma'
         get 'precheck'
         get 'epc'
         get 'healthsummary'

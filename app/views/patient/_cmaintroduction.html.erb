@@ -1,0 +1,30 @@
+<div class="row">
+	<div class="col-md-4">
+			<%= @patient.cmaintroduction.html_safe%>
+	</div>
+
+	<% if @patient.current_problems.count > 0   %>
+	<div class="col-md-4">
+	<%= @patient.pronoun %> is being managed for the following <%= pluralize(@patient.current_problems.count, 'condition') %>
+	<ul>
+			<% @patient.current_problems.each do |problem| %>
+					<li><%= problem['PROBLEM'] %></li>
+			<% end %>
+	</ul>
+	</div>
+	<% end %>
+
+	<% if @patient.careteam.count > 0   %>
+	<div class="col-md-4">
+	My care team includes :
+	<ul>
+			<% @patient.careteam.each do |member| %>
+					<li><%= member['PROVIDERNAME'] %>
+					<%= "(" + member['PROVIDERTYPE'] + ")" if member['PROVIDERTYPE']!="" %>
+					</li>
+			<% end %>
+	</ul>
+	</div>
+	<% end %>
+</div>
+

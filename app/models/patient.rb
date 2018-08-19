@@ -233,6 +233,86 @@ class Patient
 
   end
 
+   def cmaintroduction
+        # plan has \r instead of \m
+    social=self.social.split("\r")
+    social=social.join("\n")
+
+    if self.sex=="F" 
+      pronoun = "She"
+      title="woman"
+    else
+      pronoun = "He"
+      title = "man"
+    end
+    identifier=title
+    # is there identifier in scratchpad?
+
+    match1=social.match /^-(\s?i\s+)(.*)/
+    if match1
+          # ok, we have a match for -i 
+      identifier=match1[2]
+      social=social.sub match1[0],''
+      social=social.strip
+    end
+    lives=""
+
+    while (match2=social.match /^-(\s?l(ives)?\s+)(.*)/) do 
+      if match2
+            # ok, we have a match for -l or -lives
+      lives+=match2[3]+"<p>"
+      lives.sub(" his ", ' my ')
+      lives.sub(" her ", ' my ')
+      end
+      social=social.sub match2[0],'' 
+      social=social.strip
+    end
+    care=""
+    while (match3=social.match /^-(\s?c(are)?r?\s+)(.*)/) do
+      if match3
+          # ok, we have a match for -c or -care or -carer
+      care+=match3[3]+"<br>"
+      end
+      social=social.sub match3[0],''
+      social=social.strip
+    end
+    narrative=""
+    while (match4=social.match /^-(.*)/) do
+      if match4
+          # ok, we have a match for -c or -care or -carer
+      narrative+=match4[1]+"<br>"
+      end
+      social=social.sub match4[0],''
+      social=social.strip
+    end
+    
+
+      # end
+    
+
+
+
+    introduction=self.fullname + " is a " + self.age.to_s+ " year old " + identifier + ".<br>"
+   
+    if lives != ""
+    
+        lives= lives.sub(/^lives/, '')
+        lives=lives.strip
+        introduction+= pronoun + " lives " + lives +".<br>"
+    end
+
+    if care != ""
+        introduction+= pronoun + " is " + care +".<br>"
+    end
+
+    introduction+= narrative
+
+
+    
+    return introduction
+
+  end
+
     def self.expand_instruction(instruction)
     e = HashWithIndifferentAccess.new #=> {}
     e['mane'] = "in the morning"
@@ -278,6 +358,12 @@ class Patient
             end
         end
 
+
+  end
+
+  def is_in_nh?
+    
+   RegisterPatient.where(patient_id: self.id).joins(:register).where("Registers.code = 1").count >0 ? true : false
 
   end
 
@@ -380,7 +466,7 @@ end
 
           sth = dbh.run(sql)
           appointment = sth.fetch_hash
-          
+
 
 
           sth.drop
@@ -388,6 +474,25 @@ end
 
 
           return appointment
+  end
+
+     def get_item_number_date(dbh,item)
+          
+
+
+          sql = "SELECT  ServiceDate from Sale  where PT_Id_FK = " + self.id.to_s + " and (ItemNum = '"+item + "') ORDER BY ServiceDate DESC"
+          puts sql
+          sth = dbh.run(sql)
+               
+          row= sth.fetch_first
+            
+          row ? returnValue= row[0] : returnValue=false
+
+          sth.drop
+      
+          return returnValue
+
+
   end
 
 
