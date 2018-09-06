@@ -18,7 +18,7 @@
             </td>
             </tr>
 
-             <tr><td width=50%>Cervical Screening</td><td><%= @patient.pap.strftime("%d/%m/%Y") if @patient.pap %> <%= status_symbol(@pap[:color],@pap[:msg]) %></td></tr>
+             <tr><td width=50%>Cervical Screening</td><td><%= "HPV: " + @patient.hpv.strftime("%d/%m/%Y") if @patient.hpv %><%= "PAP: "+@patient.pap.strftime("%d/%m/%Y") if @patient.pap and not @patient.hpv%> <%= status_symbol(@hpv[:color],@hpv[:msg]) %></td></tr>
             </table>
             </div>
 

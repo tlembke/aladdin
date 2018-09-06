@@ -1062,6 +1062,63 @@ class BillingController < ApplicationController
 
   end
 
+
+   def cst
+         # get appointments
+
+     @username = session[:username]
+     @password = session[:password]
+     @id=session[:id]
+     @name=session[:name]
+
+     connect_array=connect()
+     @error_code=connect_array[1]
+     if (@error_code==0)
+        dbh=connect_array[0]
+                # step one - get all patients aged 45-49, orderd pckwards by age
+         
+         
+          params[:age] ? @age= params[:age].to_i : @age = 75
+          # ages arent updated automatically in Genie so have to resort to DOB instead of this
+          #ageText = " AGE > 74 and AGE < 110"
+          #if @age != 75
+          #   ageText = " AGE > 44 and AGE < 50"
+          #end
+
+          ageText = " SEX = 'F' AND DOB IS NOT NULL AND DOB >'" + 75.years.ago.to_date.to_s(:db) + "' AND DOB < '" + 25.years.ago.to_date.to_s(:db) + "' "
+          hpvText =  " ((LastSmear IS NULL or LastSmear < '" + 2.years.ago.to_date.to_s(:db) + "') AND ( LastHPV IS NULL OR LastHPV < '" + 5.years.ago.to_date.to_s(:db) + "'))" 
+
+         
+
+         sql = "SELECT Surname,FirstName,FullName,LastSeenDate,LastSeenBy,LastSmear,LastHPV,MobilePhone, EmailAddress, DOB,  Id FROM Patient WHERE Inactive = FALSE AND " + ageText + " AND " + hpvText + " ORDER BY LastHPV"   
+         puts sql
+          sth = dbh.run(sql)
+          @hpv_count = sth.nrows
+
+          @hpv_patients = sth.fetch_all
+
+
+          sth.drop
+
+
+
+          dbh.disconnect
+     
+     else
+          flash[:alert] = "Unable to connect to database. "+ get_odbc
+          flash[:notice] = connect_array[2]
+          redirect_to  action: "login"
+     end
+
+     respond_to do |format|
+        format.html 
+        format.csv { 
+         send_data csv_file, filename: "billing.csv" 
+        }
+    end
+
+  end
+
   def cpp
   	 # get appointments
   	 @username = session[:username]

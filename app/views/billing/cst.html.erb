@@ -1,0 +1,38 @@
+
+<h1>Overdue Cervical Screening</h1>
+
+
+There are <%= @hpv_count %> patients due for cervical screening.
+
+
+
+<table class='table table-striped'>
+<thead>
+<tr>
+<th>Name</th>
+<th>Age</th>
+<th>Mobile</th>
+<th>Last PAP</th>
+<th>Last HPV</th>
+<th>Last Seen</th>
+<th>By</th>
+
+</thead>
+<tbody>
+<% @hpv_patients.each do |patient| %>
+<tr>
+	<td><%= patient[2]%></td>
+	<td><%= age(patient[9]) %></td>
+	<td><%= patient[7]%></td>
+	<td><%= patient[5].to_date.strftime("%d/%m/%Y") if patient[5]%></td>
+	<td><%= patient[6].to_date.strftime("%d/%m/%Y") if patient[6]%></td>
+	<td><%= patient[3].to_date.strftime("%d/%m/%Y") if patient[3]%></td>
+	<td><%= patient[4] %></td>
+
+
+
+</tr>
+<% end %>
+</tbody>
+</table>
+

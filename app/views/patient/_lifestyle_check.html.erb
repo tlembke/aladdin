@@ -5,7 +5,7 @@
              <table class='table table-striped table-bordered table-condensed'>
              <tr><td width=50%>Exercise</td><td></td></tr>
              <tr><td width=50%>Alcohol</td><td>
-             <%= @patient.etoh ? "Yes" : "No" %> -  <%= @patient.etohinfo %>
+             <%= @patient.etoh == "true" ? "Yes" : "No" %> -  <%= @patient.etohinfo %>
              </p></td></tr>
              <tr><td width=50%>Diet</td><td></td></tr>
             

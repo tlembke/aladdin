@@ -30,6 +30,7 @@ Rails.application.routes.draw do
       get 'appointments'
       get 'data'
       get 'bookings'
+      get 'cst'
 
     end
 

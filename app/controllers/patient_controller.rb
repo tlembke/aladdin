@@ -804,14 +804,13 @@ def cma
                 @patient.last_mam = @last_mam
                 @patient.mam_msg=@mam
 
-                 if @patient.age < 20 or @patient.age > 70 or @patient.pap_recall 
-                        @pap = {:color => "green", :msg => "No PAP recall" }
+                 if @patient.age < 25 or @patient.age > 75 or @patient.hpv_recall 
+                        @hpv = {:color => "green", :msg => "No CST recall" }
                  else
 
-                      @pap = {:color => "green", :msg => "PAP up to date" } if @patient.pap and @patient.pap >  2.years.ago
-                      @pap = {:color => "red", :msg => "PAP due" } if @patient.pap ==nil or @patient.pap <  2.years.ago
+                      @hpv = {:color => "green", :msg => "CST up to date" } if (@patient.pap and @patient.pap >  2.years.ago) or (@patient.hpv  and  @patient.hpv >  5.years.ago)
                 end
-                @patient.pap_msg  = @pap
+                @patient.hpv_msg  = @hpv
          end
 
 
@@ -1440,14 +1439,14 @@ def cma
 
   def get_patient(patient,dbh)
             # Get info about this patient
-         sql = "SELECT Surname,FirstName,FullName,LastSeenDate,LastSeenBy,AddressLine1, AddressLine2,Suburb,DOB, Age, Sex, Scratchpad, FamilyHistory, MedicareNum, MedicareRefNum, IHI, HomePhone, MobilePhone, SmokingFreq, Alcohol, AlcoholInfo, LastMammogram, CultureCode, EmailAddress, LastSmear, NoPapRecall FROM Patient WHERE id = "+patient       
+         sql = "SELECT Surname,FirstName,FullName,LastSeenDate,LastSeenBy,AddressLine1, AddressLine2,Suburb,DOB, Age, Sex, Scratchpad, FamilyHistory, MedicareNum, MedicareRefNum, IHI, HomePhone, MobilePhone, SmokingFreq, Alcohol, AlcoholInfo, LastMammogram, CultureCode, EmailAddress, LastSmear, NoHPVRecall, LastHPV FROM Patient WHERE id = "+patient       
          puts sql
           sth = dbh.run(sql)
           sth.fetch_hash do |row|
             atsi=0
             row['CULTURECODE'] > 3 ? atsi=0 : atsi=1
 
-            @patient=Patient.new(id: @id, surname: row['SURNAME'], firstname: row['FIRSTNAME'], fullname: row['FULLNAME'], lastseendate: row['LASTSEENDATE'], lastseenby: row['LASTSEENBY'], addressline1: row['ADDRESSLINE1'], addressline2: row['ADDRESSLINE2'],suburb: row['SUBURB'],dob: row['DOB'], age: row['AGE'], sex: row['SEX'], scratchpad: row['SCRATCHPAD'], social: row['FAMILYHISTORY'], ihi: row['IHI'],medicare: row['MEDICARENUM'].to_s + "/" + row['MEDICAREREFNUM'].to_s,homephone: row['HOMEPHONE'],mobilephone: row['MOBILEPHONE'], smoking: row['SMOKINGFREQ'], etoh: row['ALCOHOL'], etohinfo: row['ALCOHOLINFO'], mammogram: row['LASTMAMMOGRAM'], atsi: atsi, email: row['EMAILADDRESS'], pap: row['LASTSMEAR'],pap_recall: row['NOPAPREACLL'])
+            @patient=Patient.new(id: @id, surname: row['SURNAME'], firstname: row['FIRSTNAME'], fullname: row['FULLNAME'], lastseendate: row['LASTSEENDATE'], lastseenby: row['LASTSEENBY'], addressline1: row['ADDRESSLINE1'], addressline2: row['ADDRESSLINE2'],suburb: row['SUBURB'],dob: row['DOB'], age: row['AGE'], sex: row['SEX'], scratchpad: row['SCRATCHPAD'], social: row['FAMILYHISTORY'], ihi: row['IHI'],medicare: row['MEDICARENUM'].to_s + "/" + row['MEDICAREREFNUM'].to_s,homephone: row['HOMEPHONE'],mobilephone: row['MOBILEPHONE'], smoking: row['SMOKINGFREQ'], etoh: row['ALCOHOL'], etohinfo: row['ALCOHOLINFO'], mammogram: row['LASTMAMMOGRAM'], atsi: atsi, email: row['EMAILADDRESS'], pap: row['LASTSMEAR'],hpv_recall: row['NOHPVREACLL'], hpv: row['LASTHPV'])
           end
           sth.drop
           return @patient
