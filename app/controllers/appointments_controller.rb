@@ -11,6 +11,7 @@ class AppointmentsController < ApplicationController
      if (@error_code==0)
     	  dbh=connect_array[0]
     	  @theStartDate = Date.today
+        @preventPast = false
     	  if params[:date]              
               	@theStartDate = Date.new(params[:date][:year].to_i,params[:date][:month].to_i,params[:date][:day].to_i)
           end

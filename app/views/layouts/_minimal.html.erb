@@ -62,6 +62,17 @@
 
     <%= yield :javascript %>
 
+    <% if params['controller']== "book" %>
+    <script src ="https://cdn.jsdelivr.net/npm/jquery-validation@1.17.0/dist/jquery.validate.js"></script>
+    <script >
+    jQuery.validator.addMethod("phonemobileAU", function(phone_number, element) {
+        phone_number = phone_number.replace(/\s+/g, ""); 
+        return this.optional(element) || phone_number.match(/^04\d{8,}$/);
+    }, "Phone number should start with 04");
+    </script>
+    <% end %>
+
+
 
   </body>
 <% end %>

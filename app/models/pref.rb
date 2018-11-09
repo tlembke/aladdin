@@ -3,6 +3,7 @@ class Pref < ActiveRecord::Base
 
 
 
+
   def self.list
     {
       :clinic=>{:name=>'Clinic',:default=>'Acme CLinic'},
@@ -11,8 +12,13 @@ class Pref < ActiveRecord::Base
       :suburb=>{:name=>'Suburb',:default=>'Alstonville'},
       :postcode=>{:name=>'Postcode',:default=>'9994'},
       :active=>{:name=>'Active',:default => "true"},
-      :checkup=>{:name=>'Checkp Up Term',:default => "General Chec"},
-
+      :checkup=>{:name=>'Checkup Up Term',:default => "General Chec"},
+      :urgent=>{:name=>'Urgent',:default => "Ring us for all urgent appointments"},
+      :aladdinuser=>{:name=>'Aladdin User',:default => "Aladdin User"},
+      :aladdinpassword=>{:name=>'Aladdin Password',:default => "password"},
+      :websender=>{:name=>'Web Sender',:default => "Alstonville Clinic"},
+      :webpassword=>{:name=>'Web Password',:default => "password"},
+      :vacants=>{:name=>'Allow vacants',:default => "true"},
     }
   end
 
@@ -85,6 +91,11 @@ class Pref < ActiveRecord::Base
       thisPref.save!
     end
     return nil
+  end
+
+  def self.decrypt_password(password)
+        crypt = ActiveSupport::MessageEncryptor.new(Rails.application.secrets.bickles_base)
+        password = crypt.decrypt_and_verify(password) 
   end
 
 end

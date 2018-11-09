@@ -1,6 +1,9 @@
 class PrefsController < ApplicationController
   before_action  only: [:show, :edit, :update, :destroy]
 
+  # set env variable
+  # https://medium.com/@himanshuagarwal1395/setting-up-environment-variables-in-macos-sierra-f5978369b255
+
   # GET /prefs
   # GET /prefs.json
   def index
@@ -32,6 +35,15 @@ class PrefsController < ApplicationController
   # POST /prefs.json
   def create
     @pref = Pref.new(pref_params)
+
+    # encrypt alladinpassword or webpassword
+    if @pref.name.include?  "password"
+      crypt = ActiveSupport::MessageEncryptor.new(Rails.application.secrets.bickles_base)
+      @pref.value = crypt.encrypt_and_sign(@pref.value)
+    end
+
+
+
     #debugger
     respond_to do |format|
       if @pref.save
@@ -48,8 +60,14 @@ class PrefsController < ApplicationController
   # PATCH/PUT /prefs/1.json
   def update
     @pref = Pref.find(params[:id])
+    @pref.name = pref_params[:name]
+   if @pref.name.include?  "password"
+      crypt = ActiveSupport::MessageEncryptor.new(Rails.application.secrets.bickles_base)
+      encrypted_value = crypt.encrypt_and_sign(pref_params[:value])
+      @pref.value = encrypted_value
+    end
     respond_to do |format|
-      if @pref.update(pref_params)
+      if @pref.save
         format.html { redirect_to @pref, notice: 'Pref was successfully updated.' }
         format.json { render :show, status: :ok, location: @pref }
       else

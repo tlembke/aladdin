@@ -1,5 +1,13 @@
 Rails.application.routes.draw do
 
+
+
+  resources :book do
+      collection do
+          get 'confirm'
+      end
+  end
+
   resources :sections do
     resources :chapters
   end
@@ -85,6 +93,7 @@ Rails.application.routes.draw do
         get 'medications'
         get 'allergies'
         get 'fhir'
+        post 'consult'
     end
   end
 

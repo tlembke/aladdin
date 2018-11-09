@@ -628,6 +628,29 @@ def cma
 
   end # end orion
 
+  def consult
+      ip = get_ip
+      client = Savon.client(wsdl: 'http://'+ip+':19080/4dwsdl')
+      @calls = client.operations
+      @response= client.call(:ws_get_version)
+      @id=params[:id]
+      provid = session[:id]
+      message = params[:type]+"&amp;#10;"+params[:consult]
+      xml_doc = xml_document(@id,provid,message)
+      @response2 = client.call(
+        :ws_place_document, 
+        message: { 
+          "s44D_vT_Output" =>  xml_doc
+        })
+      @jsmessage = Time.now.strftime("%d/%m/%y")  +"<br><b>" + params[:type] + "</b><br>" + params[:consult] + "<p>" + session[:name]
+
+  
+  end
+
+  def xml_document(ptid,provid,message)
+       theXML ="<?xml version=\"1.0\"?>\n<data><docType>Consult</docType><ptid>"+ptid.to_s+"</ptid><provid>"+provid.to_s+"</provid><text>"+message+"</text><dateTime>"+Time.now.iso8601+"</dateTime></data>"
+  end
+
 
 
 

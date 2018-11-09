@@ -6,7 +6,7 @@
 
 
     <%= f.form_group :value do |f| %>
-      <%= f.label @pref.name, class: 'control-label col-md-2' %>
+      <%= f.label @pref.name , class: 'control-label col-md-2' if @pref.name %>
       <div class='col-md-8'>
       <% if @pref.value == "false" or @pref.value == "true" %>
         <%= f.check_box :value, {}, "true", "false"%> 

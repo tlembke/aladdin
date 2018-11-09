@@ -31,9 +31,7 @@ class ApplicationController < ActionController::Base
   end
 
 
-def connect
-      username=session[:username]
-      password=session[:password]
+def connect(username=session[:username],password=session[:password])
       error_code=0
       dbh=nil
       begin
@@ -86,16 +84,34 @@ def connect
         return text
   end 
 
+
+
+    def get_ip
+        begin
+          dsn_file = File.read("/Library/ODBC/odbc.ini")
+          rescue StandardError=>e
+          text = "Cound not read /Library/ODBC/odbc.ini     "+ e.to_s
+        else
+          match1=dsn_file.match /^Server[\s]*=[\s]*(.*)/
+          if match1
+            text= match1[1]
+          else
+            text="Unable to determine server in /Library/ODBC/odbc.ini"
+          end
+        end
+        return text
+  end 
+
     def get_patient(patient,dbh)
             # Get info about this patient
          sql = "SELECT Surname,FirstName,FullName,LastSeenDate,LastSeenBy,AddressLine1, AddressLine2,Suburb,DOB, Age, Sex, Scratchpad, FamilyHistory, MedicareNum, MedicareRefNum, IHI, HomePhone, MobilePhone, SmokingFreq, Alcohol, AlcoholInfo, LastMammogram, CultureCode, EmailAddress, LastSmear, NoPapRecall FROM Patient WHERE id = "+patient       
-         puts sql
+         # puts sql
           sth = dbh.run(sql)
           sth.fetch_hash do |row|
             atsi=0
             row['CULTURECODE'] > 3 ? atsi=0 : atsi=1
 
-            @patient=Patient.new(id: @id, surname: row['SURNAME'], firstname: row['FIRSTNAME'], fullname: row['FULLNAME'], lastseendate: row['LASTSEENDATE'], lastseenby: row['LASTSEENBY'], addressline1: row['ADDRESSLINE1'], addressline2: row['ADDRESSLINE2'],suburb: row['SUBURB'],dob: row['DOB'], age: row['AGE'], sex: row['SEX'], scratchpad: row['SCRATCHPAD'], social: row['FAMILYHISTORY'], ihi: row['IHI'],medicare: row['MEDICARENUM'].to_s + "/" + row['MEDICAREREFNUM'].to_s,homephone: row['HOMEPHONE'],mobilephone: row['MOBILEPHONE'], smoking: row['SMOKINGFREQ'], etoh: row['ALCOHOL'], etohinfo: row['ALCOHOLINFO'], mammogram: row['LASTMAMMOGRAM'], atsi: atsi, email: row['EMAILADDRESS'], pap: row['LASTSMEAR'],pap_recall: row['NOPAPREACLL'])
+            @patient=Patient.new(id: @id, surname: row['SURNAME'], firstname: row['FIRSTNAME'], fullname: row['FULLNAME'], lastseendate: row['LASTSEENDATE'], lastseenby: row['LASTSEENBY'], addressline1: row['ADDRESSLINE1'], addressline2: row['ADDRESSLINE2'],suburb: row['SUBURB'],dob: row['DOB'], age: row['AGE'], sex: row['SEX'], scratchpad: row['SCRATCHPAD'], social: row['FAMILYHISTORY'], ihi: row['IHI'],medicare: row['MEDICARENUM'].to_s + "/" + row['MEDICAREREFNUM'].to_s,homephone: row['HOMEPHONE'],mobilephone: row['MOBILEPHONE'], smoking: row['SMOKINGFREQ'], etoh: row['ALCOHOL'], etohinfo: row['ALCOHOLINFO'], mammogram: row['LASTMAMMOGRAM'], atsi: atsi, email: row['EMAILADDRESS'], pap: row['LASTSMEAR'],hpv_recall: row['NOPAPREACLL'])
           end
           sth.drop
           return @patient
@@ -243,6 +259,228 @@ def connect
       instruction=instruction.sub short, e[short]
     end
     return instruction
+  end
+
+    def get_users(dbh)
+          sql = "SELECT  Name, ProviderNum, Id FROM Preference  where Inactive = False and ProviderType = 2 and ProviderNum <> '' ORDER BY Surname"
+          # puts sql
+         
+
+          sth = dbh.run(sql)
+               
+          users=[]
+          sth.fetch_hash do |row|
+            unless row['ID'] == 9 #Alison exeption
+            users << [row['NAME'],row['PROVIDERNUM'], row['ID']]
+            end
+          end
+
+          sth.drop
+          return users
+
+
+
+  end
+
+
+
+
+  def getThirdAvailable(dbh,doctor,startDate=Date.today,numberAppts=3,finishDate=Date.today + 8.weeks)
+            timeNow = DateTime.now
+
+            providerStr = ""
+            if doctor != 0
+              providerStr =  " AND ProviderID = " + doctor.to_s
+            end 
+           endDate = startDate + 2.months
+           sql =  "SELECT StartDate, StartTime, ApptDuration from Appt WHERE StartDate >= '" + startDate.to_s(:db) + "' AND StartDate < '" + endDate.to_s(:db) + "' " + providerStr + " ORDER BY StartDate, StartTime"
+           
+           sth= dbh.run(sql)
+           appts=[]
+
+           sth.fetch do |row|
+              # genie does a funny thing where the StartTime ddmmyy are wrong, only the time counts !
+              # appt duration is in secs and 900 secs = 15 minutes
+
+             t=row[1]
+             d=row[0]
+             unless d.instance_of?(Date)
+              d=Date.strptime(row[0], '%d/%m/%y')
+             end
+             t=t.change(:year => d.year, :month => d.month,:day => d.day)
+ 
+             appts<<[t, row[2]]
+
+          end
+
+          sth.drop
+          # puts "checking free appt for " + doctor.to_s
+          available=0
+          freeAppt=0
+          dateBlocked=false
+          newDayFlag = true
+          if appts.count>0
+                    nextAppt = appts[0][0]
+                    # freeAppt=nextAppt
+                    appts.each do |appt|
+                        # is the next appt blank
+                            # create Ruby Date from StartDate, StartTime
+                            #t = Time.new(1993, 02, 24, 12, 0, 0, "+09:00")
+                            # puts "nextAppt is " + nextAppt.to_s
+                            t=appt[0]
+
+                            
+                            # is this expected appt
+                            while t > nextAppt
+                                # is this part of an ApptBlock eg Annual Leave
+                                # if so, skip to the next day
+
+                                
+                              
+                                thisDay = Date.new(nextAppt.year,nextAppt.month,nextAppt.day)
+                                thisDayKey=thisDay.to_s(:db)
+                                # puts "This day is " + thisDayKey.to_s
+                                if newDayFlag # check to see if whole day blocked
+
+                                
+                                   
+                                    if thisDay.saturday? or thisDay.sunday?
+                                          dateBlocked = true
+                                    end
+                                    
+                                    unless dateBlocked
+                                          if doctor != 0
+                                            sql =  "SELECT Count(Id) from ApptBlock WHERE StartDate = '" + thisDayKey + "' and ProviderID = " + doctor.to_s
+                                            
+                                            sth= dbh.run(sql)
+                                            row= sth.fetch_first
+                                            if row and row[0].to_i > 0 
+                                                  dateBlocked=true
+                                                 
+
+                                            end
+                                            sth.drop
+
+
+                                            sql =  "SELECT Count(Id) from ApptBlock WHERE StartDate <= '" + thisDayKey + "' and EndDate >= '" + thisDayKey +  "' and ProviderID = " + doctor.to_s + " AND Reason = 'ANNUAL LEAVE'"
+                                            # puts sql
+                                            sth= dbh.run(sql)
+                                            row= sth.fetch_first
+                                            if row and row[0].to_i > 0 
+                                                  dateBlocked=true
+                                                  
+
+                                            end
+                                            sth.drop
+
+                                             sql =  "SELECT Id from Appt WHERE StartDate = '" + thisDayKey + "'  " + providerStr
+                                            
+
+                                            sth= dbh.run(sql)
+                                    
+                                            if sth.nrows < 5 
+                                                  # there are no appts on this day so it is not available
+                                                dateBlocked=true
+                                            
+                                                
+                                            end
+            
+                                            sth.drop
+
+                                          end
+
+      
+                                        
+                                    end
+                                end
+                                newDayFlag = false
+                                # is not availbale if no other appts on that day. Will always have lunch etc
+                                # so are there any other appts on this day
+    
+                                  
+
+
+
+                                unless dateBlocked
+                                     puts "Free Appt found" + nextAppt.to_s
+                                     available = available + 1
+                                     freeAppt = nextAppt unless available > numberAppts
+                                     nextAppt = nextAppt + 900.seconds
+
+                                     if nextAppt.hour == 16 and nextAppt.min > 30
+                                          
+                                          nextAppt = nextAppt + 1.day
+                                          nextAppt= nextAppt.change(:hour => 8, :min=>30)
+                                          newDayFlag = true
+                                          dateBlocked=false
+                                     end
+                                 else
+                                      #   puts "day blocked"
+                                        nextAppt = nextAppt + 1.day
+                                        nextAppt= nextAppt.change(:hour => 8, :min=>30)
+                                        newDayFlag = true
+                                        dateBlocked=false
+                                        
+                                        
+                                 end 
+                                 # sth.drop
+                            end
+                            
+                            nextAppt = t + appt[1].seconds
+                            if nextAppt.hour == 16 and nextAppt.min > 30
+                                    
+                                    nextAppt = nextAppt + 1.day
+                                    nextAppt= nextAppt.change(:hour => 8, :min=>30)
+                                    # this is the first time for a new day
+                                    newDayFlag = true
+                                    dateBlocked=false
+                            end
+                            
+                            break if available > numberAppts or nextAppt > finishDate
+
+                    end
+          end
+          #how many patients are in the queue?
+          queue = 0
+          if freeAppt != 0  and doctor != 0 
+
+            endTime = freeAppt.hour.to_s + ":" + freeAppt.min.to_s + ":00"
+           
+            
+  
+           sql =  "SELECT Id from Appt WHERE Status = 7 AND StartDate >= '" + startDate.to_s(:db) + "'  AND (StartDate < '" + freeAppt.to_s(:db) + "' OR (StartDate = '" + freeAppt.to_s(:db) + "' and StartTime < '"+ endTime + "' )) AND ProviderID = " + doctor.to_s + " AND (Reason = '' or Reason = 'General Chec' or Reason = 'LICENCE' or Reason = 'Immunisation')"
+          
+
+          sth= dbh.run(sql)
+                                    
+          queue = sth.nrows
+
+            
+           sth.drop
+         end
+
+         queueTotal = 0
+
+           
+            
+  
+           sql =  "SELECT Id from Appt WHERE StartDate >= '" + startDate.to_s(:db) + "' AND ProviderID = " + doctor.to_s + " and PT_Id_FK > 0"
+           
+          
+
+          sth= dbh.run(sql)
+                                    
+          queueTotal = sth.nrows
+
+            
+           sth.drop
+         
+
+         
+          return [freeAppt,queue,queueTotal]
+
+
+
   end
 
 
