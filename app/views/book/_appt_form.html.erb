@@ -1,0 +1,81 @@
+  <div class="col-sm-6">
+  <%= form_tag({action: "confirm"}, method: "post",class: "form-vertical", id: "appt_form" ) do %>
+   <fieldset>
+     <legend>Make Appointment</legend>
+     <div id='appt_doctor'></div>
+     <div id='appt_date'></div>
+     <div id='appt_time'></div>
+     <%= hidden_field_tag :doctor_id,  0  %>
+     <%= hidden_field_tag :date, 0  %>
+     <%= hidden_field_tag :time, 0  %>
+     <%= hidden_field_tag :single, 0  %>
+     <%= hidden_field_tag :appt_id, 0  %>
+
+             
+     <div class="row">
+                  <div class="col-sm-2 col-sm-offset-4">
+                  <%= radio_button_tag :apptduration, :single, true, class: "input-small"  %><span class="small"> Single</span>
+                </div>
+                <div class="col-sm-2">
+                <%= radio_button_tag :apptduration, :double, false, class: "input-small" %><span class="small"> Double</span>
+                 </div>
+                 <div class="col-sm-3">
+                <%= radio_button_tag :apptduration, :annual, false, class: "input-small" %> <span class="small"> Annual Check (double)</span>
+                 </div>
+      </div>
+         
+    <div class="form-group row">
+          <div class="col-sm-4">
+          <label class= "form-label">Appointment</label>
+           </div>
+           <div class="col-sm-8">
+
+          
+           
+          
+           <%= text_field_tag :appttime, nil, class: "input-small col-sm-12",  :readonly=> "readonly"%> 
+           <%= label_tag :appttime, "", class: "form-label" %>
+         
+          
+        </div>
+    </div>
+
+
+     <div class="form-group row">
+         <div class="col-sm-4">
+          <label class= "form-label">Patient Surname</label>
+           </div>
+          <div class="col-sm-8">
+            <%= text_field_tag :Surname, nil, class: "input-medium col-sm-12"%> 
+           <%= label_tag :Surname, "", class: "form-label" %>
+          </div>
+    </div>
+
+
+    <div class="form-group row">
+         <div class="col-sm-4">
+          <label class= "form-label">Patient First Name</label>
+           </div>
+          <div class="col-sm-8">
+            <%= text_field_tag :FirstName, nil, class: "input-medium col-sm-12"%> 
+           <%= label_tag :FirstName, "", class: "form-label" %>
+          </div>
+    </div>
+
+    <div class="form-group row">
+         <div class="col-sm-4">
+          <label class= "form-label">Mobile</label>
+           </div>
+          <div class="col-sm-8">
+            <%= text_field_tag :mobile, nil, class: "input-medium col-sm-12"%> 
+           <%= label_tag :mobile, "", class: "form-label" %>
+          </div>
+    </div>
+
+     <div class="form-actions col-sm-offset-4 col-sm-8">
+       <%= submit_tag "Book", class: "btn-primary" %>
+     </div>
+   </fieldset>
+
+<% end %>
+</div>

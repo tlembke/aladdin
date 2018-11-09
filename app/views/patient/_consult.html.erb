@@ -1,0 +1,20 @@
+ <div id='consult_form' >
+ <%= form_tag({action: "consult"}, remote:true, class: "form-vertical") do %>
+   <fieldset>
+     <legend>Add a consult</legend>
+     <div class="form-group row">
+       <%= label_tag :name, "Consult Type", class: "form-label col-sm-4" %>
+         <%= select_tag "type", options_for_select([ "Consult", "Home Visit","After Hours Consult", "After Hours Home Visit", "Phone Call", "After Hours Phone Call" ], "Consult"), class: "input-medium col-sm-8" %> 
+      </div>
+      <div class="form-group row">
+        <%= label_tag :name, "Note", class: "form-label col-sm-4" %>
+        <%= text_area_tag :consult, nil, class: "input-medium col-sm-8", id: "consult_note_field"  %>
+     </div>
+     <div class="form-actions col-sm-offset-4 col-sm-8">
+       <%= submit_tag "Save", class: "btn-primary" %>
+     </div>
+   </fieldset>
+<% end %>
+
+</div>
+<div id="saved_consult"></div>

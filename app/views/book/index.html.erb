@@ -1,0 +1,44 @@
+
+
+<div class="row">
+	<div class=“col-md-6">
+		This is the left side 
+		<div class="row">
+			<div class=“col-md-1">
+				Doctor
+			</div>
+			
+			<% @dateCodes.each do |code| %>
+			<div class="col-md-1 small center"><%= code[1].strftime("%a<br>%b%e").html_safe %></div>
+			<% end %>
+
+
+		</div>
+		<% @doctors.each do |doctor| %>
+		<div class="row">
+			<div class=“col-md-1"><%= doctor[0] %></div>
+		</div> <%#  row %>
+		<% end %> <%# doctor %>
+
+	</div>
+	
+
+	<div class=“col-md-6">
+		And this is the right side of the page
+	</div>
+
+
+</div>
+
+
+ 
+
+
+
+<%# this is the form %>
+<%= render 'appt_form' %>
+
+
+
+
+
