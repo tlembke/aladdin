@@ -48,6 +48,12 @@
 	.noprint {visibility: hidden;}
 }
 
+@media (max-width: 767px) {
+    .affix {
+        position: static;
+    }
+}
+
 /* Print styling */
 
 

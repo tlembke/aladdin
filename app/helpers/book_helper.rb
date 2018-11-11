@@ -9,7 +9,7 @@ module BookHelper
 	 		theMin=theTimeCode.to_s[-2..-1]
 	 		theTime = theHour.to_s + ":" + theMin + theMorn
 	 		if theHour < 10
-	 			theTime = "&nbsp;"+theTime
+	 			theTime = ""+theTime
 	 		end
 	 		return theTime.html_safe
 	 end

@@ -37,11 +37,14 @@ class BookController < ApplicationController
      else
         @theStartDate=Date.today
     end
+    if @theStartDate > Date.today + 6.weeks
+        @theStartDate=Date.today
+    end
 
     
-     params[:mode]=="h" ? @mode="h" : @mode="v"
+     params[:mode]=="v" ? @mode="v" : @mode="h"
 
-     params[:noDays] ? @noDays=params[:noDays].to_i : @noDays=2
+     params[:noDays] ? @noDays=params[:noDays].to_i : @noDays=3
  
 
     
@@ -51,9 +54,9 @@ class BookController < ApplicationController
     	  @doctors= get_users(dbh)
 
     	  # temp
-    	 @doctors=[["Josh Kingston",91,91]] # for testing only
+    	# @doctors=[["Josh Kingston",91,91],["Jimmy Chiu",8,8],["Mike Davis",96,96]] # for testing only
     	  
-
+        @noCols = 3
     
     	  @displayCount=3
     	  @startCode=@theStartDate.month*100 + @theStartDate.day
@@ -386,7 +389,7 @@ class BookController < ApplicationController
   end
 
 
-  def getNextWeb(connectionId, doctor, startDate=Date.today, finishDate = Date.today + 8.weeks)
+  def getNextWeb(connectionId, doctor, startDate=Date.today, finishDate = Date.today + 6.weeks)
       theDate=startDate
       found=false
 

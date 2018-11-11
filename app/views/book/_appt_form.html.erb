@@ -1,4 +1,5 @@
-  <div class="col-sm-6">
+  <div class="row">
+  <div class="col-sm-12">
   <%= form_tag({action: "confirm"}, method: "post",class: "form-vertical", id: "appt_form" ) do %>
    <fieldset>
      <legend>Make Appointment</legend>
@@ -33,7 +34,7 @@
           
            
           
-           <%= text_field_tag :appttime, nil, class: "input-small col-sm-12",  :readonly=> "readonly"%> 
+           <%= text_field_tag :appttime, nil, class: "input-small col-sm-12",  :readonly=> "readonly", :value=> "Click on chosen appointment" %> 
            <%= label_tag :appttime, "", class: "form-label" %>
          
           
@@ -79,3 +80,4 @@
 
 <% end %>
 </div>
+</div> <%# end row %>

@@ -1,44 +1,132 @@
 
 
+<h1>Book an appointment</h1>
+<p><%= Pref.urgent %></p>
+
+
+
+
+
+
+
+
+
+
 <div class="row">
-	<div class=“col-md-6">
-		This is the left side 
+	<div class="col-sm-7"> <%# Left Hand Side %>
 		<div class="row">
-			<div class=“col-md-1">
-				Doctor
+			<div class="col-md-3">
+			<span class='small'>Horiz</span> <label class="switch switch-warning"><input id='bookMode' type='checkbox' <%= "checked='checked'" if @mode=="v" %>><span></span></label> <span class='small'> Vert</span><p>
 			</div>
-			
-			<% @dateCodes.each do |code| %>
-			<div class="col-md-1 small center"><%= code[1].strftime("%a<br>%b%e").html_safe %></div>
-			<% end %>
-
-
+			<div class="col-md-9">
+			<%= render "appointments/datechange" %>
+			</div>
 		</div>
+		<% if @mode=="x" %> <%# deprecated ignore as mode can't be x %>
+			<div class="row">
+				<div class="col-md-3">
+					Doctor
+				</div>
+				
+				<% @dateCodes.each do |code| %>
+					<div class="col-md-<%= @noCols %> small center"><%= code[1].strftime("%a %b%e").html_safe %></div>
+				<% end %>
+				
+
+
+			</div> <%# end row %>
+		<% end %>
 		<% @doctors.each do |doctor| %>
-		<div class="row">
-			<div class=“col-md-1"><%= doctor[0] %></div>
-		</div> <%#  row %>
+		<div class="row well">
+			<div class="col-md-2"><%= doctor[0] %></div>
+			
+			<div class="col-md-10" style="background-color: #cccccc;"> <%# 9 COL %>
+
+			<div class="row"> <%# BUTTON ROW %>
+			
+
+
+
+			<% @dateCodes.each.with_index do |code,i| %>
+				<% if @doctorsFreesCount[doctor[2]] == 0 and i == 0 %>
+
+						<% if @nextAvailable[doctor[2]] == "" or @nextAvailable[doctor[2]] == 0 %>
+						<button class="btn btn-danger btn-xs btn-block">No appts available online<br>Please phone (02) 66280505</button>
+
+						<% else %>
+
+						        <%= link_to "Next available appointment is <br>".html_safe + @nextAvailable[doctor[2]].strftime("%a, %b %e") + "<i class='fa fa-chevron-right'></i>".html_safe, url_for('date[day]' => @nextAvailable[doctor[2]].strftime("%d"),'date[month]' => @nextAvailable[doctor[2]].strftime("%m"),'date[year]' => @nextAvailable[doctor[2]].strftime("%Y")), {:class => "btn btn-warning btn-xs btn-block"} %>
+
+						<% end %>
+						
+				<% elsif  @doctorsFreesCount[doctor[2]] > 0 %>
+					<% if @mode=="v" %>
+						<div class="col-md-<%= @noCols %>">	<%# VERT DAY  %>
+						<%# v is number of cols and h is the date and cols %>
+						<span class="small center"><%= code[1].strftime("%a %b%e").html_safe %></span>
+					<% else %>
+					<div class="col-md-3">
+						<span class="small center"><%= code[1].strftime("%a %b%e").html_safe %></span>
+					</div>
+					<div class="col-md-9"> <%# HORIZ DAY %>
+					<% end %>
+					<%# at this point, div is open for green buttons. Both h and v should close after buttons %>
+					<% if @appointments[doctor[2]][code[0]].empty? %>
+						<button class='btn btn-danger btn-block btn-xs fa fa-minus'></button>
+					<% else %>
+					    <%= ("<div class='btn-group-vertical'>").html_safe if @mode=="v" %>
+
+						<% i = 0 %>
+						<% dateCount = @appointments[doctor[2]][code[0]].length %>
+						<% @appointments[doctor[2]][code[0]].each do |apptTime|%>
+								
+
+								<% if i ==0 %>
+								<button class="btn btn-success btn-xs date-scroller"   id="<%= i %>-up-<%= doctor[2].to_s + '-' + code[0].to_s  %>"><i class="fa fa-minus"></i></button>
+
+								<% else %>
+								<button class="btn btn-success btn-xs date-scroller" style="display:none;".html_safe data-doctor="<%= doctor[2].to_s %>" data-code="<%= code[0].to_s %>" data-direction="up" data-show="<%= show(i,dateCount,@displayCount,"up") %>" data-hide="<%= hide(i,dateCount,@displayCount,"up") %>" data-uparrowhide="<%= uparrowhide(i,dateCount,@displayCount,"up") %>" data-uparrowshow="<%= uparrowshow(i,dateCount,@displayCount,"up") %>" data-downarrowhide="<%= downarrowhide(i,dateCount,@displayCount,"up") %>" data-downarrowshow="<%= downarrowshow(i,dateCount,@displayCount,"up") %>" data-appt_id= data-code="<%= code[0].to_s %>" id="<%= i %>-up-<%= doctor[2].to_s + '-' + code[0].to_s  %>"><i class="fa fa-arrow-<%= @mode== 'h' ? 'left' : 'up' %>"></i></button>
+
+								<% end %>
+								
+								<a class="btn btn-success btn-xs apptTime <%= 'single' if apptTime[1]==1 %>" <%= "style='display:none;'".html_safe if i > @displayCount %> id="<%= i.to_s + '-' + doctor[2].to_s + '-' + code[0].to_s %>" data-doctor="<%= doctor[2].to_s%>" data-doctor_name="<%= doctor[0].to_s%>" data-appt_id="<%= apptTime[2].to_s %>"    data-date="<%= code[1].strftime("%Y-%m-%d")%>" data-time="<%= apptTime[0].to_s %>" ><%= to_simple_time(apptTime[0]) %></a>
+
+								<% if i == dateCount -1 %>
+								<a class="btn btn-success btn-xs date-scroller "  style="display:none;".html_safe id="<%= i %>-down-<%= doctor[2].to_s + '-' + code[0].to_s  %>"><i class="fa fa-minus"></i></a>
+								<% else %>
+								
+								<a class="btn btn-success btn-xs date-scroller" <%= "style='display:none;'".html_safe unless i == @displayCount and dateCount > @displayCount %> data-doctor="<%= doctor[2].to_s %>" data-code="<%= code[0].to_s %>" data-direction="down" data-show="<%= show(i,dateCount,@displayCount,"down") %>" data-hide="<%= hide(i,dateCount,@displayCount,"down") %>" data-uparrowhide="<%= uparrowhide(i,dateCount,@displayCount,"down") %>" data-uparrowshow="<%= uparrowshow(i,dateCount,@displayCount,"down") %>" data-downarrowhide="<%= downarrowhide(i,dateCount,@displayCount,"down") %>" data-downarrowshow="<%= downarrowshow(i,dateCount,@displayCount,"down") %>" id="<%= i %>-down-<%= doctor[2].to_s + '-' + code[0].to_s  %>"><i class="fa fa-arrow-<%= @mode== 'h' ? 'right' : 'down' %>"></i></a>
+								<% end %>
+								<% i = i + 1 %>
+								
+						  <% end %> <%# end apptime %>
+					      <%#= ("</div>").html_safe if @mode=="v" %>
+					      <%#= "<>".html_safe if @mode=="h" %>
+					  	  <%= "</div style='0'>".html_safe if @mode == "v"%> <%# end button group%>
+					<% end %> <%# end day loop @appointments[doctor[2]][code[0]].empty?%>
+
+					
+				
+				<% end %> <%# end elsif unless @doctorsFreesCount[doctor[2]] > 0 %>
+				<%= "</div style='1'>".html_safe unless @doctorsFreesCount[doctor[2]] == 0%> <%# EDN OF col-md-9 for V %>
+			
+			<% end %>  <%# end date code %>
+			<%= "</div style='buttonRow'>".html_safe if @mode == "h" or @mode=="v"%>  <%# end BUTTON ROW in V%>
+			<%= "</div style='col-md-9'>".html_safe if @mode == "h" or @mode=="v"%>  <%# end BUTTON ROW in V%>
+		 </div style='rowwell'> <%#  end row  well %>
 		<% end %> <%# doctor %>
 
-	</div>
+	</div style='endleftside'> <%# end left side %>
 	
 
-	<div class=“col-md-6">
-		And this is the right side of the page
+	<div class="col-sm-5 col-sm-offset-7 affix">
+		<%# this is the form %>
+		
+		<%= render 'appt_form' %>
+		
 	</div>
 
 
 </div>
-
-
- 
-
-
-
-<%# this is the form %>
-<%= render 'appt_form' %>
-
-
-
 
 

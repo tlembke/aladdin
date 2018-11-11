@@ -160,12 +160,13 @@ $(document).ready(function() {
   // This is to load condiiton id into hidden field in New Goal modal
   $(".date-scroller").click(function(){ 
        // alert("Show " + $(this).data('show'));
-        //alert("Hide " + $(this).data('hide'));
+      // alert("Hide " + $(this).data('hide'));
        
         
         
         
         theString = "-" + $(this).data('doctor') + "-" + $(this).data('code');
+
         $("#" + $(this).data('hide') + theString).hide();
         $("#" + $(this).data('show') + theString).show();
         if ($(this).data('uparrowhide') != -1 ){
