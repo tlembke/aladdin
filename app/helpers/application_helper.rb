@@ -12,6 +12,20 @@ module ApplicationHelper
           return theText.html_safe
   end
 
+  def check_symbol(status)
+     color="danger"
+     if status
+        color="success" 
+        icon= "fa-check"
+      else
+        color = "danger"
+        icon ="fa-times"
+    end
+                 
+    theText = "<a class='btn btn-small btn-" + color + "'><i class='fa " + icon +"'</a>"
+          return theText.html_safe
+  end
+
   def age(dob)
     begin
       now = Time.now.utc.to_date

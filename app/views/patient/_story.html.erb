@@ -10,7 +10,16 @@
 
 		<% end %>
 
-<a href="#" id="editable_paragraph_paragraph_<%=@para.id%>" data-defaultValue="Add new paragraph" data-type="textarea" data-pk="1" data-resource="paragraph" data-name="paragraph" data-emptytext= "Notes" data-url="/paragraphs/<%=@para.id%>" data-placeholder="Your notes here..." data-original-title="Enter notes" class="editable"><%= textarea_format(@para.paragraph) %> </a><br><br>
+<a href="#" id="editable_paragraph_paragraph_<%=@para.id%>" data-defaultValue="Add new paragraph" data-type="textarea" data-pk="1" data-resource="paragraph" data-touch="para-<%=@para.id %>-touch" data-name="paragraph" data-emptytext= "Notes" data-url="/paragraphs/<%=@para.id%>" data-placeholder="Your notes here..." data-original-title="Enter notes" class="editable editableUpdate"><%= textarea_format(@para.paragraph) %> </a><br>
+<span id='para-<%= @para.id %>-touch' class='small'>
+	<% if @para.updated_at.to_date == Date.today %>
+	Updated Today
+	<% else %>
+	<i class='fa fa-sm fa-exclamation-triangle'></i>
+	<%= link_to @para.updateMessage, touch_paragraph_path(@para), remote: true %>
+	<% end %>
+</span>
+<br>
 <hr class="hrshrink">
 
 	

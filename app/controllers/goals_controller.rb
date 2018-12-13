@@ -1,5 +1,5 @@
 class GoalsController < ApplicationController
-  before_action :set_goal, only: [:show, :edit, :update, :destroy]
+  before_action :set_goal, only: [:show, :edit, :update, :destroy, :touch]
 
   # GET /goals
   # GET /goals.json
@@ -115,6 +115,22 @@ class GoalsController < ApplicationController
       else
         format.html { render :edit }
         format.json { render json: @goal.errors, status: :unprocessable_entity }
+      end
+    end
+  end
+
+  def touch
+    respond_to do |format|
+      if @goal.touch
+        @message="Updated today"
+        format.js {}
+        format.html { redirect_to @paragraph, notice: 'Paragraph was successfully updated.' }
+        format.json { render :show, status: :ok, location: @paragraph }
+      else
+        @message="Update failed"
+        format.js {}
+        format.html { render :edit }
+        format.json { render json: @paragraph.errors, status: :unprocessable_entity }
       end
     end
   end

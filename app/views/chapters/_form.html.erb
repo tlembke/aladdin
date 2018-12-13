@@ -23,6 +23,14 @@
       </div>
     <% end %>
 
+    <%= f.form_group :check do |f| %>
+      <%= f.label :check, class: 'control-label col-md-2' %>
+      <div class='col-md-8'>
+        <%= f.check_box :check, class: 'form-control' %>
+        <%= f.error_messages %>
+      </div>
+    <% end %>
+
   </div>
 
   <div class="form-actions">

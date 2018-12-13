@@ -490,7 +490,7 @@ class BookController < ApplicationController
 	  		connectionId = 0
 
 	  end
-	  puts "Open ConnectionId " + connectionId
+	  puts "Open ConnectionId " + connectionId.to_s
 	  return connectionId
 
   end
@@ -503,9 +503,9 @@ class BookController < ApplicationController
 	  @response = client.call(
         :s44_d_close_connection, 
         message: { 
-          "s44D_vConnectionID" =>  connectionId
+          "s44D_vConnectionID" =>  connectionId.to_s
         })
-	  puts "Close ConnectionId " + connectionId
+	  puts "Close ConnectionId " + connectionId.to_s
 
   end
 

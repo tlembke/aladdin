@@ -7,7 +7,7 @@
             <table class='table table-striped table-bordered table-condensed'>
             <% @last_mam = @patient.last_mam %>
             <% @mam = @patient.mam_msg %>
-            <tr><td width=50%>Last Mammogram</td><td><%= @last_mam.strftime("%d/%m/%Y") if @last_mam.instance_of?(Date)%> <%= status_symbol(@mam[:color],@mam[:msg])%>
+            <tr><td width=50%>Last Mammogram</td><td><%= @last_mam.strftime("%d/%m/%Y") if @last_mam.instance_of?(Date)%> 
            
 
             <% if @mode="precheck" and ((@mammogram == 0 and @last_mam != 0) or  (@mammogram !=0 and @last_mam > @mammogram)) %>
@@ -16,9 +16,12 @@
 
             <% end %>
             </td>
+            <td><%= status_symbol(@mam[:color],@mam[:msg])%></td>
             </tr>
 
-             <tr><td width=50%>Cervical Screening</td><td><%= "HPV: " + @patient.hpv.strftime("%d/%m/%Y") if @patient.hpv %><%= "PAP: "+@patient.pap.strftime("%d/%m/%Y") if @patient.pap and not @patient.hpv%> <%= status_symbol(@hpv[:color],@hpv[:msg]) %></td></tr>
+             <tr><td width=50%>Cervical Screening</td><td><%= "HPV: " + @patient.hpv.strftime("%d/%m/%Y") if @patient.hpv %><%= "PAP: "+@patient.pap.strftime("%d/%m/%Y") if @patient.pap and not @patient.hpv%> </td>
+
+              <td><%= status_symbol(@hpv[:color],@hpv[:msg]) %></td></tr>
             </table>
             </div>
 

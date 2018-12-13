@@ -52,10 +52,29 @@
             <div class="panel-body">
                 <%= render "introduction" %>
                 <%= render "itemnumbers" %> 
+                <%= @checklist %>
             </div>
 
       </div>
   </div>
+
+
+    <div class="panel panel-default">
+    <div class="panel-heading" role="tab" id="headingCheck">
+        <legend class="panel-title">
+        
+                  <a role="button" data-toggle="collapse" data-parent="#accordion"  href="#collapseCheck" aria-expanded="false" aria-controls="collapseCheck"><i class="fa fa-list"></i>  Care Plan Checklist</a>
+        </legend>
+     
+     </div>
+     <div id="collapseCheck" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingCheck">
+            <div class="panel-body">
+                <%= render "checklist" %>
+            </div>
+
+      </div>
+  </div>
+
 
       <div class="panel panel-default">
       <div class="panel-heading" role="tab" id="headingEight">

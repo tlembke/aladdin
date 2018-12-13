@@ -30,22 +30,27 @@
             <thead>
               <tr>
                                 <th>Chapter</th>
-                                <% unless @section %>
+                                 <% unless @section %>
                                 <th>Section</th>
                                 <% end %>
                                 <th>Position</th>
-                                <th></th>
+                              
+                                <th>Check</th>
               </tr>
             </thead>
             <tbody>
               <% @chapters.each do |chapter| %>
               <tr>
                                 <td><%= chapter.chapter %></td>
+                                
                                 <% unless @section %>
-                                <td><%= chapter.section.name %></td>
+                                <td>
+                                <%= chapter.section.name %>
+                                </td>
                                 <% end %>
-                                <td><%= chapter.section_id %></td>
+                                
                                 <td><%= chapter.sort %></td>
+                                <td><%= chapter.check ? "1" : "0" %></td>
                                 <td class="actions">
                   <%= link_to fa_icon_tag("eye"), chapter, rel: 'tooltip', title: 'Show' %>
                   <%= link_to fa_icon_tag("pencil"), edit_chapter_path(chapter), rel: 'tooltip', title: 'Edit' %>

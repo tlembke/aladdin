@@ -25,6 +25,8 @@ class MeasurementsController < ApplicationController
   # POST /measurements.json
   def create
     @measurement = Measurement.new(measurement_params)
+    # delete any other mesures from that date
+    Measurement.where(:measure_id => @measurement.measure_id, :patient_id => @measurement.patient_id, :measuredate => @measurement.measuredate).destroy_all
     @goal=Goal.find(params[:goal_id])
     @measure=Measure.find(@measurement.measure_id)
     respond_to do |format|

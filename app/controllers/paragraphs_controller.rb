@@ -1,5 +1,5 @@
 class ParagraphsController < ApplicationController
-  before_action :set_paragraph, only: [:show, :edit, :update, :destroy]
+  before_action :set_paragraph, only: [:show, :edit, :update, :destroy, :touch]
 
   # GET /paragraphs
   # GET /paragraphs.json
@@ -20,6 +20,8 @@ class ParagraphsController < ApplicationController
   # GET /paragraphs/1/edit
   def edit
   end
+
+
 
   # POST /paragraphs
   # POST /paragraphs.json
@@ -45,6 +47,22 @@ class ParagraphsController < ApplicationController
         format.html { redirect_to @paragraph, notice: 'Paragraph was successfully updated.' }
         format.json { render :show, status: :ok, location: @paragraph }
       else
+        format.html { render :edit }
+        format.json { render json: @paragraph.errors, status: :unprocessable_entity }
+      end
+    end
+  end
+
+  def touch
+    respond_to do |format|
+      if @paragraph.touch
+        @message="Updated today"
+        format.js {}
+        format.html { redirect_to @paragraph, notice: 'Paragraph was successfully updated.' }
+        format.json { render :show, status: :ok, location: @paragraph }
+      else
+        @message="Update failed"
+        format.js {}
         format.html { render :edit }
         format.json { render json: @paragraph.errors, status: :unprocessable_entity }
       end

@@ -17,7 +17,11 @@ Rails.application.routes.draw do
       end
   end
   resources :headers
-  resources :paragraphs
+  resources :paragraphs do
+      member do
+        get 'touch'
+      end
+  end
   resources :chapters
   get 'results/index'
 
@@ -52,7 +56,11 @@ Rails.application.routes.draw do
   resources :measures
   resources :masters
   resources :masters
-  resources :goals
+  resources :goals  do
+      member do
+        get 'touch'
+      end
+  end
   resources :members
   resources :statuses
   resources :registers do

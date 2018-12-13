@@ -247,6 +247,8 @@ class PatientController < ApplicationController
           @notes=tasks_array[2]
           @plan = tasks_array[3]
           @changes= Patient.prescription_history(@id,dbh,Date.today.strftime("%Y-%m-%d"))
+          @checklist = getCheckList(@id, @bps, dbh, @patient.social, @patient.medications)
+          @checklist << ["Shared Health Summary", @lastSHS == Date.today]
 
           # get patient story
 
@@ -826,7 +828,7 @@ def cma
                 
                 @patient.last_mam = @last_mam
                 @patient.mam_msg=@mam
-
+                @hpv = {:color => "red", :msg => "CST may be due" }
                  if @patient.age < 25 or @patient.age > 75 or @patient.hpv_recall 
                         @hpv = {:color => "green", :msg => "No CST recall" }
                  else
@@ -2050,6 +2052,86 @@ end
    def patient_params
       params.permit(:id,:register)
   end
+
+  def getCheckList(patient,bps,dbh,social,medications)
+    checklist = []
+    checklist << ["overall", measureDone(patient, "overall")]
+
+     # check BP and weight
+
+    todaysMeasures = bps.detect {|f| f["MEASUREMENTDATE"] ==  Date.today }
+    
+    weight = false
+    if todaysMeasures and todaysMeasures["WEIGHT"] > 0 
+      weight = true
+    end
+    bp = false
+    if todaysMeasures and todaysMeasures["SYSTOLIC"] > 0 
+      bp = true
+    end
+
+
+   
+    checklist << ["weight", weight]
+    checklist << ["bp", bp]
+
+    # chapters that should be updated eg Diet and Activity
+
+    chapters=Chapter.where(:check => true).all
+    chapters.each do |chapter|
+        paragraph=Paragraph.where(:chapter_id => chapter.id, :patient_id => patient).first
+        paragraphCheck=false
+      
+        if paragraph and paragraph.paragraph != "" and paragraph.updated_at.to_date == Date.today
+          paragraphCheck = true 
+        end
+        checklist << [chapter.chapter, paragraphCheck]
+
+    end
+    identifier = false
+    match1=social.match /^-(\s?i\s+)(.*)/
+    if match1
+          # ok, we have a match for -i 
+      identifier=true
+    end
+    checklist << ["identifier", identifier]
+
+    # how many medications have a category
+    catCount=true
+
+    medications.each do | medication|
+      if medication['CATEGORY'] == ""
+        catCount = false
+      end
+    end
+
+     checklist << ["Medications Categorised (Long term, prn etc)", catCount]
+
+
+
+
+    return checklist
+
+    
+
+
+
+
+
+
+
+  end
+
+  def measureDone(patient, abbrev)
+      todayDate = Date.today
+      # has overall health been assigned
+      # the measure for alstonville clinic is id 1 abbrev overall
+      measure=Measure.where(:abbreviation => abbrev).first
+      measurement=Measurement.where(measure: measure.id, patient_id: patient, measuredate: todayDate).first
+      measurement != nil
+ end
+
+
 
 
 end

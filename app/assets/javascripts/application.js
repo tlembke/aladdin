@@ -20,61 +20,79 @@
 
 $(document).ready(function() {
     $(".editable").editable();
+
      $(".chart").each(function(){
             drawChart($(this));
     });
      $(".apptname").hide();
 
+    if ($("#book").length) {
+    // Your specific controller code here
+              
+              $("#appt_form").validate({
+                rules: {
+                  Surname: {
+                    required: true
+                  },
+                  FirstName: {
+                    required: true
+                  },
+                  mobile: {
+                    required: true,
+                    digits: true,
+                    normalizer: function( value ) {
+                        // Trim the value of the `field` element before
+                        // validating. this trims only the value passed
+                        // to the attached validators, not the value of
+                        // the element itself.
+                        return value.replace(/ /g,'');
+                    },
+                    minlength: 10,
+                    maxlength: 10,
+                    phonemobileAU: true
+                  },
+                  appttime: {
+                    required: true
+                  }
+
+                },
+                messages: {
+                    appttime: {
+                      required: "Please click on a green appointment time in the calendar above",
+                    },
+                    Surname: {
+                      required: "A surname is required",
+                    },
+                    FirstName: {
+                      required: "A first name is required",
+                    },             
+                    mobile: {
+                      required: "A mobile number is required",
+                    }, 
+                }
+              });
 
 
-        $("#appt_form").validate({
-          rules: {
-            Surname: {
-              required: true
-            },
-            FirstName: {
-              required: true
-            },
-            mobile: {
-              required: true,
-              digits: true,
-              normalizer: function( value ) {
-                  // Trim the value of the `field` element before
-                  // validating. this trims only the value passed
-                  // to the attached validators, not the value of
-                  // the element itself.
-                  return value.replace(/ /g,'');
-              },
-              minlength: 10,
-              maxlength: 10,
-              phonemobileAU: true
-            },
 
-            
+
+  }
 
 
 
-            appttime: {
-              required: true
-            }
 
-          },
-          messages: {
-              appttime: {
-                required: "Please click on a green appointment time in the calendar above",
-              },
-              Surname: {
-                required: "A surname is required",
-              },
-              FirstName: {
-                required: "A first name is required",
-              },             
-              mobile: {
-                required: "A mobile number is required",
-              }, 
-          }
-        });
 });
+
+$('.editableUpdate').on('save', function() {
+    
+    var theId = $(this).data('touch');
+
+    $('#' + theId).html("Updated Today");
+
+});
+
+
+
+
     $('.panel').on('shown.bs.collapse', function (e) {
         $(".chart").each(function(){
             $(this).empty();
