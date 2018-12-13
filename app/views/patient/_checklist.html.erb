@@ -1,0 +1,9 @@
+<table width=50% class='table table-striped table-bordered table-condensed'>
+	
+		<% @checklist.each do |checklistitem| %>
+		<tr>
+			<td width=50%><%= checklistitem[0].capitalize %> </td>
+			<td><%= check_symbol(checklistitem[1]) %> </td>
+		</tr>
+		<% end %>
+</table>
