@@ -1,8 +1,15 @@
 						        <legend><i class="fa fa-tasks" aria-hidden="true"></i>  Recent Results</legend>
 						        <ul class="fa-ul">
+
+						       
 						        <% @patient.results.each do |patresult| %>
 	
 						        		  
-						        	<li><i class="fa-li fa fa-square-o"></i><%= link_to patresult['COLLECTIONDATE'].to_s + " " + patresult['TEST'].to_s, patient_result_path(@id,patresult['ID'].to_i) %> </li>
+						        	<li>
+
+<%= check_box_tag 'result', patresult['ID'].to_i, Result.checked?(patresult['ID'].to_i), data: {
+	        remote: true, url: toggle_patient_result_path(@id,patresult['ID'].to_i), method: "POST" } %>
+
+						        		<i class="fa-li fa fa-square-o"></i><%= link_to patresult['COLLECTIONDATE'].to_s + " " + patresult['TEST'].to_s, patient_result_path(@id,patresult['ID'].to_i), :target => ‘_new’  %> </li>
 						        <% end %>
 						        </ul>

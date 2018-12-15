@@ -76,8 +76,14 @@ Rails.application.routes.draw do
   # You can have the root of your site routed with "root"
   root 'patient#index', via: [:get, :post]
 
+
+
   resources :patient do
-    resources :results
+    resources :results do
+      member do
+          post 'toggle'
+      end
+    end
     
     collection do
         get 'index'

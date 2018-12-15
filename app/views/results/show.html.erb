@@ -1,11 +1,14 @@
 <h2><%= @patient.fullname %></h2>
-<%= link_to 'Back', :back, {:class => "btn btn-lg btn-primary"} %>
+
+<%= link_to 'Close', '_self', {:class => "btn btn-lg btn-primary",:onclick=>'window.close();'} %>
 
 <%= @result['COLLECTIONDATE'].strftime("%d/%m/%Y") %> <%= @result['TEST'] %><p>
 
 <pre>
 <%= pit_convert(@result['RESULT']).html_safe%>
 </pre>
+
+
 
 
 

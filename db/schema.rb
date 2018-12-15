@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20181208225712) do
+ActiveRecord::Schema.define(version: 20181215005640) do
 
   create_table "cells", force: :cascade do |t|
     t.integer  "register_id"
@@ -135,6 +135,15 @@ ActiveRecord::Schema.define(version: 20181208225712) do
     t.datetime "updated_at",             null: false
     t.datetime "loaded"
     t.integer  "code",       default: 0, null: false
+  end
+
+  create_table "results", force: :cascade do |t|
+    t.date     "result_date"
+    t.integer  "result_id"
+    t.boolean  "printed"
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
+    t.integer  "patient_id"
   end
 
   create_table "sections", force: :cascade do |t|

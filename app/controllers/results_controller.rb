@@ -45,6 +45,22 @@ class ResultsController < ApplicationController
   		 end
   end
 
+  def toggle
+    # note we are not really using the intrinsic results id, rather the genie results_id
+    @id = params[:id].to_i
+    @patient_id = params[:patient_id].to_i
+   
+    if @result = Result.where(result_id: @id).first
+        @result.destroy!
+    else
+        @result = Result.create(result_date: Date.today.to_date, result_id: @id, patient_id: @patient_id )
+    end
+   
+
+    render :nothing => true 
+
+  end
+
   private
 
     def get_results(patient,dbh, limit=50)
@@ -103,6 +119,8 @@ class ResultsController < ApplicationController
           return theresult
 
   end 
+
+
 
 end
 

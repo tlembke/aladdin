@@ -6,6 +6,7 @@
 
 <%= link_to consult['CONSULTDATE'].to_date.strftime("%d/%m/%y") + " " + +consult['DOCTORNAME'], patient_path(:id=> @id, :consult_id=> consult['ID'])%>
 
+
 						        	<%= patresult['COLLECTIONDATE'] %>  <%= patresult['TEST'] %></li>
 						        <% end %>
 						        </ul>

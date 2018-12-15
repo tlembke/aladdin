@@ -41,6 +41,9 @@
 	  border-radius: 1px !important;;
 
 	}
+	pre {
+  		font:400 10px/14px 'PT Mono', monospace;
+ 	}
 
 
 

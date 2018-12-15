@@ -258,6 +258,18 @@ class PatientController < ApplicationController
                 @patient.autoload_goals
           end
 
+          if params[:print]
+            # get results to print
+            results=Result.where(patient_id: @patient.id, result_date: Date.today.to_date).all
+            @printresults=[]
+            if results
+                results.each do |result|
+                  @printresults << Result.get_result(result.result_id.to_s,dbh)
+                end
+            end
+           
+          end
+        
           
           dbh.disconnect
 
