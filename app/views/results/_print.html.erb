@@ -1,0 +1,19 @@
+
+
+<% @printresults.each do |result| %>
+
+<div class="row page-break-before"> <!-- Full screen row -->
+<div class="col-xs-12">
+<h2><%= @patient.fullname %></h2>
+
+
+<%= result['COLLECTIONDATE'].strftime("%d/%m/%Y") %> <%= result['TEST'] %><p>
+
+<pre>
+<%= pit_convert(result['RESULT']).html_safe%>
+</pre>
+</div>
+</div>
+
+
+<% end %>
