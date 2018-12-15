@@ -1,4 +1,4 @@
-fclass BillingController < ApplicationController
+class BillingController < ApplicationController
  require 'csv'
 
   def index
