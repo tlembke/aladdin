@@ -8,7 +8,6 @@ class ApplicationController < ActionController::Base
   before_filter :populate_registers
 
 
-
  def populate_registers
   @registersAll = Register.where(code: 0).all
   @nhAll = Register.where(code: 1).all
