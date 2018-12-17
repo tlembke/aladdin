@@ -25,7 +25,7 @@
             <tbody>
               <% @sections.each do |section| %>
               <tr>
-                                <td><%= section.name %></td>
+                                <td><%= link_to section.name, section_chapters_path(section) %></td>
                                 <td class="actions">
                   <%= link_to fa_icon_tag("eye"), section, rel: 'tooltip', title: 'Show' %>
                   <%= link_to fa_icon_tag("pencil"), edit_section_path(section), rel: 'tooltip', title: 'Edit' %>

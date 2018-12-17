@@ -2,12 +2,13 @@
 						<legend><i class="fa fa-calendar"></i>  Registers </legend>
 
            				<% @registers.each do |register| %>
-           				<%= register.name %>
+           				
          				<%= check_box_tag 'register', @patient.id, @patient.register(register.id),
       data: {
         remote: true,
         url: url_for(action: :register, id: @patient.id,register:register.id),
         method: "POST"
       } %>
+      <%= register.name %><br>
       <% end %>
 
