@@ -1,31 +1,13 @@
 <div class="row">
 
-    <div class="col-md-4">
-       <div class="btn-group" role="group">
-   <%= link_to "Appointments",{controller: "appointments"}, {:class => "btn btn-lg btn-primary","data-no-turbolink" => "true"} %></li>
-   <%= link_to "Nursing Home",nursinghome_index_path, { :class => "btn btn-lg btn-primary","data-no-turbolink" => "true"} %>
-  </div>
-  <p><p>
- 	 <legend>Open</legend>
- 		<% @open_patients.each do |patient| %>
- 			<%= link_to patient['SURNAME']+","+patient['FIRSTNAME'], patient_path(:id=> patient['PT_ID_FK']) %><br>
- 		<% end %>
- 		<p>
- 		<p>
-    <legend>Seen Today</legend>
- 		<% @seen_patients.each do |patient| %>
- 			<%= link_to patient['SURNAME']+","+patient['FIRSTNAME'], patient_path(:id=> patient['ID']) %><br>
- 		<% end %>
 
- 	</div>
     <div class="col-md-4">
 
     <%= render "form" %>
-    </div>
-
-    <div class="col-md-4">
+    <p><p>
 
     <legend>Search results</legend>
+    <p>
  		<% @patients_search.each do |patient| %>
 
  		<%= link_to patient['SURNAME']+","+patient['FIRSTNAME'], patient_path(:id=> patient['ID']) %>
@@ -39,6 +21,19 @@
 
 
 	</div>
+      <div class="col-md-4">
+   <legend>Open</legend>
+    <% @open_patients.each do |patient| %>
+      <%= link_to patient['SURNAME']+","+patient['FIRSTNAME'], patient_path(:id=> patient['PT_ID_FK']) %><br>
+    <% end %>
+  </div>
+  <div class="col-md-4">
+    <legend>Seen Today</legend>
+    <% @seen_patients.each do |patient| %>
+      <%= link_to patient['SURNAME']+","+patient['FIRSTNAME'], patient_path(:id=> patient['ID']) %><br>
+    <% end %>
+
+  </div>
 
 
 </div>

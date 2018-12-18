@@ -1,12 +1,11 @@
 <div class="row">
 
-    			<div class="col-md-4 col-md-offset-3">
-    	 			<h2><%= @patient.fullname %></h2>
-    	 		</div>
-    	 		<div class="col-md-5">
-    	 			<div class="row">
-
-                    <div class="btn-group btn-group-justified">
+	<div class="col-md-4 col-md-offset-3">
+			<h2><%= @patient.fullname %></h2>
+	</div>
+    <div class="col-md-5">
+    	 <div class="row">
+            <div class="btn-group btn-group-justified">
                     <%= link_to 'Careplan', careplan_patient_path(@patient.id), {:class => "btn btn-lg btn-primary"} %>
                     <%= link_to 'Summary', healthsummary_patient_path(@patient.id), {:class => "btn btn-lg btn-primary"} %>
                     <% if @patient.is_in_nh? %>
@@ -16,54 +15,63 @@
                      <%= link_to 'Annual', annual_patient_path(@patient.id), {:class => "btn btn-lg btn-primary"} %>
                      <%= link_to 'Pre', precheck_patient_path(@patient.id), {:class => "btn btn-lg btn-primary"} %>
                      <% end %>
-    	 			</div>
-                                        <div class="btn-group btn-group-justified">
+    	 	</div>
+            <div class="btn-group btn-group-justified">
                     <%= link_to 'Print',patient_path(@patient.id, :consult_id=> @consult['ID'], :print => "true"),{:class => "btn btn-lg btn-primary"} %>
 
-                    </div>
-                    <hr>
-                    </div>
-					<div class="row">
-			         	<div class="col-md-5">
-			         	DOB: 
-			         	</div>
-			         	<div class="col-md-7">
-			         	<%= @patient.dob.strftime("%d/%m/%y") %>
-			         	</div>
-			         </div>
-			         <div class="row">
-			         	<div class="col-md-5">
-			         	Address: 
-			         	</div>
-			         	<div class="col-md-7">
-			         	<%= @patient.addressline1 + "," if @patient.addressline1 !="" %>
-			         	<%= @patient.addressline2 + "," if @patient.addressline2 !="" %>
-			         	<%= @patient.suburb %>
-			         	</div>
-         			</div>
-                    <div class="row">
-                     <div class="col-md-5">
-                        Home Phone 
-                        </div>
-                        <div class="col-md-7">
-                        <%= @patient.homephone %>
-                        </div>
-                        <div class="col-md-5">
-                        Mobile: 
-                        </div>
-                        <div class="col-md-7">
-                        <%= @patient.mobilephone %>
-                        </div>
-                    </div>
-         			<div class="row">
-    	 			<hr>
-    	 			</div>
-         		</div>
-</div>	
+            </div>
+            
+    </div>
+</div>
+<div class="row">
+        <div class="col-md-12">
+            <hr>
+        </div>
+        <div class = "col-md-5 col-md-offset-1">
+			<div class="row">
+	         	<div class="col-md-5">
+	         	DOB: 
+	         	</div>
+	         	<div class="col-md-7">
+	         	<%= @patient.dob.strftime("%d/%m/%y") %>
+	         	</div>
+	         </div>
+	         <div class="row">
+	         	<div class="col-md-5">
+	         	Address: 
+	         	</div>
+	         	<div class="col-md-7">
+	         	<%= @patient.addressline1 + "," if @patient.addressline1 !="" %>
+	         	<%= @patient.addressline2 + "," if @patient.addressline2 !="" %>
+	         	<%= @patient.suburb %>
+	         	</div>
+ 			</div>
+            <div class="row">
+                <div class="col-md-5">
+                Home Phone 
+                </div>
+                <div class="col-md-7">
+                <%= @patient.homephone %>
+                </div>
+                <div class="col-md-5">
+                Mobile: 
+                </div>
+                <div class="col-md-7">
+                <%= @patient.mobilephone %>
+                </div>
+            </div>
+
+ 		</div>
+    	
+        <div class = "col-md-6">
+            <%= render "consult" %>
+        </div>
+    
+</div>
 
 <div class="row">
 	<div class="col-md-6">
-        <%= render "consult" %>
+       
         <hr>
 	<!--   Half the page for medications   -->
     <%= render "summary" %>
@@ -71,7 +79,7 @@
         <%= render "progress" %>
        
         <hr>
-
+        <legend><i class="fa fa-medkit"></i>  Medications</legend>
         <%=render "medications" %>
         <hr>
          <%= render "measures" %>

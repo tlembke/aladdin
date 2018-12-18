@@ -155,6 +155,21 @@ class PatientController < ApplicationController
 
           @phonetime = get_phonetime(session[:id])
           @registers=Register.all
+
+
+          if params[:print]
+                  # get results to print
+                  results=Result.where(patient_id: @id, result_date: Date.today.to_date).all
+                  @printresults=[]
+                  if results
+                      results.each do |result|
+                        @printresults << Result.get_result(result.result_id.to_s,dbh)
+                      end
+                  end
+                 
+          end
+
+          
           dbh.disconnect
 
 
@@ -163,6 +178,10 @@ class PatientController < ApplicationController
           flash[:notice]=connect_array[2]
           redirect_to  controller: "genie", action: "login"
     end
+
+
+
+
     @print=false
 
 
@@ -2100,6 +2119,15 @@ end
         checklist << [chapter.chapter, paragraphCheck]
 
     end
+
+    # goals that should be updated eg Diet and Activity
+    oldGoals=Goal.where("patient_id = ? and updated_at < ?",patient,Date.today.to_time.beginning_of_day).count
+    oldGoals == 0 ? goalCheck = true : goalCheck = false
+    checklist << ["goals checked", goalCheck]
+ 
+
+
+
     identifier = false
     match1=social.match /^-(\s?i\s+)(.*)/
     if match1
