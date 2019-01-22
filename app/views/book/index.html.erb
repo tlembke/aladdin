@@ -17,6 +17,9 @@
 		<div class="row">
 			<div class="col-md-3">
 			<span class='small'>Horiz</span> <label class="switch switch-warning"><input id='bookMode' type='checkbox' <%= "checked='checked'" if @mode=="v" %>><span></span></label> <span class='small'> Vert</span><p>
+			<span class='small'>
+				Days <%= select_tag(:noDays, options_for_select([['1',1], ['2', 2], ['3', 3], ['4', 4], ['5', 5]],@noDays)) %>
+			</span><p>
 			</div>
 			<div class="col-md-9">
 			<%= render "appointments/datechange" %>
@@ -36,6 +39,8 @@
 
 			</div> <%# end row %>
 		<% end %>
+
+		<span class='small'>Select an appt time (green button) below, if available</span><p>
 		<% @doctors.each do |doctor| %>
 		<div class="row well">
 			<div class="col-md-2"><%= doctor[0] %></div>
@@ -62,6 +67,7 @@
 				<% elsif  @doctorsFreesCount[doctor[2]] > 0 %>
 					<% if @mode=="v" %>
 						<div class="col-md-<%= @noCols %>">	<%# VERT DAY  %>
+						<div class='btn-group-vertical'>
 						<%# v is number of cols and h is the date and cols %>
 						<span class="small center"><%= code[1].strftime("%a %b%e").html_safe %></span>
 					<% else %>
@@ -73,8 +79,10 @@
 					<%# at this point, div is open for green buttons. Both h and v should close after buttons %>
 					<% if @appointments[doctor[2]][code[0]].empty? %>
 						<button class='btn btn-danger btn-block btn-xs fa fa-minus'></button>
+						<%= "</div style='0'>".html_safe if @mode == "v"%> <%# end button group%>
+
 					<% else %>
-					    <%= ("<div class='btn-group-vertical'>").html_safe if @mode=="v" %>
+					    <%# <%= ("<div class='btn-group-vertical'>").html_safe if @mode=="v" %>
 
 						<% i = 0 %>
 						<% dateCount = @appointments[doctor[2]][code[0]].length %>
