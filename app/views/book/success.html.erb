@@ -1,4 +1,14 @@
-We have matched <%= @patient %>
-<%= params %>
-<p>DateTime <%= @theDateTime %>
-<p>Response <%= @errorId %>
+Thank you.<p>
+
+A booking has been made for <p>
+<b><%= @patient[1] + " " + @patient[0] %> </b> <p>
+with <p>
+<b> <%= params['appttime'] %> <b>
+<p><p>
+<%= link_to ("Download Calender Event <i class='fa fa-calendar'></i>").html_safe,downloadcal_book_index_path(:date => params[:date], :time => params[:time], :description => params[:appttime], :duration => @duration) %><p>
+	
+
+
+
+
+

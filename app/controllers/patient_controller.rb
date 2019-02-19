@@ -1491,6 +1491,31 @@ def cma
 
   end
 
+  def get_all_seen_patients(dbh)
+          today=Date.today.to_s(:db)
+          
+          sql = "SELECT Surname,FirstName,LastSeenDate,LastSeenBy,Id FROM Patient where LastSeenDate = '"+today+"'"
+ 
+          puts sql
+         
+
+          sth = dbh.run(sql)
+               
+          patients=[]
+          sth.fetch_hash do |row|
+            patients << row
+          end
+
+          sth.drop
+
+
+
+          return patients
+
+  end
+
+
+
 
 
   def get_patient(patient,dbh)

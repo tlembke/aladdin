@@ -5,6 +5,7 @@ Rails.application.routes.draw do
   resources :book do
       collection do
           get 'confirm'
+          get 'downloadcal'
       end
   end
 
@@ -43,6 +44,7 @@ Rails.application.routes.draw do
       get 'data'
       get 'bookings'
       get 'cst'
+      get 'itemcheck'
 
     end
 

@@ -1,6 +1,7 @@
 class BookController < ApplicationController
 	skip_before_filter :require_login
 	require "base64"
+  require 'icalendar'
 
 
 
@@ -148,6 +149,50 @@ class BookController < ApplicationController
   def show
   end
 
+  def downloadcal
+      
+
+        @theDate = params[:date].to_date
+        @theTime = params[:time].to_s
+
+
+        start_at = DateTime.new(@theDate.year,@theDate.month,@theDate.day,@theTime[0...-2].to_i,@theTime.last(2).to_i)
+
+
+
+
+        # start_at  = DateTime.new(d.year, d.month, d.day, t.hour, t.min, t.sec, t.zone)
+        if params[:duration] == 30
+          finish_at = start_at + 30.minutes
+        else
+          finish_at = start_at + 15.minutes
+        end
+
+        cal = Icalendar::Calendar.new
+        filename = "alstonville_clinic"
+
+        if params[:format] == 'vcs'
+          cal.prodid = '-//Microsoft Corporation//Outlook MIMEDIR//EN'
+          cal.version = '1.0'
+          filename += '.vcs'
+        else # ical
+          cal.prodid = '-//Acme Widgets, Inc.//NONSGML ExportToCalendar//EN'
+          cal.version = '2.0'
+          filename += '.ics'
+        end
+
+        cal.event do |e|
+          e.dtstart     = Icalendar::Values::DateTime.new(start_at)
+          e.dtend       = Icalendar::Values::DateTime.new(finish_at)
+          e.summary     = "GP Appointment"
+          e.description = params[:description]
+          e.location    = "61 Main St, Alstonville NSW Australia"
+        end
+
+        send_data cal.to_ical, type: 'text/calendar', disposition: 'attachment', filename: filename
+
+  end
+
    def confirm
 
 
@@ -172,35 +217,62 @@ class BookController < ApplicationController
         @appt_id = params[:appt_id]
         @doctor_id = params[:doctor_id]
        
-        params[:single] == "1" ? duration = 15 : duration = 30
+        params[:single]  ? @duration = 15 : @duration = 30
 
 
         @theDateTime = DateTime.new(@theDate.year,@theDate.month,@theDate.day,@theTime[0...-2].to_i,@theTime.last(2).to_i)
 
 
 
-    	  sql = "SELECT Surname, FirstName, DOB, MobilePhone, Id FROM Patient WHERE Surname = '" + @surname + "' AND (FirstName = '" + @firstname + "' OR KnownAs = '"+ @firstname + "')"   
+    	  sql = "SELECT Surname, FirstName, DOB, MobilePhone, Id, AH_Id_Fk  FROM Patient WHERE Surname = '" + @surname + "' AND (FirstName = '" + @firstname + "' OR KnownAs = '"+ @firstname + "')"   
          puts sql
           sth = dbh.run(sql)
           @patient = sth.fetch_first
           sth.drop
 
 
-          if @patient
-          	@patient[3].gsub!(/\s+/, '')
-          	flash[:alert] = @patient[3]
+          @patient_match = 0
 
-            # save appt
-            if @appt_id == "0" 
-                @errorId = saveApptTime(@patient[0],@patient[1],@patient[2],@doctor_id,@theDateTime,duration)
-                
+          if @patient
+            @patient_match =1 
+          	saved_mobile = @patient[3].gsub(/\s+/, '')
+          	#flash[:alert] = @patient[3]
+             
+             # Does the mobiile number match?
+            input_mobile = @mobile.gsub(/\s+/, '')
+
+            if input_mobile == saved_mobile
+                @patient_match =2
             else
-                #@errorId = saveApptSlot(@patient[0],@patient[1],@patient[2],@appt_id)
-                @errorId = saveApptTime(@patient[0],@patient[1],@patient[2],@doctor_id,@theDateTime,duration)
+              # perhaps the mobile matches the mobile of account holder
+                  sql = "SELECT Surname, FirstName, DOB, MobilePhone FROM Patient WHERE Id = " + @patient[5].to_s
+                  puts sql
+                  sth = dbh.run(sql)
+                  @ah = sth.fetch_first
+                  sth.drop
+                  saved_ah_mobile = @ah[3].gsub(/\s+/, '')
+                  
+                  if input_mobile ==  saved_ah_mobile
+                    @patient_match = 2
+                  end
+
+
+
+                
             end
 
-            
+          end 
 
+
+
+          if @patient_match == 2
+              if @appt_id == "0" 
+                  @errorId = saveApptTime(@patient[0],@patient[1],@patient[2],@doctor_id,@theDateTime,@duration)
+                  
+              else
+                  #@errorId = saveApptSlot(@patient[0],@patient[1],@patient[2],@appt_id)
+                  @errorId = saveApptTime(@patient[0],@patient[1],@patient[2],@doctor_id,@theDateTime,@duration)
+              end
 
           else
           	@flash[:alert] =  "No patient"
@@ -221,9 +293,9 @@ class BookController < ApplicationController
   	 end
 
  
-     if @patient
+     if @patient_match == 2
     		render :success
- 	else
+ 	  else
     		render :failure
   	end
      
@@ -353,6 +425,9 @@ class BookController < ApplicationController
 
         errorId = @response.body[:ws_pr_get_vacant_appts_response][:s44_d_v_l_error]
         puts "errorId = " + errorId
+        if errorId == '-15760'
+            puts "get_vacants - provider = " + doctor.to_s
+        end
        
         if errorId == "0"
             # there are some appointments
@@ -403,6 +478,9 @@ class BookController < ApplicationController
 
       errorId = @response.body[:ws_pr_get_free_appts_response][:s44_d_v_l_error]
       puts "errorId = " + errorId
+       if errorId == '-15760'
+            puts "get next web - provider = " + doctor.to_s
+        end
       nextAppt=""
       if errorId == "0"
         # there are some appointments
@@ -441,6 +519,9 @@ class BookController < ApplicationController
           })
         errorId = @response.body[:ws_pr_get_vacant_appts_response][:s44_d_v_l_error]
         puts "errorId = " + errorId
+        if errorId == '-15760'
+            puts "provider = " + doctor.to_s
+        end
          thisNextAppt =""
         if errorId == "0"
           # there are some appointments

@@ -37,6 +37,16 @@ module ApplicationHelper
     return age
   end
 
+  def billing_symbol(status,message = "&nbsp;")
+           color=""
+         color="btn-inverse" if status == 8
+         color="btn-danger" if status == 5
+         color="btn-success" if status == 6
+         color="" if status == 7
+         color="btn-info" if status == 4
+          theText = "<a class='btn btn-small " + color + "'>" + message + "</a>"
+          return theText.html_safe
+  end
 
 
 

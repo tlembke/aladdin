@@ -449,8 +449,111 @@ class BillingController < ApplicationController
 
   end
 
+    def itemcheck
+     # get appointments
+     @username = session[:username]
+     @password = session[:password]
+     @id=session[:id]
+     @name=session[:name]
+
+     connect_array=connect()
+     @error_code=connect_array[1]
+     if (@error_code==0)
+        dbh=connect_array[0]
+        @theStartDate = Date.today
+        @preventPast = false
+        if params[:date]              
+                @theStartDate = Date.new(params[:date][:year].to_i,params[:date][:month].to_i,params[:date][:day].to_i)
+          end
+        
+        @noDays=1
+
+      
+          @appts=get_all_appts(dbh,@theStartDate)
+          dbh.disconnect
+     else
+          flash[:alert] = "Unable to connect to database. "+ get_odbc
+          flash[:notice] = connect_array[2]
+          redirect_to  action: "login"
+     end
+     
+  end
+
+  def get_all_appts(dbh,theStartDate = Date.today )
+          theDay=theStartDate.to_s(:db)
+          
+          sql = "SELECT Name, Note, ProviderID, ProviderName, Charge, Reason, StartDate, StartTime, Status, PT_Id_Fk FROM Appt WHERE StartDate = '" + theDay + "' and PT_Id_FK <> 0 ORDER BY PT_Id_Fk"
+          puts sql
+         
+
+          sth = dbh.run(sql)
+               
+          appts=[]
+          sth.fetch_hash do |row|
+            items = get_item_numbers(dbh, row['PT_ID_FK'].to_s, theDay)
+            row['ITEMS'] = items
+            appts << row
+          end
+
+          sth.drop
 
 
+
+          return appts
+
+  end
+
+
+    def get_all_seen_patients(dbh,theStartDate = Date.today )
+          theDay=theStartDate.to_s(:db)
+          
+          sql = "SELECT Surname,FirstName,LastSeenDate,LastSeenBy,Id FROM Patient where LastSeenDate = '"+theDay +"' "
+ 
+          puts sql
+         
+
+          sth = dbh.run(sql)
+               
+          patients=[]
+          sth.fetch_hash do |row|
+
+            patients << row
+          end
+
+          sth.drop
+
+
+
+          return patients
+
+  end
+
+
+    def get_item_numbers(dbh,patient,theDay)
+         
+          
+          sql = "SELECT ItemNum FROM Sale where PT_Id_Fk = "+ patient +" and ServiceDate = '" + theDay +"'"
+ 
+          puts sql
+         
+          
+        
+         
+
+          sth = dbh.run(sql)
+               
+          items=[]
+          sth.fetch_hash do |row|
+            items << row
+          end
+
+          sth.drop
+
+
+
+          return items
+
+  end
 
     def getUsersSHS(dbh)
 

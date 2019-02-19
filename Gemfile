@@ -33,6 +33,8 @@ gem 'rubyzip'
 
 gem 'savon', '~> 2.12.0'
 
+gem 'icalendar'
+
 
 
 #gem 'wicked_pdf'
