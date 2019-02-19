@@ -1,0 +1,16 @@
+	This is deprecated still :-()
+
+	<div class="row">
+		<div class="col-md-11 col-md-offset-1">
+			<h3 class="shrink">Goals Quick Summary list</h3>
+		</div> <!-- col-md-11 -->
+		<div class="col-md-10 col-md-offset-2">
+			<%= render partial: "story", locals: {section: 2}  %>						
+			<% @patient.general_goals.each do |goal| %>
+				<% @goal = goal %>
+				
+				<%= render @goal, :locals => {:hideMeasure => "true"} %>
+
+			<% end %>
+		</div> <!-- col-md-10-->
+	</div> 
