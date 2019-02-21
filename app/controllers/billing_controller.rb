@@ -469,7 +469,7 @@ class BillingController < ApplicationController
         @noDays=1
 
       
-          @appts=get_all_appts(dbh,@theStartDate)
+          @appts,@nurses =get_all_appts(dbh,@theStartDate)
           dbh.disconnect
      else
           flash[:alert] = "Unable to connect to database. "+ get_odbc
@@ -482,24 +482,29 @@ class BillingController < ApplicationController
   def get_all_appts(dbh,theStartDate = Date.today )
           theDay=theStartDate.to_s(:db)
           
-          sql = "SELECT Name, Note, ProviderID, ProviderName, Charge, Reason, StartDate, StartTime, Status, PT_Id_Fk FROM Appt WHERE StartDate = '" + theDay + "' and PT_Id_FK <> 0 ORDER BY PT_Id_Fk"
+          sql = "SELECT Name, Note, ProviderID, ProviderName, Charge, Reason, StartDate, StartTime, Status, PT_Id_Fk FROM Appt WHERE StartDate = '" + theDay + "' and PT_Id_FK <> 0 ORDER BY ProviderID, StartTime"
           puts sql
          
 
           sth = dbh.run(sql)
                
           appts=[]
+          nurses=[]
           sth.fetch_hash do |row|
             items = get_item_numbers(dbh, row['PT_ID_FK'].to_s, theDay)
             row['ITEMS'] = items
-            appts << row
+            if row['PROVIDERID'] == 89
+                nurses[row['PT_ID_FK']] = row['NAME']
+            else
+              appts << row
+            end
           end
 
           sth.drop
 
 
 
-          return appts
+          return appts,nurses
 
   end
 
