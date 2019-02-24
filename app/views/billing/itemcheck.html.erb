@@ -19,29 +19,35 @@
     		<td>Charge</td>
     		<td>StartTime</td>
     		<td>Items</td>
+    		<td>Plan</td>
+
     		
     	</thead>
     
     <% @appts.each do |appt| %>
-    <tr>
-    	<td><%= link_to appt['NAME'], patient_path(:id=> appt['PT_ID_FK']) %></td>
-    	<td><%= @nurses[appt['PT_ID_FK']] %>
+    <% if ((appt['PROVIDERID'] != 89 and appt['PROVIDERID'] != 87) or ((appt['PROVIDERID'] == 89 or appt['PROVIDERID'] == 87) and @appt_ids.count(appt['PT_ID_FK']) == 1)) %>
+	    <tr>
+	    	<td><%= link_to appt['NAME'].html_safe, patient_path(:id=> appt['PT_ID_FK']) %></td>
+	    	<td><%= @nurses[appt['PT_ID_FK']].html_safe if @nurses[appt['PT_ID_FK']] %>
 
-    	<td><%= appt['PROVIDERNAME'] %></td>
-    	<td><%= appt['REASON'] %></td>
-    	<td><%= appt['CHARGE'] %></td>
-    	<td><%= billing_symbol(appt['STATUS'],  appt['STARTTIME'].strftime("%l:%M")) %></td>
-    	<td>
-    	
-    		<% appt['ITEMS'].each_with_index do |item, index | %>
-    			<%= item['ITEMNUM'] %>
-    			<%= "|" if index < appt['ITEMS'].length - 1%>
-    		<% end %>
-    			
+	    	<td><%= appt['PROVIDERNAME'] %></td>
+	    	<td><%= appt['REASON'] %></td>
+	    	<td><%= appt['CHARGE'] %></td>
+	    	<td><%= billing_symbol(appt['STATUS'],  appt['STARTTIME'].strftime("%l:%M")) %></td>
+	    	<td>
+	    	
+	    		<% appt['ITEMS'].each_with_index do |item, index | %>
+	    			<button class='btn btn-sm btn-outline-primary btn-block'> <%= item %> </button>
+	    			
+	    		<% end %>
+	    			
 
-    	</td>
+	    	</td>
+	    	<td class='small'><%= appt['PLAN'] %></td>
 
-    </tr>
+	    </tr>
+	  <% end %>
+
     <% end %>
 </table>
 

@@ -39,7 +39,7 @@ module ApplicationHelper
 
   def billing_symbol(status,message = "&nbsp;")
            color=""
-         color="btn-inverse" if status == 8
+         color="btn-outline-inverse" if status == 8
          color="btn-danger" if status == 5
          color="btn-success" if status == 6
          color="" if status == 7

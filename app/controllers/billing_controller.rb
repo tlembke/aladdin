@@ -470,7 +470,9 @@ class BillingController < ApplicationController
 
       
           @appts,@nurses =get_all_appts(dbh,@theStartDate)
+          @appt_ids=@appts.map {|x| x.values[9]}
           dbh.disconnect
+          
      else
           flash[:alert] = "Unable to connect to database. "+ get_odbc
           flash[:notice] = connect_array[2]
@@ -493,11 +495,15 @@ class BillingController < ApplicationController
           sth.fetch_hash do |row|
             items = get_item_numbers(dbh, row['PT_ID_FK'].to_s, theDay)
             row['ITEMS'] = items
-            if row['PROVIDERID'] == 89
+            row['NAME'] = row['NAME'] + parse_plan(row['NAME'],row['ITEMS'])
+            row['NAME'] = parse_numbers(row['NAME'],row['ITEMS'])
+            appts << row
+            if row['PROVIDERID'] == 89 or row['PROVIDERID'] == 87
                 nurses[row['PT_ID_FK']] = row['NAME']
             else
-              appts << row
+                row['PLAN'] = get_plan(dbh,row['PT_ID_FK'],row['PROVIDERID'],theDay, items)
             end
+
           end
 
           sth.drop
@@ -506,6 +512,79 @@ class BillingController < ApplicationController
 
           return appts,nurses
 
+  end
+
+    def get_plan(dbh,patient,provider,theDate,items)
+            sql = "SELECT Plan FROM Consult WHERE PT_Id_FK = " + patient.to_s + " and ConsultDate = '" + theDate + "' and DoctorID = " + provider.to_s
+          
+            puts sql
+            planText=""
+            sth = dbh.run(sql)
+             sth.fetch do |row|
+              planText = planText + row[0]
+            end
+            sth.drop
+            planText=parse_plan(planText,items) + planText
+
+            return planText
+
+
+
+  end
+
+  def parse_numbers(theText,items)
+    #theeText=theText.gsub(/\d+/, '{\0}')
+    # reaplce 732 x 2 with 732 732
+
+    theText= theText.gsub(/(\d+) x 2/,'\1 \1')
+    theText= theText.gsub(/\d+/) { |num| number_button(num, items)}
+
+    return theText
+
+  end
+
+  def number_button(num,items)
+
+      #buttonText = "<button class='btn btn-sm'>" + num + "</button>"
+      if num.to_i < 9 
+        return num
+      else
+         buttonText= plan_button(num,[num],items)
+      end
+      return buttonText
+  end
+
+  def parse_plan(planText,items)
+          buttonText=""
+          plan = planText.downcase
+          if items.count>0
+            if plan.include? "ecg"
+                buttonText = plan_button("ECG",["11700"],items) + buttonText
+            end
+            if plan.include? "rft" or plan.include? "spiro"
+               buttonText = plan_button("RFT",["11505","11506"],items) + buttonText
+            end
+            if plan.include? "biopsy" or plan.include? "bx"
+                if plan.exclude? "abx"
+                  buttonText = plan_button("Biopsy",["30071"],items) + buttonText
+                end
+            end
+            if plan.include? "bhcg"
+                 buttonText = plan_button("BHCG",["73806"],items) + buttonText
+            end
+
+          end
+          return buttonText
+
+  end
+
+  def plan_button(theText,itemNumbers,items)
+        buttonColor = "danger"
+        itemNumbers.each do | itemNumber |
+          buttonColor = "success" if items.include?(itemNumber)
+        end
+        returnText = ("<button class='btn btn-sm btn-" + buttonColor + "'>" + theText + "</button>").html_safe
+        return returnText
   end
 
 
@@ -549,7 +628,7 @@ class BillingController < ApplicationController
                
           items=[]
           sth.fetch_hash do |row|
-            items << row
+            items << row['ITEMNUM']
           end
 
           sth.drop
