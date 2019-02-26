@@ -515,13 +515,13 @@ class BillingController < ApplicationController
   end
 
     def get_plan(dbh,patient,provider,theDate,items)
-            sql = "SELECT Plan FROM Consult WHERE PT_Id_FK = " + patient.to_s + " and ConsultDate = '" + theDate + "' and DoctorID = " + provider.to_s
+            sql = "SELECT History, Examination, Diagnosis, Plan FROM Consult WHERE PT_Id_FK = " + patient.to_s + " and ConsultDate = '" + theDate + "' and DoctorID = " + provider.to_s
           
             puts sql
             planText=""
             sth = dbh.run(sql)
              sth.fetch do |row|
-              planText = planText + row[0]
+              planText = planText + row[0] +row[1] + row[2] + row[3]
             end
             sth.drop
             planText=parse_plan(planText,items) + planText
@@ -561,13 +561,12 @@ class BillingController < ApplicationController
             if plan.include? "ecg"
                 buttonText = plan_button("ECG",["11700"],items) + buttonText
             end
-            if plan.include? "rft" or plan.include? "spiro"
+            if plan.include? "rft" or plan.index(/\Wspiro\W/) or plan.index(/\Wspirometry\W/)
                buttonText = plan_button("RFT",["11505","11506"],items) + buttonText
             end
-            if plan.include? "biopsy" or plan.include? "bx"
-                if plan.exclude? "abx"
+            if plan.index(/\Wbiopsy\W/) or plan.index(/\Wbx\W/)
                   buttonText = plan_button("Biopsy",["30071"],items) + buttonText
-                end
+                
             end
             if plan.include? "bhcg"
                  buttonText = plan_button("BHCG",["73806"],items) + buttonText
