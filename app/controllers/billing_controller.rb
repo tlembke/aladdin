@@ -489,20 +489,48 @@ class BillingController < ApplicationController
          
 
           sth = dbh.run(sql)
+
+
+
                
           appts=[]
           nurses=[]
           sth.fetch_hash do |row|
-            items = get_item_numbers(dbh, row['PT_ID_FK'].to_s, theDay)
+
+            row['WARNING'] = false
+            items,bbItemCount,bbCount = get_item_numbers(dbh, row['PT_ID_FK'].to_s, theDay)
             row['ITEMS'] = items
-            row['NAME'] = row['NAME'] + parse_plan(row['NAME'],row['ITEMS'])
+            buttonText = parse_plan(row['NAME'],row['ITEMS'])
+            row['NAME'] = row['NAME'] + buttonText
+            if buttonText != ""
+                row['WARNING'] = true
+            end
             row['NAME'] = parse_numbers(row['NAME'],row['ITEMS'])
+            if row['NAME'].include?("danger")
+                row['WARNING'] = true
+            end
+
+            row['FEETYPE'], row['INCENTIVE'] = getFeeType(dbh,row['PT_ID_FK'].to_s)
+            row['FEETYPE'] = "DVA" if row['FEETYPE'] == "Veterans Affairs"
+            row['FEETYPE'] = "Pte" if row['FEETYPE'] == "Private"
+            row['MISSBB'] = 0
+            if row['INCENTIVE']
+              row['MISSBB'] = bbItemCount - bbCount
+          
+            end
+            if row['MISSBB'] != 0
+              row['WARNING'] = true
+            end
             appts << row
             if row['PROVIDERID'] == 89 or row['PROVIDERID'] == 87
                 nurses[row['PT_ID_FK']] = row['NAME']
             else
                 row['PLAN'] = get_plan(dbh,row['PT_ID_FK'],row['PROVIDERID'],theDay, items)
             end
+            if row['PLAN'] and row['PLAN'].include?("btn-danger")
+                row['WARNING'] = true
+            end
+
 
           end
 
@@ -529,6 +557,33 @@ class BillingController < ApplicationController
             return planText
 
 
+ end
+
+  def getFeeType(dbh,patient)
+          sql = "SELECT Age, AccountType, DvaNum, HccPensionNum FROM Patient where Id = " + patient
+ 
+          puts sql
+         
+
+          sth = dbh.run(sql)
+          row= sth.fetch_first
+           feeType = row[1]
+           dvaNum = row[2]
+           hccPensionNum = row[3]
+           age= row[0].to_i
+          sth.drop
+          incentive = false
+          
+          if dvaNum != ""
+              incentive = true
+          end
+          if hccPensionNum != ""
+              incentive = true
+          end 
+          if age < 16
+              incentive = true
+          end             
+          return feeType,incentive
 
   end
 
@@ -560,11 +615,12 @@ class BillingController < ApplicationController
           if items.count>0
             if plan.include? "ecg"
                 buttonText = plan_button("ECG",["11700"],items) + buttonText
+
             end
-            if plan.include? "rft" or plan.index(/\Wspiro\W/) or plan.index(/\Wspirometry\W/)
+            if plan.include? "rft" or plan.index(/\bspiro\b/) or plan.include? "spirometry"
                buttonText = plan_button("RFT",["11505","11506"],items) + buttonText
             end
-            if plan.index(/\Wbiopsy\W/) or plan.index(/\Wbx\W/)
+            if plan.include? "biopsy" or plan.index(/\bbx\b/)
                   buttonText = plan_button("Biopsy",["30071"],items) + buttonText
                 
             end
@@ -580,7 +636,7 @@ class BillingController < ApplicationController
   def plan_button(theText,itemNumbers,items)
         buttonColor = "danger"
         itemNumbers.each do | itemNumber |
-          buttonColor = "success" if items.include?(itemNumber)
+          buttonColor = "success" if items.include?([itemNumber, true]) or items.include?([itemNumber, false]) 
         end
         returnText = ("<button class='btn btn-sm btn-" + buttonColor + "'>" + theText + "</button>").html_safe
         return returnText
@@ -615,7 +671,7 @@ class BillingController < ApplicationController
     def get_item_numbers(dbh,patient,theDay)
          
           
-          sql = "SELECT ItemNum FROM Sale where PT_Id_Fk = "+ patient +" and ServiceDate = '" + theDay +"'"
+          sql = "SELECT ItemNum, BatchNum FROM Sale where PT_Id_Fk = "+ patient +" and ServiceDate = '" + theDay +"'"
  
           puts sql
          
@@ -626,15 +682,28 @@ class BillingController < ApplicationController
           sth = dbh.run(sql)
                
           items=[]
+          bbCount=0
+          bbItemCount=0
           sth.fetch_hash do |row|
-            items << row['ITEMNUM']
+            bb=false
+            row['BATCHNUM'] !="" ? bb=true : bb=false
+
+            items << [row['ITEMNUM'], bb]
+            if bb
+              if row['ITEMNUM'] == '10991' or row['ITEMNUM'] == '10995'
+                  bbCount = bbCount + 1
+              else
+                  bbItemCount = bbItemCount + 1
+              end
+           end
+
           end
 
           sth.drop
 
 
 
-          return items
+          return items,bbItemCount,bbCount
 
   end
 

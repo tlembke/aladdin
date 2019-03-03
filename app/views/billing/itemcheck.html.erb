@@ -9,6 +9,7 @@
     <legend>Appointments for <%= @theStartDate.to_s %></legend>
     <table class='table table-striped table-bordered table-condensed table-compact table-responsive'>
     	<thead classs='thead-dark'>
+    		<td></td>
     		<td>Name</td>
     		<td>Nurses</td>
 
@@ -18,6 +19,7 @@
     		
     		<td>Charge</td>
     		<td>StartTime</td>
+    		<td>Fee Type </td>
     		<td>Items</td>
     		<td>Plan</td>
 
@@ -26,20 +28,36 @@
     
     <% @appts.each do |appt| %>
     <% if ((appt['PROVIDERID'] != 89 and appt['PROVIDERID'] != 87) or ((appt['PROVIDERID'] == 89 or appt['PROVIDERID'] == 87) and @appt_ids.count(appt['PT_ID_FK']) == 1)) %>
-	    <tr>
+	    <tr>	
+	    	<td>
+	    		<% if appt['WARNING'] %>
+						<button class='btn btn-sm btn-danger btn-block'>X</button>
+	    		<% end %>
+
+	    	</td>
 	    	<td><%= link_to appt['NAME'].html_safe, patient_path(:id=> appt['PT_ID_FK']) %></td>
 	    	<td><%= @nurses[appt['PT_ID_FK']].html_safe if @nurses[appt['PT_ID_FK']] %>
 
-	    	<td><%= appt['PROVIDERNAME'] %></td>
-	    	<td><%= appt['REASON'] %></td>
+	    	<td class='small'><%= appt['PROVIDERNAME'] %></td>
+	    	<td class='small'><%= appt['REASON'] %></td>
 	    	<td><%= appt['CHARGE'] %></td>
 	    	<td><%= billing_symbol(appt['STATUS'],  appt['STARTTIME'].strftime("%l:%M")) %></td>
+
+	    	<% appt ['INCENTIVE'] ? buttonColor = "success" : buttonColor = "primary"%>
+	    	<td><button class='btn btn-sm btn-<%= buttonColor %>'><%= appt['FEETYPE'] %></button></td>
 	    	<td>
 	    	
 	    		<% appt['ITEMS'].each_with_index do |item, index | %>
-	    			<button class='btn btn-sm btn-outline-primary btn-block'> <%= item %> </button>
+	    			<button class='btn btn-sm btn-outline-primary btn-block'> <%= item[0] %> <%= "BB" if item[1] %></button>
+
 	    			
 	    		<% end %>
+	    		<% if appt ['INCENTIVE'] %>
+	    					<% if appt['MISSBB']  != 0 %>
+	    						<button class='btn btn-sm btn-danger btn-block'><%= appt['MISSBB'] %> </button>
+	    					<%  end  %>
+	    					
+	    			<% end %>
 	    			
 
 	    	</td>
