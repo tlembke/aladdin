@@ -43,7 +43,7 @@
 	    	<td><%= appt['CHARGE'] %></td>
 	    	<td><%= billing_symbol(appt['STATUS'],  appt['STARTTIME'].strftime("%l:%M")) %></td>
 
-	    	<% appt ['INCENTIVE'] ? buttonColor = "success" : buttonColor = "primary"%>
+	    	<% appt ['INCENTIVE'] ? buttonColor = "success" : buttonColor = "outline-primary"%>
 	    	<td><button class='btn btn-sm btn-<%= buttonColor %>'><%= appt['FEETYPE'] %></button></td>
 	    	<td>
 	    	
