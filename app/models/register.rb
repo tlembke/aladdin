@@ -74,6 +74,42 @@ class Register < ActiveRecord::Base
 					elsif header.code == "consult"
 						@lastConsult = patient.get_last_consult_for_reason(header.keyword,dbh)
 						Cell.create(patient_id: patient.id, header_id: header.id, value: "", date: @lastConsult, note: "" )
+
+					elsif header.code == "formula"
+
+						# keyword = cell name and an operand and a number
+
+						 match1=header.keyword.match /(.+)\s+([\+\-\*])\s*(\d+)/
+						 if match1 and match1[1]
+
+						 	# get Value of the cell
+						 	# get that header information
+						 	sourceHeader = self.headers.where(name: match1[1]).first
+						 	# debugger
+						 	if sourceHeader.code == "item"
+						 		consultDate = patient.get_item_number_date(dbh,sourceHeader.name)
+						 	elsif sourceHeader.code == "consult"
+						 		consultDate = patient.get_last_consult_for_reason(sourceHeader.keyword,dbh)
+							end
+
+							if consultDate
+								if match1[2]=="+"
+									newDate = consultDate + match1[3].to_i.days
+								elsif match1[2] == "-"
+									newDate = consultDate + match1[3].to_i.days
+								end
+
+								if newDate
+									Cell.create(patient_id: patient.id, header_id: header.id, value: nil, date: newDate.to_s(:db), note: note )
+								end
+								
+							end 
+						 end
+						
+						#@lastConsult = patient.get_last_consult_for_reason(header.keyword,dbh)
+						#Cell.create(patient_id: patient.id, header_id: header.id, value: "", date: @lastConsult, note: "" )
+
+
 					elsif header.keyword == "item"
 
 						  consultDate = patient.get_item_number_date(dbh,header.name)
@@ -101,6 +137,10 @@ class Register < ActiveRecord::Base
 							appt = "<a title=' At " + apptTime + " with " + @nextConsult['PROVIDERNAME'] + " for " + @nextConsult['REASON'] + "'>" + appt + "</a>"
 						end
 						Cell.create(patient_id: patient.id, header_id: header.id, value: appt, date: nextDate, note: "" )
+					
+
+
+
 					end
 
 				

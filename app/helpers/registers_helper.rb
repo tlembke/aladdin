@@ -7,7 +7,7 @@ module RegistersHelper
 			# cell has no value so needs to be created.
 			@cell = Cell.create(patient_id: patient, header_id: header.id, value: "", date: nil, note: "" )
 		end
-
+		return_text=""
 		value=@cell.display
 		return_text = value
 
@@ -27,6 +27,8 @@ module RegistersHelper
 
 			end
 		end
+
+
 		return return_text.html_safe
 	end
 
