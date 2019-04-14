@@ -86,24 +86,32 @@ class Register < ActiveRecord::Base
 						 	# get that header information
 						 	sourceHeader = self.headers.where(name: match1[1]).first
 						 	# debugger
-						 	if sourceHeader.code == "item"
-						 		consultDate = patient.get_item_number_date(dbh,sourceHeader.name)
-						 	elsif sourceHeader.code == "consult"
-						 		consultDate = patient.get_last_consult_for_reason(sourceHeader.keyword,dbh)
-							end
+						 	#
+						 	#	consultDate = patient.get_item_number_date(dbh,sourceHeader.name)
+						 	#elsif sourceHeader.code == "consult"
+						 	#	consultDate = patient.get_last_consult_for_reason(sourceHeader.keyword,dbh)
+							#end
+							cell = Cell.where(patient_id: patient.id, header_id: sourceHeader.id).first
+							
 
-							if consultDate
-								if match1[2]=="+"
-									newDate = consultDate + match1[3].to_i.days
-								elsif match1[2] == "-"
-									newDate = consultDate + match1[3].to_i.days
-								end
+							if cell.value and cell.value !="" and consultDate = cell.value.to_date
 
-								if newDate
-									Cell.create(patient_id: patient.id, header_id: header.id, value: nil, date: newDate.to_s(:db), note: note )
-								end
 								
-							end 
+
+								if consultDate
+									if match1[2]=="+"
+										newDate = consultDate + match1[3].to_i.days
+									elsif match1[2] == "-"
+										newDate = consultDate + match1[3].to_i.days
+									end
+									
+									if newDate
+										@cell = Cell.create(patient_id: patient.id, header_id: header.id, value: newDate.strftime("%d/%m/%Y"), date: "", note: note )
+										
+									end
+									
+								end 
+							end
 						 end
 						
 						#@lastConsult = patient.get_last_consult_for_reason(header.keyword,dbh)

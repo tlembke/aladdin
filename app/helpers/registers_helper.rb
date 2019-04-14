@@ -7,10 +7,9 @@ module RegistersHelper
 			# cell has no value so needs to be created.
 			@cell = Cell.create(patient_id: patient, header_id: header.id, value: "", date: nil, note: "" )
 		end
-		return_text=""
-		value=@cell.display
-		return_text = value
 
+		value=@cell.display
+		return_text = @cell.display
 
 		if header.special
 			if header.name  == "name"
@@ -25,7 +24,13 @@ module RegistersHelper
 			elsif header.code =="string" or header.code=="note"
 				return_text = "<a href='#' id='editable_cell_value_" + @cell.id.to_s + "' data-defaultValue='Add new paragraph' data-type='textarea' data-pk='1' data-resource='cell' data-name='value' data-emptytext= 'Notes' data-url='/cells/" + @cell.id.to_s +  "' data-placeholder='Your notes here...' data-original-title='Enter notes' class='editable'>" + textarea_format(@cell.value)+ "</a>"
 
+			elsif header.code =="date"
+				return_text = "<a href='#' id='editable_cell_value_" + @cell.id.to_s + "' data-defaultValue='dd/mm/yyyy' data-type='textarea' data-pk='1' data-resource='cell' data-name='value' data-emptytext= 'dd/mm/yyyy' data-url='/cells/" + @cell.id.to_s +  "' data-placeholder='dd/mm/yyyy' data-original-title='dd//mm//yyyy' class='editable'>" + textarea_format(@cell.value)+ "</a>"
+				#return_text="<input data-provide = 'datepicker'>"
+
+
 			end
+				
 		end
 
 
