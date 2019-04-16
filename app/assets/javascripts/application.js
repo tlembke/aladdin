@@ -236,7 +236,7 @@ $('.editableUpdate').on('save', function() {
 
    });
 
-  // This is to load condiiton id into hidden field in New Goal modal
+ 
   $(".apptTime").click(function(){ 
        // alert("Show " + $(this).data('show'));
         //alert("Hide " + $(this).data('hide'));
@@ -273,6 +273,12 @@ $('.editableUpdate').on('save', function() {
         $("#appttime").val(doctor_name + " at " + appttime + morning+ " on " + apptdate.toDateString());
         $( "#appttime" ).valid();
         
+        // new bit - then scroll to form
+
+    $([document.documentElement, document.body]).animate({
+        scrollTop: $("#topofapptform").offset().top
+    }, 2000);
+    
 
        
         // var morning = "am";

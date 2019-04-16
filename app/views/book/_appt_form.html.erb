@@ -25,16 +25,15 @@
                  </div>
       </div>
          
-    <div class="form-group row">
-          <div class="col-sm-4">
-          <label class= "form-label">Appointment</label>
-           </div>
-           <div class="col-sm-8">
+    <div class="form-group row" id="topofapptform">
+          <div class="col-sm-12">
+          <label class= "form-label">Appointment</label><p>
+
 
           
            
           
-           <%= text_field_tag :appttime, nil, class: "input-small col-sm-12",  :readonly=> "readonly", :value=> "Click on chosen appointment" %> 
+           <%= text_field_tag :appttime, nil, class: "input-large col-sm-12",  :readonly=> "readonly", :value=> "Click on chosen appointment" %>
            <%= label_tag :appttime, "", class: "form-label" %>
          
           
@@ -43,32 +42,27 @@
 
 
      <div class="form-group row">
-         <div class="col-sm-4">
-          <label class= "form-label">Patient Surname</label>
-           </div>
-          <div class="col-sm-8">
-            <%= text_field_tag :Surname, nil, class: "input-medium col-sm-12"%> 
+         <div class="col-sm-12">
+          <label class= "form-label">Patient Surname</label><p>
+
+            <%= text_field_tag :Surname, nil, class: "input-large col-sm-12" %> 
            <%= label_tag :Surname, "", class: "form-label" %>
           </div>
     </div>
 
 
     <div class="form-group row">
-         <div class="col-sm-4">
-          <label class= "form-label">Patient First Name</label>
-           </div>
-          <div class="col-sm-8">
-            <%= text_field_tag :FirstName, nil, class: "input-medium col-sm-12"%> 
+         <div class="col-sm-12">
+          <label class= "form-label">Patient First Name</label><p>
+            <%= text_field_tag :FirstName, nil, class: "input-large col-sm-12" %> 
            <%= label_tag :FirstName, "", class: "form-label" %>
           </div>
     </div>
 
     <div class="form-group row">
-         <div class="col-sm-4">
-          <label class= "form-label">Mobile</label>
-           </div>
-          <div class="col-sm-8">
-            <%= text_field_tag :mobile, nil, class: "input-medium col-sm-12"%> 
+         <div class="col-sm-12">
+          <label class= "form-label">Mobile</label><p>
+            <%= text_field_tag :mobile, nil, class: "input-large col-sm-12" %> 
            <%= label_tag :mobile, "", class: "form-label" %>
           </div>
     </div>

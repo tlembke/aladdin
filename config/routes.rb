@@ -45,6 +45,7 @@ Rails.application.routes.draw do
       get 'bookings'
       get 'cst'
       get 'itemcheck'
+      get 'log'
 
     end
 

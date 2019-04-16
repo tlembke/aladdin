@@ -185,6 +185,7 @@ class PatientController < ApplicationController
     @print=false
 
 
+
     respond_to do |format|
          format.html {
             if params[:print]

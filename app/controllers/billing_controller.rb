@@ -325,6 +325,10 @@ class BillingController < ApplicationController
 
   end
 
+  def log
+      @log_contents = File.read('log/appt.log')
+  end
+
 
 
 

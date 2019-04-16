@@ -13,13 +13,15 @@
 
 
 <div class="row">
-	<div class="col-sm-7"> <%# Left Hand Side %>
+	<div class="col-lg-7"> <%# Left Hand Side %>
 		<div class="row">
 			<div class="col-md-3">
-			<span class='small'>Horiz</span> <label class="switch switch-warning"><input id='bookMode' type='checkbox' <%= "checked='checked'" if @mode=="v" %>><span></span></label> <span class='small'> Vert</span><p>
-			<span class='small'>
-				Days <%= select_tag(:noDays, options_for_select([['1',1], ['2', 2], ['3', 3], ['4', 4], ['5', 5]],@noDays)) %>
-			</span><p>
+				<% if session[:username] %>
+					<span class='small'>Horiz</span> <label class="switch switch-warning"><input id='bookMode' type='checkbox' <%= "checked='checked'" if @mode=="v" %>><span></span></label> <span class='small'> Vert</span><p>
+					<span class='small'>
+						Days <%= select_tag(:noDays, options_for_select([['1',1], ['2', 2], ['3', 3], ['4', 4], ['5', 5]],@noDays)) %>
+					</span><p>
+				<% end %>
 			</div>
 			<div class="col-md-9">
 			<%= render "appointments/datechange" %>
@@ -60,7 +62,7 @@
 
 						<% else %>
 
-						        <%= link_to "Next available appointment is <br>".html_safe + @nextAvailable[doctor[2]].strftime("%a, %b %e") + "<i class='fa fa-chevron-right'></i>".html_safe, url_for('date[day]' => @nextAvailable[doctor[2]].strftime("%d"),'date[month]' => @nextAvailable[doctor[2]].strftime("%m"),'date[year]' => @nextAvailable[doctor[2]].strftime("%Y")), {:class => "btn btn-warning btn-xs btn-block"} %>
+						        <%= link_to "Next available appointment is <br>".html_safe + @nextAvailable[doctor[2]].strftime("%a, %b %e") + " <i class='fa fa-chevron-right'></i> (Show me)".html_safe, url_for('date[day]' => @nextAvailable[doctor[2]].strftime("%d"),'date[month]' => @nextAvailable[doctor[2]].strftime("%m"),'date[year]' => @nextAvailable[doctor[2]].strftime("%Y")), {:class => "btn btn-warning btn-xs btn-block"} %>
 
 						<% end %>
 						
@@ -127,7 +129,7 @@
 	</div style='endleftside'> <%# end left side %>
 	
 
-	<div class="col-sm-5 col-sm-offset-7 affix">
+	<div class="col-lg-5">
 		<%# this is the form %>
 		
 		<%= render 'appt_form' %>

@@ -217,12 +217,12 @@ class BookController < ApplicationController
         @appt_id = params[:appt_id]
         @doctor_id = params[:doctor_id]
        
-        params[:single]  ? @duration = 15 : @duration = 30
+        params[:apptduration] == "single" ? @duration = 15 : @duration = 30
 
 
         @theDateTime = DateTime.new(@theDate.year,@theDate.month,@theDate.day,@theTime[0...-2].to_i,@theTime.last(2).to_i)
 
-
+        # APPT FOR Doctor @doctor_id by 
 
     	  sql = "SELECT Surname, FirstName, DOB, MobilePhone, Id, AH_Id_Fk  FROM Patient WHERE Surname = '" + @surname + "' AND (FirstName = '" + @firstname + "' OR KnownAs = '"+ @firstname + "')"   
          puts sql
@@ -263,7 +263,11 @@ class BookController < ApplicationController
 
           end 
 
-
+           # APPT FOR Doctor @doctor_id for Patient ID @patient[5] whose surname is @patient[0] and first name is @patient[1]
+          # @theDate = params[:date].to_date
+          # @theTime = params[:time].to_s
+          # @theDateTime
+          # @duration
 
           if @patient_match == 2
               if @appt_id == "0" 
@@ -294,6 +298,7 @@ class BookController < ApplicationController
 
  
      if @patient_match == 2
+        ApptLog.info params['appttime'] + ", duration " + @duration.to_s + " mins for " + @patient[0] + "," + @patient[1]
     		render :success
  	  else
     		render :failure
@@ -325,6 +330,8 @@ class BookController < ApplicationController
 
 
   end
+
+
 
   def saveApptSlot(surname, firstname, dob, appt,reason="")
       @response= SOAPcall(:ws_pr_make_appt,{
