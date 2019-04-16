@@ -30,9 +30,9 @@ $(document).ready(function() {
 
 
 
-    if ($("#book").length) {
+    if ($("#book").length && window.location.pathname.indexOf('confirm') == -1 ){
     // Your specific controller code here
-
+                
 
 
                   var day=getQueryVariable("date%5Bday%5D");
@@ -300,11 +300,16 @@ $('.editableUpdate').on('save', function() {
         var appttime = $(this).data('time');
 
          var morning = "am";
-        if (appttime >1200){
+        if (appttime >=1200){
            var morning = "pm"
-           appttime = appttime - 1200
+           if (appttime >=1300){
+              appttime = appttime - 1200;
+           }
         };
         appttime=appttime.toString();
+        if (appttime == "0"){
+          appttime = '1200';
+        }
         len=appttime.length
         appttime = appttime.substring(0, len-2) + ":" + appttime.substring(len-2);
         $("#appttime").val(appttime + morning);

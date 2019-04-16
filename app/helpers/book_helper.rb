@@ -2,9 +2,11 @@ module BookHelper
 	 def to_simple_time(theTimeCode)
 	 		theHour=theTimeCode/100.ceil
 	 		theMorn="am"
-	 		if theHour>12 
-	 			theHour=theHour-12
+	 		if theHour>=12 
 	 			theMorn="pm"
+	 			if theHour >=13
+	 				theHour=theHour-12
+	 			end
 	 		end
 	 		theMin=theTimeCode.to_s[-2..-1]
 	 		theTime = theHour.to_s + ":" + theMin + theMorn

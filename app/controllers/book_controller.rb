@@ -52,6 +52,7 @@ class BookController < ApplicationController
     end
     if @theStartDate > Date.today + 6.weeks
         @theStartDate=Date.today
+        flash[:notice] = "Booking only available for up to 6 weeks from now. Sorry"
     end
 
   params[:mode]=="v" ? @mode="v" : @mode="h"
