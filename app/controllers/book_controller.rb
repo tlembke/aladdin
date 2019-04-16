@@ -4,10 +4,18 @@ class BookController < ApplicationController
   require 'icalendar'
 
 
-
-
-
   def index
+ 
+
+    
+     params[:mode]=="v" ? @mode="v" : @mode="h"
+
+     params[:noDays] ? @noDays=params[:noDays].to_i : @noDays=3
+
+  end
+
+
+  def show_appt
   	 # get appointments
   	 @username = Pref.aladdinuser
   	 @password = Pref.decrypt_password(Pref.aladdinpassword)
@@ -16,10 +24,10 @@ class BookController < ApplicationController
 
   	 connectionId = getConnectionId(@websender,@webpassword)
 
+     params[:action] = ""
+
 
   	 
-
-  
 
 
 
@@ -27,14 +35,18 @@ class BookController < ApplicationController
   	 connect_array=connect(@username,@password)
      @error_code=connect_array[1]
 
-    
-
-    
+     
      @preventPast=true
-    	 
 
-     if params[:date]              
-              	@theStartDate = Date.new(params[:date][:year].to_i,params[:date][:month].to_i,params[:date][:day].to_i)
+     if params[:date] 
+        @theStartDate = Date.new(params[:date][:year].to_i,params[:date][:month].to_i,params[:date][:day].to_i)
+
+
+   
+   
+     elsif params[:day] != "false" and params[:month] != "false" and params[:year] != "false"
+
+                @theStartDate = Date.new(params[:year].to_i,params[:month].to_i,params[:day].to_i)
      else
         @theStartDate=Date.today
     end
@@ -42,10 +54,14 @@ class BookController < ApplicationController
         @theStartDate=Date.today
     end
 
-    
-     params[:mode]=="v" ? @mode="v" : @mode="h"
+  params[:mode]=="v" ? @mode="v" : @mode="h"
 
      params[:noDays] ? @noDays=params[:noDays].to_i : @noDays=3
+
+    
+
+    
+
  
 
     
@@ -55,8 +71,8 @@ class BookController < ApplicationController
     	  @doctors= get_users(dbh)
 
     	  # temp
-    	# @doctors=[["Josh Kingston",91,91],["Jimmy Chiu",8,8],["Mike Davis",96,96]] # for testing only
-    	  
+    	  #@doctors=[["Josh Kingston",91,91],["Jimmy Chiu",8,8],["Mike Davis",96,96]] # for testing only
+    	  #@doctors=[["Josh Kingston",91,91]] # for testing only
         @noCols = 3
     
     	  @displayCount=3
@@ -142,7 +158,10 @@ class BookController < ApplicationController
   	#end # temp bypass
    
       closeConnectionId(connectionId)
+
+      render partial: "show_appt"
   end
+
 
 
 

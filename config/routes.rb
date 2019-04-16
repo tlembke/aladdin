@@ -6,6 +6,7 @@ Rails.application.routes.draw do
       collection do
           get 'confirm'
           get 'downloadcal'
+          get 'show_appt'
       end
   end
 

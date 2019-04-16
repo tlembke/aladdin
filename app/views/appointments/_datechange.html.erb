@@ -1,14 +1,14 @@
-  <%= form_tag(nil, method: "get",class: "form-horizontal" ) do %>
+  <%= form_tag({action: "index"}, method: "get",class: "form-horizontal" ) do %>
    <fieldset>
      <div class="form-group">
         <% nextWeek = @theStartDate + @noDays.days %>
         <% lastWeek = @theStartDate - @noDays.days %>
         <% lastWeek = Date.today if lastWeek < Date.today and @preventPast == true %>
-         <%= link_to ("<i class='fa fa-chevron-left'></i>&nbsp;" + lastWeek.strftime("%d/%m")).html_safe, url_for('date[day]' => lastWeek.strftime("%d"),'date[month]' => lastWeek.strftime("%m"),'date[year]' => lastWeek.strftime("%Y")), {:class => "btn btn-primary btn-xs", "data-no-turbolink" => "true"} %>
+         <%= link_to ("<i class='fa fa-chevron-left'></i>&nbsp;" + lastWeek.strftime("%d/%m")).html_safe, url_for(action: 'index','date[day]' => lastWeek.strftime("%d"),'date[month]' => lastWeek.strftime("%m"),'date[year]' => lastWeek.strftime("%Y")), {:class => "btn btn-primary btn-xs", "data-no-turbolink" => "true"} %>
         <%= select_date(@theStartDate, order: [:day, :month, :year]) %>
 
         <%= submit_tag "Go", class: "btn btn-primary btn-sm" %>
-        <%= link_to (nextWeek.strftime("%d/%m") + "&nbsp;<i class='fa fa-chevron-right'></i>").html_safe, url_for('date[day]' => nextWeek.strftime("%d"),'date[month]' => nextWeek.strftime("%m"),'date[year]' => nextWeek.strftime("%Y")), {:class => "btn btn-primary btn-xs", "data-no-turbolink" => "true"} %>
+        <%= link_to (nextWeek.strftime("%d/%m") + "&nbsp;<i class='fa fa-chevron-right'></i>").html_safe, url_for(action: 'index','date[day]' => nextWeek.strftime("%d"),'date[month]' => nextWeek.strftime("%m"),'date[year]' => nextWeek.strftime("%Y")), {:class => "btn btn-primary btn-xs", "data-no-turbolink" => "true"} %>
      </div>
    </fieldset>
 <% end %>

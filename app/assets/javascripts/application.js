@@ -26,8 +26,32 @@ $(document).ready(function() {
     });
      $(".apptname").hide();
 
+
+
+
+
     if ($("#book").length) {
     // Your specific controller code here
+
+
+
+                  var day=getQueryVariable("date%5Bday%5D");
+                  var month=getQueryVariable("date%5Bmonth%5D");
+                  var year=getQueryVariable("date%5Byear%5D")
+
+                  $.ajax({
+                  url: "/book/show_appt",
+                  data: { day: day, year: year, month: month},
+                  cache: false,
+                  success: function(html){
+                    $("#show_appts_placeholder").html(html);
+                  }
+
+                  });
+
+
+
+
               
               $("#appt_form").validate({
                 rules: {
@@ -81,6 +105,24 @@ $(document).ready(function() {
 
 
 });
+
+var request = {
+  queryString: function(item){
+    var value = location.search.match(new RegExp("[\?\&]" + item + "=([^\&]*)(\&?)","i"));
+    return value ? value[1] : value;
+  }
+}
+
+function getQueryVariable(variable)
+{
+       var query = window.location.search.substring(1);
+       var vars = query.split("&");
+       for (var i=0;i<vars.length;i++) {
+               var pair = vars[i].split("=");
+               if(pair[0] == variable){return pair[1];}
+       }
+       return(false);
+}
 
 $('.editableUpdate').on('save', function() {
     
@@ -200,7 +242,8 @@ $('.editableUpdate').on('save', function() {
 
 
   // This is to load condiiton id into hidden field in New Goal modal
-  $(".date-scroller").click(function(){ 
+  $('#show_appts_placeholder').on( "click", ".date-scroller", function(){
+  // $(".date-scroller").click(function(){ 
        // alert("Show " + $(this).data('show'));
       // alert("Hide " + $(this).data('hide'));
        
@@ -236,8 +279,8 @@ $('.editableUpdate').on('save', function() {
 
    });
 
- 
-  $(".apptTime").click(function(){ 
+  $('#show_appts_placeholder').on( "click", ".apptTime", function(){
+  // $(".apptTime").click(function(){ 
        // alert("Show " + $(this).data('show'));
         //alert("Hide " + $(this).data('hide'));
        
@@ -278,7 +321,7 @@ $('.editableUpdate').on('save', function() {
     $([document.documentElement, document.body]).animate({
         scrollTop: $("#topofapptform").offset().top
     }, 2000);
-    
+
 
        
         // var morning = "am";
@@ -356,6 +399,35 @@ $('.editableUpdate').on('save', function() {
             },
          });
     }
+
+  function getJsonFromUrl(url) {
+      if(!url) url = location.href;
+      var question = url.indexOf("?");
+      var hash = url.indexOf("#");
+      if(hash==-1 && question==-1) return {};
+      if(hash==-1) hash = url.length;
+      var query = question==-1 || hash==question+1 ? url.substring(hash) : 
+      url.substring(question+1,hash);
+      var result = {};
+      query.split("&").forEach(function(part) {
+        if(!part) return;
+        part = part.split("+").join(" "); // replace every + with space, regexp-free version
+        var eq = part.indexOf("=");
+        var key = eq>-1 ? part.substr(0,eq) : part;
+        var val = eq>-1 ? decodeURIComponent(part.substr(eq+1)) : "";
+        var from = key.indexOf("[");
+        if(from==-1) result[decodeURIComponent(key)] = val;
+        else {
+          var to = key.indexOf("]",from);
+          var index = decodeURIComponent(key.substring(from+1,to));
+          key = decodeURIComponent(key.substring(0,from));
+          if(!result[key]) result[key] = [];
+          if(!index) result[key].push(val);
+          else result[key][index] = val;
+        }
+      });
+      return result;
+}
 
 
 
