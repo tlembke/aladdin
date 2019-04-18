@@ -152,7 +152,7 @@ class BookController < ApplicationController
      else
   				flash[:alert] = "Unable to connect to database. "+ get_odbc
   				flash[:notice] = connect_array[2]
-          debugger
+     
 
   	 end
   	 
@@ -210,6 +210,24 @@ class BookController < ApplicationController
         end
 
         send_data cal.to_ical, type: 'text/calendar', disposition: 'attachment', filename: filename
+
+  end
+
+    def getApptId(dbh,doctor,theDateTime)
+      # because of the funny way Genie handles StartTime have to find all appointments and then check their time
+        sql =  "SELECT Id, StartTime from Appt WHERE StartDate = '" + theDateTime.to_date.to_s(:db) + "' AND ProviderID = " + doctor.to_s
+        puts sql
+        sth = dbh.run(sql)
+        appt_id=0
+        sth.fetch do |row|
+            t=row[1]
+            if t.hour == theDateTime.hour and t.min == theDateTime.min
+                  appt_id=row[0]
+            end
+        end
+        sth.drop
+        return appt_id
+          
 
   end
 
@@ -288,14 +306,43 @@ class BookController < ApplicationController
           # @theTime = params[:time].to_s
           # @theDateTime
           # @duration
-
+          errorCount=0
           if @patient_match == 2
+           
               if @appt_id == "0" 
                   @errorId = saveApptTime(@patient[0],@patient[1],@patient[2],@doctor_id,@theDateTime,@duration)
+                  ApptLog.info "1 saveApptTime " + @doctor_id + " " + @theDateTime.to_s + " - " + @errorId if @errorId != "0"
+                  errorCount=errorCount+1 if @errorId != "0"
+
                   
               else
-                  #@errorId = saveApptSlot(@patient[0],@patient[1],@patient[2],@appt_id)
-                  @errorId = saveApptTime(@patient[0],@patient[1],@patient[2],@doctor_id,@theDateTime,@duration)
+                  # this occurs when an appt is type online
+                  # the problem is that there is no duration so can't make a double.
+                 
+                  @errorId = saveApptSlot(@patient[0],@patient[1],@patient[2],@appt_id)
+                 ApptLog.info "1 saveApptSlot " + @appt_id + " - " + @errorId if @errorId != "0"
+                 errorCount=errorCount+1 if @errorId != "0"
+
+                  if @duration == 30
+                    # what is the next apptid?
+                    theDateTime2=@theDateTime + 15.minutes
+                    @appt_id2=getApptId(dbh,@doctor_id,theDateTime2)
+
+                    if @appt_id2 == 0 
+                          @errorId = saveApptTime(@patient[0],@patient[1],@patient[2],@doctor_id,theDateTime2,15)
+                          ApptLog.info "2 saveApptTime " + @doctor_id + " " + theDateTime2.to_s + " - " + @errorId if @errorId != "0"
+                          errorCount=errorCount+1 if @errorId != "0"
+                  
+                    else
+                     # this occurs when an appt is type online
+
+                          @errorId = saveApptSlot(@patient[0],@patient[1],@patient[2],@appt_id2)
+                          ApptLog.info "2 saveApptSlot " + @appt_id2 + " - " + @errorId if @errorId != "0"
+                          errorCount=errorCount+1 if @errorId != "0"
+
+                    end
+                  
+                  end
               end
 
           else
@@ -317,10 +364,11 @@ class BookController < ApplicationController
   	 end
 
  
-     if @patient_match == 2
+     if @patient_match == 2 and errorCount = 0 
         ApptLog.info params['appttime'] + ", duration " + @duration.to_s + " mins for " + @patient[0] + "," + @patient[1]
     		render :success
  	  else
+        ApptLog.error params['appttime'] + ", duration " + @duration.to_s + " mins for " + @patient[0] + "," + @patient[1]
     		render :failure
   	end
      
@@ -624,6 +672,8 @@ class BookController < ApplicationController
         response = client.call(theCall, message: messages)
         return response
   end
+
+
 
 
 

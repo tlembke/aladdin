@@ -1,8 +1,11 @@
+<% if @patient_match != 2 %>
 We are terribly sorry, but we were unable to find an existing patient with<p>
 Surname : <%= params[:Surname] %><br>
 First name : <%= params[:FirstName] %><br>
 Mobile : <%= params[:mobile] %><br><p>
-	
+<% else %>
+We are sorry, but we were unable to make that appointment for technical reasons. We are looking into this now.<p>
+<% end %>
 
 Please call 02 66280505 or <%= link_to 'Try again', book_index_path("date[year]" => @theDate.year,"date[month]" => @theDate.month, "date[day]" => @theDate.day) %>.
 
