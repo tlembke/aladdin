@@ -97,6 +97,7 @@ GEM
     nokogiri (1.8.2)
       mini_portile2 (~> 2.3.0)
     nori (2.6.0)
+      jquery-rails
     rack (1.6.10)
     rack-test (0.6.3)
       rack (>= 1.0)
@@ -195,6 +196,7 @@ DEPENDENCIES
   icalendar
   jbuilder (~> 2.0)
   jquery-rails
+  pace-rails
   rails (= 4.2.6)
   ruby-odbc
   rubyzip
