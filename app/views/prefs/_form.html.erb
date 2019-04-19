@@ -11,7 +11,7 @@
       <% if @pref.value == "false" or @pref.value == "true" %>
         <%= f.check_box :value, {}, "true", "false"%> 
       <% else %>
-        <%= f.text_field :value, class: 'form-control' %>
+        <%= f.text_area :value, class: 'form-control' %>
       <% end %>
         <%= f.error_messages %>
 

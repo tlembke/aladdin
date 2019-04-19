@@ -61,6 +61,7 @@ class PrefsController < ApplicationController
   def update
     @pref = Pref.find(params[:id])
     @pref.name = pref_params[:name]
+    @pref.value= pref_params[:value]
    if @pref.name.include?  "password"
       crypt = ActiveSupport::MessageEncryptor.new(Rails.application.secrets.bickles_base)
       encrypted_value = crypt.encrypt_and_sign(pref_params[:value])
