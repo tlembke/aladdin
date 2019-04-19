@@ -15,6 +15,7 @@
 
     <!-- Le fonts -->
     <%= stylesheet_link_tag "https://fonts.googleapis.com/css?family=Droid+Sans:400,700" %>
+    <script src='http://github.hubspot.com/pace/pace.js'></script>
 
 
 
@@ -30,7 +31,7 @@
     <%= yield :head %>
   </head>
   <body class="<%= yield (:body_class) %>" id="<%= controller_name %>">
-    <script src='http://github.hubspot.com/pace/pace.js'></script>
+
 
     <%= render "layouts/navbar" %>
 
