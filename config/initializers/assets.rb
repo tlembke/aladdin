@@ -8,4 +8,4 @@ Rails.application.config.assets.version = '1.0'
 
 # Precompile additional assets.
 # application.js, application.css, and all non-JS/CSS in app/assets folder are already added.
-Rails.application.config.assets.precompile += %w( jquery.js jquery_ujs.js modernizr.js raphael.js morris.js dresssed.js bootstrap-editable.js bootstrap-editable-rails.js)
+Rails.application.config.assets.precompile += %w( jquery.js pace.js jquery_ujs.js modernizr.js raphael.js morris.js dresssed.js bootstrap-editable.js bootstrap-editable-rails.js)
