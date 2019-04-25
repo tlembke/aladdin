@@ -37,6 +37,34 @@ module ApplicationHelper
     return age
   end
 
+    def age_months(dob)
+   # begin
+      now = Time.now.utc.to_date
+     # age =  now.year - dob.year - ((now.month > dob.month || (now.month == dob.month && now.day >= dob.day)) ? 0 : 1)
+     # rescue
+     #  age=0
+    #  end
+    # ageStr = age.to_s + "years"
+    #  if age < 2
+          age = (now.year - dob.year) * 12 + now.month - dob.month - (now.day >= dob.day ? 0 : 1)
+          ageStr = age.to_s + " month".pluralize(age)
+
+          if age > 23
+              age = (age/12).abs
+              
+              ageStr = age.to_s + " years"
+
+          end
+
+     # end
+     #rescue
+      #    ageStr = "0"
+     # end
+
+
+    return ageStr
+  end
+
   def billing_symbol(status,message = "&nbsp;")
            color=""
          color="btn-outline-inverse" if status == 8

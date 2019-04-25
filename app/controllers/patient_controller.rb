@@ -669,14 +669,18 @@ def cma
       @response= client.call(:ws_get_version)
       @id=params[:id]
       provid = session[:id]
-      message = params[:type]+"&amp;#10;"+params[:consult]
+      newLine= "&amp;#10;"
+      consult=params[:consult].gsub(/\r\n/,"<br>")
+      
+
+      message = params[:type]+ newLine +params[:consult].gsub(/\r\n/,newLine)
       xml_doc = xml_document(@id,provid,message)
       @response2 = client.call(
         :ws_place_document, 
         message: { 
           "s44D_vT_Output" =>  xml_doc
         })
-      @jsmessage = Time.now.strftime("%d/%m/%y")  +"<br><b>" + params[:type] + "</b><br>" + params[:consult] + "<p>" + session[:name]
+      @jsmessage = Time.now.strftime("%d/%m/%y")  +"<br><b>" + params[:type] + "</b><br>" + consult + "<p>" + session[:name]
 
   
   end
