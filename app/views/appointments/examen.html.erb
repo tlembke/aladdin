@@ -1,0 +1,59 @@
+<div class="row">
+	<div class="col-md-8">
+	<%= render "appointments/datechange", action: "examen" %><p>
+	<h1>Daily Examen for <%= @theStartDate.to_date.strftime("%A, %b %d") %></h1>
+	
+
+
+	</div>
+</div>
+
+
+  <div class="card">
+    <div class="card-header" id="headingTwo">
+      <h5 class="mb-0">
+        <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+          Tasks <%= @tasks.length %> uncompleted
+        </button>
+      </h5>
+    </div>
+    <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordion">
+      <div class="card-body">
+      		<%= render "showtasks" %>
+      </div>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-header" id="headingThree">
+      <h5 class="mb-0">
+        <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+          Unlinked Pathogy Results  <%= @unlinkedPath %>, Letters <%= @unlinkedLetters %>, Scans <%= @scans %>
+        </button>
+      </h5>
+    </div>
+    <div id="collapseThree" class="collapse" aria-labelledby="headingThree" data-parent="#accordion">
+      <div class="card-body">
+      </div>
+    </div>
+  </div>
+
+
+	<div div id="patient_audit_placeholder" >
+  <div class="card">
+    <div class="card-header" id="headingOne">
+      <h5 class="mb-0">
+        <button class="btn btn-link collapsed" aria-expanded="true" aria-controls="collapseOne">
+         Patients Clinical Audit (loading..)
+
+        </button>
+      </h5>
+    </div>
+   </div>
+
+</div>
+
+
+
+
+
+

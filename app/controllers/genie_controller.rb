@@ -69,7 +69,7 @@ class GenieController < ApplicationController
         #session[:id] = id
         #session[:name] = name
   		 	# 10 * 60 = 10 minutes
-  		 	session[:expires_at] = Time.current + 20*60
+  		 	session[:expires_at] = Time.current + 30*60
         dbh.disconnect
   		 	redirect_to root_url
   		  

@@ -32,6 +32,14 @@ Rails.application.routes.draw do
   resources :prefs
   get 'agent/index'
 
+resources :appointments do
+    collection do
+      get 'examen'
+      get 'patient_audit'
+    end
+end
+
+
   resources :billing do
     collection do
       get 'index'
@@ -47,6 +55,7 @@ Rails.application.routes.draw do
       get 'cst'
       get 'itemcheck'
       get 'log'
+      get 'pathways'
 
     end
 
@@ -73,6 +82,7 @@ Rails.application.routes.draw do
 
 
   get 'genie/home'
+
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".

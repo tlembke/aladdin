@@ -29,6 +29,28 @@ $(document).ready(function() {
 
 
 
+    if ($("#appointments").length && window.location.pathname.indexOf('examen') > 0 ){
+    // Your specific controller code here
+                
+
+
+                  var day=getQueryVariable("date%5Bday%5D");
+                  var month=getQueryVariable("date%5Bmonth%5D");
+                  var year=getQueryVariable("date%5Byear%5D")
+
+                  $.ajax({
+                  url: "/appointments/patient_audit",
+                  data: { day: day, year: year, month: month},
+                  cache: false,
+                  success: function(html){
+                    $("#patient_audit_placeholder").html(html);
+                  }
+
+                  });
+
+         };         
+
+
 
     if ($("#book").length && window.location.pathname.indexOf('confirm') == -1 ){
     // Your specific controller code here
@@ -171,6 +193,12 @@ $('.editableUpdate').on('save', function() {
 
             $('.apptname').toggle();
             $('.apptreason').toggle();
+    });
+   $('#showurgenttasks').click( function() {
+            $('.nonurgent').toggle();
+    });
+    $('#patient_audit_placeholder').on( "click", "#showincomplete", function(){
+            $('.complete').toggle();
     });
 
 

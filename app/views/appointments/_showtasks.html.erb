@@ -1,0 +1,21 @@
+
+ <div class="row">
+	<div class="col-md-12">
+		<label class="switch switch-warning"><input id='showurgenttasks' type="checkbox"><span></span></label> Urgent Only
+
+		<table class='table table-striped table-bordered table-condensed table-compact table-responsive'>
+			 <% @tasks.each do |task| %>
+			<tr class="<%='non' unless task[:urgent] == 'true'%>urgent">
+					<td><%= task[:date].strftime("%d/%m/%Y") %></td>
+					<td><%= "<b>".html_safe if task[:urgent]=="true" %><%= task[:title] %> <%= "</b>".html_safe if task[:urgent]=="true" %></td>
+					<td><%= task[:patient] %> </td>
+					<td><%= task[:note] %> </td>
+
+			</tr>
+			<% end %>
+		</table>
+	</div>
+</div>
+
+       		
+

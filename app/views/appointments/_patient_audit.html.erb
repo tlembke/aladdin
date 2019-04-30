@@ -1,0 +1,57 @@
+
+ <div class="card">
+    <div class="card-header" id="headingOne">
+      <h5 class="mb-0">
+        <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+         Patients Clinical Audit  <%= @totalCount.to_s + " " + "patient".pluralize(@totalCount.to_i) %>, <%= @blankCount.to_s %> with no clinical data, <%= @noreasonCount.to_s %> with no reason
+
+        </button>
+      </h5>
+    </div>
+
+    <div id="collapseOne" class="collapse" aria-labelledby="headingOne" data-parent="#accordion">
+      <div class="card-body">
+
+
+
+
+      	<div class="row">
+	<div class="col-md-12">
+		
+			<label class="switch switch-warning"><input id='showincomplete' type="checkbox"><span></span></label> Show incomplete Only
+		<table class='table table-striped table-bordered table-condensed table-compact table-responsive'>
+			<% @appts.each do |appt | %>
+			<tr class="<%='in' if appt['CLINICAL'] == '' or appt['PROBLEMS'].length == 0 %>complete">
+					<td><%= appt['NAME'] %><br> <%= appt['REASON'] %></td>
+					<td><%= appt['STARTTIME'].strftime("%l:%M") %> </td>
+					<td> <% appt['PROBLEMS'].each do |problem| %> 
+							<%= problem %> <br>
+						<% end %>
+					</td>
+					<td><%= appt['CLINICAL'] %> </td>
+					<td><%= appt['PLAN'] %> </td>
+
+
+			</tr>
+			<% end %>
+		</table>
+	</div>
+</div>
+
+
+
+
+
+      </div>
+    </div>
+  </div>
+
+
+
+
+
+
+
+
+
+

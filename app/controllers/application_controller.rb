@@ -482,6 +482,21 @@ def connect(username=session[:username],password=session[:password])
 
   end
 
+  def get_problems(dbh,consult)
+    # this gets the reason for consulation rather than medical history
+          sql = "SELECT Problem FROM ConsultationProblem WHERE CNSLT_Id_FK = " + consult.to_s + " ORDER BY IsPrimaryProblem DESC"
+          puts sql
+          sth = dbh.run(sql)      
+          problems=[]
+          sth.fetch do |row|
+            problems<<row[0]
+          end
+          sth.drop
+           
+          return problems
+
+  end
+
 
 
 
