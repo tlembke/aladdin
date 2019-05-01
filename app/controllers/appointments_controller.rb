@@ -254,7 +254,7 @@ end
             
             
             appts << row
-            if row['PLAN'] == ""
+            if row['CLINICAL'] == ""
               blankCount = blankCount + 1
             end
             totalCount = totalCount + 1
