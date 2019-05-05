@@ -5,13 +5,64 @@
 <div class="row">
 
     <div class="col-md-2">
-<label class="switch switch-warning"><input id='apptdetails' type="checkbox"><span></span></label> Details<p>
+<label class="switch switch-warning"><input id='apptdetails' type="checkbox" checked><span></span></label> Details<p>
 </div>
 <div class="col-md-8">
 <%= render "datechange" %>
 </div>
 </div>
 <div class='panel'>
+	<style>
+		.annexe_-_care_plan {
+			background-color : purple;
+			color : white;
+		}
+		.annexe_-_care_plan a:link {
+				color : white;
+		}
+		.acute_only{
+			background-color : green;
+			color : white;
+		}
+		.acute_only a:link {
+			color : white;
+		}
+		.express_clinic{
+			background-color : blue;
+			color : white;
+		}
+		.blocked{
+			background-color : orange;
+			color : white;
+		}
+		.general_chec{
+			background-color : pink;
+			color : white;
+		}
+		.winsome_clinic{
+			background-color : peru;
+			color : white;
+		}
+		.nursing_home{
+			background-color : turquoise;
+			color : white;
+		}
+		.excision {
+			background-color : aqua;
+			color : white;
+		}
+		.excision a:link {
+				color : white;
+		}
+		.ssmrs_bsssss{
+			background-color : yellow;
+			color : white;
+		}
+		
+
+
+
+	</style>
 <%= drawCalendar(datekey,@noDays).html_safe %>
 </div>
 

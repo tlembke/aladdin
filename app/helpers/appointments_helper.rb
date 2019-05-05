@@ -36,7 +36,7 @@ module AppointmentsHelper
  	dayCount = 0
  	dateCol = getDateCol(datekey,noDays)
  	# draw Headers
- 	theText="<table class='table table-striped table-bordered table-condensed table-compact table-responsive'>\r"
+ 	theText="<table class='table table-bordered table-condensed table-compact table-responsive'>\r"
  	theText += "\t<thead>\r\t<tr>\r\t\t<td></td>\r"
 	while dayCount < noDays do 
 		theText += "\t\t<th style='text-align:center' class='apptreason'>" + dateCol[dayCount].to_date.strftime("%a %d/%m") + "</th>\r"
@@ -54,12 +54,14 @@ module AppointmentsHelper
 		theText += "\t<tr>\r\t\t<td>" + timekey + "</td>\r"
 		dayCount = 0
 		while dayCount < noDays do 
-			theText += "\t\t<td class='apptreason'>" 
+			reason = ""
 			if  @appointments.key?(dateCol[dayCount]) and @appointments[dateCol[dayCount]].key?(timekey)
-				 	theText += @appointments[dateCol[dayCount]][timekey]['reason']
+					reason = @appointments[dateCol[dayCount]][timekey]['reason']	 	
 			end
+			theText = theText + "\t\t<td class='apptreason " + reason.downcase.tr(" ", "_").tr("*", "s") + "'>"
+			theText += reason
 			theText+= "</td>\r"
-			theText += "\t\t<td class='apptname'>" 
+			theText = theText + "\t\t<td class='apptname " + reason.downcase.tr(" ", "_").tr("*", "s") + "'>" 
 			if  @appointments.key?(dateCol[dayCount]) and @appointments[dateCol[dayCount]].key?(timekey)
 					if @appointments[dateCol[dayCount]][timekey]['patient_id']==0
 						theText += @appointments[dateCol[dayCount]][timekey]['name']

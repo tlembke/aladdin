@@ -24,7 +24,7 @@ $(document).ready(function() {
      $(".chart").each(function(){
             drawChart($(this));
     });
-     $(".apptname").hide();
+     $(".apptreason").hide();
 
 
 

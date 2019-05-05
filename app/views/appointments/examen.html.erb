@@ -7,7 +7,62 @@
 
 	</div>
 </div>
+	<div class="small"> Click box for details...</div>
 
+	 <div class="card">
+    <div class="card-header" id="headingFive">
+      <h5 class="mb-0">
+        <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapseFive" aria-expanded="false" aria-controls="collapseFive">
+          The Examen
+        </button>
+      </h5>
+    </div>
+    <div id="collapseFive" class="collapse" aria-labelledby="headingFive" data-parent="#accordion">
+      <div class="card-body">
+      		I give thanks for the graces, benefits and good things of my day<br>
+      		I ask for help to discern my day with openness<br>
+      		I review my day, hour by hour<br>
+      		I respond to what I felt or learnt in the review just made<br>
+      		I resolve with hope to improve tomorrow<br>
+      </div>
+    </div>
+  </div>
+  	<div div id="patient_audit_placeholder" >
+  <div class="card">
+    <div class="card-header" id="headingOne">
+      <h5 class="mb-0">
+        <button class="btn btn-link collapsed" aria-expanded="true" aria-controls="collapseOne">
+         Patients Clinical Audit (loading..)
+
+        </button>
+      </h5>
+    </div>
+   </div>
+
+</div>
+
+    <div class="card">
+    <div class="card-header" id="headingFour">
+      <h5 class="mb-0">
+        <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapseFour" aria-expanded="false" aria-controls="collapseFour">
+          Appointment queue <%= " - 3AA is " + @apptsFree[0].strftime("%d/%m/%Y") unless @apptsFree[0] == 0 %>
+        </button>
+      </h5>
+    </div>
+    <div id="collapseFour" class="collapse" aria-labelledby="headingFour" data-parent="#accordion">
+      <div class="card-body">
+      	<% if @apptsFree[0] != 0 %>
+      	Third Available Appointment with me is <%= @apptsFree[0].strftime("%I:%M%p %d/%m/%Y") %> which is 
+      	<%= distance_of_time_in_words_to_now(@apptsFree[0]) unless @apptsFree[0] == 0 %><p>
+      	
+      	There are <%= @apptsFree[1] %> people booked before that appointment.<p>
+      	
+      	i would need to work an extra <%=@apptsFree[1] / 25 %> <%='day'.pluralize(@apptsFree[1] / 25) %> to remove the backlog.<p>     	
+      	There are <%= @apptsFree[2] %> people booked in the future to see me.
+      	<% end %>
+      </div>
+    </div>
+  </div>
 
   <div class="card">
     <div class="card-header" id="headingTwo">
@@ -27,30 +82,24 @@
     <div class="card-header" id="headingThree">
       <h5 class="mb-0">
         <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
-          Unlinked Pathogy Results  <%= @unlinkedPath %>, Letters <%= @unlinkedLetters %>, Scans <%= @scans %>
+          Unlinked Pathology Results  <%= @unlinkedPath %>, Letters <%= @unlinkedLetters %>, Scans <%= @scans %>
         </button>
       </h5>
     </div>
     <div id="collapseThree" class="collapse" aria-labelledby="headingThree" data-parent="#accordion">
       <div class="card-body">
+      	         <%= @unlinkedPath %> Unlinked Pathology <%= "Result".pluralize(@unlinkedPath.to_i) %><%= ", Oldest " + @pathDate.strftime("%d/%m/%Y") if @unlinkedPath.to_i > 0 %> <br> 
+      	         <%= @unlinkedLetters %> Unlinked <%= "Letter".pluralize(@unlinkedLetters.to_i) %><%= ", Oldest " + @letterDate.strftime("%d/%m/%Y") if @unlinkedLetters.to_i > 0 %> <br>
+      	         <%= @scans %> Unlinked <%= "Scan".pluralize(@scans.to_i) %><%= ", Oldest " + @scanDate.strftime("%d/%m/%Y") if @scans.to_i > 0 %>
+
       </div>
     </div>
   </div>
 
 
-	<div div id="patient_audit_placeholder" >
-  <div class="card">
-    <div class="card-header" id="headingOne">
-      <h5 class="mb-0">
-        <button class="btn btn-link collapsed" aria-expanded="true" aria-controls="collapseOne">
-         Patients Clinical Audit (loading..)
 
-        </button>
-      </h5>
-    </div>
-   </div>
 
-</div>
+
 
 
 

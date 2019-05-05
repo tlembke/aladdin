@@ -69,12 +69,12 @@ def examen
                 @theStartDate = Date.new(params[:date][:year].to_i,params[:date][:month].to_i,params[:date][:day].to_i)
           end
 
-          @unlinkedPath = getUnlinkedPath(dbh,@username)
-          @unlinkedLetters = getUnlinkedLetters(dbh,@username)
-          @scans = getScans(dbh,@username)
+          @unlinkedPath, @pathDate = getUnlinkedPath(dbh,@username)
+          @unlinkedLetters, @letterDate = getUnlinkedLetters(dbh,@username)
+          @scans, @scanDate = getScans(dbh,@username)
           @tasks = getTasks(dbh,@username)
         
-
+          @apptsFree = getThirdAvailable(dbh,@id,startDate=Date.today,numberAppts=3,finishDate=Date.today + 8.weeks)
           dbh.disconnect
           
      else
@@ -82,21 +82,39 @@ def examen
           flash[:notice] = connect_array[2]
           redirect_to  action: "login"
      end
+
+
      
   end
 
   def getUnlinkedPath(dbh,doctorName)
           surname = doctorName.split.last
-          sql = "SELECT Count(Id) FROM DownloadedResult WHERE PT_Id_Fk = 0 AND Addressee LIKE  '%" + surname +"'"
+          sql = "SELECT Count(Id) FROM DownloadedResult WHERE PT_Id_Fk = 0 AND Addressee LIKE  '2" + surname +"'"
           puts sql
          
 
           sth = dbh.run(sql)
           row= sth.fetch_first
-          unlinkedPath=row[0]
+          row == nil or row[0] == nil ? unlinkedPath = 0 : unlinkedPath = row[0]
+
           sth.drop
 
-          return unlinkedPath
+
+
+          sql2 = "SELECT CollectionDate FROM DownloadedResult WHERE PT_Id_Fk = 0 AND Addressee LIKE  '%" + surname +"' ORDER BY CollectionDate ASC"
+          puts sql2
+         
+
+          sth2 = dbh.run(sql2)
+          row2= sth2.fetch_first
+          if row2 
+            collectionDate = row2[0]
+          else
+            collectionDate = Date.today
+          end
+          sth2.drop
+
+          return unlinkedPath, collectionDate
   end
 
   def getUnlinkedLetters(dbh,doctorName)
@@ -107,10 +125,25 @@ def examen
 
           sth = dbh.run(sql)
           row= sth.fetch_first
-          unlinked=row[0]
+          row == nil or row[0] == nil ? unlinked = 0 : unlinked = row[0]
+
           sth.drop
 
-          return unlinked
+
+          sql2 = "SELECT LetterDate FROM IncomingLetter WHERE PT_Id_Fk = 0 AND Addressee LIKE  '%" + surname +"' ORDER BY LetterDate ASC"
+          puts sql2
+         
+
+          sth2 = dbh.run(sql2)
+          row2= sth2.fetch_first
+          if row2 
+            letterDate = row2[0]
+          else
+            letterDate = Date.today
+          end
+          sth2.drop
+
+          return unlinked, letterDate
   end
 
   def getScans(dbh,doctorName)
@@ -121,10 +154,24 @@ def examen
 
           sth = dbh.run(sql)
           row= sth.fetch_first
-          unlinked=row[0]
+        
+          row == nil or row[0] == nil ? unlinked = 0 : unlinked= row[0]
           sth.drop
 
-          return unlinked
+          sql2 = "SELECT ImageDate FROM Graphic WHERE Reviewed = False AND ReviewBy LIKE  '%" + surname +"' ORDER BY ImageDate ASC"
+          puts sql2
+         
+
+          sth2 = dbh.run(sql2)
+          row2= sth2.fetch_first
+          if row2 
+            imageDate = row2[0]
+          else
+            imageDate = Date.today
+          end
+          sth2.drop
+
+          return unlinked, imageDate
   end
   def getTasks(dbh,doctorName)
           surname = doctorName.split.last

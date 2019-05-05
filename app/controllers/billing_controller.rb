@@ -486,6 +486,52 @@ class BillingController < ApplicationController
      
   end
 
+
+  def pathwaysOld
+   require 'net/https'
+   require 'uri'
+
+
+    # Log on
+    uri = URI.parse("https://manc.healthpathways.org.au//LoginFiles/Logon.aspx")
+    http = Net::HTTP.new(uri.host, uri.port)
+    http.use_ssl = true
+    http.verify_mode = OpenSSL::SSL::VERIFY_NONE
+    request = Net::HTTP::Get.new(uri.request_uri)
+    request.basic_auth("manchealth", "conn3ct3d")
+    @response = http.request(request)
+    
+end
+
+def pathways
+    @searchTerm = params[:q]
+    agent = Mechanize.new
+    if File.exist?("cookies/yaml")
+        agent.cookie_jar.load("cookies.yaml")
+    else
+      page=agent.get("https://manc.healthpathways.org.au/LoginFiles/Logon.aspx")
+      pathwaysForm = page.form(id: 'form2')
+      pathwaysForm.txtUserName = 'manchealth'
+      pathwaysForm.txtPassword = 'conn3ct3d'
+     
+      @page=agent.submit(pathwaysForm,pathwaysForm.buttons.first)
+      agent.cookie_jar.save("cookies.yaml", session: true)
+    end
+    #page=agent.get("https://manc.healthpathways.org.au/TOC.htm")
+    #contents = page.parser.xpath("//div[@id = 'tocContent']")
+
+    #@contArray = contents.to_s.scan(/<a id="(\S+)" href="(\S+)"><span class="(\S+)">(.+)<\/span>/)
+    @page=agent.get("https://manc.healthpathways.org.au/search/search.aspx?zoom_per_page=200&zoom_query=" + @searchTerm)
+    
+    #@searchResult = page.css(".results").text
+
+
+
+
+
+
+end
+
   def get_all_appts(dbh,theStartDate = Date.today )
           theDay=theStartDate.to_s(:db)
           
@@ -547,7 +593,7 @@ class BillingController < ApplicationController
 
   end
 
-    def get_plan(dbh,patient,provider,theDate,items)
+    def get_plan(dbh,patient,provider,theDate,items=[])
             sql = "SELECT History, Examination, Diagnosis, Plan FROM Consult WHERE PT_Id_FK = " + patient.to_s + " and ConsultDate = '" + theDate + "' and DoctorID = " + provider.to_s
           
             puts sql
@@ -557,7 +603,9 @@ class BillingController < ApplicationController
               planText = planText + row[0] +row[1] + row[2] + row[3]
             end
             sth.drop
-            planText=parse_plan(planText,items) + planText
+            if items.count>0
+              planText=parse_plan(planText,items) + planText
+            end
 
             return planText
 
