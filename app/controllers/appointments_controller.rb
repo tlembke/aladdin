@@ -246,7 +246,7 @@ def examen
 def get_appointments(dbh,doctor,theStartDate = Date.today,noDays = 7)
 
 		  theFinishDate = theStartDate + 5.days
-          sql = "SELECT StartDate, StartTime, Reason, Name, Pt_ID_FK as patient_id FROM Appt WHERE ProviderID =  " + doctor.to_s + " AND StartDate >= '" + theStartDate.to_s(:db) + "' AND  StartDate <= '"+ theFinishDate.to_s(:db) + "' ORDER BY StartDate, StartTime"
+          sql = "SELECT StartDate, StartTime, Reason, Name, ApptDuration, Pt_ID_FK as patient_id FROM Appt WHERE ProviderID =  " + doctor.to_s + " AND StartDate >= '" + theStartDate.to_s(:db) + "' AND  StartDate <= '"+ theFinishDate.to_s(:db) + "' ORDER BY StartDate, StartTime"
           puts sql
          
 
@@ -267,6 +267,16 @@ def get_appointments(dbh,doctor,theStartDate = Date.today,noDays = 7)
             	appointments[datekey][timekey]['reason']=row['REASON']
             	appointments[datekey][timekey]['name']=row['NAME']
               appointments[datekey][timekey]['patient_id']=row['patient_id']
+              if row['APPTDURATION'] == 1800
+                # add 15 mins
+                newtime = row['STARTTIME'].to_time + 15.minutes
+                timekey = newtime.strftime("%l:%M").strip
+                appointments[datekey][timekey]=Hash.new
+                appointments[datekey][timekey]['reason']=row['REASON']
+                appointments[datekey][timekey]['name']=row['NAME']
+                appointments[datekey][timekey]['patient_id']=row['patient_id']
+              end
+
           end
 
           sth.drop
