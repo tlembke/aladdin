@@ -89,7 +89,7 @@ def examen
 
   def getUnlinkedPath(dbh,doctorName)
           surname = doctorName.split.last
-          sql = "SELECT Count(Id) FROM DownloadedResult WHERE PT_Id_Fk = 0 AND Addressee LIKE  '2" + surname +"'"
+          sql = "SELECT Count(Id) FROM DownloadedResult WHERE PT_Id_Fk = 0 AND Addressee LIKE  '%" + surname +"'"
           puts sql
          
 
@@ -113,7 +113,6 @@ def examen
             collectionDate = Date.today
           end
           sth2.drop
-
           return unlinkedPath, collectionDate
   end
 
