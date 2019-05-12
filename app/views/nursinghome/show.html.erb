@@ -1,12 +1,16 @@
 <% @nh_patients.each do |patient| %>
 
 <% @patient = patient %>
+
+<% unless params['meds'] %>
+<div class="row page-break-after">
 <%= render "header" %>
 <%= render "consult" %>
  <%= render partial: "patient/tasks", locals: {tasks: patient["TASKS"]} %>
  <%= render partial: "patient/notes",locals: {notes: patient["NOTES"]} %> 
-
-<div class="row  page-break-before page-break-after">
+</div>
+<% end %>
+<div class="row page-break-after">
      <div class="col-md-5">
 	<h2><i class="fa fa-medkit"></i>  Medication Chart  </h2>
 	</div>
