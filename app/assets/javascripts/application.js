@@ -197,6 +197,9 @@ $('.editableUpdate').on('save', function() {
    $('#showurgenttasks').click( function() {
             $('.nonurgent').toggle();
     });
+    $('#showwarnings').click( function() {
+            $('.noitemwarning').toggle();
+    });
     $('#patient_audit_placeholder').on( "click", "#showincomplete", function(){
             $('.complete').toggle();
     });

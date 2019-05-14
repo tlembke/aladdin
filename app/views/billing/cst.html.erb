@@ -17,6 +17,7 @@ There are <%= @hpv_count %> patients due for cervical screening.
 <th>Last Seen</th>
 <th>By</th>
 
+
 </thead>
 <tbody>
 <% @hpv_patients.each do |patient| %>
@@ -28,6 +29,7 @@ There are <%= @hpv_count %> patients due for cervical screening.
 	<td><%= patient[6].to_date.strftime("%d/%m/%Y") if patient[6]%></td>
 	<td><%= patient[3].to_date.strftime("%d/%m/%Y") if patient[3]%></td>
 	<td><%= patient[4] %></td>
+
 
 
 

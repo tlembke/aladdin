@@ -20,7 +20,7 @@
 
 </div>
 
-<div class="row" ">
+<div class="row" >
 
 <div class="col-md-12">
 
@@ -160,24 +160,75 @@
 </div> <!-- col -->
 </div> <!--  row -->
 
-<div class="row"> <!-- Full screen row -->
-<div class="col-xs-12">
-            <%= @patient.fullname %>
-          <legend><i class="fa fa-flag"></i> Calendar</legend>
-         
+
+
+
+
+
+<div class="row no-page-break-inside"> <!-- Full screen row -->
+<div class="col-md-12">
+
+<%= render "annual_measures" %>
+
+
+            <%= render "bowel" %>
+
+
+
+
+
+
+
+
+
+                        <%= render "womens_cancer" %>
+
+
+                        <%= render "cardiac_risk" %>
+
+            <%= render "lifestyle_check" %>
+           
+
+
+
+</div> <!-- col -->
+</div> <!--  row -->
+
+<div class="row no-page-break-inside"> <!-- Full screen row -->
+<div class="col-md-12">
+
+
+
+            <legend class="panel-title"><i class="fa fa-medkit"></i>  Immunisations</legend>
+       
             <div class="panel-body">
-              <%= render "appointments" %>
-              <hr>
-               <%= render "phonetime" %> 
-               <hr>
-                <%= render "urgent" %> 
-                  
+             <table class='table table-striped table-bordered table-condensed'>
+                         <tr><td width=50%>Tetanus status</td><td><%= "Given on " + @tetanus.strftime("%d/%m/%Y") if @tetanus %><%= "No record" unless @tetanus %>
+                <% if @tetanus_msg %>
+                         <a class="btn btn-warning"> Boostrix Due </a>
+                <% else %>
+                        <a class="btn btn-success"> Up to Date </a>
+
+                <% end %>
+
+            </td></tr>
+
+             <% @immunisations.each do |immunisation | %>
+            <tr><td width=50%><%= immunisation["GIVENDATE"].strftime("%d/%m/%Y") %></td><td><%= immunisation["VACCINE"] %></td></tr>
+            <% end %>
+            </table>
             </div>
 
+</div> <!-- col -->
+</div> <!--  row -->
 
 
-</div>
-</div>
+
+
+
+
+
+
 
                 <%= render "results/print" %>
 

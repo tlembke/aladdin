@@ -76,6 +76,26 @@ module ApplicationHelper
           return theText.html_safe
   end
 
+  def whats_due(itemNumbers)
+    returnText = ""
+    reviewFlag = true
+
+    if itemNumbers['721'] == nil  or (itemNumbers['721'] != nil and Time.now >  itemNumbers['721'] + 12.months)
+      returnText =returnText + "<button class='btn btn-xs btn-success'>721</button>"
+      reviewFlag=false
+    end
+    if itemNumbers['723'] == nil   or (itemNumbers['723'] != nil and Time.now >  itemNumbers['723'] + 12.months)
+      returnText =returnText + "<button class='btn btn-xs btn-success'>723</button>"
+      reviewFlag=false
+    end
+    if reviewFlag and (itemNumbers['732'] == nil or (itemNumbers['732'] != nil and Time.now >  itemNumbers['732'] + 3.months) )
+      returnText =returnText + "<button class='btn btn-xs btn-success'>732</button>"
+      
+    end
+
+    return returnText.html_safe
+  end
+
 
 
 

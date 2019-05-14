@@ -39,8 +39,8 @@ module AppointmentsHelper
  	theText="<table class='table table-bordered table-condensed table-compact table-responsive'>\r"
  	theText += "\t<thead>\r\t<tr>\r\t\t<td></td>\r"
 	while dayCount < noDays do 
-		theText += "\t\t<th style='text-align:center' class='apptreason'>" + dateCol[dayCount].to_date.strftime("%a %d/%m") + "</th>\r"
-		theText += "\t\t<th style='text-align:center' class='apptname'>" + dateCol[dayCount].to_date.strftime("%a %d/%m") + "</th>\r"
+		theText += "\t\t<th style='text-align:center' class='apptreason'>" + link_to(dateCol[dayCount].to_date.strftime("%a %d/%m"), prepare_appointments_path(day: dateCol[dayCount].to_date.strftime("%d"), month: dateCol[dayCount].to_date.strftime("%m"),  year: dateCol[dayCount].to_date.strftime("%Y"))) + "</th>\r"
+		theText += "\t\t<th style='text-align:center' class='apptname'>" + link_to(dateCol[dayCount].to_date.strftime("%a %d/%m"), prepare_appointments_path(day: dateCol[dayCount].to_date.strftime("%d"), month: dateCol[dayCount].to_date.strftime("%m"),  year: dateCol[dayCount].to_date.strftime("%Y"))) + "</th>\r"
 
 		dayCount += 1
 	end

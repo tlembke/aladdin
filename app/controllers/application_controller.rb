@@ -281,6 +281,17 @@ def connect(username=session[:username],password=session[:password])
 
   end
 
+  def get_user_type(dbh,id)
+        sql = "SELECT ProviderType FROM Preference  where Id = "+ id.to_s
+        puts sql
+        sth = dbh.run(sql)
+        row= sth.fetch_first
+        sth.drop
+        return row[0]
+
+
+  end
+
 
 
 

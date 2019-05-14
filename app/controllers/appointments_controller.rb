@@ -62,11 +62,13 @@ def examen
      @error_code=connect_array[1]
      if (@error_code==0)
         dbh=connect_array[0]
-        @theStartDate = Date.today
-        @preventPast = false
-        @noDays = 1
-        if params[:date]              
-                @theStartDate = Date.new(params[:date][:year].to_i,params[:date][:month].to_i,params[:date][:day].to_i)
+        @providerType = get_user_type(dbh,@id)
+        if @providerType == 2
+          @theStartDate = Date.today
+          @preventPast = false
+          @noDays = 1
+          if params[:date]              
+                  @theStartDate = Date.new(params[:date][:year].to_i,params[:date][:month].to_i,params[:date][:day].to_i)
           end
 
           @unlinkedPath, @pathDate = getUnlinkedPath(dbh,@username)
@@ -75,7 +77,8 @@ def examen
           @tasks = getTasks(dbh,@username)
         
           @apptsFree = getThirdAvailable(dbh,@id,startDate=Date.today,numberAppts=3,finishDate=Date.today + 8.weeks)
-          dbh.disconnect
+        end
+        dbh.disconnect
           
      else
           flash[:alert] = "Unable to connect to database. "+ get_odbc
@@ -209,6 +212,11 @@ def examen
      @error_code=connect_array[1]
      if (@error_code==0)
         dbh=connect_array[0]
+        @providerType = get_user_type(dbh,@id)
+        unless @providerType == 2
+            @id = 89
+        end
+    
         @theStartDate = Date.today
         @preventPast = false
      if params[:date] 
@@ -238,6 +246,63 @@ def examen
      end
 
      render partial: "patient_audit"
+
+  end
+
+    def prepare
+         # get appointments
+     @username = session[:username]
+     @password = session[:password]
+     @id=session[:id]
+     @name=session[:name]
+
+     connect_array=connect()
+     @error_code=connect_array[1]
+     if (@error_code==0)
+        dbh=connect_array[0]
+        @providerType = get_user_type(dbh,@id)
+        unless @providerType == 2
+            @id = 89
+        end
+    
+        @theStartDate = Date.today
+        currentTime = Time.now
+        if currentTime.hour > 16
+            @theStartDate = @theStartDate + 1
+            @theStartDate = @theStartDate + 2 if @theStartDate.saturday?
+            @theStartDate = @theStartDate + 1 if @theStartDate.sunday?
+        end
+ 
+        @preventPast = false
+
+     if params[:date] 
+        @theStartDate = Date.new(params[:date][:year].to_i,params[:date][:month].to_i,params[:date][:day].to_i)
+
+
+   
+   
+     elsif params[:day] != "false" and params[:day] != nil and params[:month] != "false" and params[:month] != nil and params[:year] != "false" and params[:year] != nil
+
+                @theStartDate = Date.new(params[:year].to_i,params[:month].to_i,params[:day].to_i)
+
+    end
+        
+        @noDays=1
+        @noConsults = 3
+
+      
+          @appointments =get_last_appts(dbh,@id,@theStartDate,@noConsults)
+          #@allappts = get_appointments(dbh,@id,@theStartDate,1)
+          #@appt_ids=@appts.map {|x| x.values[9]}
+          dbh.disconnect
+          
+     else
+          flash[:alert] = "Unable to connect to database. "+ get_odbc
+          flash[:notice] = connect_array[2]
+          redirect_to  action: "login"
+     end
+
+     # render partial: "prepare"
 
   end
 
@@ -330,6 +395,45 @@ end
 
   end
 
+   def get_last_appts(dbh,doctor,theStartDate = Date.today, noConsults = 1 )
+
+          theDay=theStartDate.to_s(:db)
+          
+          sql = "SELECT Name, Note,  Reason, StartDate, StartTime, Status, PT_Id_Fk FROM Appt WHERE ProviderID = " + doctor.to_s + " and StartDate  = '" + theDay + "' ORDER BY StartTime"
+          puts sql
+         
+
+          sth = dbh.run(sql)
+
+
+
+               
+          appts=[]
+
+          sth.fetch_hash do |row|
+            
+          if row['PT_ID_FK'] > 0
+            row['LASTCONSULTS'] = get_last_consults(dbh,row['PT_ID_FK'],theDay,noConsults)
+          else
+            row['LASTCONSULTS'] = []
+          end
+            
+            
+            appts << row
+
+         
+
+
+          end
+
+          sth.drop
+
+
+
+          return appts
+
+  end
+
     def get_consult_plan(dbh,patient,provider,theDate)
             sql = "SELECT History, Examination, Diagnosis, Plan, Id FROM Consult WHERE PT_Id_FK = " + patient.to_s + " and ConsultDate = '" + theDate + "' and DoctorID = " + provider.to_s
           
@@ -351,6 +455,37 @@ end
 
 
             return clinicalText, planText, problems
+
+
+ end
+
+     def get_last_consults(dbh,patient,theDate, noConsults=2)
+            sql = "SELECT History, Examination, Diagnosis, Plan, Id, ConsultDate, DoctorName FROM Consult WHERE PT_Id_FK = " + patient.to_s + " and ConsultDate < '" + theDate + "' ORDER BY ConsultDate DESC LIMIT " + noConsults.to_s
+          
+            puts sql
+            
+            consults=[]
+            sth = dbh.run(sql)
+             sth.fetch do |row|
+              problems=[]
+              consult=Hash.new
+
+              consult['clinicalText']= row[0] +row[1] + row[2] + row[3]
+              consult['problems'] = get_real_problems(dbh, row[4])
+              consult['date'] = row[5]
+              consult['provider'] = row[6]
+              consults << consult
+
+
+
+            end
+
+            sth.drop
+
+          
+
+
+            return consults
 
 
  end

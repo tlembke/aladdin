@@ -743,7 +743,7 @@ end
 
             items << [row['ITEMNUM'], bb]
             if bb
-              if row['ITEMNUM'] == '10991' or row['ITEMNUM'] == '10995'
+              if row['ITEMNUM'] == '10991' or row['ITEMNUM'] == '10990'
                   bbCount = bbCount + 1
               else
                   bbItemCount = bbItemCount + 1
@@ -1233,7 +1233,7 @@ end
 
          
 
-         sql = "SELECT Surname,FirstName,FullName,LastSeenDate,LastSeenBy,LastSmear,LastHPV,MobilePhone, EmailAddress, DOB,  Id FROM Patient WHERE Inactive = FALSE AND " + ageText + " AND " + hpvText + " ORDER BY LastHPV"   
+         sql = "SELECT Surname,FirstName,FullName,LastSeenDate,LastSeenBy,LastSmear,LastHPV,MobilePhone, EmailAddress, DOB,  Id, NoHpvRecall FROM Patient WHERE Inactive = FALSE AND " + ageText + " AND " + hpvText + " AND NoHpvRecall = FALSE ORDER BY LastHPV"   
          puts sql
           sth = dbh.run(sql)
           @hpv_count = sth.nrows

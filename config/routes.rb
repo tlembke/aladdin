@@ -36,6 +36,7 @@ resources :appointments do
     collection do
       get 'examen'
       get 'patient_audit'
+      get 'prepare'
     end
 end
 

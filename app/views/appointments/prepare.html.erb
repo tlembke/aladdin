@@ -1,0 +1,115 @@
+	<style>
+		.annexe_-_care_plan {
+			background-color : purple;
+			color : white;
+		}
+		.annexe_-_care_plan a:link {
+				color : white;
+		}
+		.acute_only{
+			background-color : green;
+			color : white;
+		}
+		.acute_only a:link {
+			color : white;
+		}
+		.express_clinic{
+			background-color : blue;
+			color : white;
+		}
+		.blocked,.teleconference{
+			background-color : orange;
+			color : white;
+		}
+		.general_chec{
+			background-color : pink;
+			color : white;
+		}
+		.winsome_clinic{
+			background-color : peru;
+			color : white;
+		}
+		.nursing_home{
+			background-color : turquoise;
+			color : white;
+		}
+		.excision {
+			background-color : aqua;
+			color : white;
+		}
+		.excision a:link {
+				color : black;
+		}
+		.ssmrs_bsssss,.ssson_callssss,.on_call_5pm-9am,.second_on_call,.staff_meeting,.lunch{
+			background-color : yellow;
+			color : black;
+		}
+		
+
+
+
+	</style>
+
+<div class="row">
+	<div class="col-md-8">
+	<%= render "appointments/datechange", action: "prepare" %><p>
+	<h1>Daily Prepare for <%= @theStartDate.to_date.strftime("%A, %b %d") %></h1>
+	
+
+
+	</div>
+</div>
+
+ 
+<div class="row">
+	      <div class="card-body">
+
+
+
+
+      	<div class="row">
+	<div class="col-md-12">
+		
+			
+		<table class='table table-bordered table-condensed table-compact table-responsive'>
+			<% @appointments.each do |appt | %>
+			<tr>
+					<td style="vertical-align:top" <%= "rowspan=2".html_safe if appt['LASTCONSULTS'].length > 0  %>><%= appt['STARTTIME'].strftime("%l:%M") %> </td>
+					<td style="vertical-align:top" class="<%= appt['REASON'].downcase.tr(" ", "_").tr("*", "s") %>"><b><%= appt['NAME'] %></b></td>
+					<% if appt['LASTCONSULTS'].length > 0  %>
+					<tr>
+
+					<td> 
+						<% appt['LASTCONSULTS'].each do |consult| %>							
+							<span class='small'><%= consult['date'].strftime("%d/%m/%Y") %>
+								 <b><%= consult['provider'] %></b>
+							
+							<% consult['problems'].each do |problem| %> 
+								 | <%= problem %>
+							<% end %>
+						</span>
+							<br>
+							<div class='small'><%= consult['clinicalText'] %></div>
+						<% end %>
+
+					</td>
+					</tr>
+					<% end %>
+
+			</tr>
+			<% end %>
+		</table>
+	</div>
+	
+
+</div>
+
+ <% datekey = @theStartDate.to_date.strftime("%Y-%m-%d") %>
+ 
+
+
+<div class='panel'>
+
+	
+
+</div>

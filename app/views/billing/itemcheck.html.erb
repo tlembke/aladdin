@@ -5,8 +5,10 @@
 
 
 
+
   <div class="col-md-12">
-    <legend>Appointments for <%= @theStartDate.to_s %></legend>
+    <legend>Appointments for  <%= @theStartDate.to_date.strftime("%A, %b %d") %></legend>
+    <label class="switch switch-warning"><input id='showwarnings' type="checkbox"><span></span></label> Warnings Only
     <table class='table table-striped table-bordered table-condensed table-compact table-responsive'>
     	<thead classs='thead-dark'>
     		<td></td>
@@ -28,7 +30,7 @@
     
     <% @appts.each do |appt| %>
     <% if ((appt['PROVIDERID'] != 89 and appt['PROVIDERID'] != 87) or ((appt['PROVIDERID'] == 89 or appt['PROVIDERID'] == 87) and @appt_ids.count(appt['PT_ID_FK']) == 1)) %>
-	    <tr>	
+	    <tr <%= "class='noitemwarning'".html_safe unless appt['WARNING'] %>>
 	    	<td>
 	    		<% if appt['WARNING'] %>
 						<button class='btn btn-sm btn-danger btn-block'>X</button>
