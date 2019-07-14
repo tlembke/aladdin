@@ -72,7 +72,9 @@
   
        <li><%= link_to "Preferences",prefs_path, { "data-no-turbolink" => "true"} %></li>
     <li role="separator" class="divider"></li>
-     
+    <li><%= link_to "Restart Aladdin", controller: "genie", action: "login", restart: "true" %></li>
+
+    <li role="separator" class="divider"></li>
     <li><%= link_to "Disconnect", controller: "genie", action: "login" %></li>
   </ul>
 </div>
@@ -80,7 +82,11 @@
 
      <%= link_to ("<i class='fa fa-refresh'></i>").html_safe, url_for(params), { "data-no-turbolink" => "true"} %>
 <span class="divider">|</span>
-    <% end %> 
+    <% else %> 
+        <% if alert  or notice %>
+          <%= link_to "Restart Aladdin", controller: "genie", action: "login", restart: "true" %>
+        <% end %>
+    <% end %>
 
   
   </div>
