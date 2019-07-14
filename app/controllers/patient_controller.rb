@@ -666,7 +666,7 @@ def cma
       ip = get_ip
       client = Savon.client(wsdl: 'http://'+ip+':19080/4dwsdl')
       @calls = client.operations
-      @response= client.call(:ws_get_version)
+      # @response= client.call(:ws_get_version)
       @id=params[:id]
       provid = session[:id]
       newLine= "&amp;#10;"
@@ -676,7 +676,7 @@ def cma
       message = params[:type]+ newLine +params[:consult].gsub(/\r\n/,newLine)
       xml_doc = xml_document(@id,provid,message)
       @response2 = client.call(
-        :ws_place_document, 
+        :ws_pr_place_document, 
         message: { 
           "s44D_vT_Output" =>  xml_doc
         })
