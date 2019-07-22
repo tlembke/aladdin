@@ -364,7 +364,7 @@ class BookController < ApplicationController
   	 end
 
  
-     if @patient_match == 2 and errorCount = 0 
+     if @patient_match == 2 and errorCount == 0 
         ApptLog.info params['appttime'] + ", duration " + @duration.to_s + " mins for " + @patient[0] + "," + @patient[1]
     		render :success
  	  else
