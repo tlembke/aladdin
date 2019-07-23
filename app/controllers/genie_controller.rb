@@ -28,7 +28,8 @@ class GenieController < ApplicationController
 
             rescue
             			flash[:notice]="Unable to find dsn. Have you configured iODBC? I will restart Alladin so try again"
-                  # system ("touch #{Rails.root}/tmp/restart.txt")
+                  system ("touch #{Rails.root}/tmp/restart.txt")
+
                   system ("passenger-config restart-app /Users/cpd/Projects/")
             			connect=false
 

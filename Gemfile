@@ -35,6 +35,7 @@ gem 'savon', '~> 2.12.0'
 
 gem 'icalendar'
 
+gem 'mechanize'
 
 
 #gem 'wicked_pdf'

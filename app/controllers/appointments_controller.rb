@@ -57,16 +57,18 @@ def examen
      @password = session[:password]
      @id=session[:id]
      @name=session[:name]
-
+     # @id=89 #Janeen
+     # @id=72 #Helen
      connect_array=connect()
      @error_code=connect_array[1]
      if (@error_code==0)
         dbh=connect_array[0]
         @providerType = get_user_type(dbh,@id)
+        @theStartDate = Date.today
+        @preventPast = false
+        @noDays = 1
         if @providerType == 2
-          @theStartDate = Date.today
-          @preventPast = false
-          @noDays = 1
+
           if params[:date]              
                   @theStartDate = Date.new(params[:date][:year].to_i,params[:date][:month].to_i,params[:date][:day].to_i)
           end
@@ -207,15 +209,13 @@ def examen
      @password = session[:password]
      @id=session[:id]
      @name=session[:name]
-
+     # @id=89
      connect_array=connect()
      @error_code=connect_array[1]
      if (@error_code==0)
         dbh=connect_array[0]
-        @providerType = get_user_type(dbh,@id)
-        unless @providerType == 2
-            @id = 89
-        end
+        
+
     
         @theStartDate = Date.today
         @preventPast = false
@@ -228,14 +228,18 @@ def examen
      elsif params[:day] != "false" and params[:month] != "false" and params[:year] != "false"
 
                 @theStartDate = Date.new(params[:year].to_i,params[:month].to_i,params[:day].to_i)
-     else
+     else@providerType = get_user_type(dbh,@id)
         @theStartDate=Date.today
     end
         
         @noDays=1
+          @prov=@id
+          unless @providerType == 2
+            @prov = 89
+          end
 
       
-          @appts,@totalCount,@blankCount,@noreasonCount =get_days_appts(dbh,@id,@theStartDate)
+          @appts,@totalCount,@blankCount,@noreasonCount =get_days_appts(dbh,@id,@prov,@theStartDate)
           #@appt_ids=@appts.map {|x| x.values[9]}
           dbh.disconnect
           
@@ -261,9 +265,8 @@ def examen
      if (@error_code==0)
         dbh=connect_array[0]
         @providerType = get_user_type(dbh,@id)
-        unless @providerType == 2
-            @id = 89
-        end
+
+
     
         @theStartDate = Date.today
         currentTime = Time.now
@@ -350,13 +353,13 @@ def get_appointments(dbh,doctor,theStartDate = Date.today,noDays = 7)
           return appointments
 end
 
- def get_days_appts(dbh,doctor,theStartDate = Date.today )
+ def get_days_appts(dbh,doctor,room,theStartDate = Date.today )
           blankCount=0
           totalCount=0
           noreasonCount=0
           theDay=theStartDate.to_s(:db)
           
-          sql = "SELECT Name, Note,  Reason, StartDate, StartTime, Status, PT_Id_Fk FROM Appt WHERE ProviderID = " + doctor.to_s + " and StartDate = '" + theDay + "' and PT_Id_FK <> 0 ORDER BY StartTime"
+          sql = "SELECT Name, Note,  Reason, StartDate, StartTime, Status, PT_Id_Fk FROM Appt WHERE ProviderID = " + room.to_s + " and StartDate = '" + theDay + "' and PT_Id_FK <> 0 ORDER BY StartTime"
           puts sql
          
 
@@ -435,6 +438,7 @@ end
   end
 
     def get_consult_plan(dbh,patient,provider,theDate)
+            
             sql = "SELECT History, Examination, Diagnosis, Plan, Id FROM Consult WHERE PT_Id_FK = " + patient.to_s + " and ConsultDate = '" + theDate + "' and DoctorID = " + provider.to_s
           
             puts sql

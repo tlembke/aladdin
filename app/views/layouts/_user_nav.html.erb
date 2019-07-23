@@ -82,7 +82,7 @@
 
      <%= link_to ("<i class='fa fa-refresh'></i>").html_safe, url_for(params), { "data-no-turbolink" => "true"} %>
 <span class="divider">|</span>
-    <% else %> 
+    <% else %>
         <% if alert  or notice %>
           <%= link_to "Restart Aladdin", controller: "genie", action: "login", restart: "true" %>
         <% end %>
