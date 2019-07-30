@@ -8,7 +8,8 @@ class GenieController < ApplicationController
   	session[:username]=nil
   	session[:password]=nil
     if params[:restart]
-          # system ("passenger-config restart-app /Users/cpd/Projects/")
+          system ("passenger-config restart-app /Users/cpd/Projects/")
+          puts "Restarting Aladdin using passenger-config"
           connect=false
           flash[:notice]="Aladdin restarted"
     else

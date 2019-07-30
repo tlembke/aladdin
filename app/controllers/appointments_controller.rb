@@ -228,10 +228,10 @@ def examen
      elsif params[:day] != "false" and params[:month] != "false" and params[:year] != "false"
 
                 @theStartDate = Date.new(params[:year].to_i,params[:month].to_i,params[:day].to_i)
-     else@providerType = get_user_type(dbh,@id)
+     else 
         @theStartDate=Date.today
     end
-        
+        @providerType = get_user_type(dbh,@id)
         @noDays=1
           @prov=@id
           unless @providerType == 2
