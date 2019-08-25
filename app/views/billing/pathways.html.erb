@@ -1,0 +1,17 @@
+
+Result for search <b><%= @searchTerm %></b>
+
+ <% @page.links.each do |link| %>
+	<% if link.text !="" and link.text != "Help" and link.text != "X Close Search" %>
+		<% if link.href.include?('Resources') %>
+			<a href="https://manc.healthpathways.org.au<%= link.href %>"><%= link.text %></a><br>
+		<% else %>
+	   		<a href="https://manc.healthpathways.org.au/index.htm?<%= link.href %>"><%= link.text %></a><br>
+	   	<% end %>
+	<% end %>
+<% end %>
+
+
+
+
+

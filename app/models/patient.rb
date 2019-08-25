@@ -1,5 +1,7 @@
 class Patient
   include ActiveModel::Model
+
+
   
 
   attr_accessor :id, :surname, :firstname, :age, :sex, :fullname, :lastseendate, :lastseenby, :addressline1, :addressline2, :suburb, :dob, :scratchpad, :social, :medicare, :ihi, :homephone, :mobilephone, :smoking, :etoh,  :etohinfo, :nutrition, :activity, :mammogram, :atsi, :email, :pap, :hpv, :hpv_recall, :medications, :allergies, :weight, :height, :weight_date, :height_date, :bmi, :bp, :colonoscopy, :lastFHH, :last_mam, :mam_msg, :hpv_msg, :chol, :hdl, :score, :tetanus, :tetanus_msg, :procedures, :events, :current_problems, :tasks, :meds, :notes, :plan, :appointments, :changes, :tests, :careteam,  :ecg, :bps, :lipids, :lastFHHnew, :results
@@ -120,6 +122,26 @@ class Patient
 
     
   end
+
+  def recalls
+      recalls = Member.where(patient_id: self.id, recallflag: true)
+      total = Recall.cats.length
+      i=0
+      sortedRecalls=[]
+      while i < total
+        recalls.each do |member|
+          if member.genie_id
+            if member.recall.cat == i
+              sortedRecalls << member
+            end
+          end
+        end
+        i=i+1
+      end
+      return sortedRecalls
+
+  end
+
 
   def general_goals
   		general_goals = Goal.where(patient_id: self.id, condition_id: 0)
@@ -493,6 +515,75 @@ end
           return returnValue
 
 
+  end
+
+  def calevents
+        events=[]
+        # careteam available
+        self.careteam.each do |ctmember|
+            title= ctmember['PROVIDERNAME']
+            title = title + ", " + ctmember['PROVIDERTYPE'] unless ctmember['PROVIDERTYPE'].blank?
+            nextDay = ctmember['member']['nextDay']
+            nextMonth = ctmember['member']['nextMonth']
+            nextYear = ctmember['member']['nextYear']
+            everyNumber = ctmember['member']['everyNumber']
+            everyUnit = ctmember['member']['everyUnit']
+            exactDate = ctmember['member']['exactDate']
+
+            events = events +  getEvents(title, nextDay, nextMonth, nextYear, everyNumber, everyUnit, exactDate, 0)
+
+
+          
+        end
+
+        # now we need to do the same for actions,
+      
+
+        members = Member.where(patient_id: self.id, recallFlag: true)
+        members.each do |member|
+            title = member.recall.title
+            if title == "Custom"
+              title = member.note
+            end
+
+            events = events +   getEvents(title, member.nextDay, member.nextMonth, member.nextYear, member.everyNumber, member.everyUnit, member.exactDate, member.recall.cat)
+
+        end
+
+
+
+        return events
+
+  end
+
+  def getEvents(title, nextDay, nextMonth, nextYear, everyNumber, everyUnit, exactDate, cat)
+          newEvents =[]
+          unless nextMonth.blank? or nextYear.blank? or nextMonth == 0 or nextYear == 0 
+                #  nextDay = Date.today.day if nextDay == 0
+                @event=Event.new(day: nextDay, month: nextMonth, year: nextYear, title: title, exactDate: exactDate, cat: cat)            
+                newEvents << @event
+          end
+           
+          unless everyNumber.blank? or everyUnit.blank?
+                # assumse starts from today unless specified
+                nextDay = Date.today.day if nextDay == 0
+                nextMonth= Date.today.month if nextMonth == 0
+                nextYear= Date.today.year if nextYear == 0
+                theDate=Date.new(nextYear, nextMonth, nextDay)
+                while theDate < Date.today + 1.year
+                  theDate = theDate + everyNumber.days if everyUnit.starts_with?("d")
+                  theDate = theDate + everyNumber.weeks if everyUnit.starts_with?("w")
+                  theDate = theDate + everyNumber.months if everyUnit.starts_with?("m")
+                  unless theDate > Date.today + 1.year
+                    nextDay = theDate.day
+                    exactDate ? nextDay = theDate.day : nextDay =0
+                    @event=Event.new(day: nextDay, month: theDate.month, year: theDate.year, title: title, exactDate: false, cat: cat)            
+                    newEvents << @event
+                  end
+                end
+          
+          end
+      return newEvents
   end
 
 

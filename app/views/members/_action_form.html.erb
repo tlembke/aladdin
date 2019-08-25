@@ -1,0 +1,22 @@
+<style>
+	.form-horizontal .form-group { margin-bottom: -3px; }
+</style>
+<div class="row">
+<%= form_for(@member, html: { class: 'form form-horizontal', remote: 'true' }) do |f| %>
+<div class='col-md-12'>
+	 <div class="form-group form-group-sm">
+	<%= f.hidden_field :patient_id, :value => @member.patient_id  %>
+	<!-- f.select :genie_id, options_from_collection_for_select(Recall.all, :id, :title), class: "selectpicker" %> -->
+	<%= f.select :genie_id, Recall.options, class: "selectpicker", prompt: "Add an action..." %>
+
+	<%= button_tag "", type: 'submit', class: "btn btn-sm btn-success glyphicon glyphicon-ok" %>
+
+  	</div>
+
+
+</div>
+
+<% end %>
+
+
+</div>

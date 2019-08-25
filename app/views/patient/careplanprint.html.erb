@@ -134,6 +134,21 @@
 </div> <!-- col -->
 </div> <!--  row -->
 
+
+ <div class="row page-break-before"> <!-- Full screen row -->
+<div class="col-xs-12">
+
+          <%= @patient.fullname %>
+          <legend><i class="fa fa-user"></i>   My Care Calendar</legend>
+         
+            <div class="panel-body">
+                    <%= render "members/calendar" %>
+            </div>
+
+</div> <!-- col -->
+</div> <!--  row -->
+
+
  <div class="row page-break-before"> <!-- Full screen row -->
 <div class="col-xs-12">
   <%= @patient.fullname %>
@@ -155,6 +170,7 @@
          
             <div class="panel-body">
                     <%= render "careteam" %>
+                    
             </div>
 
 </div> <!-- col -->

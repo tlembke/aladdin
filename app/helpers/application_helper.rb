@@ -96,7 +96,55 @@ module ApplicationHelper
     return returnText.html_safe
   end
 
+  def showEvery(number,unit,question=true)
+     unit = "" unless unit
+     if unit != ""
+        if number and number !="" and number > 1
+          unit = pluralize(number, unit)
+        end
+     end
+     unit="?" if unit == "" and question
 
+        
+     return unit
+
+  end
+
+  def showNext(day,month,year,question=true)
+     theText = ""
+     begin
+          theDate=Date.new(year,month,day)
+          theText = theDate.strftime("%b %d, %Y")
+     rescue
+        if question and (day== "" or day == 0 or day==nil) and (month == 0 or month=="" or month==nil ) and (year == "" or year ==0 or year == nil)
+            theText = "?"
+        else
+          if (day!="" and  day != 0 and day!=nil)
+
+              theText =  theText + day.to_s + ""
+          end
+          if (month != 0 and month!="" and month!=nil )
+            theText=theText+ Date::MONTHNAMES[month][0..2]  + ", "
+          end
+        end
+        theText = theText+ year.to_s if year != "0"
+     end
+     theText = "?" if theText == "?0"
+
+     return theText
+
+  end
+
+  def actionIcon(cat)
+    icon="fa fa-medkit"
+    icon="fa fa-user-md" if cat == 0 
+    icon="fa fa-stethoscope" if cat ==4
+    icon="fa fa-heartbeat" if cat ==3
+    icon="fa fa-hospital-o" if cat ==2
+
+    return icon
+
+  end
 
 
 end

@@ -1,0 +1,13 @@
+<div class="row padded-row" id="member-<%=@member.id%>">
+	<div class='col-md-2'>	
+		<%= Recall.cats[@member.recall.cat] %>
+	</div>
+	<div class='col-md-2'>	
+		<%= @member.showTitle %>
+		
+
+	</div>
+	<div class='col-md-8'>
+	 	<%= render "members/member_show" %>
+	</div>
+</div>

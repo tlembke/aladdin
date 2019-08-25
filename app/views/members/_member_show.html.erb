@@ -1,0 +1,34 @@
+
+	<div class="row">
+		<div  class='col-md-3' id="monitor_every_<%=@member.id%>">
+
+			<span id="monitor_every_span_<%=@member.id%>" data-current="3m" data-member="<%=@member.id%>"  class="monitor-every editable-click">Every <%= showEvery(@member.everyNumber,@member.everyUnit) %> 
+			</span>
+		</div>
+
+		<div  class='col-md-5' id="monitor_next_<%=@member.id%>">
+				<span  id="monitor_next_span_<%=@member.id%>" data-current="3m" data-member="<%=@member.id%>"  class="monitor-every editable-click">
+				Next <%= "about " unless @member.exactDate %><%= showNext(@member.nextDay, @member.nextMonth, @member.nextYear) %>
+					
+				</span>
+		</div>
+		
+		<div  class='col-md-4' id="monitor_delete_<%=@member.id%>">
+			<% if @member.recallflag %>
+				<%= button_tag "", type: 'button', class: "btn btn-sm btn-warning glyphicon glyphicon-trash destroy-member", data: { member: @member.id} %>
+		
+			<% else %>
+				<%= render 'members/epc_button' %>
+		 
+		<% end %>
+		</div>
+
+
+	</div>
+
+	<div class="row">
+	 	<div  id="monitor_form_<%=@member.id%>" style="display: none;">
+ 			<%= render "members/form" %>
+ 		</div>
+ 	</div>
+

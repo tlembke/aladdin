@@ -1,0 +1,8 @@
+
+							<% if @ahp_items.has_key?(@membergenie['PROVIDERTYPE']) %>
+									
+		EPC : <a href="#" id="epc_<%=@member.id%>" class="editable" data-defaultValue="Enter EPC referral count" data-type="text" data-pk="1" data-resource="member" data-name="epc" data-url="/members/<%=@member.id%>" data-placeholder="EPC referrals..." data-original-title="EPC Referrals"><%= @member.epc %> </a>
+								<% unless @print %>
+									<%= link_to "<i class='fa fa-file'></i>".html_safe,epc_patient_path(:member=> @membergenie['address_book_id'].to_s),{:class => 'epclink noprint',"data-member" => "epc_" + @member.id.to_s} %>
+									<% end %>
+						   <% end %>

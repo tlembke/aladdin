@@ -16,15 +16,21 @@
 //  require dresssed
 //  require bootstrap-editable
 //  require bootstrap-editable-rails
+//= require moment
+//= require bootstrap-datetimepicker
 //= require_tree .
 
 $(document).ready(function() {
     $(".editable").editable();
+    $('[data-toggle="tooltip"]').tooltip({container: 'body'});
+
 
      $(".chart").each(function(){
             drawChart($(this));
     });
      $(".apptreason").hide();
+     $('.datepicker').datetimepicker({format: "ll", keepInvalid: true, useStrict: true});
+
 
 
 
@@ -270,6 +276,68 @@ $('.editableUpdate').on('save', function() {
      	$("#goal_condition_id").val($(this).data('condition'));
      	$('#new-goal-modal').modal('show');
    });
+
+  // This is to allow editing of monitoring function
+  $(document).on("click", '.monitor-every', function(event) { 
+  //. $(".monitor-every").click(function(){ 
+      // alert($(this).data('member'));
+      // alert($(this).text());
+      theMember = $(this).data('member')
+      $("#monitor_every_" + theMember).hide();
+      $("#monitor_next_" + theMember).hide();
+      $("#monitor_form_" + theMember).show();
+      $("#monitor_delete_" + theMember).hide();
+      // $(this).data('DateTimePicker').date("01/08/2023");
+   });
+    $(document).on("click", '.clear-member', function(event) { 
+   // $(".clear-member").click(function(){ 
+      //alert($(this).data('member'));
+      theMember = $(this).data('member');
+      $("#everyUnit-" + theMember).val("");
+      $("#nextDay-" + theMember).val("");
+   });
+    $(document).on("click", '.cancel-member', function(event) { 
+   // $(".cancel-member").click(function(){ 
+      //alert($(this).data('member'));
+      // alert($(this).text());
+      theMember = $(this).data('member');
+      $("#monitor_form_" + theMember).hide();
+      $("#monitor_every_" + theMember).show();
+      $("#monitor_next_" + theMember).show();
+      $("#monitor_delete_" + theMember).show();
+   });
+    $(document).on("click", '.destroy-member', function(event) { 
+   // $(".cancel-member").click(function(){ 
+      //alert($(this).data('member'));
+      // alert($(this).text());
+      if (confirm("Are you sure?")){
+        theMember = $(this).data('member');
+        $.ajax({
+                  url: "/members/"+theMember,
+                  cache: false,
+                  type: 'DELETE',
+                  success: function(html){
+                    $("#member-" + theMember).hide('puff');
+                  }
+
+        });
+
+
+
+      }
+
+   });
+
+
+
+
+
+
+
+
+
+
+
 
 
   // This is to load condiiton id into hidden field in New Goal modal

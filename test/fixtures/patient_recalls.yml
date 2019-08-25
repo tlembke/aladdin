@@ -1,0 +1,21 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  recall_id: 1
+  patient_id: 1
+  everyNumber: 1
+  everyUnit: MyString
+  nextDay: 1
+  nextMonth: 1
+  nextYear: 1
+  exactDate: false
+
+two:
+  recall_id: 1
+  patient_id: 1
+  everyNumber: 1
+  everyUnit: MyString
+  nextDay: 1
+  nextMonth: 1
+  nextYear: 1
+  exactDate: false

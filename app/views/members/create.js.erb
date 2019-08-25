@@ -1,0 +1,3 @@
+$("#new_action_form" ).before("<%= escape_javascript(render partial: 'members/member_list', locals: { member: @member }) %>");
+$(".editable").editable();
+

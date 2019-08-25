@@ -2,6 +2,9 @@ Rails.application.routes.draw do
 
 
 
+
+
+  resources :recalls
   resources :book do
       collection do
           get 'confirm'
@@ -98,6 +101,17 @@ end
       member do
           post 'toggle'
       end
+    end
+
+    resources :members do
+        get 'index'
+        get 'create'
+        get 'update'
+         get 'new'
+        get 'edit'
+        get 'show'
+        get 'destroy'
+
     end
     
     collection do

@@ -1,0 +1,45 @@
+
+
+<% theMonth = @startCalMonth %>
+<% theYear = @startCalYear %>
+<% newMonthFlag  = true %>
+<% while theMonth != @endCalMonth%>
+	<div class='row'>
+
+		
+		<% Event.sorted(@patient.calevents,theMonth,theYear).each do |event| %>
+			<% if newMonthFlag %>
+			<div class='col-md-12'>
+					<h3><%= Date::MONTHNAMES[theMonth]  + " " + theYear.to_s %></h3>
+			</div>
+			<% newMonthFlag = false %>
+			<% end %>
+			<div class='col-md-1'>
+				<% if event.day and event.day != 0 %>
+				<%= "~" unless event.exactDate %> <%= event.day.ordinalize %>
+				<% end %>
+			</div>
+			<div class='col-md-1'>
+				<i class='<%= actionIcon(event.cat) %>'></i>
+			</div>
+			<div class='col-md-10'>
+				<%= event.title %>
+			</div>
+
+
+		<% end %>
+	</div>
+	<% theMonth = theMonth + 1 %>
+	<% newMonthFlag = true %>
+	<% if theMonth ==13 %>
+		<% theMonth = 1 %>
+		<% theYear = theYear + 1 %>
+	<% end %>
+
+<% end %>
+
+
+
+
+
+

@@ -270,6 +270,13 @@ class PatientController < ApplicationController
           @checklist = getCheckList(@id, @bps, dbh, @patient.social, @patient.medications)
           @checklist << ["Shared Health Summary", @lastSHS == Date.today]
 
+          @startCalMonth = Date.today.month
+          @startCalYear = Date.today.year
+          @endCalDate = Date.today + 11.months
+          @endCalMonth = @endCalDate.month
+
+
+
           # get patient story
 
 
@@ -280,6 +287,7 @@ class PatientController < ApplicationController
 
           if params[:print]
             # get results to print
+
             results=Result.where(patient_id: @patient.id, result_date: Date.today.to_date).all
             @printresults=[]
             if results

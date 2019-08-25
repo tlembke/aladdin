@@ -1,0 +1,62 @@
+<style>
+	.padded-row { margin-bottom: 15px ;}
+</style>
+
+<div class="row">
+	<h2>Actions</h2>
+</div>
+
+<% @patient.recalls.each do |member| %>
+<% @member = member %>
+<%= render "members/member_list" %>
+<% end %>
+<div class="row padded-row" id="new_action_form">
+	<div class='col-md-2'>
+		Add
+	</div>
+	<div class='col-md-8'>
+		<% @member=Member.new %>
+		<% @member.patient_id = @patient.id %>
+		<%= render "members/action_form" %>
+
+	</div>
+	<div class='col-md-2'>
+
+	</div>
+</div>
+
+
+
+							<div class="row">
+								<div class="col-md-9">
+									<h2>Care Team</h2>
+								</div>
+								<div class="col-md-3">
+									<div class='form-group'>
+									<label for="provider">Referring GP:</label>
+										<%= select_tag("provider", options_for_select(@users,@provider),{:class => 'form-control'}) %>
+									</div>
+								</div>
+							</div>
+
+<% @patient.careteam.each do |member| %>
+<div class="row">
+	<div class='col-md-4'>
+
+		
+		
+		<% @member=member['member'] %>
+		<% @membergenie=member %>
+		<%= member['PROVIDERNAME'] %><%= ", " if member['PROVIDERNAME'] !="" %><%= member['PROVIDERTYPE']%><p>
+			<a href="#" id="note_<%=@member.id%>" class="editable" data-defaultValue="Add role, review times, notes etc" data-type="textarea" data-emptytext= "Notes" data-pk="1" data-resource="member" data-name="note" data-url="/members/<%=@member.id%>" data-placeholder="Your notes here..." data-original-title="Enter notes"><%= textarea_format(@member.note) %> </a>
+
+	</div>
+	<div class='col-md-8'>
+	<%= render "members/member_show" %>
+	</div>
+</div>
+<% end %>
+
+
+
+
