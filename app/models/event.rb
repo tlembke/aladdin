@@ -16,4 +16,23 @@ class Event
 
 
 	 end
+
+	 def self.overdue(events)
+	 		newlist =[]
+	 		todayDate=Date.today
+	 		events.each do |event|
+	 				if event.year 		
+			 			if event.year < todayDate.year
+			 				newlist << event
+			 			elsif event.year == todayDate.year and (event.month == nil or event.month == 0 or event.month < todayDate.month)
+			 				newlist << event
+			 			end
+			 		end
+
+	 		end
+	 		return newlist
+
+
+
+	 end
 end

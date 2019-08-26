@@ -558,7 +558,7 @@ end
 
   def getEvents(title, nextDay, nextMonth, nextYear, everyNumber, everyUnit, exactDate, cat)
           newEvents =[]
-          unless nextMonth.blank? or nextYear.blank? or nextMonth == 0 or nextYear == 0 
+          unless nextYear.blank? or nextYear == 0 
                 #  nextDay = Date.today.day if nextDay == 0
                 @event=Event.new(day: nextDay, month: nextMonth, year: nextYear, title: title, exactDate: exactDate, cat: cat)            
                 newEvents << @event

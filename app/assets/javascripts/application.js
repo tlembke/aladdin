@@ -286,6 +286,7 @@ $('.editableUpdate').on('save', function() {
       $("#monitor_every_" + theMember).hide();
       $("#monitor_next_" + theMember).hide();
       $("#monitor_form_" + theMember).show();
+      $("#everyUnit-" + theMember).focus();
       $("#monitor_delete_" + theMember).hide();
       // $(this).data('DateTimePicker').date("01/08/2023");
    });

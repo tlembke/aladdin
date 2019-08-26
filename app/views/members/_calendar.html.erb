@@ -1,20 +1,51 @@
 
+<% calevents = @patient.calevents %>
+<% overdueFlag = true %>
+<div class='row'>
+<% Event.overdue(@patient.calevents).each do |event| %>
+			<% if overdueFlag %>
+		    <div class='col-md-12'>
+					<h3>Overdue</h3>
+			</div>
+			<% end %>
+			<% overdueFlag = false %>
 
-<% theMonth = @startCalMonth %>
+			<div class='col-md-2 small'>
+				<% if event.day and event.day != 0 %>
+				<%= "~" unless event.exactDate %> <%= event.day.ordinalize %>
+				<% end %>
+				<% if event.month and event.month != 0 %>
+				<%= Date::MONTHNAMES[event.month] %>
+				<% end %>
+				 <%= " " + event.year.to_s %>
+
+			</div>
+			<div class='col-md-1'>
+				<i class='<%= actionIcon(event.cat) %>'></i>
+			</div>
+			<div class='col-md-9'>
+				<%= event.title %>
+			</div>
+
+
+<% end %> 
+</div>
+<% theMonth = @startCalMonth%>
 <% theYear = @startCalYear %>
 <% newMonthFlag  = true %>
-<% while theMonth != @endCalMonth%>
+<% theCount = 0 %>
+<% while theCount < 12 %>
 	<div class='row'>
 
 		
-		<% Event.sorted(@patient.calevents,theMonth,theYear).each do |event| %>
+		<% Event.sorted(calevents,theMonth,theYear).each do |event| %>
 			<% if newMonthFlag %>
 			<div class='col-md-12'>
 					<h3><%= Date::MONTHNAMES[theMonth]  + " " + theYear.to_s %></h3>
 			</div>
 			<% newMonthFlag = false %>
 			<% end %>
-			<div class='col-md-1'>
+			<div class='col-md-2'>
 				<% if event.day and event.day != 0 %>
 				<%= "~" unless event.exactDate %> <%= event.day.ordinalize %>
 				<% end %>
@@ -22,7 +53,7 @@
 			<div class='col-md-1'>
 				<i class='<%= actionIcon(event.cat) %>'></i>
 			</div>
-			<div class='col-md-10'>
+			<div class='col-md-9'>
 				<%= event.title %>
 			</div>
 
@@ -35,6 +66,7 @@
 		<% theMonth = 1 %>
 		<% theYear = theYear + 1 %>
 	<% end %>
+	<% theCount = theCount + 1 %>
 
 <% end %>
 
