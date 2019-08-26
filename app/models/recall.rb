@@ -1,7 +1,7 @@
 class Recall < ActiveRecord::Base
 
 	  def self.cats
-  		return 'Appointment, Blood Test, Radiology, Test, Check'.split(',')
+  		return 'Appointment, Blood Test, Radiology, Test, Check, Treatment'.split(',')
   	  end
 
   	  def self.options

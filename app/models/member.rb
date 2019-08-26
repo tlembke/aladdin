@@ -20,6 +20,23 @@ class Member < ActiveRecord::Base
 		return theText.html_safe
 	end
 
+
+	 def overdue?
+	 	returnValue = false
+	 	todayDate=Date.today
+	 	if self.nextYear 		
+			if self.nextYear < todayDate.year
+			 	returnValue = true
+			elsif self.nextYear == todayDate.year and (self.nextMonth == nil or self.nextMonth == 0 or self.nextMonth < todayDate.month)
+			 	returnValue = true
+			elsif self.nextYear == todayDate.year and self.nextMonth == todayDate.month and (self.nextDay == nil or  self.nextDay == 0 or self.nextDay < todayDate.day)
+			 	returnValue = true
+			end
+		end
+
+	 	return returnValue
+	 end
+
   
 
 

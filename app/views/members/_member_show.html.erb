@@ -9,8 +9,9 @@
 		<div  class='col-md-5' id="monitor_next_<%=@member.id%>">
 				<span  id="monitor_next_span_<%=@member.id%>" data-current="3m" data-member="<%=@member.id%>"  class="monitor-every editable-click">
 				Next <%= "about " unless @member.exactDate %><%= showNext(@member.nextDay, @member.nextMonth, @member.nextYear) %>
-					
+					<%= " <i class='fa fa-thumbs-down'></i>".html_safe if @member.overdue? %>
 				</span>
+
 		</div>
 		
 		<div  class='col-md-4' id="monitor_delete_<%=@member.id%>">

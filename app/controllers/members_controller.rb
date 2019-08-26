@@ -17,6 +17,7 @@ class MembersController < ApplicationController
       @member.nextDay,@member.nextMonth,@member.nextYear,@member.exactDate = processNext(params[:member][:nextDay])
     end
    
+    @iconText = "<i class='fa fa-thumbs-down'></i>"
     respond_to do |format|
 
           if @member.save

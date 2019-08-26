@@ -1,6 +1,6 @@
 
       $("#monitor_every_span_<%= @member.id %>").text("Every <%=showEvery(@member.everyNumber,@member.everyUnit)%>");
-      $("#monitor_next_span_<%= @member.id %>").text("Next <%= 'about ' unless @member.exactDate %><%= showNext(@member.nextDay, @member.nextMonth, @member.nextYear) %>");
+      $("#monitor_next_span_<%= @member.id %>").html("Next <%= 'about ' unless @member.exactDate %><%= showNext(@member.nextDay, @member.nextMonth, @member.nextYear) %> <%= @iconText.html_safe if  @member.overdue? %>");
       $("#monitor_next_<%= @member.id %>").show();
       $("#monitor_every_<%= @member.id %>").show();
       $("#monitor_form_<%= @member.id %>").hide();
