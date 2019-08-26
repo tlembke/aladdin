@@ -574,6 +574,7 @@ end
                   theDate = theDate + everyNumber.days if everyUnit.starts_with?("d")
                   theDate = theDate + everyNumber.weeks if everyUnit.starts_with?("w")
                   theDate = theDate + everyNumber.months if everyUnit.starts_with?("m")
+                  theDate = theDate + everyNumber.years if everyUnit.starts_with?("y")
                   unless theDate > Date.today + 1.year
                     nextDay = theDate.day
                     exactDate ? nextDay = theDate.day : nextDay =0
