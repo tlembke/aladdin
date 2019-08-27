@@ -71,8 +71,7 @@ group :development do
 end
 
 
-source "https://gems.rapidrailsthemes.com/gems" do
-  gem "dresssed-ives", "~> 1.0.66"
-end
+gem 'dresssed-ives', '1.0.67', path: "vendor/gems/dresssed-ives-1.0.67"
+
 
 
