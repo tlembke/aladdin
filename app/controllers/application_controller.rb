@@ -20,7 +20,7 @@ class ApplicationController < ActionController::Base
 
   def require_login
       if session[:username] and Time.current < session[:expires_at]
-         session[:expires_at] = Time.current + 60*60
+         session[:expires_at] = Time.current + 180.minutes
       else
         if session[:expires_at] && Time.current >= session[:expires_at]
         	   flash[:alert] = "Session expired due to inactivity"

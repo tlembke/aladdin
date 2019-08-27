@@ -563,8 +563,15 @@ end
                 @event=Event.new(day: nextDay, month: nextMonth, year: nextYear, title: title, exactDate: exactDate, cat: cat)            
                 newEvents << @event
           end
+
+         unitUnknown = true
+         if everyUnit and (everyUnit[0]=="d" or everyUnit[0]=="w" or everyUnit[0]=="m" or everyUnit[0]=="y")
+              unitUnknown = false
+         end
+
+
            
-          unless everyNumber.blank? or everyUnit.blank?
+          unless everyNumber.blank? or everyUnit.blank? or unitUnknown
                 # assumse starts from today unless specified
                 nextDay = Date.today.day if nextDay == 0
                 nextMonth= Date.today.month if nextMonth == 0

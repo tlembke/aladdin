@@ -23,6 +23,19 @@
 $(document).ready(function() {
     $(".editable").editable();
     $('[data-toggle="tooltip"]').tooltip({container: 'body'});
+    $('[data-toggle="popover"]').popover({
+        html : true,
+        container: "body",
+        content: function() {
+          var content = $(this).attr("data-popover-content");
+          return $(content).children(".popover-body").html();
+        },
+        title: function() {
+          var title = $(this).attr("data-popover-content");
+          return $(title).children(".popover-heading").html();
+        }
+    });
+
 
 
      $(".chart").each(function(){
@@ -140,6 +153,8 @@ var request = {
     return value ? value[1] : value;
   }
 }
+
+
 
 function getQueryVariable(variable)
 {

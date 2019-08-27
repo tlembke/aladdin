@@ -5,8 +5,7 @@ class GenieController < ApplicationController
  
 
   def login
-  	session[:username]=nil
-  	session[:password]=nil
+  	reset_session
     if params[:restart]
           system ("passenger-config restart-app /Users/cpd/Projects/")
           puts "Restarting Aladdin using passenger-config"
@@ -78,7 +77,7 @@ class GenieController < ApplicationController
               #session[:id] = id
               #session[:name] = name
         		 	# 10 * 60 = 10 minutes
-        		 	session[:expires_at] = Time.current + 120*60
+        		 	session[:expires_at] = Time.current + 180.minutes
               dbh.disconnect
         		 	redirect_to root_url
         		  

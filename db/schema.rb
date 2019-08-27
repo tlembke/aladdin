@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20181215005640) do
+ActiveRecord::Schema.define(version: 20190806025317) do
 
   create_table "cells", force: :cascade do |t|
     t.integer  "register_id"
@@ -93,10 +93,17 @@ ActiveRecord::Schema.define(version: 20181215005640) do
     t.integer  "patient_id"
     t.integer  "genie_id"
     t.text     "note"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at",                  null: false
+    t.datetime "updated_at",                  null: false
     t.integer  "year_reset"
     t.integer  "epc"
+    t.integer  "everyNumber"
+    t.string   "everyUnit"
+    t.integer  "nextDay"
+    t.integer  "nextMonth"
+    t.integer  "nextYear"
+    t.boolean  "exactDate"
+    t.boolean  "recallflag",  default: false, null: false
   end
 
   create_table "paragraphs", force: :cascade do |t|
@@ -106,6 +113,19 @@ ActiveRecord::Schema.define(version: 20181215005640) do
     t.boolean  "show"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+  end
+
+  create_table "patient_recalls", force: :cascade do |t|
+    t.integer  "recall_id"
+    t.integer  "patient_id"
+    t.integer  "everyNumber"
+    t.string   "everyUnit"
+    t.integer  "nextDay"
+    t.integer  "nextMonth"
+    t.integer  "nextYear"
+    t.boolean  "exactDate"
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
   end
 
   create_table "phonetimes", force: :cascade do |t|
@@ -118,6 +138,13 @@ ActiveRecord::Schema.define(version: 20181215005640) do
   create_table "prefs", force: :cascade do |t|
     t.string   "name"
     t.string   "value"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "recalls", force: :cascade do |t|
+    t.text     "title"
+    t.integer  "cat"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end

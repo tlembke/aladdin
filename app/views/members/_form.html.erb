@@ -4,13 +4,19 @@
 <div class="row">
 <%= form_for(@member, html: { class: 'form form-horizontal', remote: 'true' }) do |f| %>
 
-	<div class='col-md-3'>
+	<div class='col-md-4'>
 
 		  <div class="form-group form-group-sm">
 		    <%= label_tag :everyUnit, "Every", class: "col-md-2 control-label" %>
-		    <div class="col-md-10">
-		      <%= f.text_field :everyUnit, id: "everyUnit-"+@member.id.to_s,  value: showEvery(@member.everyNumber,@member.everyUnit,false), class: 'form-control' %>
-		    </div>
+		    <div class="col-md-8">
+          <div class='input-group'>
+  		      <%= f.text_field :everyUnit, id: "everyUnit-"+@member.id.to_s,  value: showEvery(@member.everyNumber,@member.everyUnit,false), class: 'form-control  input-small' %>
+              <span class="input-group-addon">
+                          <span class="fa fa-question" data-toggle="popover" tabindex="0" data-trigger="focus"data-popover-content="#everyhelptext"></span>
+              </span>
+          </div>
+        </div>
+
 		  </div>
    </div>
 
@@ -18,60 +24,26 @@
 		
 
 
-      <div class='col-md-4'>
-      	
-        <!-- <%= f.text_field :nextDay, id: "nextDay-"+@member.id.to_s, value: showNext(@member.nextDay, @member.nextMonth, @member.nextYear,false), class: 'form-control input-mini' %>
-        -->
-                  
-                    <!-- <input type='text' class="form-control" />
-                    <%= f.text_field :nextDay, id: "nextDay-"+@member.id.to_s, value: showNext(@member.nextDay, @member.nextMonth, @member.nextYear,false), class: 'form-control input-mini' %>
-                -->
-<!--
-                <div class='input-group date datepicker' id='datetimepicker<%= @member.id %>' >
-                    
-                    <%= f.text_field :nextDay, id: "nextDay-"+@member.id.to_s, value: showNext(@member.nextDay, @member.nextMonth, @member.nextYear,false), class: 'form-control form-control-sm input-mini input-group' %>
-                    <span class="input-group-addon">
-
-                        <span class="glyphicon glyphicon-calendar"></span>
-                    </span>
-                </div>
--->         <div class="form-group form-group-sm">
-          
-           
-           	 <%= label_tag :nextDay, "Next", class: "col-md-2 control-label" %>
-          
-          	<div class='col-md-10'>
-                <div class='input-group date datepicker' id='datetimepicker<%= @member.id %>'>
-                   
-					
-					<%= f.text_field :nextDay, id: "nextDay-"+@member.id.to_s, value: showNext(@member.nextDay, @member.nextMonth, @member.nextYear,false), class: 'form-control form-control-sm input-group input-small' %>
-                    <span class="input-group-addon">
-                        <span class="glyphicon glyphicon-calendar"></span>
-                    </span>
-                </div>
-           </div>
-        
-       
-
-           </div>
-
-
-
+  <div class='col-md-4'>
+        <div class="form-group form-group-sm">
+             <%= label_tag :nextDay, "Next", class: "col-md-2 control-label" %>
+             <div class='col-md-8'>
+                  <div class='input-group date datepicker' id='datetimepicker<%= @member.id %>'>
+                  <%= f.text_field :nextDay, id: "nextDay-"+@member.id.to_s, value: showNext(@member.nextDay, @member.nextMonth, @member.nextYear,false), class: 'form-control' %>
+                       <span class="input-group-addon">
+                               <span class="glyphicon glyphicon-calendar"></span>
+                        </span>
+                  </div>
+              </div>
+            
+             <div class='col-md-1 pull-left'>
+                     <span class="fa fa-question btn" data-toggle="popover" tabindex="0" data-trigger="focus"data-popover-content="#everynexttext"></span>
+             </div>
+        </div>
+    
 </div>
 
-
-
-
-
-
-
-                   
-   
-
-
-  
-
-  <div class="col-md-3">
+  <div class="col-md-3 pull-right">
   	 <div class="form-group form-group-sm">
 <%= button_tag "", type: 'submit', class: "btn btn-sm btn-success glyphicon glyphicon-ok", title: "Save", data: {toggle: "tooltip", placement: "top" } %>
 <%= button_tag "", type: 'button', class: "btn btn-sm btn-warning glyphicon glyphicon-remove cancel-member", title: "Close", data: { member: @member.id, toggle: "tooltip", placement: "top" } %>

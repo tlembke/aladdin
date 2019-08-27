@@ -1,9 +1,59 @@
 <style>
 	.padded-row { margin-bottom: 15px ;}
 </style>
+<!-- Content for Popover everyhelp -->
+<div class="hidden" id="everyhelptext">
+  <div class="popover-heading">
+    Selecting frequeny
+  </div>
+
+  <div class="popover-body">
+    You can select a frequency using days, weeks, months or years
+    <ul>
+    	<li>3m</li>
+    	<li>3 months</li>
+    	<li>year</li>
+    	<li>2 years</li>
+    	<li>8w</li>
+    	<li>8 weeks</li>
+    <ul>
+  </div>
+</div>
+
+<!-- Content for Popover everynext -->
+<div class="hidden" id="everynexttext">
+  <div class="popover-heading">
+    Selecting next occasion
+  </div>
+
+  <div class="popover-body">
+    To enter a specific date, either click the calendar icon or eg
+    <ul>
+    	<li>9/2/2020</li>
+    	<li>2/2020</li>
+    	<li>9/2</li>
+    	<li>Feb</li>
+    	<li>Feb 2023</li>
+    </ul>
+    You can also select a time in the future using eg
+     <ul>
+    	<li>3m</li>
+    	<li>3 months</li>
+    	<li>2w</li>
+    	<li>2 weeks</li>
+    	<li>4d</li>
+    	<li>4 days</li>
+    	<li>2 years</li>
+    	<li>2y</li>
+    </ul>
+
+  </div>
+</div>
 
 <div class="row">
+	<div class='col-md-12'>
 	<h2>Actions</h2>
+	</div>
 </div>
 
 <% @patient.recalls.each do |member| %>
