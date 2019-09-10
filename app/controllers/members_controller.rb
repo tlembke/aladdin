@@ -16,6 +16,12 @@ class MembersController < ApplicationController
 
       @member.nextDay,@member.nextMonth,@member.nextYear,@member.exactDate = processNext(params[:member][:nextDay])
     end
+    @epc=false
+    if params[:member][:epc]
+       @epc=true
+       @epc_count=Member.where(patient_id: @member.patient_id).sum(:epc)
+       @member.epc = params[:member][:epc].to_i
+    end
    
     @iconText = "<i class='fa fa-thumbs-down'></i>"
     respond_to do |format|
