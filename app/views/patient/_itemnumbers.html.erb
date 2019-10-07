@@ -1,7 +1,8 @@
 
 <div class="row">
-	<div class="col-md-2">
-		GPMP (721)
+	<div class="col-md-3">
+		<% @careplanitem = "GPMP" %>
+		<%= render "registers/careplanitem" %>
 	</div>
 	<div class="col-md-3">
 		<% if @item_numbers['721'] %>
@@ -11,8 +12,9 @@
 	</div>
 </div>
 <div class="row">
-	<div class="col-md-2">
-	TCA (723)
+	<div class="col-md-3">
+		<% @careplanitem = "TCA" %>
+		<%= render "registers/careplanitem" %>
 	</div>
 	<div class="col-md-3">
 		<% if @item_numbers['723'] %>

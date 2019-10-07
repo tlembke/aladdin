@@ -17,10 +17,12 @@ class MembersController < ApplicationController
       @member.nextDay,@member.nextMonth,@member.nextYear,@member.exactDate = processNext(params[:member][:nextDay])
     end
     @epc=false
+
     if params[:member][:epc]
        @epc=true
-       @epc_count=Member.where(patient_id: @member.patient_id).sum(:epc)
        @member.epc = params[:member][:epc].to_i
+       # @epc_count=Member.where(patient_id: @member.patient_id).sum(:epc)
+       
     end
    
     @iconText = "<i class='fa fa-thumbs-down'></i>"
@@ -29,7 +31,7 @@ class MembersController < ApplicationController
           if @member.save
             format.js {}
             format.html 
-            format.json { head :no_content } # 204 No Content
+            format.json { render "update.js.erb", format: :js} # 204 No Content
           else
             format.html { render :edit }
             format.json { render json: @member.errors, status: :unprocessable_entity }

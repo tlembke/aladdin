@@ -14,6 +14,12 @@ class Register < ActiveRecord::Base
 		return members
 	end
 
+	def self.getRegNumber(name)
+		reg=Register.where(name: name).first
+		return reg.id
+
+	end
+
 
 
 

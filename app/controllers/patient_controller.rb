@@ -688,7 +688,6 @@ def cma
         message: { 
            "s44D_vT_Sender" =>  Pref.websender, 
            "s44D_vT_Password" => Pref.decrypt_password(Pref.webpassword),
-           
           "s44D_vT_Output" =>  xml_doc
         })
       @jsmessage = Time.now.strftime("%d/%m/%y")  +"<br><b>" + params[:type] + "</b><br>" + consult + "<p>" + session[:name]

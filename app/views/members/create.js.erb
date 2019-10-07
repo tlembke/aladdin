@@ -1,3 +1,15 @@
 $("#new_action_form" ).before("<%= escape_javascript(render partial: 'members/member_list', locals: { member: @member }) %>");
 $(".editable").editable();
+ $('[data-toggle="popover"]').popover({
+        html : true,
+        container: "body",
+        content: function() {
+          var content = $(this).attr("data-popover-content");
+          return $(content).children(".popover-body").html();
+        },
+        title: function() {
+          var title = $(this).attr("data-popover-content");
+          return $(title).children(".popover-heading").html();
+        }
+  });
 
