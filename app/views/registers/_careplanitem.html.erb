@@ -1,8 +1,0 @@
-
-<%= check_box_tag 'register', @patient.id, @patient.register(Register.getRegNumber(@careplanitem)),
-      data: {
-        remote: true,
-        url: url_for(action: :register, id: @patient.id, register: Register.getRegNumber(@careplanitem)),
-        method: "POST"
-      } %>
-      <%= @careplanitem %>
