@@ -31,7 +31,11 @@ class MembersController < ApplicationController
           if @member.save
             format.js {}
             format.html 
-            format.json { render "update.js.erb", format: :js} # 204 No Content
+            if @epc
+              format.json { head :no_content } # 204 No Content
+            else
+              format.json { render "update.js.erb", format: :js} 
+            end
           else
             format.html { render :edit }
             format.json { render json: @member.errors, status: :unprocessable_entity }
