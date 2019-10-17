@@ -31,7 +31,7 @@ class MembersController < ApplicationController
           if @member.save
             format.js {}
             format.html 
-            if @epc
+            if @epc or params[:member][:note]
               format.json { head :no_content } # 204 No Content
             else
               format.json { render "update.js.erb", format: :js} 
