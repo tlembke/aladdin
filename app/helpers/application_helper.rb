@@ -26,6 +26,14 @@ module ApplicationHelper
           return theText.html_safe
   end
 
+  def alcohol_display(alcoholstatus,patient)
+      status="green"
+      status="orange" if  alcoholstatus[patient] == "Unsafe"
+      status="red" if  alcoholstatus[patient] == "Very Unsafe"
+      
+      return status_symbol(status,alcoholstatus[patient])
+  end
+
   def age(dob)
     begin
       now = Time.now.utc.to_date
@@ -144,6 +152,10 @@ module ApplicationHelper
 
     return icon
 
+  end
+
+  def actionplans_for_select     
+      Document.where(code: 1, patient_id: 0).collect { |m| [m.name, m.id] }
   end
 
 

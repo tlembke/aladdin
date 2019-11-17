@@ -11,8 +11,11 @@
 					 			<div class="col-md-10">
 								<h3 class="shrink"><%= problem['PROBLEM'] %></h3>
 								
-
-								<%= simple_format(problem['NOTE'])%>
+								
+								<% theNote  = problem['NOTE'].force_encoding('ISO-8859-1').encode('UTF-8') %>
+    							<% if theNote.valid_encoding? %>
+								<%= simple_format(theNote) %>
+								<% end %>
 								<!----------- -->
 								<% @status=get_status(problem['ID'],@patient.id) %>
 

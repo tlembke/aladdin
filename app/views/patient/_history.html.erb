@@ -29,8 +29,10 @@
 								<b><%= problem['HISTORY'] %> <%= "(" + problem['CREATIONDATE'].strftime("%d/%m/%Y") + ")" if problem['CREATIONDATE']%></b>
 								</div>
 								<div class='col-md-10 col-md-offset-2'>
-
-								<%= simple_format(problem['NOTE'])%>
+								<% theNote  = problem['NOTE'].force_encoding('ISO-8859-1').encode('UTF-8') %>
+    							<% if theNote.valid_encoding? %>
+								<%= simple_format(theNote) %>
+								<% end %>
 								</div>
 							<% end %>
 							

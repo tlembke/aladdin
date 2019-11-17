@@ -265,7 +265,7 @@
             </td></tr>
 
              <% @immunisations.each do |immunisation | %>
-            <tr><td width=50%><%= immunisation["GIVENDATE"].strftime("%d/%m/%Y") %></td><td><%= immunisation["VACCINE"] %></td></tr>
+            <tr><td width=50%><%= immunisation["GIVENDATE"].strftime("%d/%m/%Y") if immunisation["GIVENDATE"] %></td><td><%= immunisation["VACCINE"] %></td></tr>
             <% end %>
             </table>
             </div>
