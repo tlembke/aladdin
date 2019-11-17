@@ -257,6 +257,7 @@ class PatientController < ApplicationController
           @users = get_users(dbh)
           @provider = session[:provider]
           @epc_count = get_epc_count(@id)
+          @alcohol_status = get_alcohol_status(dbh)
 
            # test about annual chech
           @last_annual_check=get_last_check(@id,dbh)
@@ -358,6 +359,7 @@ def healthsummary
           @patient.events=history_array[1]
           @patient.allergies=get_allergies(@id,dbh)
           @patient.careteam=get_careteam(@id,dbh)
+          @alcohol_status = get_alcohol_status(dbh)
           
           dbh.disconnect
 
@@ -399,6 +401,7 @@ def healthsummary
             @patients<<getall_patient(patient,dbh,"precheck")
           end
           sth.drop
+          @alcohol_status = get_alcohol_status(dbh)
           dbh.disconnect
 
     else    # lost connection to database
@@ -468,6 +471,8 @@ def healthsummary
 
             @appointments = get_appointments(@id,dbh)
 
+            @alcohol_status = get_alcohol_status(dbh)
+
 
             @phonetime = get_phonetime(session[:id])
             @bps=@patient.bps
@@ -516,6 +521,7 @@ def cma
           @username = session[:username]
           #@medications = get_medications(@id,dbh)
           @appointments = get_appointments(@id,dbh)
+          @alcohol_status = get_alcohol_status(dbh)
           # @measures = get_measures(@id,dbh)
           #@current_problems = get_current_problems(@id,dbh)
           #history_array = get_history(@id,dbh)
@@ -1013,7 +1019,7 @@ def cma
           risk = 1 - (Math.exp(-Math.exp(upsilon)))
           nnt = 1 / (0.33 * risk)
           risk = risk * 100
-          
+   
           if risk < 10
                   color="green"
                   cat="Low"
@@ -1535,14 +1541,14 @@ def cma
 
   def get_patient(patient,dbh)
             # Get info about this patient
-         sql = "SELECT Surname,FirstName,FullName,LastSeenDate,LastSeenBy,AddressLine1, AddressLine2,Suburb,DOB, Age, Sex, Scratchpad, FamilyHistory, MedicareNum, MedicareRefNum, IHI, HomePhone, MobilePhone, SmokingFreq, Alcohol, AlcoholInfo, LastMammogram, CultureCode, EmailAddress, LastSmear, NoHPVRecall, LastHPV FROM Patient WHERE id = "+patient       
+         sql = "SELECT Surname,FirstName,FullName,LastSeenDate,LastSeenBy,AddressLine1, AddressLine2,Suburb,DOB, Age, Sex, Scratchpad, FamilyHistory, MedicareNum, MedicareRefNum, IHI, HomePhone, MobilePhone, SmokingFreq, ALCST_Id_Fk, AlcoholInfo, LastMammogram, CultureCode, EmailAddress, LastSmear, NoHPVRecall, LastHPV FROM Patient WHERE id = "+patient       
          puts sql
           sth = dbh.run(sql)
           sth.fetch_hash do |row|
             atsi=0
             row['CULTURECODE'] > 3 ? atsi=0 : atsi=1
 
-            @patient=Patient.new(id: @id, surname: row['SURNAME'], firstname: row['FIRSTNAME'], fullname: row['FULLNAME'], lastseendate: row['LASTSEENDATE'], lastseenby: row['LASTSEENBY'], addressline1: row['ADDRESSLINE1'], addressline2: row['ADDRESSLINE2'],suburb: row['SUBURB'],dob: row['DOB'], age: row['AGE'], sex: row['SEX'], scratchpad: row['SCRATCHPAD'], social: row['FAMILYHISTORY'], ihi: row['IHI'],medicare: row['MEDICARENUM'].to_s + "/" + row['MEDICAREREFNUM'].to_s,homephone: row['HOMEPHONE'],mobilephone: row['MOBILEPHONE'], smoking: row['SMOKINGFREQ'], etoh: row['ALCOHOL'], etohinfo: row['ALCOHOLINFO'], mammogram: row['LASTMAMMOGRAM'], atsi: atsi, email: row['EMAILADDRESS'], pap: row['LASTSMEAR'],hpv_recall: row['NOHPVREACLL'], hpv: row['LASTHPV'])
+            @patient=Patient.new(id: @id, surname: row['SURNAME'], firstname: row['FIRSTNAME'], fullname: row['FULLNAME'], lastseendate: row['LASTSEENDATE'], lastseenby: row['LASTSEENBY'], addressline1: row['ADDRESSLINE1'], addressline2: row['ADDRESSLINE2'],suburb: row['SUBURB'],dob: row['DOB'], age: row['AGE'], sex: row['SEX'], scratchpad: row['SCRATCHPAD'], social: row['FAMILYHISTORY'], ihi: row['IHI'],medicare: row['MEDICARENUM'].to_s + "/" + row['MEDICAREREFNUM'].to_s,homephone: row['HOMEPHONE'],mobilephone: row['MOBILEPHONE'], smoking: row['SMOKINGFREQ'], etoh: row['ALCST_ID_FK'], etohinfo: row['ALCOHOLINFO'], mammogram: row['LASTMAMMOGRAM'], atsi: atsi, email: row['EMAILADDRESS'], pap: row['LASTSMEAR'],hpv_recall: row['NOHPVREACLL'], hpv: row['LASTHPV'])
           end
           sth.drop
           return @patient
@@ -1607,6 +1613,21 @@ end
     
     return [colon,colon_date]
 end 
+
+def get_alcohol_status(dbh)
+          sql = "SELECT Id, Status FROM AlcoholStatus"
+          puts sql
+          sth = dbh.run(sql)      
+          alcohol_status=Hash.new
+          sth.fetch_hash do |row|
+
+              alcohol_status[row['ID']] = row['STATUS']
+
+          end
+          sth.drop
+          return alcohol_status
+      
+end
 
   def get_problems(dbh,consult)
     # this gets the reason for consulation rather than medical history

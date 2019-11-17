@@ -2,6 +2,7 @@ class Patient
   include ActiveModel::Model
 
 
+
   
 
   attr_accessor :id, :surname, :firstname, :age, :sex, :fullname, :lastseendate, :lastseenby, :addressline1, :addressline2, :suburb, :dob, :scratchpad, :social, :medicare, :ihi, :homephone, :mobilephone, :smoking, :etoh,  :etohinfo, :nutrition, :activity, :mammogram, :atsi, :email, :pap, :hpv, :hpv_recall, :medications, :allergies, :weight, :height, :weight_date, :height_date, :bmi, :bp, :colonoscopy, :lastFHH, :last_mam, :mam_msg, :hpv_msg, :chol, :hdl, :score, :tetanus, :tetanus_msg, :procedures, :events, :current_problems, :tasks, :meds, :notes, :plan, :appointments, :changes, :tests, :careteam,  :ecg, :bps, :lipids, :lastFHHnew, :results
@@ -592,6 +593,11 @@ end
           
           end
       return newEvents
+  end
+
+  def actionplans
+        actionplans = Document.where(patient_id: self.id, code: 1)
+        return actionplans
   end
 
 
