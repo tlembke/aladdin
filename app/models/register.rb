@@ -48,20 +48,23 @@ class Register < ActiveRecord::Base
 					header.cells.where(patient_id: patient.id).destroy_all
 					
 					# demographic information direct from Genie demographic
-					if patient.respond_to?(header.name)
+					keyword=header.name
+					if header.keyword 
+						keyword = header.keyword
+					end
+					if patient.respond_to?(keyword)
 						value=""
 						date=""
 						note=""
 						case header.code
 							when "string"
-								value=patient.send(header.name)
+								value=patient.send(keyword)
 							when "date"
-								date=patient.send(header.name)
+								date=patient.send(keyword)
 							when "note"
-								note=date=patient.send(header.name)
+								note=patient.send(keyword)
 						end
 						Cell.create(patient_id: patient.id, header_id: header.id, value: value, date: date, note: note )
-
 					elsif header.name == "name"
 						name = patient.surname + "," + patient.firstname
 
