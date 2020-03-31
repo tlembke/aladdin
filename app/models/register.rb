@@ -64,6 +64,9 @@ class Register < ActiveRecord::Base
 							when "note"
 								note=patient.send(keyword)
 						end
+						if keyword.include?("phone")
+							value.gsub!(/\s+/, '')
+						end
 						Cell.create(patient_id: patient.id, header_id: header.id, value: value, date: date, note: note )
 					elsif header.name == "name"
 						name = patient.surname + "," + patient.firstname
