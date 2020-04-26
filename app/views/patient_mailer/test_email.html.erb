@@ -1,0 +1,34 @@
+
+
+Hi there <%= @patient.fullname %>
+<<%= @patient.email %>>
+
+Thanks for attending your appointment today.
+
+
+    <%= render partial: "patient/summary" %>
+    <%= render partial: "patient/tasks", locals: {tasks: @tasks} %>
+    <%= render partial: "patient/medchanges", locals: {meds: @meds} %> 
+    <%= render partial: "patient/notes",locals: {notes: @notes} %> 
+       
+
+    <%= render "patient/measures" %>
+         
+    <%= render "patient/tests" %>
+     
+     <%=render "patient/appointments" %>
+       
+
+    <%= render "patient/misc" %> 
+
+    <%= render "patient/phonetime" %>
+        
+    <%= render "patient/urgent" %>
+
+   <%= render "patient/medications" %>
+
+
+
+
+
+

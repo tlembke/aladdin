@@ -20,8 +20,18 @@
 				  <% end %>
 			  
 				<%= f.form_group :description do |f| %>
-			      <%= f.label :description, class: 'form-label' %>
+			      <%= f.label :description, "Success looks like ..", class: 'form-label' %>
 			        <%= f.text_area :description, class: 'form-control' %>
+			        <%= f.error_messages %>
+			    <% end %>
+			    <%= f.form_group :by do |f| %>
+			      <%= f.label :by, "I will ",class: 'form-label' %>
+			        <%= f.text_area :by, class: 'form-control' %>
+			        <%= f.error_messages %>
+			    <% end %>
+			    <%= f.form_group :fallback1 do |f| %>
+			      <%= f.label :fallback1, "My fallback is ",class: 'form-label' %>
+			        <%= f.text_area :fallback1, class: 'form-control' %>
 			        <%= f.error_messages %>
 			    <% end %>
 

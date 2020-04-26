@@ -1,0 +1,59 @@
+<% @title = "Listing documents" %>
+
+<% content_for :description do %>
+<p>Edit this template in <code>app/views/Documents/index.html.erb</code>.</p>
+<% end %>
+
+<% content_for :actions do %>
+<%= link_to new_document_path, class: 'btn btn-primary btn-large pull-right' do %>
+<%= fa_icon_tag "plus" %> Add Document
+<% end %>
+<% end %>
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+      <div class="sheet sheet-condensed">
+        <div class="sheet-inner">
+          <table class="table">
+            <thead>
+              <tr>
+                                <th>Name</th>
+                                <th>Description</th>
+                                <th>Patient</th>
+                                <th>Code</th>
+                                <th>Parent</th>
+                                <th>Texttype</th>
+                                <th>Content</th>
+                                <th></th>
+              </tr>
+            </thead>
+            <tbody>
+              <% @documents.each do |document| %>
+              <tr>
+                                <td><%= document.name %></td>
+                                <td><%= document.description %></td>
+                                <td><%= document.patient_id %></td>
+                                <td><%= document.code %></td>
+                                <td><%= document.parent %></td>
+                                <td><%= document.texttype %></td>
+                                <td><%= document.content %></td>
+                                <td class="actions">
+                  <%= link_to fa_icon_tag("eye"), document, rel: 'tooltip', title: 'Show' %>
+                  <%= link_to fa_icon_tag("pencil"), edit_document_path(document), rel: 'tooltip', title: 'Edit' %>
+                  <%= link_to fa_icon_tag("trash-o"), document, rel: 'tooltip', title: 'Delete',
+                  data: { confirm: 'Are you sure?' }, method: :delete %>
+                </td>
+              </tr>
+              <% end %>
+              <% if @documents.length == 0 %>
+              <tr><td colspan=42 class='text-center'>No documents.</td></tr>
+              <% end %>
+            </tbody>
+          </table>
+        </div><!-- /.sheet-inner -->
+      </div><!-- /.sheet -->
+
+                </div>
+  </div>
+</div>

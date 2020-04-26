@@ -1,0 +1,65 @@
+<% if @faxes and @faxes.length > 0 %>
+	<h4> Outgoing </h4>
+	<table class='table table-striped'>
+	 <% @faxes.each do |fax| %>
+	 	<tr>
+	 		<td><%= File.basename(fax[0], ".pdf") %> </td>
+	 		<td><%= fax[1] %></td>
+	 		<td><%= fax[2] %></td>
+	 	</tr>
+	 <% end %>
+	</table>
+	
+
+<% end %>
+
+<style>
+.table-selected {
+  border: 1px solid #eceeef !important;
+  background-color: #faf2cc !important;
+}
+</style>
+<h4> Incoming </h4>
+<div class='row'>
+	<div class='col-md-6'>
+		<%= form_tag do %>
+		<table class="table">
+
+			<% @files.take(10).each_with_index do |f,i| %>
+			<tr  class="faxpick<%= ' table-selected' if i==0 %>" id="tr-<%= i %>" faxindex="<%= i.to_s %>" data-url="<%= File.basename(f, '.pdf') %>.png">
+				<td>
+				<span><%= File.basename(f, ".pdf") %>
+				</span>
+				</td>
+				<td>
+				<%= File.stat(f).mtime.strftime("%l:%M %d/%m/%Y ") %>
+			</td>
+				
+				<td>
+				<%= select_tag 'fax-'+i.to_s, options_from_collection_for_select(Contact.order("Name").all,:fax,:name),class: "faxselect", datafax: File.basename(f, ".pdf"),:include_blank => true %>
+				</td>
+				<td>
+				<%= text_field_tag File.basename(f, ".pdf"), nil ,size: 10 %>
+				</td>
+				<td>
+					<i class="fa fa-arrow-right fax-arrow" id="fax-arrow-<%=i.to_s%>"<%= "style='display:none;'".html_safe if i > 0 %> >
+				</td>
+			</tr>
+		
+
+			<% end %>
+		</table>
+		<%= submit_tag "Process", class: "btn-primary" %>
+		<% end %> <!-- end form tag -->
+	
+	</div>
+	<div class='col-md-6'>
+			<div id="fax-holder">
+			
+				<%= image_tag '/fax/'+File.basename(@files[0], '.pdf') + '.png' if @files.length > 0 %>
+				
+			</div>
+	</div>
+
+
+</div>

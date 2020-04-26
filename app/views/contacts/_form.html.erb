@@ -1,0 +1,50 @@
+
+<%= form_for(@contact, html: { class: 'form-horizontal' }) do |f| %>
+  <%= f.error_notification %>
+
+  <div class="form-inputs">
+    <%= f.form_group :name do |f| %>
+      <%= f.label :name, class: 'control-label col-md-2' %>
+      <div class='col-md-8'>
+        <%= f.text_field :name, class: 'form-control', placeholder: "eg Flintstone,Fred or LBH ED" %>
+        <%= f.error_messages %>
+      </div>
+    <% end %>
+
+    <%= f.form_group :email do |f| %>
+      <%= f.label :email, class: 'control-label col-md-2' %>
+      <div class='col-md-8'>
+        <%= f.text_field :email, class: 'form-control' %>
+        <%= f.error_messages %>
+      </div>
+    <% end %>
+
+    <%= f.form_group :fax do |f| %>
+      <%= f.label :fax, class: 'control-label col-md-2' %>
+      <div class='col-md-8'>
+        <%= f.text_field :fax, class: 'form-control' %>
+        <%= f.error_messages %>
+      </div>
+    <% end %>
+
+    <%= f.form_group :favourite do |f| %>
+      <%= f.label :favourite, class: 'control-label col-md-2' %>
+      <div class='col-md-8'>
+        <%= f.check_box :favourite, class: 'form-control' %>
+        <%= f.error_messages %>
+      </div>
+    <% end %>
+
+  </div>
+
+  <div class="form-actions">
+    <div class="form-group">
+      <div class="col-md-2"></div>
+      <div class="col-md-8">
+        <%= f.submit class: 'btn btn-primary' %>
+        <%= link_to "Cancel", contacts_path, class: 'btn' %>
+      </div>
+    </div>
+  </div>
+<% end %>
+

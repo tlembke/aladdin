@@ -1,10 +1,26 @@
+
+
+
+
+
+<!-- taking out lifestule etc -->
+<!-- taking out immunisation -->
+
+
+
+<!-- taking out measures -->
 <div class="row">
 
-	<div class="col-md-4 col-md-offset-3">
-			<h2><%= @patient.fullname %></h2>
-	</div>
-    <div class="col-md-5">
-    	 <div class="row">
+    <div class="col-md-4">
+            <h2><%= @patient.fullname %></h2>
+    </div>
+
+
+
+
+
+    <div class="col-md-6 col-md-offset-1">
+         <div class="row">
             <div class="btn-group btn-group-justified">
                     <%= link_to 'Careplan', careplan_patient_path(@patient.id), {:class => "btn btn-lg btn-primary"} %>
                     <%= link_to 'Summary', healthsummary_patient_path(@patient.id), {:class => "btn btn-lg btn-primary"} %>
@@ -14,119 +30,279 @@
                     <% else %>
                      <%= link_to 'Annual', annual_patient_path(@patient.id), {:class => "btn btn-lg btn-primary"} %>
                      <%= link_to 'Pre', precheck_patient_path(@patient.id), {:class => "btn btn-lg btn-primary"} %>
+                      <%= link_to 'Print',patient_path(@patient.id, :consult_id=> @consult['ID'], :print => "true"),{:class => "btn btn-lg btn-primary"} %>
                      <% end %>
-    	 	</div>
-            <div class="btn-group btn-group-justified">
-                    <%= link_to 'Print',patient_path(@patient.id, :consult_id=> @consult['ID'], :print => "true"),{:class => "btn btn-lg btn-primary"} %>
-
             </div>
+
             
-    </div>
+        </div>
+  </div>
+</div>
+
+     <div class="row">
+                    <div class="col-md-4">
+                        <div class="row">
+                            <div class="col-md-2">
+                            DOB: 
+                            </div>
+                            <div class="col-md-10">
+                            <%= @patient.dob.strftime("%d/%m/%y") %>
+                            </div>
+                            <div class="col-md-2">
+                            Age: 
+                            </div>
+                            <div class="col-md-10">
+                            <%= @patient.age %>
+                            </div>                        
+                            <div class="col-md-2">
+                            Address: 
+                            </div>
+                            <div class="col-md-10">
+                            <%= @patient.addressline1 + "," if @patient.addressline1 !="" %>
+                            <%= @patient.addressline2 + "," if @patient.addressline2 !="" %>
+                            <%= @patient.suburb %>
+                            </div>
+                             <div class="col-md-2">
+                            Home: 
+                            </div>
+                            <div class="col-md-10">
+                            <%= @patient.homephone %>
+                            </div>
+                            <div class="col-md-2">
+                            Mobile: 
+                            </div>
+                            <div class="col-md-10">
+                            <%= @patient.mobilephone %>
+                            </div>
+ 
+                        </div>
+                     </div> 
+                    <% if @patient.current_problems.count > 0   %>
+                        <div class="col-md-4">
+                        I am being managed for the following <%= pluralize(@patient.current_problems.count, 'condition') %>
+                        <ul>
+                                <% @patient.current_problems.each do |problem| %>
+                                        <li><%= problem['PROBLEM'] %></li>
+                                <% end %>
+                        </ul>
+                        </div>
+                     <% end %>
+
+                    <% if @patient.careteam.count > 0   %>
+                        <div class="col-md-4">
+                        My care team includes :
+                        <ul>
+                                <% @patient.careteam.each do |member| %>
+                                        <li><%= member['PROVIDERNAME'] %>
+                                        <%= "(" + member['PROVIDERTYPE'] + ")" if member['PROVIDERTYPE']!="" %>
+                                        </li>
+                                <% end %>
+                        </ul>
+                        </div>
+                    <% end %>
+
 </div>
 <div class="row">
-        <div class="col-md-12">
+        <div class = "col-md-12">
             <hr>
         </div>
-        <div class = "col-md-5 col-md-offset-1">
-			<div class="row">
-	         	<div class="col-md-5">
-	         	DOB: 
-	         	</div>
-	         	<div class="col-md-7">
-	         	<%= @patient.dob.strftime("%d/%m/%y") %> (<%= age_months(@patient.dob)%>)
-	         	</div>
-	         </div>
-	         <div class="row">
-	         	<div class="col-md-5">
-	         	Address: 
-	         	</div>
-	         	<div class="col-md-7">
-	         	<%= @patient.addressline1 + "," if @patient.addressline1 !="" %>
-	         	<%= @patient.addressline2 + "," if @patient.addressline2 !="" %>
-	         	<%= @patient.suburb %>
-	         	</div>
- 			</div>
-            <div class="row">
-                <div class="col-md-5">
-                Home Phone:
-                </div>
-                <div class="col-md-7">
-                <%= @patient.homephone %>
-                </div>
-             </div>
-            <div class="row">
-                <div class="col-md-5">
-                Mobile: 
-                </div>
-                <div class="col-md-7">
-                <%= @patient.mobilephone %>
-                </div>
-            </div>
-
- 		</div>
-    	
-        <div class = "col-md-6">
-            <%= render "consult" %>
-        </div>
-    
 </div>
+<div class="row">
+        <div class = "col-md-12">
+            <%= render "consult" %>
+            <p>
+        </div>
+</div>
+
+
+
 
 <div class="row">
-	<div class="col-md-6">
-       
-        <hr>
-	<!--   Half the page for medications   -->
-    <%= render "summary" %>
-        <hr>
-        <%= render "progress" %>
-       
-        <hr>
-        <legend><i class="fa fa-medkit"></i>  Medications</legend>
-        <%=render "medications" %>
-        <hr>
-         <%= render "measures" %>
-         <hr>
-       <%= render "tests" %>
-        <hr>
-        
-        
-	</div>
+<div class="col-md-12">
 
-	<div class="col-md-6">
-        
+<div class="panel-group" id="accordion" role="tablist" aria-multiselectable="false"> <!-- accordion -->
 
 
+
+
+
+
+
+    <div class="panel panel-default">
+        <div class="panel-heading" role="tab" id="headingTwo">
+          <legend class="panel-title">
+                  <a role="button" data-toggle="collapse" data-parent="#accordion"  href="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo"><i class="fa fa-heartbeat"></i>  Medical History</a>
+          </legend>
+         </div> <!-- panel headiung -->
+         <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
+            <div class="panel-body">
+                <div class="col-md-6">
+
+ 
+                          <legend class="panel-title"><i class="fa fa-heartbeat"></i>  Current Conditions</legend>
+                      <div class="panel-body">
+                                <% @current_problems = @patient.current_problems %>
+                                <%= render "problems_notes" %>
+                       </div>
+
+                </div> <!-- col -->
+
+                <div class="col-md-6">
+     
+   
+
+                     <legend class="panel-title"><i class="fa fa-hospital-o"></i>  Medical History</legend>
+     
+                     <div class="panel-body">
+                            <% @procedures = @patient.procedures %>
+                             <% @events = @patient.events %>
+                             <%= render "history_notes" %>
+                        </div>
+
+                </div> <!-- col -->
+            </div> <!-- panel body -->
+        </div> <!-- collapse -->
+    </div> <!-- panel -->
+
+    <div class="panel">
+        <div class="panel-heading" role="tab" id="headingFive">
+          <legend class="panel-title">
+                  <a role="button" data-toggle="collapse" data-parent="#accordion"  href="#collapseFive" aria-expanded="false" aria-controls="collapseFive"><i class="fa fa-medkit"></i>  Medications and Allergies</a>
+          </legend>
+         </div> <!-- panel headiung -->
+         <div id="collapseFive" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingFive">
+            <div class="panel-body">
+                    <div class="row no-page-break-inside"> <!-- Full screen row -->
+
+                        <div class="col-md-6">
+
+                                  <legend class="panel-title"><i class="fa fa-medkit"></i>  Medications</legend>
+                               
+                                    <div class="panel-body">
+                                        <% @medications = @patient.medications %>
+                                        <% if @medications.count > 0 %>
+                                        (Please check this medication list is up to date and let us know of any changes that should be made to our record)<br><br>
+                                        <% end %>
+                                            <%= render "medications_no_legend" %>
+                                    </div>
+
+                        </div>
+                        <div class="col-md-6">
+
+                                    <legend class="panel-title"><i class="fa fa-flag"></i> Allergies</legend>
+                                 
+                                     <div class="panel-body">
+                                     <% @allergies = @patient.allergies %>
+                                            <%= render "allergies" %>
+                                    </div>
+
+                        </div> <!-- col -->
+                     </div> <!--  row -->
+            </div> <!-- panel body -->
+        </div> <!-- collapse -->
+    </div> <!-- panel -->
+
+
+    <div class="panel">
+          <div class="panel-heading" role="tab" id="headingConsults">
+              <legend class="panel-title">
+              
+                        <a role="button" data-toggle="collapse" data-parent="#accordion"  href="#collapseConsults" aria-expanded="false" aria-controls="collapseConsults"><i class="fa fa-heartbeat"></i>  Recent Consults </a>
+              </legend>
            
-            <%= render "consults" %>
-            <%= render partial: "tasks", locals: {tasks: @tasks} %>
-            <%= render partial: "medchanges", locals: {meds: @meds, prescription_history: @prescription_history} %> 
+           </div>
+     <div id="collapseConsults" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingConsults">
+            <div class="panel-body">
+                
+                 
+                                            <% if @consults.length > 0  %>
+                            
+                                 <table class='table table-bordered table-condensed table-compact table-responsive'>
+                            
+                           
+                                   
+                                    <tr>
+
+                                    <td> 
+                                        <% @consults.each do |consult| %>                            
+                                            <span class='small'><%= consult['date'].strftime("%d/%m/%Y") %>
+                                                 <b><%= consult['provider'] %></b>
+                                            
+                                            <% consult['problems'].each do |problem| %> 
+                                                 | <%= problem %>
+                                            <% end %>
+                                        </span>
+                                            <br>
+                                            <div class='small'><%= consult['clinicalText'] %></div>
+                                        <% end %>
+
+                                    </td>
+                                    </tr>
+                                    <% end %>
+
+                            
+                        
+                        </table>
+
+                      
+                        <%= link_to 'More consults', patient_path(@id, noConsults: (@noConsults.to_i + 10).to_s),{:class => "btn btn-primary"} %>
+            </div> <!-- panel body -->
+        </div> <!-- collapse -->
+    </div> <!-- panel -->
+
+                        
+                    
+                    
+                
+
+
+      <div class="panel">
+        <div class="panel-heading" role="tab" id="headingResults">
+          <legend class="panel-title">
+                  <a role="button" data-toggle="collapse" data-parent="#accordion"  href="#collapseResults" aria-expanded="false" aria-controls="collapseResults"><i class="fa fa-tasks"></i> Results</a>
+          </legend>
+         </div>
+         <div id="collapseResults" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingResults">
+            <div class="panel-body">
+                    <%= render "results/results" %>
+                    <%= link_to 'More results', patient_results_path(@id), {:class => "btn btn-primary"} %>
+              
+            </div> <!-- panel body -->
+        </div> <!-- collapse -->
+    </div> <!-- panel -->
+
+      <div class="panel">
+        <div class="panel-heading" role="tab" id="headingRegisters">
+          <legend class="panel-title">
+                  <a role="button" data-toggle="collapse" data-parent="#accordion"  href="#collapseRegisters" aria-expanded="false" aria-controls="collapseRegisters"><i class="fa fa-calendar"></i> Registers</a>
+          </legend>
+         </div>
+         <div id="collapseRegisters" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingRegisters">
+            <div class="panel-body">
+                    <%= render "registers" %>
+              
+            </div> <!-- panel body -->
+        </div> <!-- collapse -->
+    </div> <!-- panel -->
+
+
+
+
+</div> <!-- accordion -->
+
+
+</div> <!-- row -->
+</div> <!-- col -->
+
+<div class="row page-break-before"> <!-- Full screen row -->
+<div class="col-md-12">
+
+           <%= render partial: "tasks", locals: {tasks: @tasks} %>
+           
+            <%= render partial: "medchanges", locals: {meds: @meds, changes: @changes} %> 
             <%= render partial: "notes",locals: {notes: @notes} %> 
-                     <%= render "misc" %> 
-             <%=render "appointments" %>
-             <%=render "results/results" %>
-             <%= link_to 'More results', patient_results_path(@id), {:class => "btn btn-lg btn-primary"} %>
+            <%= render partial: "tests",locals: {tests: @tests} %>
+             <%=render partial: "appointments",locals: {appointments: @appointments} %>
 
-             <%=render "registers" %>
-            <p>Action Plans<p>
-             <%= render "actionplans" %>
-
-
-
-
-
-
-    
-
-    	
-
-
-    
-
-	</div>
-
-
-
-</div>
-
-
-
+</div> <!-- col -->
+</div> <!--  row -->

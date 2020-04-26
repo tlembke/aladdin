@@ -1,0 +1,78 @@
+<% @title = "Showing contact" %>
+
+<% content_for :description do %>
+  <p>Edit this template in <code>app/views/Contacts/show.html.erb</code>.</p>
+  <% end %>
+
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+        <div class="sheet sheet-condensed">
+          <div class="sheet-inner p30">
+            <div class="form-horizontal">
+                              <div class="form-inputs">
+                 <div class="form-group">
+                    <label class="col-md-2 control-label">Name</label>
+                    <div class="col-md-8">
+                     <div class="form-control uneditable-input">
+                        <span>
+                          <%= @contact.name %>
+                        </span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+
+                              <div class="form-inputs">
+                 <div class="form-group">
+                    <label class="col-md-2 control-label">Email</label>
+                    <div class="col-md-8">
+                     <div class="form-control uneditable-input">
+                        <span>
+                          <%= @contact.email %>
+                        </span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+
+                              <div class="form-inputs">
+                 <div class="form-group">
+                    <label class="col-md-2 control-label">Fax</label>
+                    <div class="col-md-8">
+                     <div class="form-control uneditable-input">
+                        <span>
+                          <%= @contact.fax %>
+                        </span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+
+                              <div class="form-inputs">
+                 <div class="form-group">
+                    <label class="col-md-2 control-label">Favourite</label>
+                    <div class="col-md-8">
+                     <div class="form-control uneditable-input">
+                        <span>
+                          <%= @contact.favourite %>
+                        </span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+
+                            <div class="form-actions col-md-offset-2">
+                <%= link_to fa_icon_tag("pencil") + ' Edit', edit_contact_path(@contact), class: 'btn btn-primary' %>
+                <%= link_to 'Back', contacts_path, class: 'btn' %>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>

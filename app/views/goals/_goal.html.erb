@@ -3,7 +3,10 @@
 <%= link_to fa_icon_tag("trash-o"),@goal, data: {confirm: "Are you sure you want to delete '#{@goal.title}'?"}, :remote => true, method: :delete %>
 
 <br>
-<a href="#" id="editable_goal__desc_<%=@goal.id%>" data-defaultValue="Add new goal" data-type="textarea" data-pk="1" data-resource="goal" data-touch="goal-<%=@goal.id%>-touch" data-name="description" data-emptytext= "Notes" data-url="/goals/<%=@goal.id%>" data-placeholder="Your notes here..." data-original-title="Enter notes" class="editable editableUpdate"><%= textarea_format(@goal.description) %> </a><br> 
+<a href="#" id="editable_goal_desc_<%=@goal.id%>" data-defaultValue="Add new goal" data-type="textarea" data-pk="1" data-resource="goal" data-touch="goal-<%=@goal.id%>-touch" data-name="description" data-emptytext= "What does success look like?" data-url="/goals/<%=@goal.id%>" data-placeholder="What does success look like?" data-original-title="What does success look like?" class="editable editableUpdate"><%= textarea_format(@goal.description) %> </a><br> 
+<a href="#" id="editable_goal_by_<%=@goal.id%>" data-defaultValue="Add new goal" data-type="textarea" data-pk="1" data-resource="goal" data-touch="goal-<%=@goal.id%>-touch" data-name="by" data-emptytext= "What will I do?" data-url="/goals/<%=@goal.id%>" data-placeholder="Your notes here..." data-original-title="What will I do?" class="editable editableUpdate"><%= textarea_format(@goal.by) %> </a><br> 
+
+<a href="#" id="editable_goal_fallback1_<%=@goal.id%>" data-defaultValue="Add new goal" data-type="textarea" data-pk="1" data-resource="goal" data-touch="goal-<%=@goal.id%>-touch" data-name="fallback1" data-emptytext= "What is my fallback?" data-url="/goals/<%=@goal.id%>" data-placeholder="What is my fallback" data-original-title="What is my fallback" class="editable editableUpdate"><%= textarea_format(@goal.fallback1) %> </a><br> 
 
 <span id='goal-<%= @goal.id %>-touch' class='small'>
 	<% if @goal.updated_at.to_date == Date.today %>

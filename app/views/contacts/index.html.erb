@@ -1,0 +1,53 @@
+<% @title = "Listing contacts" %>
+
+<% content_for :description do %>
+<p>Edit this template in <code>app/views/Contacts/index.html.erb</code>.</p>
+<% end %>
+
+<% content_for :actions do %>
+<%= link_to new_contact_path, class: 'btn btn-primary btn-large pull-right' do %>
+<%= fa_icon_tag "plus" %> Add Contact
+<% end %>
+<% end %>
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+      <div class="sheet sheet-condensed">
+        <div class="sheet-inner">
+          <table class="table">
+            <thead>
+              <tr>
+                                <th>Name</th>
+                                <th>Email</th>
+                                <th>Fax</th>
+                                <th>Favourite</th>
+                                <th></th>
+              </tr>
+            </thead>
+            <tbody>
+              <% @contacts.each do |contact| %>
+              <tr>
+                                <td><%= contact.name %></td>
+                                <td><%= contact.email %></td>
+                                <td><%= contact.fax %></td>
+                                <td><%= contact.favourite %></td>
+                                <td class="actions">
+                  <%= link_to fa_icon_tag("eye"), contact, rel: 'tooltip', title: 'Show' %>
+                  <%= link_to fa_icon_tag("pencil"), edit_contact_path(contact), rel: 'tooltip', title: 'Edit' %>
+                  <%= link_to fa_icon_tag("trash-o"), contact, rel: 'tooltip', title: 'Delete',
+                  data: { confirm: 'Are you sure?' }, method: :delete %>
+                </td>
+              </tr>
+              <% end %>
+              <% if @contacts.length == 0 %>
+              <tr><td colspan=42 class='text-center'>No contacts.</td></tr>
+              <% end %>
+            </tbody>
+          </table>
+        </div><!-- /.sheet-inner -->
+      </div><!-- /.sheet -->
+
+                </div>
+  </div>
+</div>

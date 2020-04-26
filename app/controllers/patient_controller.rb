@@ -25,7 +25,7 @@ class PatientController < ApplicationController
           if request.post?
               surname_text=""
               if params[:Surname] and params[:Surname]!=""
-                surname = params[:Surname] + "%"
+                surname = params[:Surname].sub("'"){"''"} + "%"
                   surname_text= "Surname LIKE '%s'" % surname
               end
               firstname_text=""
@@ -72,72 +72,36 @@ class PatientController < ApplicationController
 
 	def show
 
+    # Components
+    # headers
+    # notes
+    # instructions
+    # last 10 consults
+    # meds
+    # problems
+    # results
+
 		@id=params[:id]
     connect_array=connect()
     @error_code=connect_array[1]
     if (@error_code==0)
           dbh=connect_array[0]
           @patient=get_patient(@id,dbh)
+           @noConsults=10
+           params[:noConsults] ? @noConsults = params[:noConsults] : @noConsults=10
+
+         
+
+        
+
+          @consults = get_last_consults(dbh,@id,Date.today.to_s(:db), @noConsults)
 
 
-          # Deafult Get last consult details
-          # Unless otherwise selected
-          if params[:consult_id]
-              sql = "SELECT ConsultDate, DoctorName,Plan,Diagnosis, History, Examination, Id FROM Consult WHERE Id = " + params[:consult_id]
-          else
-              sql = "SELECT ConsultDate, DoctorName,Plan,Diagnosis,History, Examination, Id FROM Consult WHERE PT_Id_FK = " + @id + " ORDER BY ConsultDate DESC LIMIT 1"
-          end
-          puts sql
-          sth = dbh.run(sql)
-           sth.fetch_hash do |row|
-            row['CONSULTDATE']= row['CONSULTDATE'].to_date
-            #row['CONSULTDATE']=Date.strptime(row['CONSULTDATE'].to_s,"%d/%m/%y")
+      
 
-            @consult = row
-          end
-          sth.drop
-
-          # Get other recent consults as well
-          @recent_consults=[]
-          sql = "SELECT ConsultDate, DoctorName, Id FROM Consult WHERE PT_Id_FK = " + @id + " ORDER BY ConsultDate DESC LIMIT 5"
-          puts sql
-          sth = dbh.run(sql)
-           sth.fetch_hash do |row|
-            row['CONSULTDATE']=row['CONSULTDATE'].to_date
-            @recent_consults << row
-          end
-          sth.drop
-          
-          @problems=get_problems(dbh,@consult['ID'])
-
-
-
-
-
-          careplan=false
-          if ! params[:consult]
-            if params[:careplan]
-                careplan=true
-            end
-            @problems.each do |problem|
-                if problem.include? ("Plan")
-                   careplan=true
-                end
-            end
-          end
-
-          if (@consult['DIAGNOSIS'] == "")
-            if @problems.count>0
-                @consult['DIAGNOSIS']=@problems[0]
-            else
-                @consult['DIAGNOSIS']="Consultation"
-            end
-          end
-          @changes= Patient.prescription_history(@id,dbh,@consult['CONSULTDATE'].strftime("%Y-%m-%d"))
-
-
-
-          tasks_array=extract_tasks(@consult['PLAN'])
+          @consult = @consults[0]
+          @changes= Patient.prescription_history(@id,dbh,Date.today.strftime("%Y-%m-%d"))
+          tasks_array=extract_tasks(@consult['plan'])
           @tasks=tasks_array[0]
           @meds=tasks_array[1]
           @notes=tasks_array[2]
@@ -151,9 +115,9 @@ class PatientController < ApplicationController
 
 
           @appointments = get_appointments(@id,dbh)
-          @measures = get_measures(@id,dbh)
+          # @measures = get_measures(@id,dbh)
 
-          @phonetime = get_phonetime(session[:id])
+          # @phonetime = get_phonetime(session[:id])
           @registers=Register.all
 
 
@@ -211,7 +175,6 @@ class PatientController < ApplicationController
  
 	end
 
-  
 
 
 
@@ -676,6 +639,11 @@ def cma
 
   end # end orion
 
+
+
+
+
+
   def consult
       ip = get_ip
       client = Savon.client(wsdl: 'http://'+ip+':19080/4dwsdl')
@@ -685,9 +653,11 @@ def cma
       provid = session[:id]
       newLine= "&amp;#10;"
       consult=params[:consult].gsub(/\r\n/,"<br>")
+      delivery = ["","In clinic ","At home ","By telephone ","By videoconference "]
+      consulttime = ["","In hours","After hours","Unsociable hours"]
       
 
-      message = params[:type]+ newLine +params[:consult].gsub(/\r\n/,newLine)
+      message = params[:type] + newLine + delivery[params[:delivery].to_i] +  consulttime[params[:consulttime].to_i] + newLine + params[:consult].gsub(/\r\n/,newLine)
       xml_doc = xml_document(@id,provid,message)
       @response2 = client.call(
         :ws_pr_place_document, 
@@ -696,7 +666,25 @@ def cma
            "s44D_vT_Password" => Pref.decrypt_password(Pref.webpassword),
           "s44D_vT_Output" =>  xml_doc
         })
-      @jsmessage = Time.now.strftime("%d/%m/%y")  +"<br><b>" + params[:type] + "</b><br>" + consult + "<p>" + session[:name]
+      debugger
+      @jsmessage = Time.now.strftime("%d/%m/%y")  +"<br><b>" + params[:type] + "</b><br>" + delivery[params[:delivery].to_i] +  consulttime[params[:consulttime].to_i] + "<br>" + consult + "<p>" + session[:name]
+
+      @consult = Consult.new
+      @consult.provider_id = provid
+      @consult.fullname = params[:fullname]
+      @consult.providername = params[:providername]
+      @consult.patient_id = @id
+      @consult.notes = params[:consult]
+      @consult.billingnote = params[:billingnote]
+      @consult.mbs = params[:mbs]
+      @consult.complete = params[:complete]
+      @consult.billed = false
+      @consult.consulttype = params[:type]
+      @consult.consultdate = Time.now
+      @consult.consulttime = params[:consulttime]
+      @consult.delivery = params[:delivery]
+
+      @consult.save
 
   
   end
@@ -1282,6 +1270,85 @@ def cma
       end
       render :nothing => true 
  end
+
+
+ def sendemail
+    @id=params[:id]
+    connect_array=connect()
+    @error_code=connect_array[1]
+    if (@error_code==0)
+          dbh=connect_array[0]
+          @patient=get_patient(@id,dbh)
+           @noConsults=1
+           
+
+         
+
+        
+
+          @consults = get_last_consults(dbh,@id,Date.today.to_s(:db), @noConsults)
+
+
+      
+
+          @consult = @consults[0]
+          @changes= Patient.prescription_history(@id,dbh,Date.today.strftime("%Y-%m-%d"))
+          tasks_array=extract_tasks(@consult['plan'])
+          @tasks=tasks_array[0]
+          @meds=tasks_array[1]
+          @notes=tasks_array[2]
+          @plan = tasks_array[3]
+          tests_array= get_tests(@plan)
+          @tests= tests_array[0]
+          @plan= tests_array[1]
+
+          @patient = getall_patient(@id,dbh,"annual")
+
+          @extras = [@changes,@tasks,@meds,@notes,@plan,@tests,@plan]
+
+
+
+          @appointments = get_appointments(@id,dbh)
+          # @measures = get_measures(@id,dbh)
+
+          # @phonetime = get_phonetime(session[:id])
+          #@registers=Register.all
+
+
+                  # get results to print
+                  results=Result.where(patient_id: @id, result_date: Date.today.to_date).all
+                  @printresults=[]
+                  if results
+                      results.each do |result|
+                        @printresults << Result.get_result(result.result_id.to_s,dbh)
+                      end
+                  end
+                 
+       
+
+          
+          dbh.disconnect
+
+
+    else
+          # lost connection to database
+          flash[:notice]=connect_array[2]
+          redirect_to  controller: "genie", action: "login"
+    end
+
+
+
+    PatientMailer.test_email(@patient,@extras,@appointments,@consult).deliver_now
+
+
+
+
+
+
+    
+
+ 
+  end
 
   private
 
@@ -1966,7 +2033,7 @@ end
 
   end 
 
-        def get_last_mammogram_fhh_results(patient,dbh,sex)
+  def get_last_mammogram_fhh_results(patient,dbh,sex)
 
         sql = "SELECT Test, CollectionDate, HL7Type FROM  DownloadedResult where PT_Id_FK = " + patient + " ORDER BY CollectionDate DESC"
  
@@ -2231,6 +2298,11 @@ end
       measurement=Measurement.where(measure: measure.id, patient_id: patient, measuredate: todayDate).first
       measurement != nil
  end
+
+
+  
+
+  
 
 
 

@@ -1,0 +1,114 @@
+<% @title = "Aladdin Consults" %>
+
+Filters
+
+<%= form_tag({}, {:method => :get,class: "form-horizontal"}) do %>
+
+   <fieldset>
+     <div class="form-group row">
+      <div class="col-md-3">
+       <%= select_tag("provider", options_for_select(@users,@provider),{:class => 'form-control input-medium'}) %>
+     </div>
+      <div class="col-md-3">
+        Not billed <label class="switch switch-warning"><%= check_box_tag 'billed', "true", @billed ,class: "input-medium" %><span></span></label> All
+      </div>
+       <div class="col-md-3">
+        Incomplete <label class="switch switch-warning"><%= check_box_tag 'complete', "true", @complete ,class: "input-medium" %><span></span></label> All
+      </div>
+      <div class="form-actions col-md-2">
+      <label class="switch switch-warning"><input id='apptdetails' type="checkbox" unchecked><span></span></label> Notes
+    </div>
+    <div class="form-actions col-md-1">
+       <%= submit_tag "Filter", class: "btn-primary" %>
+     </div>
+       
+          
+
+      </div>
+
+
+
+
+
+
+  
+
+
+   </fieldset>
+
+
+
+
+
+
+
+<% end %>
+
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+      <div class="sheet sheet-condensed">
+        <div class="sheet-inner">
+          <table class="table">
+            <thead>
+              <tr>
+                                <th>Provider</th>
+                                <th>Patient</th>
+                                <th>Consultdate</th>
+                                <th>Mbs</th>
+                                <th>Type</th>
+                                <th>Delivery</th>
+                                <th class='apptreason'>Notes</th>
+                                <th>Billed</th>
+                                <th>Complete</th>
+                                <th></th>
+              </tr>
+            </thead>
+            <tbody>
+              <% @consults.each do |consult| %>
+              <tr>
+                                <td><%= consult.providername %></td>
+                                <td><%= consult.fullname %></td>
+                                <td><%= consult.consultdate.strftime("%e/%m/%Y %k:%M") %></td>
+                                <td><%= Itemnumber.find(consult.mbs).mbs %>
+                                <%= "(" + consult.billingnote + ")" if consult.billingnote and consult.billingnote !="" %>
+
+                                </td>
+                                <td><%= consult.consulttype %></td>
+                                <td><%= @delivery[consult.delivery] if consult.delivery %>-<%= @consulttime[consult.consulttime] if consult.consulttime %></td>
+                                <td class='apptreason'><%= consult.notes %></td>
+                                <td> <%= check_box_tag 'billed', consult.id, consult.billed,
+      data: {
+        remote: true,
+        url: url_for(action: :toggle, id: consult.id, pram: :billed),
+        method: "POST"
+      } %>
+                                </td>
+                                <td><%= check_box_tag 'complete', consult.id, consult.complete,
+      data: {
+        remote: true,
+        url: url_for(action: :toggle, id: consult.id, pram: :complete),
+        method: "POST"
+      } %>
+
+                                </td>
+                                <td class="actions">
+                  <%= link_to fa_icon_tag("eye"), consult, rel: 'tooltip', title: 'Show' %>
+                  <%= link_to fa_icon_tag("pencil"), edit_consult_path(consult), rel: 'tooltip', title: 'Edit' %>
+                  <%= link_to fa_icon_tag("trash-o"), consult, rel: 'tooltip', title: 'Delete',
+                  data: { confirm: 'Are you sure?' }, method: :delete %>
+                </td>
+              </tr>
+              <% end %>
+              <% if @consults.length == 0 %>
+              <tr><td colspan=42 class='text-center'>No consults.</td></tr>
+              <% end %>
+            </tbody>
+          </table>
+        </div><!-- /.sheet-inner -->
+      </div><!-- /.sheet -->
+
+                </div>
+  </div>
+</div>

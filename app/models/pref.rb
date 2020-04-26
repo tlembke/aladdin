@@ -18,7 +18,12 @@ class Pref < ActiveRecord::Base
       :aladdinpassword=>{:name=>'Aladdin Password',:default => "password"},
       :websender=>{:name=>'Web Sender',:default => "Alstonville Clinic"},
       :webpassword=>{:name=>'Web Password',:default => "password"},
-      :vacants=>{:name=>'Allow vacants',:default => "true"},
+      :faxusername=>{:name=>'Fax Username',:default => "tlembke"},
+      :faxpassword=>{:name=>'Fax Password',:default => "password"},
+      :faxfolder=>{:name=>'Fax Folder',:default => "/Volumes/Fax"},
+      :faxprocessedfolder=>{:name=>'Fax Processed Folder',:default => "/Volumes/Fax/processed"},
+      :faxsend=>{:name=>'Fax Send',:default => "true"},
+      :vacants=>{:name=>'Allow vacants',:default => "true"}
     }
   end
 

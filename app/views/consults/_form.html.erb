@@ -1,0 +1,82 @@
+
+<%= form_for(@consult, html: { class: 'form-horizontal' }) do |f| %>
+  <%= f.error_notification %>
+
+  <div class="form-inputs">
+    <%= f.form_group :provider_id do |f| %>
+      <%= f.label :provider_id, class: 'control-label col-md-2' %>
+      <div class='col-md-8'>
+        <%= f.number_field :provider_id, class: 'form-control' %>
+        <%= f.error_messages %>
+      </div>
+    <% end %>
+
+    <%= f.form_group :patient_id do |f| %>
+      <%= f.label :patient_id, class: 'control-label col-md-2' %>
+      <div class='col-md-8'>
+        <%= f.number_field :patient_id, class: 'form-control' %>
+        <%= f.error_messages %>
+      </div>
+    <% end %>
+
+    <%= f.form_group :consultdate do |f| %>
+      <%= f.label :consultdate, class: 'control-label col-md-2' %>
+      <div class='col-md-8'>
+        <%= f.datetime_select :consultdate, class: 'form-control' %>
+        <%= f.error_messages %>
+      </div>
+    <% end %>
+
+    <%= f.form_group :mbs do |f| %>
+      <%= f.label :mbs, class: 'control-label col-md-2' %>
+      <div class='col-md-8'>
+        <%= f.text_field :mbs, class: 'form-control' %>
+        <%= f.error_messages %>
+      </div>
+    <% end %>
+
+    <%= f.form_group :consulttype do |f| %>
+      <%= f.label :consulttype, class: 'control-label col-md-2' %>
+      <div class='col-md-8'>
+        <%= f.text_field :consulttype, class: 'form-control' %>
+        <%= f.error_messages %>
+      </div>
+    <% end %>
+
+    <%= f.form_group :notes do |f| %>
+      <%= f.label :notes, class: 'control-label col-md-2' %>
+      <div class='col-md-8'>
+        <%= f.text_area :notes, class: 'form-control' %>
+        <%= f.error_messages %>
+      </div>
+    <% end %>
+
+    <%= f.form_group :billed do |f| %>
+      <%= f.label :billed, class: 'control-label col-md-2' %>
+      <div class='col-md-8'>
+        <%= f.check_box :billed, class: 'form-control' %>
+        <%= f.error_messages %>
+      </div>
+    <% end %>
+
+    <%= f.form_group :complete do |f| %>
+      <%= f.label :complete, class: 'control-label col-md-2' %>
+      <div class='col-md-8'>
+        <%= f.check_box :complete, class: 'form-control' %>
+        <%= f.error_messages %>
+      </div>
+    <% end %>
+
+  </div>
+
+  <div class="form-actions">
+    <div class="form-group">
+      <div class="col-md-2"></div>
+      <div class="col-md-8">
+        <%= f.submit class: 'btn btn-primary' %>
+        <%= link_to "Cancel", consults_path, class: 'btn' %>
+      </div>
+    </div>
+  </div>
+<% end %>
+

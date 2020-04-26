@@ -4,6 +4,14 @@ Rails.application.routes.draw do
 
 
 
+  resources :contacts
+  get 'fax/index'
+
+  get 'fax/send'
+
+  resources :consults
+  resources :itemnumbers
+  resources :documents
   resources :recalls
   resources :book do
       collection do
@@ -40,8 +48,11 @@ resources :appointments do
       get 'examen'
       get 'patient_audit'
       get 'prepare'
+      post 'image-upload'
+      get 'testCME'
     end
 end
+
 
 
   resources :billing do
@@ -60,6 +71,7 @@ end
       get 'itemcheck'
       get 'log'
       get 'pathways'
+      get 'fax'
 
     end
 
@@ -95,6 +107,8 @@ end
   root 'patient#index', via: [:get, :post]
 
 
+  resources :images, only: [:create]
+
 
   resources :patient do
     resources :results do
@@ -111,6 +125,8 @@ end
         get 'edit'
         get 'show'
         get 'destroy'
+
+
 
     end
     
@@ -137,6 +153,8 @@ end
         get 'allergies'
         get 'fhir'
         post 'consult'
+        get 'sendemail'
+
     end
   end
 

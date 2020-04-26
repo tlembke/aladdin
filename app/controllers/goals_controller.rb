@@ -107,6 +107,7 @@ class GoalsController < ApplicationController
   # PATCH/PUT /goals/1.json
   def update
 
+
     respond_to do |format|
       
       if @goal.update(goal_params)
@@ -154,6 +155,6 @@ class GoalsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def goal_params
-      params.require(:goal).permit(:title, :description, :condition_id, :patient_id, :measure_id, :active, :parent, :master_id, :target, :autoload)
+      params.require(:goal).permit(:title, :description, :by, :fallback1, :fallback2,  :condition_id, :patient_id, :measure_id, :active, :parent, :master_id, :target, :autoload)
     end
 end

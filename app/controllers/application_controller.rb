@@ -372,7 +372,7 @@ def connect(username=session[:username],password=session[:password])
                                             sth.drop
 
 
-                                            sql =  "SELECT Count(Id) from ApptBlock WHERE StartDate <= '" + thisDayKey + "' and EndDate >= '" + thisDayKey +  "' and ProviderID = " + doctor.to_s + " AND Reason = 'ANNUAL LEAVE'"
+                                            sql =  "SELECT Count(Id) from ApptBlock WHERE StartDate <= '" + thisDayKey + "' and EndDate >= '" + thisDayKey +  "' and ProviderID = " + doctor.to_s + " AND (Reason = 'ANNUAL LEAVE' or Reason = 'No appointments') "
                                             # puts sql
                                             sth= dbh.run(sql)
                                             row= sth.fetch_first
@@ -417,7 +417,7 @@ def connect(username=session[:username],password=session[:password])
                                      freeAppt = nextAppt unless available > numberAppts
                                      nextAppt = nextAppt + 900.seconds
 
-                                     if nextAppt.hour == 16 and nextAppt.min > 30
+                                     if nextAppt.hour == 17 and nextAppt.min > 45
                                           
                                           nextAppt = nextAppt + 1.day
                                           nextAppt= nextAppt.change(:hour => 8, :min=>30)
@@ -437,7 +437,7 @@ def connect(username=session[:username],password=session[:password])
                             end
                             
                             nextAppt = t + appt[1].seconds
-                            if nextAppt.hour == 16 and nextAppt.min > 30
+                            if nextAppt.hour >= 17 and nextAppt.min >= 45
                                     
                                     nextAppt = nextAppt + 1.day
                                     nextAppt= nextAppt.change(:hour => 8, :min=>30)
@@ -505,6 +505,98 @@ def connect(username=session[:username],password=session[:password])
           sth.drop
            
           return problems
+
+  end
+
+    def get_last_consults(dbh,patient,theDate, noConsults=2)
+            sql = "SELECT History, Examination, Diagnosis, Plan, Id, ConsultDate, DoctorName FROM Consult WHERE PT_Id_FK = " + patient.to_s + " and ConsultDate <= '" + theDate + "' ORDER BY ConsultDate DESC LIMIT " + noConsults.to_s
+          
+            puts sql
+            
+            consults=[]
+            sth = dbh.run(sql)
+             sth.fetch do |row|
+              problems=[]
+              consult=Hash.new
+              consult['plan'] = row[3]
+
+              consult['clinicalText']= row[0] +row[1] + row[2] + row[3]
+              consult['problems'] = get_real_problems(dbh, row[4])
+              consult['date'] = row[5]
+              consult['provider'] = row[6]
+              consults << consult
+
+
+
+            end
+
+            sth.drop
+
+          
+
+
+            return consults
+
+
+ end
+
+    def get_real_problems(dbh,consult)
+    # this gets the reason for consulation rather than medical history
+          sql = "SELECT Problem FROM ConsultationProblem WHERE CNSLT_Id_FK = " + consult.to_s + " ORDER BY IsPrimaryProblem DESC"
+          puts sql
+          sth = dbh.run(sql)      
+          problems=[]
+          sth.fetch do |row|
+            unless row[0] == "Pathology" or row[0] == "Prescription(s)"
+              problems<<row[0]
+            end
+          end
+          sth.drop
+           
+          return problems
+
+  end
+
+  def get_users
+
+
+      # get appointments
+     @username = session[:username]
+     @password = session[:password]
+     @id=session[:id]
+     @name=session[:name]
+
+     connect_array=connect()
+     @error_code=connect_array[1]
+     if (@error_code==0)
+         dbh=connect_array[0]
+          sql = "SELECT  Name, Id FROM Preference  where Inactive = False and ProviderType = 2 and ProviderNum <> '' ORDER BY Surname"
+          puts sql
+         
+
+          sth = dbh.run(sql)
+               
+          users=[]
+          sth.fetch_hash do |row|
+            users << [row['NAME'],row['ID']]
+          end
+
+          sth.drop
+          
+
+
+
+          dbh.disconnect
+          return users
+     else
+          flash[:alert] = "Unable to connect to database. "+ get_odbc
+          flash[:notice] = connect_array[2]
+          redirect_to  action: "login"
+     end
+
+
+  
+
 
   end
 

@@ -1,0 +1,19 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  name: MyString
+  description: MyText
+  patient_id: 1
+  type: 1
+  parent: 1
+  texttype: MyString
+  content: MyText
+
+two:
+  name: MyString
+  description: MyText
+  patient_id: 1
+  type: 1
+  parent: 1
+  texttype: MyString
+  content: MyText

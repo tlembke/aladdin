@@ -1,0 +1,12 @@
+
+  
+<% @patient.actionplans.each do |plan| %>
+	<%= plan.name  %><br>
+<% end %>
+
+Add an action plan
+<%= form_tag(new_document_path) %>
+<%= select_tag("parent",options_for_select(actionplans_for_select), :prompt => 'New...') %>
+<%= hidden_field_tag(:patient_id, @patient.id) %>
+<%= submit_tag(value = "Create", options = {}) %>
+</form>

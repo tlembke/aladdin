@@ -23,7 +23,7 @@ gem 'jbuilder', '~> 2.0'
 # bundle exec rake doc:rails generates the API under doc/api.
 gem 'sdoc', '~> 0.4.0', group: :doc
 
-gem 'ruby-odbc'
+gem 'ruby-odbc' , path: "vendor/gems/ruby-odbc-0.99999"
 
 gem 'dnssd'
 
@@ -39,6 +39,19 @@ gem 'mechanize'
 
 gem 'momentjs-rails', '>= 2.9.0'
 gem 'bootstrap3-datetimepicker-rails', '~> 4.14.30'
+
+gem 'tinymce-rails'
+
+gem 'shrine'
+
+gem 'rest-client'
+
+gem "mini_magick"
+
+
+
+
+
 
 
 #gem 'wicked_pdf'

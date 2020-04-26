@@ -1,4 +1,5 @@
 class AppointmentsController < ApplicationController
+  skip_before_action :verify_authenticity_token, only: [:upload_image]
   def index
   	 # get appointments
   	 @username = session[:username]
@@ -41,7 +42,7 @@ class AppointmentsController < ApplicationController
     	  dbh=connect_array[0]
 
           # Seen today
-          @appointments=get_day_appointments(dbh,@id)
+          #@appointments=get_day_appointments(dbh,@id)
           dbh.disconnect
      else
   				flash[:alert] = "Unable to connect to database. "+get_odbc
@@ -398,8 +399,38 @@ end
 
   end
 
-   def get_last_appts(dbh,doctor,theStartDate = Date.today, noConsults = 1 )
 
+
+    def get_consult_plan(dbh,patient,provider,theDate)
+            
+            sql = "SELECT History, Examination, Diagnosis, Plan, Id FROM Consult WHERE PT_Id_FK = " + patient.to_s + " and ConsultDate = '" + theDate + "' and DoctorID = " + provider.to_s
+          
+            puts sql
+            planText=""
+            clinicalText=""
+            problems=[]
+            sth = dbh.run(sql)
+             sth.fetch do |row|
+              clinicalText= row[0] +row[1] + row[2]
+              planText =  row[3]
+              problems = get_real_problems(dbh, row[4])
+
+            end
+
+            sth.drop
+
+          
+
+
+            return clinicalText, planText, problems
+
+
+ end
+
+
+
+      def get_last_appts(dbh,doctor,theStartDate = Date.today, noConsults = 1 )
+      
           theDay=theStartDate.to_s(:db)
           
           sql = "SELECT Name, Note,  Reason, StartDate, StartTime, Status, PT_Id_Fk FROM Appt WHERE ProviderID = " + doctor.to_s + " and StartDate  = '" + theDay + "' ORDER BY StartTime"
@@ -437,78 +468,23 @@ end
 
   end
 
-    def get_consult_plan(dbh,patient,provider,theDate)
-            
-            sql = "SELECT History, Examination, Diagnosis, Plan, Id FROM Consult WHERE PT_Id_FK = " + patient.to_s + " and ConsultDate = '" + theDate + "' and DoctorID = " + provider.to_s
-          
-            puts sql
-            planText=""
-            clinicalText=""
-            problems=[]
-            sth = dbh.run(sql)
-             sth.fetch do |row|
-              clinicalText= row[0] +row[1] + row[2]
-              planText =  row[3]
-              problems = get_real_problems(dbh, row[4])
-
-            end
-
-            sth.drop
-
-          
 
 
-            return clinicalText, planText, problems
+  def upload_image
 
+       name = params[:upload][:file].original_filename
+       path = File.join("public", "images", "upload", name)
+        File.open(path, "wb") { |f| f.write(params[:upload][:file].read) }
+      respond_to do |format|
 
- end
+        format.json
+      end
 
-     def get_last_consults(dbh,patient,theDate, noConsults=2)
-            sql = "SELECT History, Examination, Diagnosis, Plan, Id, ConsultDate, DoctorName FROM Consult WHERE PT_Id_FK = " + patient.to_s + " and ConsultDate < '" + theDate + "' ORDER BY ConsultDate DESC LIMIT " + noConsults.to_s
-          
-            puts sql
-            
-            consults=[]
-            sth = dbh.run(sql)
-             sth.fetch do |row|
-              problems=[]
-              consult=Hash.new
+    end
 
-              consult['clinicalText']= row[0] +row[1] + row[2] + row[3]
-              consult['problems'] = get_real_problems(dbh, row[4])
-              consult['date'] = row[5]
-              consult['provider'] = row[6]
-              consults << consult
+    def tinyMCE
+         
 
-
-
-            end
-
-            sth.drop
-
-          
-
-
-            return consults
-
-
- end
-
-   def get_real_problems(dbh,consult)
-    # this gets the reason for consulation rather than medical history
-          sql = "SELECT Problem FROM ConsultationProblem WHERE CNSLT_Id_FK = " + consult.to_s + " ORDER BY IsPrimaryProblem DESC"
-          puts sql
-          sth = dbh.run(sql)      
-          problems=[]
-          sth.fetch do |row|
-            unless row[0] == "Pathology" or row[0] == "Prescription(s)"
-              problems<<row[0]
-            end
-          end
-          sth.drop
-           
-          return problems
-
-  end
+    end
 
 end

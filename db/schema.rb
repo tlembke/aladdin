@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20190806025317) do
+ActiveRecord::Schema.define(version: 20200424205340) do
 
   create_table "cells", force: :cascade do |t|
     t.integer  "register_id"
@@ -33,6 +33,45 @@ ActiveRecord::Schema.define(version: 20190806025317) do
     t.boolean  "check",      default: false, null: false
   end
 
+  create_table "consults", force: :cascade do |t|
+    t.integer  "provider_id"
+    t.integer  "patient_id"
+    t.datetime "consultdate"
+    t.string   "mbs"
+    t.string   "consulttype"
+    t.text     "notes"
+    t.boolean  "billed"
+    t.boolean  "complete"
+    t.datetime "created_at",   null: false
+    t.datetime "updated_at",   null: false
+    t.string   "fullname"
+    t.string   "providername"
+    t.string   "billingnote"
+    t.integer  "consulttime"
+    t.integer  "delivery"
+  end
+
+  create_table "contacts", force: :cascade do |t|
+    t.string   "name"
+    t.string   "email"
+    t.string   "fax"
+    t.boolean  "favourite"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "documents", force: :cascade do |t|
+    t.string   "name"
+    t.text     "description"
+    t.integer  "patient_id",  default: 0
+    t.integer  "code"
+    t.integer  "parent"
+    t.string   "texttype"
+    t.text     "content"
+    t.datetime "created_at",              null: false
+    t.datetime "updated_at",              null: false
+  end
+
   create_table "goals", force: :cascade do |t|
     t.string   "title"
     t.text     "description"
@@ -46,6 +85,10 @@ ActiveRecord::Schema.define(version: 20190806025317) do
     t.datetime "updated_at",   null: false
     t.decimal  "target"
     t.string   "autoload"
+    t.text     "by"
+    t.text     "fallback1"
+    t.text     "fallback2"
+    t.boolean  "priority"
   end
 
   create_table "headers", force: :cascade do |t|
@@ -57,6 +100,20 @@ ActiveRecord::Schema.define(version: 20190806025317) do
     t.integer  "register_id"
     t.integer  "sort"
     t.string   "keyword"
+  end
+
+  create_table "images", force: :cascade do |t|
+    t.text     "image_data"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "itemnumbers", force: :cascade do |t|
+    t.string   "name"
+    t.string   "mbs"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.integer  "sort"
   end
 
   create_table "masters", force: :cascade do |t|

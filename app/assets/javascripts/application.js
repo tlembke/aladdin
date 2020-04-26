@@ -18,6 +18,7 @@
 //  require bootstrap-editable-rails
 //= require moment
 //= require bootstrap-datetimepicker
+//= require tinymce-jquery
 //= require_tree .
 
 $(document).ready(function() {
@@ -35,7 +36,97 @@ $(document).ready(function() {
           return $(title).children(".popover-heading").html();
         }
     });
+    TinyMCERails.configuration.default = {
+        selector: "textarea.tinymce",
+        cache_suffix: "?v=5.0.16",
+        toolbar: ["styleselect | bold italic | undo redo","image | link"],
+        plugins: [
+            "advlist autolink lists link image charmap print preview hr anchor pagebreak",
+            "searchreplace wordcount visualblocks visualchars code fullscreen",
+            "insertdatetime media nonbreaking save table directionality",
+            "emoticons template paste textpattern determinemimetype imagetools save"
+          ],
+         toolbar1: "insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image",
+         toolbar2: "print preview save media | forecolor backcolor emoticons",
+         image_advtab: true,
+          images_upload_handler: function (blobInfo, success, failure) {
+            var xhr, formData;
+            xhr = new XMLHttpRequest();
+            xhr.withCredentials = false;
+            var csrfToken = $('meta[name="csrf-token"]').attr('content');
+            xhr.open('POST', '/images');
+            xhr.setRequestHeader("X-CSRF-Token", csrfToken);
+            xhr.onload = function() {
+              var json;
 
+              if (xhr.status != 200) {
+              failure('HTTP Error: ' + xhr.status);
+              return;
+              }
+              json = JSON.parse(xhr.responseText);
+
+              if (!json || typeof json.location != 'string') {
+              failure('Invalid JSON: ' + xhr.responseText);
+              return;
+              }
+              success(json.location);
+            };
+            formData = new FormData();
+            // form.append("Content-Type", file.type);
+            // form.append("image[image]", file);
+            // formData.append('file', blobInfo.blob(), blobInfo.filename());
+
+            formData.append('image[image]', blobInfo.blob());
+            xhr.send(formData);
+          }
+
+
+
+
+
+    };
+    TinyMCERails.initialize('default', {
+      
+    });
+
+    $('.faxselect').change(function () {
+         var faxNumber  = $(this).children("option:selected").val();
+         var faxPick = $(this).attr('datafax');
+         alert(faxNumber);
+         alert(faxPick);
+         $("[name='"+faxPick+"']").val(faxNumber);
+
+
+      });
+
+
+
+    $('.faxpick').click(function () {
+        var url = "/fax/"+$(this).attr('data-url');
+        var faxindex = $(this).attr('faxindex');
+        image = new Image();
+        image.src = url;
+        image.onload = function () {
+            $('#fax-holder').empty().append(image);
+        };
+        image.onerror = function () {
+            $('#fax-holder').empty().html('That image is not available.');
+        }
+
+        $('#fax-holder').empty().html('Loading...');
+
+         $('.fax-arrow').hide();
+         $('#fax-arrow-'+faxindex).show();
+
+          $('.faxpick').removeClass('table-selected');
+         $('#tr-'+faxindex).addClass('table-selected');
+
+
+
+
+
+        return false;
+    });
 
 
      $(".chart").each(function(){

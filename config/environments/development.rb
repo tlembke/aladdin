@@ -40,5 +40,16 @@ Rails.application.configure do
   # config.action_view.raise_on_missing_translations = true
   config.time_zone = "Sydney"
 
+
+config.action_mailer.delivery_method = :smtp
+config.action_mailer.smtp_settings = {
+  address:              'smtp.gmail.com',
+  port:                  587,
+  domain:               '116-250-197-92.pool.activ8me.net.au',
+  user_name:            'tony@alstonvilleclinic.com.au',
+  password:             'Fude-37375',
+  authentication:       'plain'
+  }
+
   
 end
