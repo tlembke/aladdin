@@ -1,0 +1,107 @@
+.pricing {
+  .tier {
+    position: relative;
+    position: relative;
+    top: 18px;
+    width: 100%;
+    min-height: 425px;
+    padding: 20px 40px 30px;
+    text-align: center;
+    border: 1px solid color($grey, 100);
+    border-radius: 4px;
+    background-color: $white;
+    box-shadow: 0 0 2px 0 $text-color;
+
+    .tier-name {
+      width: 90%;
+      margin: 0 auto;
+      margin-top: 5px;
+      text-align: center;
+      color: #444;
+      font-size: 20px;
+      font-weight: 400;
+    }
+
+    .tier-quantity {
+      margin-top: 10px;
+      text-align: center;
+      border-bottom: 1px solid $text-color;
+
+      .dollar {
+        position: relative;
+        top: -18px;
+        font-size: 19px;
+      }
+
+      .price {
+        font-size: 49px;
+      }
+
+      .period {
+        position: relative;
+        top: -8px;
+        margin-left: 4px;
+        font-size: 17px;
+      }
+    }
+
+    .specs {
+      margin-top: 20px;
+
+      .spec {
+        margin-bottom: 15px;
+        text-align: center;
+        color: #5d636d;
+        font-size: 15px;
+      }
+    }
+  }
+
+  .first-tier {
+    left: 45px;
+    float: right;
+  }
+
+  .recommended-tier {
+    z-index: 999;
+    top: 5px;
+    min-height: 450px;
+    margin: 0 auto;
+    border-color: $text-color;
+    box-shadow: 0 0 13px -2px $text-color;
+
+    .tier-name {
+      margin-bottom: 24px;
+    }
+  }
+
+  .last-tier {
+    left: -45px;
+    float: left;
+  }
+}
+
+@media (max-width: 320px),
+(max-width: 736px),
+(max-width: 768px),
+(max-width: 1024px) and (orientation: landscape) {
+  .pricing {
+    .first-tier,
+    .last-tier {
+      top:0;
+      float: none;
+      left: 0;
+    }
+
+    .recommended-tier {
+      top: 0;
+      min-height: 315px;
+    }
+
+    .tier {
+      width: 90%;
+      margin: 0px auto;
+      margin-bottom: 2em;
+    }
+  }
+}

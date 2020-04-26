@@ -1,0 +1,12 @@
+= Ives Dresssed Theme
+
+A simple, elegant and versatile theme. It is packaged with
+three styles, a homepage, pricing page, scaffold templates,
+support for multiple gems and every Bootstrap components,
+each with a unique twist. It also contains new components
+that will make your app stand out. Ives is also fully
+responsive, compatible with any Bootstrap theme and a bunch
+of Rails plugins.
+
+http://dresssed.com/themes/ives
+Copyright 2015 (c) Kantan Designs Inc.

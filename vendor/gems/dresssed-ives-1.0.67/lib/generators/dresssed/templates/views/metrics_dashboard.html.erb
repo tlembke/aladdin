@@ -1,0 +1,70 @@
+<div class="container-fluid">
+  <div class="row mt20">
+    <div class="col-xs-12 col-sm-12 col-md-8 col-lg-8">
+      <div class="row">
+        <% metric_names.each do |metric| %>
+        <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+          <div class="panel panel-metric">
+            <div class="panel-body">
+              <div class="metric-content">
+                <div class="row">
+                  <header class='col-xs-12'>
+                    <h3><%= metric[:name] %></h3>
+                  </header>
+                  <div class="col-xs-7 col-sm-7 col-md-7 col-lg-7" style="min-height: 150px;">
+                    <div class='metric-graph' id='metric-<%= metric[:name].downcase.parameterize %>'  style='height:150px;'></div>
+                  </div>
+                  <div class="col-xs-5 col-sm-5 col-md-5 col-lg-5">
+                    <div class="metric-value col-xs-12">
+                      <%= random_value metric[:type] %>
+                      <small>CURRENT</small>
+                    </div>
+                    <div class="metric-trend col-xs-12">
+                      <% direction = increase_or_decrease %>
+                      <p class="<%=increase_or_decrease_class direction %>">
+                        <i class="fa <%=increase_or_decrease_chevron direction %>"></i> <%= random_percent %>
+                      </p>
+                      <small>30 Days Ago</small>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <% content_for :javascript do %>
+        <script>
+          flotMetric('#metric-<%= metric[:name].downcase.parameterize %>', <%= random_trending_data(direction) %> );
+        </script>
+        <% end %>
+        <% end %>
+      </div>
+    </div>
+    <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <h3 class="panel-title">Activity</h3>
+        </div>
+        <div class="panel-body">
+          <div class='left-timeline metrics-timeline'>
+            <ul class="list-unstyled small">
+              <% types = [ { klass: 'refund', css_class: 'label-danger'},  { klass: 'purchase', css_class: 'label-success'}, { klass: 'cancellation', css_class: 'label-inverse'}] %>
+              <% (1..10).each do |index|%>
+              <li class="mb10">
+                <% instance = types[Random.rand(types.length)] %>
+                <time class='<%= instance[:css_class]%>'>
+                  <strong>$<%=Random.rand(120) %></strong>
+                </time>
+                <header>
+                  <strong>Internet Genie</strong><br/>
+                  <small class="text-muted"><%=instance[:klass].upcase %> - <%=time_ago_in_words( DateTime.now-(index.minutes) ) %></small>
+                </header>
+              </li>
+              <% end %>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

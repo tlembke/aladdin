@@ -1,0 +1,16 @@
+
+
+.thumbnail {
+  background: $white;
+
+  border: 3px solid $dividerColor;
+
+  border-radius:0;
+
+  margin-bottom: $line-height-base / 2;
+}
+
+.thumbnail > img,
+.thumbnail a > img  {
+  width: 100%;
+}

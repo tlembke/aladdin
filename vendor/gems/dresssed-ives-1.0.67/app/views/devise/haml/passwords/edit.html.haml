@@ -1,0 +1,26 @@
+- @title = "Change your password"
+#main.devise
+  .container-fluid
+    .row
+      %header.text-center
+        %h1
+          = app_name
+        %p.p0.m0 Change Your Password
+    .row.mt20
+      = form_for resource, as: resource_name, url: password_path(resource_name),                   |
+        html: { method: :put, class: "form-horizontal col-xs-12 col-md-6 col-md-offset-3" } do |f| |
+        = f.error_notification
+        = f.hidden_field :reset_password_token
+        = f.error_messages_for :reset_password_token
+        .sheet.form-sheet.form-inputs
+          .sheet-inner
+            = f.form_group :password do |f|
+              = f.label :password, "New password", class: "form-label"
+              = f.password_field :password, class: ""
+              = f.error_messages
+            = f.form_group :password_confirmation do |f|
+              = f.label :password_confirmation, "Confirm your new password", class: "form-label"
+              = f.password_field :password_confirmation, class: ""
+              = f.error_messages
+        .form-actions.text-right
+          = f.submit "Change my password", class: 'btn btn-primary'

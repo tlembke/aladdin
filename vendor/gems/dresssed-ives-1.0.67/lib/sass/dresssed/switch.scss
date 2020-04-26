@@ -1,0 +1,69 @@
+.switch {
+  position: relative;
+  display: inline-block;
+  margin: 1px 0;
+  cursor: pointer;
+  vertical-align: middle;
+
+  input {
+    position: absolute;
+    opacity: 0;
+  }
+
+  span {
+    position: relative;
+    display: inline-block;
+    width: 54px;
+    height: 28px;
+    border-radius: 14px;
+    background: rgba(0, 0, 0, 0.2);
+    transition: background-color 0.75s;
+
+    &:after {
+      position: absolute;
+      top: 2px;
+      bottom: 2px;
+      left: 2px;
+      width: 24px;
+      content: '';
+      border-radius: 12px;
+      background-color: #fff;
+      transition: all 0.15s ease-in-out;
+    }
+  }
+
+  input:checked + span:after {
+    top: 2px;
+    bottom: 2px;
+    left: 27px;
+    width: 24px;
+  }
+
+  input:checked + span {
+    background-color: #eee;
+  }
+}
+
+.switch-default input:checked + span {
+  background-color: #dae0e8;
+}
+
+.switch-warning input:checked + span {
+  background-color: $brand-warning;
+}
+
+.switch-danger input:checked + span {
+  background-color: $brand-danger;
+}
+
+.switch-info input:checked + span {
+  background-color: $brand-info;
+}
+
+.switch-success input:checked + span {
+  background-color: $brand-success;
+}
+
+.switch-primary input:checked + span {
+  background-color: $brand-primary;
+}

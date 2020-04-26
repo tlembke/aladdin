@@ -1,0 +1,67 @@
+// Black theme variation
+// --------------------
+
+$style: "white";
+
+// GLOBAL VALUES
+// --------------------------------------------------
+
+$brand-primary: #A0A0A0;
+
+// Typography
+$text-color:            #222222;
+$quietColor:            #909191;
+$altTextColor:          darken($brand-primary, 20%);
+$altBackgroundColor:    #d0ab5f;
+
+// Backgrounds
+$backgroundColor:       #F8F8F8;
+$footerBackgroundColor: #2a2a2a;
+$activeBackgroundColor: darken($backgroundColor, 5%);
+
+// Links
+$link-color:              lighten($text-color, 45%);
+$link-color-hover:        lighten($link-color, 30%);
+
+// Navbar links
+$navbar-bg-color: #F0F3F6;
+$navbar-brand-color:                       darken($brand-primary, 30%);
+$navbar-inverse-brand-color:               darken($brand-primary, 30%);
+$navbar-default-link-color:                darken($brand-primary, 35%);
+$navbar-default-link-hover-color:          darken($brand-primary, 55%);
+$navbar-default-link-hover-bg:             transparent !default;
+$navbar-default-link-active-color:         lighten($brand-primary, 65%);
+$navbar-default-link-active-bg:            darken($brand-primary, 6.5%) !default;
+$navbar-default-link-disabled-color:       #ccc !default;
+$navbar-default-link-disabled-bg:          transparent !default;
+$navbar-form-button-group-bg:              #ADADAD;
+$navbar-form-button-group-border-color:    #898A8A;
+$navbar-default-dropdown-open-bg:          #ccc;
+$navbar-default-dropdown-icon-bg:          transparent;
+$navbar-default-dropdown-icon-color:       #fff;
+$navbar-default-dropdown-hover-color:      #111;
+$navbar-default-dropdown-hover-bg:         lighten($brand-primary, 30%);
+$navbar-search-form-border-color:          lighten($brand-primary, 30%);
+$navbar-search-form-bg:                    darken($navbar-bg-color, 10%);
+$navbar-search-form-focus-border-color:    lighten($brand-primary, 60%);
+
+// Borders
+$dividerColor:            #e9e9e9;
+$borderColor:             #dddddd;
+
+// Sidenav
+$side-nav-menu-background-color: $backgroundColor;
+$side-nav-text-color: darken($brand-primary, 35%);
+$side-nav-menu-item-background-color: #DFE4EA;
+$side-nav-menu-item-hover-color: #1f1f1f;
+$side-nav-menu-item-color: darken($brand-primary, 35%);
+$side-nav-menu-item-active-color: #222;
+$side-nav-header-bg-color: #fff;
+$side-nav-header-color: #1f1f1f;
+$side-nav-header-bg-link-color: darken($brand-primary, 20%);
+$side-nav-header-link-hover-color: #1f1f1f;
+$side-nav-menu-right-border-color: #E3E5E6;
+
+// Dropdowns
+
+$dropdown-item-color: #222;

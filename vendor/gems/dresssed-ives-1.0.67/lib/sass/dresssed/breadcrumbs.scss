@@ -1,0 +1,16 @@
+.breadcrumb {
+  padding-left: 0;
+  background: transparent;
+}
+
+.breadcrumb li i {
+  margin-right: 4px;
+}
+
+.breadcrumb li a {
+  color: #979898;
+}
+
+.breadcrumb li.active > * {
+  color: $altTextColor;
+}

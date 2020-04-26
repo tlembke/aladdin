@@ -1,0 +1,78 @@
+.container,
+.container-fluid {
+  .jumbotron {
+    margin-bottom: 30px;
+    padding: 60px;
+    border-radius: 0;
+
+    .subtitle {
+      font-size: 26px;
+      line-height: 1.38462;
+      font-weight: bold;
+      text-transform: capitalize;
+      font-family: $font-family-sans-serif;
+      opacity: 0.7;
+      margin:0;
+      padding:0;
+    }
+
+    &.full-bleed {
+      width: 100%;
+    }
+
+    &.cover-image {
+      background-size: cover;
+      position: relative;
+
+      .cover-content {
+        z-index: 1;
+
+        > * {
+          position: relative;
+        }
+
+        &::before {
+          position: absolute;
+          z-index: 0;
+          top: 0;
+          right: 0;
+          bottom: 0;
+          left: 0;
+          content: ' ';
+          opacity: 1;
+          background-color: rgba(0, 0, 0, 0.5);
+        }
+      }
+    }
+  }
+
+  .jumbotron h1 {
+    margin-bottom: 0;
+    letter-spacing: -.03em;
+    font-size:  40px;
+    line-height: 1.2;
+    font-weight: bold;
+    text-shadow: 0px 0px 1px rgba(0,0,0, 0.2);
+    width: 50%;
+    z-index: 1;
+  }
+
+  .jumbotron p {
+    padding-left: 4px;
+    font-size: 18px;
+    font-weight: 200;
+    line-height: 27px;
+    z-index: 1;
+  }
+
+  @media (max-width: 375px) {
+    .jumbotron h1 {
+      letter-spacing: 0;
+      font-size: 2em;
+    }
+
+    .jumbotron p {
+      padding: 4px 0 0 0;
+    }
+  }
+}

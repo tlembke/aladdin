@@ -1,0 +1,115 @@
+.sheet,
+.sheet-inner {
+  border: solid 1px $borderColor;
+  border-radius: 2px;
+  @include box-shadow(0 1px 1px rgba(0, 0, 0, 0.1));
+}
+
+.sheet {
+  margin: 6px 0 0 6px;
+  margin-bottom: $line-height-base*10px;
+  border-color: lighten($borderColor, 7%);
+  background: lighten($backgroundColor, 2%);
+}
+
+.sheet-inner {
+  margin: -6px 4px 4px -6px;
+  padding: 19px;
+  background: $white;
+
+  form {
+    margin-bottom: 0;
+  }
+
+  .table {
+    margin-bottom: 0;
+  }
+}
+
+.sheet-condensed .sheet-inner {
+  padding: 3px;
+}
+
+// Form sheet style
+// ----------------
+
+.form-sheet {
+  $boxPadding: 16px;
+
+  .form-group {
+    margin-right: -$boxPadding;
+    margin-bottom: 0;
+    margin-left: -$boxPadding;
+    padding: 0;
+    padding-right: 19px;
+    border-top: solid 2px color($grey, 100);
+
+    label.form-label {
+      position: absolute;
+      z-index: 100;
+      padding: 10px;
+      cursor: text;
+      outline: 0;
+      opacity: 0.5;
+      @include box-shadow(none);
+    }
+
+    label.form-label.focused {
+      margin-left: 4px;
+      @include opacity(70);
+    }
+
+    input,
+    textarea,
+    .uneditable-input {
+      width: 100%;
+      margin: 2px;
+      padding: 8px;
+      border: none;
+      border-radius: 0;
+      outline: none;
+      @include box-shadow(none);
+    }
+
+    input:focus,
+    textarea:focus {
+      border-left: solid 3px $brand-primary;
+      @include box-shadow(none);
+    }
+
+    &.error input:focus,
+    &.error textarea:focus {
+      border-left-color: $errorText;
+    }
+
+    input:focus:required:invalid,
+    textarea:focus:required:invalid {
+      @include box-shadow(none);
+    }
+
+    .help-block {
+      position: relative;
+      float: right;
+      margin-top: -30px;
+      margin-right: -16px;
+    }
+
+    .help-block:hover {
+      @include opacity(30);
+    }
+  }
+
+  .form-group:first-child {
+    margin-top: -$boxPadding;
+    border-top: none;
+  }
+
+  .form-group:last-child {
+    margin-bottom: -$boxPadding;
+  }
+}
+
+.form-sheet-footer {
+  margin-bottom: 1em;
+  margin-left: 27px;
+}

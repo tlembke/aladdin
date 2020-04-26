@@ -1,0 +1,105 @@
+// Default style variables
+// Variables to customize the look and feel of Bootstrap
+// -----------------------------------------------------
+
+// GLOBAL VALUES
+// --------------------------------------------------
+
+// Colors
+$altTextColor:          #fff;
+$altBackgroundColor:    #2866AA;
+
+$inverse-base: #2C323B;
+
+// Links
+$link-color:             #08c;
+$link-color-hover:        darken($link-color, 15%);
+
+// States
+
+$primary: $altBackgroundColor;
+$warning: color($orange, 900);
+$danger:  color($red, 900);
+$success: color($green, 'a700');
+$info:    color($light-blue, 400);
+
+$brand-primary: $primary;
+$brand-success: $success;
+$brand-info:    $info;
+$brand-warning: $warning;
+$brand-danger:  $danger;
+
+$white: #fff;
+
+// Typography
+$font-size-base:        16px;
+$padding-base-vertical: 6px;
+
+$font-family-sans-serif:        "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
+$font-family-sans-serif-light:  "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
+$font-family-serif:             "Avenir", "Lato", Arial, Helvetica, sans-serif;
+$font-family-monospace:         "Andale Mono", "Lucida Console", monospace;
+
+$line-height-base:        (21/13);
+$line-height-computed:    floor(($font-size-base * $line-height-base));
+
+$input-height-base:       ($line-height-computed + ($padding-base-vertical * 2) + 2);
+
+// Buttons
+$primaryButtonBackground:     $altBackgroundColor;
+$primaryButtonText:           $altTextColor;
+$callToActionBackgroundColor: $altBackgroundColor;
+$callToActionTextColor:       $altTextColor;
+$buttonBorderRadius:          4px;
+$largeButtonBorderRadius:     $buttonBorderRadius;
+$buttonTransparentBorder:     rgba(0, 0, 0, 0.35);
+
+
+
+// COMPONENT VARIABLES
+// --------------------------------------------------
+
+// Z-index master list
+// Used for a bird's eye view of components dependent on the z-axis
+// Try to avoid customizing these :)
+$zindexDropdown:          1000;
+$zindexPopover:           1010;
+$zindexTooltip:           1020;
+$zindexFixedNavbar:       1030;
+$zindexModalBackdrop:     1040;
+$zindexModal:             1050;
+
+// Input placeholder text color
+$placeholderText:         color($grey, 300);
+
+// Hr border color
+$hrBorder:                color($grey, 100);
+
+
+$navbar-height: 55px;
+$navBorderRadius: 2px;
+$generalBorderRadius: 2px;
+
+// Form states and alerts
+$warningText:             color($orange, 400);
+$warningBackground:       color($orange, 900);
+$warningBorder:           darken(adjust-hue($warningBackground, -10), 3%);
+
+$errorText:               color($red, 400);
+$errorBackground:         color($red, 900);
+$errorBorder:             darken(adjust-hue($errorBackground, -10), 3%);
+
+$successText:             color($green, 400);
+$successBackground:       color($green, 'a700');
+$successBorder:           darken(adjust-hue($successBackground, -10), 5%);
+
+$infoText:                color($light-blue, 400);
+$infoBackground:          color($light-blue, 900);
+$infoBorder:              darken(adjust-hue($infoBackground, -10), 7%);
+
+$primaryText:                #3a87ad;
+$primaryBackground:          #d9edf7;
+$primaryBorder:              darken(adjust-hue($primaryBackground, -10), 7%);
+
+$side-nav-width: 250px;
+$sub-menu-item-height: 40px;

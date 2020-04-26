@@ -1,0 +1,48 @@
+- content_for :body_class, "landing"
+.landing
+  .container
+    .navbar
+      .navbar-header
+        %button.navbar-toggle.collapsed{"data-target" => "#navbar-collapse", "data-toggle" => "collapse", :type => "button"}
+          %span.sr-only Toggle navigation
+          %span MENU
+        %a.navbar-brand{:href => "#"}
+          = app_name
+      #navbar-collapse.collapse.navbar-collapse
+        %ul.nav.navbar-nav.navbar-right
+          %li.active
+            %a{:href => "#"} Home
+          %li
+            %a{:href => "#"} About
+          %li
+            %a{:href => "#"} Login
+  .landing.one-page
+    .content
+      .container
+        .row
+          .col-sm-12.col-md-12
+            %h2.text-xs-center Amazing App Benefit
+        .row
+          .col-md-8.col-md-offset-2
+            %p.lead.text-xs-center This is the best application you could ever buy. You"d be crazy not to buy it. Especially as it"s been endorsed by the product teaching mafia.
+        .row.mt20
+          .col-xs-12
+            %form.signup-form.form-inline
+              .text-center
+                .form-group
+                  %input.form-control.col-xs-12.mr10.mb10{:pattern => "[^@]+@[^@]+\\.[a-zA-Z]{2,6}", :placeholder => "Your email", :required => "", :type => "email"}/
+                  %input.btn.btn-outline-primary{:type => "button", :value => "Get an Invite →"}/
+  %footer
+    .container
+      .row
+        .col-xs-12.col-sm-6.col-md-6
+          %ul.list-unstyled.list-inline.text-xs-center
+            %li
+              %a{:href => "#"} Terms
+            %li
+              %a{:href => "#"} Privacy
+        .col-xs-12.col-sm-6.col-md-6.text-right.text-xs-center
+          %p
+            Built by
+            = succeed "." do
+              %a{:href => "http://kantan.io/"} Kantan Designs

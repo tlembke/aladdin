@@ -1,0 +1,86 @@
+// Blue theme variation
+// --------------------
+
+$style: "blue";
+
+// GLOBAL VALUES
+// --------------------------------------------------
+
+$brand-primary: color($blue, 600);
+
+
+// Typography
+$text-color:            desaturate(darken($brand-primary, 25%), 40%);
+$quietColor:            #A6BDC5;
+$altTextColor:          lighten($text-color, 50%);
+$altBackgroundColor:    #d0ab5f;
+
+// Backgrounds
+$backgroundColor:       color($blue-grey, 50);
+$footerBackgroundColor: #16333f;
+$activeBackgroundColor: darken($backgroundColor, 5%);
+
+// Links
+$link-color:             color($light-blue, 500);
+$link-color-hover:       color($light-blue, 300);
+
+// Buttons
+$buttonTransparentBorder:     rgba(8, 23, 28, 0.35);
+
+
+// COMPONENT VARIABLES
+// --------------------------------------------------
+
+// Input placeholder text color
+$placeholderText:         color($blue-grey, 300);
+
+// Hr border color
+$hrBorder:                #dae8ec;
+
+// Navbar links
+$navbar-bg-color:                          $brand-primary;
+$navbar-brand-color:                       lighten($brand-primary, 30%);
+$navbar-inverse-brand-color:               darken($brand-primary, 30%);
+$navbar-default-link-color:                lighten($brand-primary, 35%);
+$navbar-default-link-hover-color:          lighten($brand-primary, 45%);
+$navbar-default-link-hover-bg:             transparent !default;
+$navbar-default-link-active-color:         lighten($brand-primary, 45%);
+$navbar-default-link-active-bg:            darken($brand-primary, 6.5%);
+$navbar-default-link-disabled-color:       #ccc !default;
+$navbar-default-link-disabled-bg:          transparent !default;
+$navbar-form-button-group-bg:              $brand-primary;
+$navbar-form-button-group-border-color:    darken($brand-primary, 10%);
+$navbar-search-form-border-color:          darken($brand-primary, 10%);
+$navbar-search-form-bg:                    $brand-primary;
+$navbar-search-form-focus-border-color:    lighten($brand-primary, 60%);
+
+$side-nav-header-link-hover-color: white;
+$side-nav-header-color: white;
+$side-nav-menu-right-border-color: transparent;
+$side-nav-menu-background-color: #192227;
+$side-nav-text-color: color($light-blue, 400);
+$side-nav-menu-item-background-color: #3D4857;
+$side-nav-menu-item-color: lighten(saturate($brand-primary, 10%), 10%);
+$side-nav-menu-item-active-color: #eee;
+$side-nav-header-bg-color: #23282e;
+$side-nav-header-bg-link-color: $brand-primary;
+$side-nav-menu-item-hover-color: white;
+
+
+$dropdown-caret-color: lighten($brand-primary, 25%);
+
+// Borders
+$dividerColor:            #dae8ec;
+$borderColor:             #cbdcde;
+
+// Header
+$headerColor:             #16333f;
+$featuredHeaderColor:     #d9f0f9;
+
+// Dropdowns
+$navbar-default-dropdown-open-bg:               #6FB6F5;
+$navbar-default-dropdown-icon-bg:          transparent;
+$navbar-default-dropdown-icon-color:       white;
+$navbar-default-dropdown-hover-color:      $brand-primary;
+$navbar-default-dropdown-hover-bg:         lighten($brand-primary, 30%);
+$dropdown-item-color: #222;

@@ -1,0 +1,88 @@
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+      <h1>Bounce Rate</h1>
+      <div class="panel panel-default">
+        <div class="panel-body">
+          <div id="metrics-bounce-rate-detail" style="height: 250px;"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+      <div class="panel panel-default">
+        <div class="panel-body">
+          <div class="row text-center">
+            <div class="col-xs-12 col-sm-12 col-md-2 col-md-offset-1 col-lg-2">
+              <h4>Current</h4>
+              <span class='metric-value'>
+                32%
+              </span>
+              <div class='small'><i class='fa fa-chevron-up'></i> 10%</div>
+            </div>
+            <div class="col-xs-12 col-sm-12 col-md-2 col-lg-2">
+              <h4>1 Month Ago</h4>
+              <span class='metric-value'>
+                32%
+              </span>
+              <div class='small'><i class='fa fa-chevron-down'></i> 22%</div>
+            </div>
+            <div class="col-xs-12 col-sm-12 col-md-2 col-lg-2">
+              <h4>3 Months Ago</h4>
+              <span class='metric-value'>
+                32%
+              </span>
+              <div class='small'><i class='fa fa-chevron-down'></i> 30%</div>
+            </div>
+            <div class="col-xs-12 col-sm-12 col-md-2 col-lg-2">
+              <h4>6 Months Ago</h4>
+              <span class='metric-value'>
+                32%
+              </span>
+              <div class='small'><i class='fa fa-chevron-up'></i> 10%</div>
+            </div>
+            <div class="col-xs-12 col-sm-12 col-md-2 col-lg-2">
+              <h4>12 Months Ago</h4>
+              <span class='metric-value'>
+                32%
+              </span>
+              <div class='small'><i class='fa fa-chevron-down'></i> 8%</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <% content_for :javascript do %>
+  <script>
+   Morris.Area({
+    element: 'metrics-bounce-rate-detail',
+    data: [
+    { period: '2015-04-31', bounce_rate: 10  },
+    { period: '2015-04-30', bounce_rate: 20  },
+    { period: '2015-04-29', bounce_rate: 14  },
+    { period: '2015-04-28', bounce_rate: 19  },
+    { period: '2015-04-27', bounce_rate: 32  },
+    { period: '2015-04-26', bounce_rate: 12  },
+    { period: '2015-04-25', bounce_rate: 10  },
+    { period: '2015-04-24', bounce_rate: 23 },
+    { period: '2015-04-23', bounce_rate: 11 },
+    { period: '2015-04-22', bounce_rate: 19  }
+    ],
+    xkey: 'period',
+    ykeys: ['bounce_rate'],
+    labels: ['Bounce Rate'],
+    hideHover: 'auto',
+    lineColors: ['#498DFD'],
+    fillOpacity: 0.3,
+    behaveLikeLine: true,
+    lineWidth: 2,
+    pointSize: 4,
+    gridLineColor: '#cfcfcf',
+    resize: true
+  });
+</script>
+<% end %>
+</div>

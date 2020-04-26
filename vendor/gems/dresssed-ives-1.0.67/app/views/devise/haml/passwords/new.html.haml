@@ -1,0 +1,25 @@
+- @title = "Forgot your password?"
+#main.devise
+  .container-fluid
+    .row
+      %header.text-center
+        %h1
+          = app_name
+        %p.p0.m0 Login
+    .row.mt20
+      = form_for resource, as: resource_name, url: password_path(resource_name),                    |
+        html: { method: :post, class: "form-horizontal col-xs-12 col-md-6 col-md-offset-3" } do |f| |
+        = f.error_notification
+        .sheet.form-sheet.form-inputs
+          .sheet-inner
+            = f.form_group :email do |f|
+              = f.label :email, class: "form-label"
+              = f.email_field :email, autofocus: true, class: ""
+              = f.error_messages
+        .form-actions.text-right
+          = f.submit "Send me reset password instructions", class: 'btn btn-primary mr15'
+    .row.mt50
+      .col-xs-12.col-sm-12.col-md-6.col-md-offset-3.text-right
+        %ul.list-unstyled.options
+          %li.col-xs-12
+            %a{:href => "/users/sign_in"} Sign in

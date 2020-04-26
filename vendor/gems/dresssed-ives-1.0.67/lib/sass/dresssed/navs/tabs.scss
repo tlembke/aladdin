@@ -1,0 +1,157 @@
+// BASIC TABS
+// ----------
+
+.nav-tabs > li > a {
+  margin-right: 2px;
+  border: 1px solid transparent;
+  border-radius: $navBorderRadius $navBorderRadius 0 0;
+  line-height: 1.42857;
+}
+
+.nav-tabs > li > a:hover {
+  background: $backgroundColor;
+}
+
+.nav-tabs.nav-tabs-line > li a,
+.nav-tabs.nav-tabs-line > li a:hover {
+  border: none;
+  background: transparent;
+}
+
+.nav-tabs.nav-tabs-line > li a:hover {
+  border-bottom: none;
+}
+
+.nav-tabs.nav-tabs-line > li.active {
+  border-bottom: 1px solid $brand-primary;
+  background: transparent;
+}
+
+.nav-tabs.nav-tabs-xs > li > a {
+  font-size: 12px;
+}
+
+.nav-tabs.nav-tabs-xs > li > a > .badge,
+.nav-tabs.nav-tabs-xs > li > a > .label {
+  top: -1px;
+  margin-right: -3px;
+  margin-left: 3px;
+  padding-right: 4px;
+  padding-left: 4px;
+  font-size: 10px;
+  line-height: 13px;
+}
+
+.nav-tabs.nav-tabs-xs > li > a > .label {
+  padding-right: 3px;
+  padding-left: 3px;
+}
+
+
+// Left, right and bottom tabs
+
+.tab-wrapper {
+  margin-bottom: 20px;
+}
+
+.tab-wrapper .nav-tabs > li > a {
+  border-radius: 0;
+}
+
+.tab-wrapper .tab-content {
+  padding: 10px 15px;
+  border: 1px solid $borderColor;
+  border-top: 0;
+}
+
+.tab-wrapper > .nav-tabs > li.active > a {
+  border-top: 2px solid $brand-primary;
+  background-color: #fff;
+}
+
+.tab-wrapper.tab-left,
+.tab-wrapper.tab-right,
+.tab-wrapper.tab-bottom {
+  .nav-tabs {
+    border-bottom: none;
+  }
+}
+
+.tab-wrapper.tab-left > .nav-tabs > li,
+.tab-wrapper.tab-right > .nav-tabs > li {
+  float: none;
+  min-width: 75px;
+}
+
+.tab-wrapper.tab-left > .nav-tabs > li > a,
+.tab-wrapper.tab-right > .nav-tabs > li > a {
+  border: 1px solid $borderColor;
+}
+
+.tab-wrapper.tab-left > .nav-tabs > li.active > a,
+.tab-wrapper.tab-right > .nav-tabs > li.active > a {
+  border-top-color: $borderColor !important;
+}
+
+.tab-wrapper.tab-left .tab-content,
+.tab-wrapper.tab-right .tab-content {
+  overflow: auto;
+  border-top: 1px solid $borderColor;
+}
+
+.tab-wrapper.tab-left > .nav-tabs {
+  float: left;
+  margin-right: -3px;
+}
+
+.tab-wrapper.tab-left > .nav-tabs > li > a {
+  border-right: 0;
+}
+
+.tab-wrapper.tab-left > .nav-tabs > li.active > a {
+  border-left: 2px solid $brand-primary;
+}
+
+.tab-wrapper.tab-right > .nav-tabs {
+  float: right;
+  margin-left: -1px;
+}
+
+.tab-wrapper.tab-right > .nav-tabs > li > a {
+  border-left: 0;
+}
+
+.tab-wrapper.tab-right > .nav-tabs > li.active > a {
+  border-right: 2px solid $brand-primary;
+}
+
+.tab-wrapper.tab-bottom > .tab-content {
+  border-top: 1px solid $borderColor;
+}
+
+.tab-wrapper.tab-bottom > .nav-tabs {
+  margin-top: 0;
+  border-bottom: none;
+}
+
+.tab-wrapper.tab-bottom > .nav-tabs > li.active > a {
+  margin-top: -2px;
+  border-top-color: transparent !important;
+  border-bottom: 2px solid $brand-primary;
+}
+
+.tab-primary.tab-wrapper > .nav-tabs > li.active > a {
+  border-top-color: $brand-primary;
+}
+
+.tab-primary.tab-wrapper.tab-left > .nav-tabs > li.active {
+  border-left-color: $brand-primary;
+}
+
+.tab-primary.tab-wrapper.tab-right > .nav-tabs > li.active {
+  border-right-color: $brand-primary;
+}
+
+.tab-primary.tab-wrapper.tab-bottom > .nav-tabs > li.active > a {
+  border-bottom-color: $brand-primary;
+}

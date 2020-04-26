@@ -1,0 +1,23 @@
+.nav > li.active {
+  font-weight: bold;
+}
+
+.nav > li > a:hover {
+  background-color: transparent;
+  color: darken($navbar-default-link-hover-color, 60%);
+}
+
+.nav > li.active > a:hover {
+  color: darken($backgroundColor, 45%);
+  text-shadow: none;
+}
+
+.nav > li > a:hover, .nav > li > a:focus {
+  text-decoration: none;
+  background-color: transparent;
+}
+
+// Dropdowns
+.nav > .dropdown.active > a:hover {
+  color: inherit;
+}

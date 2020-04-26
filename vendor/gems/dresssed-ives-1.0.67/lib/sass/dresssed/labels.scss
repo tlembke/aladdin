@@ -1,0 +1,39 @@
+// Colors
+.label {
+  background-color: $brand-info;
+  line-height: inherit;
+}
+.label:hover {
+  cursor: pointer;
+}
+.label-primary {
+  background-color: $brand-primary;
+}
+.label-primary:hover {
+  background-color: darken($primaryText, 10%);
+}
+.label-warning {
+  background-color: $brand-warning;
+}
+.label-warning:hover {
+  background-color: darken($brand-warning, 10%);
+}
+.label-success {
+  background-color: $brand-success;
+}
+.label-success:hover {
+  background-color: darken($successText, 10%);
+}
+.label-info {
+  background-color: $brand-info;
+}
+.label-info:hover {
+  background-color: darken($infoText, 10%);
+}
+.label-danger {
+  background-color: $brand-danger;
+}
+.label-danger:hover {
+  background-color: darken($errorText, 10%);
+}
+

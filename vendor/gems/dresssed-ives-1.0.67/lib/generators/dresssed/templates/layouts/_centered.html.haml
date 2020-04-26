@@ -1,0 +1,33 @@
+!!!
+%html
+  %body
+    = html_tag :lang => "en" do
+      %meta{:charset => "utf-8"}/
+      %title= [@title, app_name].compact.join(" - ")
+      = csrf_meta_tags
+      / Ensure devices display responsive pages properly
+      %meta{:content => "width=device-width, initial-scale=1.0", :name => "viewport"}/
+      / Le HTML5 shim, for IE6-8 support of HTML elements
+      /[if lt IE 9]
+        <script src="//html5shim.googlecode.com/svn/trunk/html5.js" type="text/javascript"></script>
+      / Le fonts
+      = stylesheet_link_tag "//fonts.googleapis.com/css?family=Droid+Sans:400,700"
+      / Le styles
+      = stylesheet_link_tag "application", :media => "all"
+      = yield :styles
+      /
+        Le javascript
+        \==================================================
+      / Placed at the end of the document so the pages load faster
+      = javascript_include_tag "application"
+      = yield :javascript
+      / Le fav and touch icons
+      = favicon_link_tag
+      = yield :head
+      #main.vertical-center
+        .container
+          .row
+            = render "layouts/flashes"
+          = yield
+        / /.container
+      / /#main

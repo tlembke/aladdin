@@ -1,0 +1,29 @@
+<%- if defined?(SimpleForm) -%>
+= simple_form_for(@<%= singular_table_name %>, <%= Dresssed.key_value :wrapper, ":horizontal_form" %>, <%= Dresssed.key_value :html, '{ ' + Dresssed.key_value(:class, "'form-horizontal'") + ' }' %>) do |f|
+  = f.error_notification
+
+  .form-inputs
+  <%- attributes.each do |attribute| -%>
+    = f.<%= attribute.reference? ? :association : :input %> :<%= attribute.name %>
+  <%- end -%>
+
+  .form-actions.col-md-offset-3.col-md-9
+    = f.button :submit
+    = f.button :cancel, <%= Dresssed.key_value :to, "#{index_helper}_path" %>
+<%- else -%>
+= form_for(@<%= singular_table_name %>, <%= Dresssed.key_value :html, '{ ' + Dresssed.key_value(:class, "'form-horizontal'") + ' }' %>) do |f|
+  = f.error_notification
+
+  .form-inputs
+  <%- attributes.each do |attribute| -%>
+    = f.form_group :<%= attribute.name %> do |f|
+      = f.label :<%= attribute.name %>, <%= Dresssed.key_value :class, "'control-label col-md-2'" %>
+      .col-md-8
+        = f.<%= attribute.field_type %> :<%= attribute.name %>, <%= Dresssed.key_value :class, "'form-control'" %>
+        = f.error_messages
+  <%- end -%>
+
+  .form-actions.col-md-offset-3.col-md-9
+    = f.submit <%= Dresssed.key_value :class, "'btn btn-primary'" %>
+    = link_to "Cancel", <%= index_helper %>_path, <%= Dresssed.key_value :class, "'btn'" %>
+<%- end -%>

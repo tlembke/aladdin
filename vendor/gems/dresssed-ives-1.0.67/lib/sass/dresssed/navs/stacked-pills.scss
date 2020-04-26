@@ -1,0 +1,64 @@
+// STACKED PILLS
+// -------------
+
+.nav-pills.nav-stacked > li.active > a {
+  background: $link-color;
+  filter: none;
+  color: $white;
+  @include box-shadow(0 1px 3px rgba(0,0,0,.25));
+  box-shadow:none;
+  text-shadow: 0 -1px 1px rgba(0,0,0,.25);
+}
+
+
+// Caret
+// -----
+
+.nav-pills.nav-stacked.nav-caret-left > .active {
+  &::before {
+    @include horizontal-caret(left, $line-height-base, 9px, $link-color);
+    border-right: 9px solid $link-color;
+    margin-top: 4px;
+    margin-left: -12px;
+
+    margin-top: 1px;
+    margin-left: -8px;
+  }
+
+  a {
+    border-radius-left: 0;
+  }
+
+  a::before {
+    float: left;
+    margin-left: -12px;
+  }
+}
+
+.nav-pills.nav-stacked.nav-caret-right > .active {
+  &::before {
+    @include horizontal-caret(right, $line-height-base, 9px, $link-color);
+    border-left: 9px solid $link-color;
+
+    margin-top: 1px;
+    margin-right: -8px;
+  }
+
+  a {
+    border-radius-right: 0;
+  }
+
+  a::after {
+    float: right;
+    margin-right: -12px;
+  }
+}
+
+// Dot inside caret
+.nav-pills.nav-stacked.nav-caret-left > .active > a::before,
+.nav-pills.nav-stacked.nav-caret-right > .active > a::after {
+  content: "\00B7";
+  font-weight: normal;
+  font-size: 25px;
+  margin-top: -9px;
+}

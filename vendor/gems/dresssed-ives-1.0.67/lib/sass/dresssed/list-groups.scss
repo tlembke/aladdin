@@ -1,0 +1,55 @@
+// List Groups
+.list-group-item.active {
+  background-color: $link-color;
+  color: darken($link-color, 30%);
+  border: none;
+
+  .list-group-item-text {
+    color: darken($link-color, 20%);
+  }
+}
+
+.list-group-item.active:hover {
+  background-color: $link-color-hover;
+  border: none;
+  @include transition(all 0.2s ease);
+  color: darken($link-color, 30%);
+
+  a {
+    color: darken($navbar-default-link-active-bg, 20%);
+  }
+
+  .list-group-item-text {
+    color: darken($link-color, 30%);
+  }
+}
+
+.list-group-flush {
+  margin-bottom: 0;
+
+  .list-group-item {
+    border-radius: 0;
+    border-left: none;
+    border-right: none;
+
+    &:first-of-type {
+      border-top: none;
+    }
+
+    &:last-of-type {
+      border-bottom: none;
+    }
+  }
+}
+
+.stat-list {
+  text-align: center;
+
+  dl {
+    border-right: 1px solid desaturate(lighten($text-color, 20%), 20%);
+
+    &:last-of-type {
+      border: none;
+    }
+  }
+}

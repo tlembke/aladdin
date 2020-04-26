@@ -1,0 +1,40 @@
+.modal-example {
+  position: relative;
+  z-index: 1;
+  top: auto;
+  right: auto;
+  bottom: auto;
+  left: auto;
+  display: block;
+}
+
+.modal {
+  .modal-content {
+    border-radius: 2px;
+    box-shadow: 0 1px 14px rgba(0, 0, 0, 0.2);
+
+    .modal-header {
+      border: none;
+
+      .glyphicon {
+        display: block;
+        width: 64px;
+        margin: 10px auto;
+        font-size: 64px;
+      }
+
+      .modal-title {
+        text-align: center;
+        font-weight: bold;
+      }
+    }
+
+    .modal-body {
+      padding: 35px;
+    }
+
+    .modal-footer {
+      border: none;
+    }
+  }
+}

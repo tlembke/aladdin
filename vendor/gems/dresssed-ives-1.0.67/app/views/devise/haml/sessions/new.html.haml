@@ -1,0 +1,43 @@
+- @title = "Log in"
+#main.devise
+  .container-fluid
+    .row
+      %header.text-center
+        %h1
+          = app_name
+        %p.p0.m0 Login
+    .row.mt20
+      = form_for resource, as: resource_name, url: session_path(resource_name),      |
+        html: { class: "form-horizontal col-xs-12 col-md-6 col-md-offset-3" } do |f| |
+        - if devise_mapping.omniauthable?
+          %p
+            - resource_class.omniauth_providers.each do |provider|
+              = link_to fa_icon_tag("#{provider}-sign") + " Sign in with #{provider.to_s.titleize}", omniauth_authorize_path(resource_name, provider), class: 'btn'
+          %p Or sign in using your ...
+        .sheet.form-sheet
+          .sheet-inner
+            = f.form_group :email do |f|
+              = f.label :email, class: "form-label"
+              = f.email_field :email, autofocus: true, class: ""
+              = f.error_messages
+            = f.form_group :password do |f|
+              = f.label :password, class: "form-label"
+              = f.password_field :password
+              = f.error_messages
+        - if devise_mapping.rememberable?
+          .form-sheet-footer
+            = f.label :remember_me, class: "checkbox col-sm-6" do
+              = f.check_box :remember_me
+              Remember me
+            = f.submit "Log in", class: 'btn btn-primary pull-right mr20'
+    .row.mt20
+      .col-xs-12.col-sm-12.col-md-6.col-md-offset-3.text-right
+        %ul.list-unstyled.options
+          %li.col-xs-12.col-md-6
+            %a{:href => "/users/sign_up"} Sign up
+          - if devise_mapping.recoverable?
+            %li.col-xs-12.col-md-6= link_to "Forgot your password?", new_password_path(resource_name)
+          - if devise_mapping.confirmable?
+            %li.col-xs-12.col-md-6= link_to "Didn't receive confirmation instructions?", new_confirmation_path(resource_name)
+          - if devise_mapping.lockable? && resource_class.unlock_strategy_enabled?(:email)
+            %li.col-xs-12.col-md-6= link_to "Didn't receive unlock instructions?", new_unlock_path(resource_name)

@@ -1,0 +1,291 @@
+.cover {
+  background: no-repeat center center fixed;
+  background-size: cover;
+}
+
+.vertical-center {
+  height:100%;
+  width:100%;
+
+  text-align: center;
+}
+
+.vertical-center:before {
+  content: " ";
+  display: inline-block;
+  vertical-align: middle;
+  height: 100%;
+}
+
+.vertical-center > .container,
+.vertical-center > .container-fluid {
+  max-width: 99%;
+
+  display: inline-block;
+  vertical-align: middle;
+
+}
+
+.vertical-center > .container-fluid {
+  width: 100%;
+}
+
+@media (max-width: 375px) {
+  .vertical-center {
+    height: auto;
+
+    &:before {
+      height: 100%;
+      vertical-align: middle;
+    }
+  }
+
+  .vertical-center > .container,
+  .vertical-center > .container-fluid {
+    max-width: 98.5%;
+  }
+
+  .vertical-center > .container-fluid {
+    width: 100%;
+  }
+}
+
+.avatar-notification {
+  position: absolute;
+  top: 12px;
+  left: 17px;
+  display: block;
+  width: 15px;
+  height: 15px;
+  border: 3px solid white;
+  border-radius: 100%;
+  background: $brand-primary;
+
+  &.warning {
+    background: $brand-warning;
+  }
+
+  &.info {
+    background: $brand-info;
+  }
+
+  &.danger {
+    background: $brand-danger;
+  }
+
+  &.success {
+    background: $brand-success;
+  }
+}
+
+.box-shadow {
+  box-shadow: 0 2px 2px rgba(0, 0, 0, 0.05), 0 1px 0 rgba(0, 0, 0, 0.05);
+}
+
+.box-list li {
+  float: left;
+  margin: 0 -1px -1px 0;
+  padding: 10px;
+  width: 25%;
+  height: 115px;
+  border: 1px solid #ddd;
+  text-align: center;
+  font-size: 16px;
+  line-height: 1.4;
+
+  .glyphicon {
+    display: block;
+    margin-top: 5px;
+    margin-bottom: 10px;
+    text-align: center;
+    font-size: 32px;
+  }
+}
+
+$max: 30;
+$step: 1;
+
+@for $i from 1 through ceil($max / $step) {
+  $value: ($i - 1) * $step;
+
+  .w-#{$value} {
+    width: #{$value}em;
+  }
+
+  .fs-#{$value} {
+    font-size: #{$value}em;
+  }
+}
+
+$max: 60;
+$step: 5;
+
+@for $i from 1 through ceil($max / $step) {
+  $value: ($i - 1) * $step;
+
+  .p#{$value} {
+    padding: #{$value}px !important;
+  }
+
+  .pb#{$value} {
+    padding-bottom: #{$value}px !important;
+  }
+
+  .pt#{$value} {
+    padding-top: #{$value}px !important;
+  }
+
+  .pl#{$value} {
+    padding-left: #{$value}px !important;
+  }
+
+  .pr#{$value} {
+    padding-right: #{$value}px !important;
+  }
+
+  .m#{$value} {
+    margin: #{$value}px !important;
+  }
+
+  .mb#{$value} {
+    margin-bottom: #{$value}px !important;
+  }
+
+  .mt#{$value} {
+    margin-top: #{$value}px !important;
+  }
+
+  .ml#{$value} {
+    margin-left: #{$value}px !important;
+  }
+
+  .mr#{$value} {
+    margin-right: #{$value}px !important;
+  }
+}
+
+$avatar-width: 200px;
+$avatar-height: 200px;
+
+.avatar-uploader {
+  position: relative;
+  margin: 15px auto 0 auto;
+  text-align: center;
+
+  > .inner {
+    position: relative;
+    margin: 0 auto;
+    width: $avatar-width + 10;
+    height: $avatar-height + 10;
+    border: 5px solid white;
+    cursor: pointer;
+
+    border-radius: 4px;
+
+    img {
+      width: $avatar-width;
+      height: $avatar-height;
+      position: absolute;
+      left: 0;
+    }
+  }
+
+  .icon-wrapper {
+    position: absolute;
+    margin: ($avatar-width / 4) 0 0 (-$avatar-width / 5);
+    padding: 3px;
+    // width: $avatar-width / 2.3;
+    // height: $avatar-height / 2.2;
+    border-radius: 100px;
+    background: rgba(255, 255, 255, 0.6);
+    color: $brand-primary;
+
+    .fa {
+      display: table-cell;
+      height: $avatar-height / 2.5;
+      border: 3px solid;
+      border-radius: 100px;
+      vertical-align: middle;
+      font-size: $avatar-width / 3.2;
+      line-height: 1.2;
+    }
+  }
+
+  input[type=file] {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100% !important;
+    height: 100%;
+    opacity: 0;
+    cursor: pointer;
+  }
+}
+
+/* columns of same height styles */
+.row-same-height {
+    display: table;
+    width: 100%;
+}
+
+.col-xs-height {
+    display: table-cell;
+    float: none !important;
+}
+
+@media (min-width: 768px) {
+    .col-sm-height {
+        display: table-cell;
+        float: none !important;
+    }
+}
+@media (min-width: 992px) {
+    .col-md-height {
+        display: table-cell;
+        float: none !important;
+    }
+}
+@media (min-width: 1200px) {
+    .col-lg-height {
+        display: table-cell;
+        float: none !important;
+    }
+}
+
+/* firefox fix */
+.img-responsive {
+    width: 100%;
+}
+
+/* vertical alignment styles */
+.col-top {
+    vertical-align:top;
+}
+
+.col-middle {
+    vertical-align:middle;
+}
+
+.col-bottom {
+    vertical-align:bottom;
+}
+
+.btn-file {
+    position: relative;
+    overflow: hidden;
+}
+.btn-file input[type=file] {
+    position: absolute;
+    top: 0;
+    right: 0;
+    min-width: 100%;
+    min-height: 100%;
+    font-size: 100px;
+    text-align: right;
+    filter: alpha(opacity=0);
+    opacity: 0;
+    outline: none;
+    background: white;
+    cursor: inherit;
+    display: block;
+}

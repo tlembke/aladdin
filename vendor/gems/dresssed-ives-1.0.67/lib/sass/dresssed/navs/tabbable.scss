@@ -1,0 +1,57 @@
+// BOTTOM
+// ------
+
+.tabs-below .nav-tabs {
+  border-color: $borderColor;
+}
+
+.tabs-below .nav-tabs > li > a,
+.tabs-below .nav-tabs > li > a:hover {
+  border-color: $borderColor;
+}
+
+.tabs-below .nav-tabs .active > a,
+.tabs-below .nav-tabs .active > a:hover {
+  #gradient {
+    @include gradient-vertical($backgroundColor, $white);
+  }
+  border-color: $backgroundColor $borderColor $borderColor $borderColor;
+}
+
+
+// LEFT & RIGHT
+// ------------
+
+// Tabs on the left
+.tabs-left .nav-tabs {
+  border-color: $borderColor;
+}
+.tabs-left .nav-tabs > li > a,
+.tabs-left .nav-tabs > li > a:hover {
+  border-color: $borderColor;
+}
+.tabs-left .nav-tabs .active > a,
+.tabs-left .nav-tabs .active > a:hover {
+  #gradient {
+   @include gradient-horizontal($white, $backgroundColor);
+ }
+  border-color: $borderColor $backgroundColor $borderColor $borderColor;
+  *border-right-color: $backgroundColor;
+}
+
+// Tabs on the right
+.tabs-right .nav-tabs {
+  border-color: $borderColor;
+}
+.tabs-right .nav-tabs > li > a,
+.tabs-right .nav-tabs > li > a:hover {
+  border-color: $borderColor;
+}
+.tabs-right .nav-tabs .active > a,
+.tabs-right .nav-tabs .active > a:hover {
+  #gradient {
+    @include gradient-horizontal($backgroundColor, $white);
+  }
+  border-color: $borderColor $borderColor $borderColor $backgroundColor;
+  *border-left-color: $backgroundColor;
+}

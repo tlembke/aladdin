@@ -1,0 +1,22 @@
+.btn-toolbar .btn-group + .btn-group {
+  margin-left: 1em;
+}
+
+.input-group {
+  .input-group-btn {
+    .btn {
+      box-shadow: none;
+      height: $input-height-base;
+    }
+  }
+}
+
+.btn-group {
+  .dropdown-toggle {
+    height: $input-height-base;
+  }
+}
+
+.btn-group-xs > .btn {
+  box-shadow: none;
+}

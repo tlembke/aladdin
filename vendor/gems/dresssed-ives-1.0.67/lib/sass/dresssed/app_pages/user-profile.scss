@@ -1,0 +1,42 @@
+.user-profile {
+  header {
+    position: relative;
+    height: 333px;
+    padding-top: 20px;
+    padding-bottom: 20px;
+    text-align: center;
+    border-bottom: 1px solid #dfe2e9;
+    border-bottom: 4px solid #fff;
+    background-position: bottom;
+    background-size: cover !important;
+    box-shadow: 2px 0 4px rgba(0, 0, 0, 0.1);
+
+    img {
+      position: relative;
+      max-width: 325px;
+      border: 3px solid #fff;
+      border-radius: 3px;
+    }
+
+    .avatar {
+      color: white;
+
+      h1 {
+        padding-top: 10px;
+        color: white;
+        position: relative;
+        letter-spacing: -1px;
+      }
+
+      &:before {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        content: '';
+        background: -webkit-linear-gradient(top, rgba(0, 0, 0, 0) 1%, rgba(0, 0, 0, 0) 26%, rgba(0, 0, 0, 0.37) 71%, rgba(0, 0, 0, 0.51) 100%);
+      }
+    }
+  }
+}

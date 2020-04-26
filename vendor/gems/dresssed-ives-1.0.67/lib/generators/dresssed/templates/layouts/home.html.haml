@@ -1,0 +1,24 @@
+- content_for :navbar do
+  .navbar
+    / Brand and toggle get grouped for better mobile display
+    .navbar-header
+      %button.navbar-toggle.collapsed{"data-target" => "#bs-example-navbar-collapse-1", "data-toggle" => "collapse", :type => "button"}
+        %span.sr-only Toggle navigation
+        %span.icon-bar
+        %span.icon-bar
+        %span.icon-bar
+      %a.navbar-brand{:href => "#"} Your Company
+    #bs-example-navbar-collapse-1.collapse.navbar-collapse
+      %ul.nav.navbar-nav.navbar-right
+        %li.active
+          %a{:href => "#"} Home
+        %li
+          %a{:href => "#"} About
+        %li
+          %a{:href => "#"} Contact
+        %li
+          %a{:href => "#"} Login
+        %li
+          %button.btn.btn-outline-primary.sign-up Sign Up
+= render :layout => "layouts/base" do
+  = yield

@@ -1,0 +1,65 @@
+.nav-side-menu
+  .navbar-header
+    .profile
+      = random_avatar 60, "img-circle profile-image"
+      .profile-body
+        %h4 Fill Murray
+        .user-links
+          %a.btn.btn-link.btn-flat.btn-xs{"data-original-title" => "Profile", "data-placement" => "bottom", "data-toggle" => "tooltip", :href => "#"}
+            %i.fa.fa-user
+          %a.btn.btn-link.btn-flat.btn-xs{"data-original-title" => "Messages", "data-placement" => "bottom", "data-toggle" => "tooltip", :href => "#"}
+            %i.fa.fa-envelope
+          %a.btn.btn-link.btn-flat.btn-xs{"data-original-title" => "Settings", "data-placement" => "bottom", "data-toggle" => "tooltip", :href => "#"}
+            %i.fa.fa-cog
+          %a.btn.btn-link.btn-flat.btn-xs{"data-original-title" => "Logout", "data-placement" => "bottom", "data-toggle" => "tooltip", :href => "#"}
+            %i.fa.fa-sign-out
+    %i.navbar-toggle.collapsed.fa.fa-bars{"data-target" => "#menu-content", "data-toggle" => "collapse"}
+  %ul#menu-content.nav.collapse.navbar-collapse
+    %li
+      %a{:href => "#"}
+        %i.fa.fa-sitemap.fa-fw
+        Multi-Level Menu Example
+        %span.fa.arrow
+      %ul.nav.nav-second-level.collapse{"aria-expanded" => "false"}
+        %li
+          %a.active{:href => "#"} Second Level Item
+        %li
+          %a.active{:href => "#"} Second Level Item
+        %li
+          %a{:href => "#"}
+            Third Level
+            %span.fa.arrow
+          %ul.nav.nav-third-level
+            %li
+              %a.active{:href => "#"} Third Level Item
+            %li
+              %a.active{:href => "#"} Third Level Item
+            %li
+              %a.active{:href => "#"} Third Level Item
+            %li
+              %a{:href => "#"}
+                Fourth Level
+                %span.fa.arrow
+              %ul.nav.nav-fourth-level
+                %li
+                  %a.active{:href => "#"} Fourth Level Item
+                %li
+                  %a.active{:href => "#"} Fourth Level Item
+                %li
+                  %a.active{:href => "#"} Fourth Level Item
+                %li
+                  %a.active{:href => "#"} Fourth Level Item
+          / /.nav-third-level
+      / /.nav-second-level
+    %li.nav-side-menu-footer
+      %div
+        %small
+          %strong 3 Users
+          \/ 10 Users
+          %span.pull-right
+            %button.btn.btn-outline-info.btn-flat.btn-xs
+              %i.fa.fa-plus
+      .progress.progress-mini
+        .progress-bar.progress-bar-primary{"aria-valuemax" => "100", "aria-valuemin" => "0", "aria-valuenow" => "33", :role => "progressbar", :style => "width: 33%"}
+      .text-center
+        100% operational capacity

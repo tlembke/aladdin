@@ -1,0 +1,26 @@
+%tr
+  %td
+    %table{:border => "0", :cellpadding => "0", :cellspacing => "0", :width => "100%"}
+      %tr
+        %td{:align => "center", :valign => "top"}
+          %table{:border => "0", :cellpadding => "10", :cellspacing => "0", :width => "100%"}
+            %tr
+              %td{:align => "center", :valign => "top"}
+                %br/
+                %br/
+                %span{:style => "font-family: Avenir, 'Helvetica Neue', Helvetica, sans-serif; font-size:28px; color:#444444;"}
+                  Welcome #{@email}!
+                %span{:style => "font-family: Avenir, 'Helvetica Neue', Helvetica, sans-serif; font-size:28px; color:#444444;"} You can confirm your account email through the link below:
+                %table{:border => "0", :cellpadding => "0", :cellspacing => "0", :style => "background-color:#16A086;", :width => "50%"}
+                  %tr
+                    %br/
+                    %br/
+                    %br/
+                    %br/
+                    %td{:style => "padding: 18px 20px 18px 20px; font-family:  Avenir, 'Helvetica Neue', Helvetica, sans-serif, sans-serif; color: #ffffff; font-size: 18px; text-align: center;"}
+                      %span{:style => "text-decoration: none; color: #ffffff;"}= link_to 'Confirm my account', confirmation_url(@resource, confirmation_token: @token), style: 'color: #fff;'
+                %br/
+                %br/
+                %span{:style => "font-family: Avenir, 'Helvetica Neue', Helvetica, sans-serif; font-size:22px; color:#444444;"} Any questions? Just email us.
+                %br/
+                %br/

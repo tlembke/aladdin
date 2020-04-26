@@ -1,0 +1,127 @@
+= render :layout => "layouts/minimal" do
+  = render partial: "layouts/sidenav"
+  .main-content
+    %nav.navbar.navbar-default.navbar-shadow{:role => "navigation"}
+      .navbar-inner
+        / Brand and toggle get grouped for better mobile display
+        .navbar-header
+          %button.navbar-toggle.collapsed{"data-target" => "#main-content-nav", "data-toggle" => "collapse", :type => "button"}
+            %span.sr-only Toggle navigation
+            %span.icon-bar
+            %span.icon-bar
+            %span.icon-bar
+        / Collect the nav links, forms, and other content for toggling
+        #main-content-nav.collapse.navbar-collapse
+          %ul.nav.navbar-nav
+            %li
+              %a{:href => "#"} Servers
+            %li.dropdown
+              %a.dropdown-toggle{"data-toggle" => "dropdown", :href => "#"}
+                Clusters
+                %span.caret
+              %ul.dropdown-menu
+                %li
+                  %a{:href => "#"} Cluster 1
+                %li
+                  %a{:href => "#"} Cluster 2
+                %li
+                  %a{:href => "#"} Cluster 3
+                %li
+                  %a{:href => "#"} Cluster 4
+          %ul.nav.navbar-nav.navbar-right
+            %li
+              %form.navbar-form.search-form{:role => "search"}
+                %input#searchbox.form-control{:placeholder => "Search", :type => "text"}/
+                %span.search-button
+                  %i.fa.fa-search
+            = yield :navbar
+            %li.navbar-form
+              .btn-group{"data-toggle" => "buttons"}
+                %label.btn.btn-default.active
+                  %input#option1{:autocomplete => "off", :checked => "checked", :name => "options", :type => "radio"}/
+                  %i.fa.fa-home
+                %label.btn.btn-default
+                  %input#option2{:autocomplete => "off", :name => "options", :type => "radio"}/
+                  %i.fa.fa-envelope
+                %label.btn.btn-default
+                  %input#option3{:autocomplete => "off", :name => "options", :type => "radio"}/
+                  %i.fa.fa-user
+            %li.dropdown
+              %button.dropdown-toggle{"aria-expanded" => "false", "aria-haspopup" => "true", "data-toggle" => "dropdown"}
+                %i.fa.fa-fw.fa-cog
+                %span.caret.caret-light
+              %ul.dropdown-menu{:role => "menu"}
+                %li
+                  %a{:href => "#"} Site management
+                %li
+                  %a{:href => "#"} User management
+                %li
+                  %a{:href => "#"} Settings
+            %li.dropdown.notifications
+              %button.dropdown-toggle{"aria-expanded" => "false", "aria-haspopup" => "true", "data-toggle" => "dropdown"}
+                %i.fa.fa-fw.fa-bell
+                %span.badge.badge-sm 2
+                %span.caret.caret-light
+                %span.visible-xs-inline Notifications
+              / dropdown
+              %ul.dropdown-menu
+                %li
+                  .panel
+                    .panel-heading.text-center
+                      %small
+                        %strong
+                          You have
+                          %span 2
+                          notifications
+                    .list-group
+                      %a.media.list-group-item{:href => "#"}
+                        %span.pull-left
+                          = random_avatar 32, "media-object img-circle"
+                        %span.media-body
+                          %p My name is Inigo Montoya.
+                          %small.text-muted 10 minutes ago
+                      %a.media.list-group-item{:href => ""}
+                        %span.media-body
+                          %div
+                            %p You've reached your space quota!
+                            .progress.progress-sm.m0
+                              .progress-bar.progress-bar-danger{"aria-valuemax" => "100", "aria-valuemin" => "0", "aria-valuenow" => "100", :role => "progressbar", :style => "width: 100%;"}
+                                %span.sr-only 100% Complete
+                          %small.text-muted 12 hours ago
+                    .panel-footer
+                      %a.pull-right{:href => "#"}
+                        %i.fa.fa-cog
+                      %a{:href => "#"} View all Notifications
+              / / dropdown
+            %li.dropdown.user-nav
+              %button.dropdown-toggle{"aria-expanded" => "false", "aria-haspopup" => "true", "data-toggle" => "dropdown"}
+                = random_avatar 34, "avatar img-rounded"
+                %span.caret.caret-light
+              %ul.dropdown-menu{:role => "menu"}
+                %li.profile-header
+                  = random_avatar 120, "avatar img-rounded"
+                  %p.m0.p0
+                    Fill Murray
+                  %p.small.m0.p0 Premium Account
+                %li.profile-footer
+                  .pull-left
+                    %a.btn.btn-default.btn-flat{:href => "#"}
+                      %small Edit Profile
+                  .pull-right
+                    %a.btn.btn-default.btn-flat.small{:href => "#"}
+                      %small Log Out
+        / /.navbar-collapse
+      / /.navbar-inner
+    - if content_for?(:description) || content_for?(:actions)
+      .page-header
+        .container-fluid
+          .row.row-same-height
+            .col-md-12.col-sm-height.col-middle
+              - if content_for?(:description)
+                %h2.m0= @title
+            = yield :description
+        .col-md-2.col-sm-height.col-middle
+          - if content_for?(:actions)
+            = yield :actions
+  / /.page-header
+    = yield

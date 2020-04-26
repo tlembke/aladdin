@@ -1,0 +1,41 @@
+- @title = "Listing <%= plural_table_name %>"
+
+- content_for :description do
+  %p Edit this template in app/views/<%= controller_name %>/index.html.haml.
+
+- content_for :actions do
+  = link_to new_<%= singular_table_name %>_path, <%= Dresssed.key_value :class, "'btn btn-primary btn-large pull-right'" %> do
+    = fa_icon_tag "plus"
+    Add <%= human_name %>
+
+.container-fluid
+  .row
+    .col-xs-12.col-sm-12.col-md-12.col-lg-12
+      .sheet.sheet-condensed
+        .sheet-inner
+          %table.table
+            %thead
+              %tr
+        <% attributes.each do |attribute| -%>
+        %th <%= attribute.human_name %>
+        <% end -%>
+        %th
+            %tbody
+            - @<%= plural_table_name %>.each do |<%= singular_table_name %>|
+              %tr
+          <% attributes.each do |attribute| -%>
+    %td= <%= singular_table_name %>.<%= attribute.name %>
+        <% end -%>
+      %td.actions
+                = link_to fa_icon_tag("eye-open"), <%= singular_table_name %>, <%= Dresssed.key_value :rel, "'tooltip'" %>, <%= Dresssed.key_value :title, "'Show'" %>
+                = link_to fa_icon_tag("pencil"), edit_<%= singular_table_name %>_path(<%= singular_table_name %>), <%= Dresssed.key_value :rel, "'tooltip'" %>, <%= Dresssed.key_value :title, "'Edit'" %>
+                = link_to fa_icon_tag("trash"), <%= singular_table_name %>, <%= Dresssed.key_value :rel, "'tooltip'" %>, <%= Dresssed.key_value :title, "'Delete'" %>, <%= Gem::Version.new(Rails.version) >= Gem::Version.new("3.2.6") ? Dresssed.key_value(:data, '{ ' + Dresssed.key_value(:confirm, "'Are you sure?'") + ' }') : Dresssed.key_value(:confirm, "'Are you sure?'") %>, <%= Dresssed.key_value :method, ":delete" %>
+
+      <% if defined?(WillPaginate) -%>
+      -# Remove the trailing if condition if you're using pagination.
+      = will_paginate @<%= plural_table_name %> if @<%= plural_table_name %>.respond_to?(:total_pages)
+      <% end -%>
+      <% if defined?(Kaminari) -%>
+      -# Remove the trailing if condition if you're using pagination.
+      = paginate @<%= plural_table_name %> if @<%= plural_table_name %>.respond_to?(:current_page)
+      <% end -%>

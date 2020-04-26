@@ -1,0 +1,54 @@
+// Adjust close link position
+.alert .close {
+  top: 0;
+}
+
+.alert {
+  .alert-link {
+
+  }
+}
+
+.alert-danger {
+  background-color: $errorBackground;
+  color: color($red, 50);
+
+  .alert-link {
+    color: lighten(color($red, 50), 10%);
+  }
+
+ @include alertBorder($errorBackground);
+}
+
+.alert-success {
+  background-color: $successBackground;
+  color: color($green, 50);
+
+  .alert-link {
+    color: lighten(color($green, 50), 10%);
+  }
+
+  @include alertBorder($successBackground);
+}
+
+.alert-warning {
+  background-color: $warningBackground;
+  color: color($orange, 50);
+
+  .alert-link {
+    color: lighten(color($orange, 50), 10%);
+  }
+
+  @include alertBorder($warningBackground);
+}
+
+.alert-info {
+  background-color: $infoBackground;
+  color: color($blue, 50);
+
+  .alert-link {
+    color: lighten(color($blue, 50), 10%);
+  }
+
+  @include alertBorder($infoBackground);
+}

@@ -1,0 +1,27 @@
+// BASIC PILLS
+// -----------
+
+.nav-pills > li > a {
+  border-radius: $navBorderRadius;
+}
+
+.nav-pills > li > a:hover {
+  background: transparent;
+  color: $link-color-hover;
+}
+
+.nav-pills > li.active > a {
+  background: $backgroundColor;
+  color: darken($backgroundColor, 45%);
+  text-shadow: 0 0px 1px rgba(255,255,255,.75);
+  font-weight: normal;
+}
+
+// Dropdowns
+.nav-pills > .dropdown.active > a:hover {
+  color: $white;
+}
+
+.nav-pills .active .dropdown-toggle .caret {
+  border-top-color: $white;
+}

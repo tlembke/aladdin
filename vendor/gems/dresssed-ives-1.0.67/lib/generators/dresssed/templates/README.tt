@@ -1,0 +1,68 @@
+===============================================================================
+
+                            Your app just got ...
+
+              ____________ _____ _____ _____ _____ ___________
+              |  _  \ ___ \  ___/  ___/  ___/  ___|  ___|  _  \
+              | | | | |_/ / |__ \ `--.\ `--.\ `--.| |__ | | | |
+              | | | |    /|  __| `--. \`--. \`--. \  __|| | | |
+              | |/ /| |\ \| |___/\__/ /\__/ /\__/ / |___| |/ /
+              |___/ \_| \_\____/\____/\____/\____/\____/|___/
+
+Thanks for supporting our mom & pop software company running from the middle
+of nowhere! We really appreciate it.
+
+Some setup you must do manually if you haven't yet:
+
+  * Choose a theme style in app/assets/stylesheets/dresssed.css
+
+  * Ensure app/assets/stylesheets/dresssed.css is loaded in application.css
+    with `require_tree .` or `require dresssed`.
+
+  * Ensure `require dresssed` has been added to
+    app/assets/javascripts/application.js.
+
+  * Ensure you have defined root_url to *something* in your config/routes.rb.
+    For example:
+
+      root :to => "home#index"
+
+  * If you are deploying on Heroku, you may want to set:
+
+      config.assets.initialize_on_precompile = false
+
+    On config/application.rb forcing your application to not access the DB
+    or load models when precompiling your assets.
+
+  * If you are using simple_form, don't forget to run:
+
+      rails generate simple_form:install --bootstrap
+
+  * Browse the theme documentation:
+
+      Rails Integration: https://dresssed.com/demos/ives/blue_preview/004_rails_integration@fa-diamond%252F001_overview_fullpage.html
+
+  * Lastly, restart your server if it's already running.
+
+<% if can_customize? %>
+If you want to fully customize your theme (edit SCSS variables and be picky
+about what is being put in your CSS), run `rails generate dresssed:customize`.
+If you just want to change the logo, see app/assets/stylesheets/dresssed.css.
+<% end %>
+
+We really appreciate your business here at Dresssed, thanks for buying!
+
+*** Having problems? ***
+
+Email support@dresssed.com with the following: 
+
+- Your Ruby and Rails versions
+- What you are using to manage Ruby on your machine
+- Your Gemfile and Gemfile.lock files
+- The zipped up contents of app/assets/stylesheets
+- The name and version of the browser you're using
+- Your operating system
+
+And we'll do our very best to help you!
+
+===============================================================================

@@ -1,0 +1,47 @@
+.container-fluid
+  .row.mt20
+    .col-xs-12.col-sm-12.col-md-8.col-lg-8
+      .row
+        - metric_names.each do |metric|
+          .col-xs-12.col-sm-12.col-md-6.col-lg-6
+            .panel.panel-metric
+              .panel-body
+                .metric-content
+                  .row
+                    %header.col-xs-12
+                      %h3= metric[:name]
+                    .col-xs-7.col-sm-7.col-md-7.col-lg-7{:style => "min-height: 150px;"}
+                      .metric-graph{:id => "metric-#{metric[:name].downcase.parameterize}", :style => "height:150px;"}
+                    .col-xs-5.col-sm-5.col-md-5.col-lg-5
+                      .metric-value.col-xs-12
+                        = random_value metric[:type]
+                        %small CURRENT
+                      .metric-trend.col-xs-12
+                        - direction = increase_or_decrease
+                        %p{:class => increase_or_decrease_class direction}
+                          %i{:class => "fa #{increase_or_decrease_chevron direction}"}
+                          = random_percent
+                        %small 30 Days Ago
+          - content_for :javascript do
+            :javascript
+              flotMetric('#metric-#{metric[:name].downcase.parameterize}', #{random_trending_data(direction)} );
+    .col-xs-12.col-sm-12.col-md-4.col-lg-4
+      .panel.panel-default
+        .panel-heading
+          %h3.panel-title Activity
+        .panel-body
+          .left-timeline.metrics-timeline
+            %ul.list-unstyled.small
+              - types = [ { klass: 'refund', css_class: 'label-danger'},  { klass: 'purchase', css_class: 'label-success'}, { klass: 'cancellation', css_class: 'label-inverse'}]
+              - (1..10).each do |index|
+                %li.mb10
+                  - instance = types[Random.rand(types.length)]
+                  %time{:class => instance[:css_class]}
+                    %strong
+                      $#{Random.rand(120)}
+                  %header
+                    %strong Internet Genie
+                    %br/
+                    %small.text-muted
+                      = instance[:klass].upcase
+                      \- #{time_ago_in_words( DateTime.now-(index.minutes) )}

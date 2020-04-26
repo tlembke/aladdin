@@ -1,0 +1,116 @@
+@include keyframes(drop-fade) {
+  0% {
+    opacity: 0;
+    transform: translateY(-0.6em);
+  }
+  50% {
+    opacity: 0;
+    transform: translateY(-0.6em);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@include keyframes(rise-fade) {
+  0% {
+    opacity: 0;
+    transform: translateY(+0.6em);
+  }
+  50% {
+    opacity: 0;
+    transform: translateY(+0.6em);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@include keyframes(right-fade) {
+  0% {
+    opacity: 0;
+    transform: translateX(-0.6em);
+  }
+  50% {
+    opacity: 0;
+    transform: translateX(-0.6em);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@include keyframes(left-fade) {
+  0% {
+    opacity: 0;
+    transform: translateX(+0.6em);
+  }
+  50% {
+    opacity: 0;
+    transform: translateX(+0.6em);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@include keyframes(fade-in) {
+  0% {
+    opacity: 0;
+  }
+  50% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+@include keyframes(fade-out) {
+  0% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+
+$max: 1050;
+$step: 50;
+$start: 200;
+
+@for $i from 1 through ceil($max / $step) {
+  $value: $start + (($i - 1) * $step);
+
+  .animate-drop-fade-#{$value} {
+    animation: drop-fade #{$value}ms;
+  }
+
+  .animate-rise-fade-#{$value} {
+    animation: rise-fade #{$value}ms;
+  }
+
+  .animate-right-fade-#{$value} {
+    animation: right-fade #{$value}ms;
+  }
+
+  .animate-left-fade-#{$value} {
+    animation: left-fade #{$value}ms;
+  }
+
+  .animate-fade-in-#{$value} {
+    animation: fade-in #{$value}ms;
+  }
+
+  .animate-fade-out-#{$value} {
+    animation: fade-out #{$value}ms;
+  }
+}

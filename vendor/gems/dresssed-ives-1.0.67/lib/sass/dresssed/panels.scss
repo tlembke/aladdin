@@ -1,0 +1,185 @@
+.panel {
+  border: none;
+  border-top: 3px solid $brand-primary;
+  border-radius: 3px;
+  box-shadow: 0 1px 1px rgba(0,0,0,0.1);
+
+  h1.page-header {
+    margin: 0;
+  }
+
+  p.lead {
+    margin: 0;
+    font-size: 1em;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+
+  .panel-heading {
+    color: $text-color;
+    background: white;
+    font-family: $font-family-serif;
+    font-size: $font-size-base;
+
+    .glyphicon {
+      top: 3px;
+      min-width: 25px;
+      margin-right: 5px;
+      padding-top: 2px;
+      border-right: 1px solid #ddd;
+    }
+
+    .nav-tabs {
+      border-bottom-color: transparent;
+      top: 10px;
+      position: absolute;
+      right: 20px;
+    }
+
+    .nav-tabs>li>a {
+        border-bottom-color: transparent
+    }
+
+    .fa {
+      top: 3px;
+      min-width: 25px;
+      margin-right: 5px;
+      padding-top: 2px;
+
+      &:first-of-type {
+        border-right: 1px solid #ddd;
+      }
+    }
+
+    .switch {
+      span {
+        height:22px;
+        width: 40px;
+
+        &:after {
+          width: 19px;
+        }
+      }
+
+      input:checked + span:after {
+        left: 18px;
+      }
+    }
+
+    .pagination-xs {
+      margin: 0;
+    }
+
+    .btn-group {
+      top: -3px;
+
+      button {
+        top: -5px;
+        border: none;
+        box-shadow: none;
+
+        .fa {
+          margin-right: 0;
+          border: none;
+        }
+      }
+
+      .dropdown-menu {
+        font-size: $font-size-base - 3;
+      }
+    }
+  }
+
+  .panel-title {
+    margin: 0;
+    padding: 0;
+    letter-spacing: 0;
+  }
+
+  .panel-body {
+    margin: 0;
+  }
+
+  .panel-footer {
+    font-size: .8em;
+  }
+}
+
+.panel-primary {
+  border-color: $primary;
+}
+
+.panel-success {
+  border-color: $success;
+}
+
+.panel-info {
+  border-color: $info;
+}
+
+.panel-warning {
+  border-color: $warning;
+}
+
+.panel-danger {
+  border-color: $danger;
+}
+
+.panel-list {
+  padding: 0;
+
+  .list-group {
+    margin: 0;
+
+    .list-group-item {
+      margin: 0;
+      border: none;
+      border-radius: none;
+      background: transparent;
+      cursor: default;
+      border-bottom: 1px solid $borderColor;
+
+      &:first-child,
+      &:last-child {
+        border-radius: 0;
+      }
+
+      &:last-child {
+        border: none;
+      }
+    }
+  }
+}
+
+.panel-cover {
+  padding: 0;
+  color: #fff;
+  text-align: center;
+  background-size: cover;
+  position: relative;
+  overflow: hidden;
+  border: none;
+
+  h3 {
+    margin-bottom: 88px;
+  }
+
+  .stats {
+    color: #fff;
+    padding: 12px 0;
+    position: absolute;
+    bottom: -20px;
+    border-bottom-right-radius: 3px;
+    border-bottom-left-radius: 3px;
+    left: 0;
+    right: 0;
+    background: rgba(0, 0, 0, 0.3);
+
+    li {
+      span {
+        display: block;
+        font-weight: bold;
+      }
+    }
+  }
+}

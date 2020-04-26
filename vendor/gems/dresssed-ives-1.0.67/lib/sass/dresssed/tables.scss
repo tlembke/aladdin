@@ -1,0 +1,131 @@
+.table > thead > tr > th,
+.table > thead > tr > td,
+.table > tbody > tr > th,
+.table > tbody > tr > td,
+.table > tfoot > tr > th,
+.table > tfoot > tr > td {
+    padding: 8px;
+    line-height: 1.61538;
+    vertical-align: middle;
+    border-top: 1px solid #ddd;
+}
+
+.table {
+  &,
+  th,
+  td,
+  thead,
+  tbody {
+    border-color: $borderColor;
+  }
+
+  thead th {
+    padding-top: 4px;
+    padding-bottom: 4px;
+    color: darken($quietColor, 20%);
+    background: white;
+    border-bottom: 2px solid $borderColor;
+    font-size: $font-size-base - 2px;
+    font-weight: normal;
+  }
+
+  tbody {
+    tr.success td {
+      color: white;
+      background: $success;
+    }
+
+    tr.danger td {
+      color: white;
+      background: $danger;
+    }
+
+    tr.warning td {
+      color: white;
+      background: $warning;
+    }
+
+    tr.info td {
+      color: white;
+      background: $info;
+    }
+  }
+}
+
+.table-striped {
+  tbody {
+    tr:nth-child(odd) td,
+    tr:nth-child(odd) th {
+      background-color: lighten($backgroundColor, 2%);
+    }
+  }
+}
+
+.table-bordered {
+  thead th {
+    border-bottom-width: 1px;
+  }
+
+  th + th,
+  td + td,
+  th + td,
+  td + th {
+    border-color: $borderColor;
+  }
+}
+
+// Hover effect
+.table {
+  tbody tr:hover td,
+  tbody tr:hover th {
+    background-color: $activeBackgroundColor;
+  }
+}
+
+.table-hover > tbody > tr.success:hover > td {
+  color: white;
+  background: darken($success, 10%);
+}
+
+.table-hover > tbody > tr.warning:hover > td {
+  color: white;
+  background: darken($warning, 10%);
+}
+
+.table-hover > tbody > tr.danger:hover > td {
+  color: white;
+  background: darken($danger, 10%);
+}
+
+.table-hover > tbody > tr.info:hover > td {
+  color: white;
+  background: darken($info, 10%);
+}
+
+.table td.actions {
+  text-align: right;
+}
+
+.table td.actions a {
+  margin-left: 2px;
+  @include opacity(40);
+
+  i {
+    font-size: $font-size-base + 2px;
+  }
+
+  &:hover {
+    text-decoration: none;
+    @include opacity(100);
+  }
+}
+
+.table-responsive {
+  width: 100%;
+}
+
+@media (max-width: 375px) {
+  .table-responsive {
+    width: 260px;
+  }
+}

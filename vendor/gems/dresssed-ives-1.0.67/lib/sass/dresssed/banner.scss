@@ -1,0 +1,21 @@
+#banner {
+  img, i {
+    float: left;
+    width: 100%;
+  }
+
+  h3 {
+    line-height: 27px;
+    font-size: 18px;
+    margin: 0;
+  }
+
+  p {
+    color: lighten($text-color, 15%);
+  }
+
+  .container {
+    padding-top: 18px;
+  }
+}
+

@@ -1,0 +1,158 @@
+%article.blog.blog-post.mb50
+  %header.text-center.vertical-center.mb50
+    .container
+      %h1 A Night to Remember
+      %h2.h4 How we made $122,000 at Blackjack
+    .bg.cover{:style => "background-image: url(#{asset_path(random_landscape_name)})"}
+  .col-xs-12.col-sm-12.col-md-3.col-lg-3.text-muted
+    %aside.pt30.pl30.small.text-center
+      %em By John McDowall
+      %p.m0
+        Published
+        %time 14th May 2015
+      %hr.nub/
+      %dl.mt20
+        %dt Tags
+        %dd
+          %ul.list-unstyled
+            %li Rails
+            %li Site News
+            %li Front-end
+  .col-xs-12.col-sm-12.col-md-8.col-lg-8
+    %h4 How it all got started
+    %p Old Houses are products of accretion. Over the course of many years they gather new extensions, tweaked facades, upgraded central or under-floor heating systems, alarm systems, downstairs washrooms and nursereys. And usually, once one project is completled, you'll bask in the glow of it for a while until it's forgotten about and the next one embarked upon. Just like Software.
+    %h5 Cats in the laundry basket
+    %p The house I live in is big and old, over 80 years. It's been split up so that a couple live through the back portion, my wife and I live in the front half, and there's a basement apartment. Sound travels in funny ways in old houses. Sound travels in funny ways in old houses.
+    = random_landscape
+    %h5 Rain always comes
+    %p You see there are the remenants of what were ducts for the purposes of a forced air central heating system, all through the house. The air vents are now sealed, but the ornamentation on the baseboard that gives away their purpose is still there. The ducts lie embedded within the walls still. Long forgotten about, these heating ducts were probably installed at great expense at the time, for what was felt to be the ultimate in home comfort: hot air blown into the rooms from a central heater!
+    %p At some point, the old air heater was pulled out, radiators were found and installed, and a fancy Swedish boiler system now silently and efficiently pumps hot water around the piping and heats the house. And the ducts remain, in the walls. Now sealed up and silent. Except for when they carry sound in funny ways. Old houses are like that.
+    %p Occasionally, we are treated to the sounds of someone somewhere else in the house enjoying vigorous, short lived coitus, the echoes of it carried inside the bones of the house, inside these long forgoten about ducts that serve no purpose. Should the ducts be ripped out? That would be very costly, and damaging to the house. So they stay. Silently embedded within the walls.
+    %p Much like the infastructure portions of almost every software design that's ever been written. Look at your codebase. Is there something in there, some remnant of infrastructure that was built with the greatest of hopes and expectations, only to be roundly replaced when you understood the problem better?
+    %p Removing that code might be too hard now, because nobody writes perfect software. Some brittle tests somewhere might flare up, or a method call somewhere might explode.
+    %p And yet that code sits there, inside your digital walls.
+    %p Software Design is like building houses. The construction continues long after the thing is 'finished', and you end up living with the choices you make for a long time, usually forever.
+    %p And sometimes, in the night, you hear odd noises carried by those old ducts.
+    %section.row.post-footer
+      .col-xs-12
+        .media.color-grey-50
+          .pull-left
+            = random_avatar 40, 'media-object img-rounded'
+          .media-body
+            %p.m0.media-heading
+              Published
+              %time 14th May 2015
+            %a{:href => "#"} by John McDowall
+            in
+            %a{:href => "#"} Rails, Front-end, Magic
+            %span.social.pull-right
+              %p.m0.text-muted.small
+                Share this article
+              .social-links
+                %a.social-icon{"data-message" => "Message about this post", "data-platform" => "twitter", "data-url" => "http://writertheme.com/post", :href => "#"}
+                  %i.fa.fa-twitter
+                %a.social-icon{"data-message" => "Message about this post", "data-platform" => "facebook", "data-url" => "http://writertheme.com/post", :href => "#"}
+                  %i.fa.fa-facebook-official
+                %a.social-icon{"data-platform" => "mail", :href => "mailto:test@example.com"}
+                  %i.fa.fa-envelope
+    %section.comments.row
+      .col-xs-12
+        %hr
+          %h3 4 Comments
+          .media
+            %a.pull-left.avatar{:href => "#"}
+              = random_avatar 40, 'media-object img-rounded'
+            .media-body
+              %h5.media-heading
+                %a{:href => ""} Momoko Price
+                %time 5h ago
+              %p Lorem ipsum dolor sit amet, consectetur adipisicing elit. Perferendis maiores aliquam natus, voluptatum id ut nulla quo ullam dolore exercitationem! Itaque iste facilis consequatur doloremque et, dolore sed dolorem in.
+              %a{:href => "#"} Reply
+              .media
+                %a.pull-left.avatar{:href => "#"}
+                  = random_avatar 40, 'media-object img-rounded'
+                .media-body
+                  %h5.media-heading
+                    %a{:href => ""} John McDowall
+                    %time 17h ago
+                  %p Lorem ipsum dolor sit amet, consectetur adipisicing elit.
+                  %a{:href => "#"} Reply
+              .media
+                %a.pull-left.avatar{:href => "#"}
+                  = random_avatar 40, 'media-object img-rounded'
+                .media-body
+                  %h5.media-heading
+                    %a{:href => ""} Momoko Price
+                    %time 2d ago
+                  %p Lorem ipsum dolor sit amet, consectetur adipisicing elit. Voluptatibus dicta, omnis excepturi voluptatum consequuntur pariatur quidem rem ducimus error! Id rerum quod perferendis repellendus pariatur beatae aliquid, architecto, numquam et.
+                  %a{:href => "#"} Reply
+            .media
+              %a.pull-left.avatar{:href => "#"}
+                = random_avatar 40, 'media-object img-rounded'
+              .media-body
+                %h5.media-heading
+                  %a{:href => ""} John McDowall
+                  %time 3d ago
+                %p Lorem ipsum dolor sit amet, consectetur adipisicing elit. Lorem ipsum dolor sit amet, consectetur adipisicing elit.
+                %a{:href => "#"} Reply
+          .well.mt50.mb50
+            %form.form{:action => "#", :method => "post", :novalidate => ""}
+              .row
+                .col-xs-12.col-sm-12.col-md-12{:style => "visibility: visible;"}
+                  .form-group
+                    %label.control-label{:for => "contact-message"} Join the discussion
+                    .controls
+                      %textarea.form-control.requiredField{"data-error-empty" => "Please enter comment", :name => "comments", :placeholder => "Please be civil.", :rows => "3"}
+                      %span.help-block.text-muted * required
+              .row
+                .col-xs-12.col-sm-6.col-md-6
+                  .form-group
+                    %label.control-label Name
+                    .controls
+                      %input.form-control.requiredField{"data-error-empty" => "Please enter name", :name => "contactName", :placeholder => "Name", :type => "text"}
+                        %span.help-block.text-muted * required
+                .col-xs-12.col-sm-6.col-md-6
+                  .form-group
+                    %label.control-label{:for => "contact-mail"} Email
+                    .controls
+                      %input.form-control.requiredField{"data-error-empty" => "Please enter email", "data-error-invalid" => "Invalid email address", :name => "email", :placeholder => "Email", :type => "email"}
+                        %span.help-block.text-muted * required
+              .row
+                .col-xs-12.col-sm-12.col-md-12
+                  .form-group
+                    %button.form-control.btn.btn-primary.btn-flat{"data-error-message" => "Error!", "data-ok-message" => "Comment Sent", "data-sending-message" => "Sending...", :name => "submit", :type => "submit"} Send Comment
+%footer.container-fluid
+  .row
+    %header.col-xs-12.col-sm-12.col-md-12.col-lg-12
+      %h5 Read These Next
+  .row
+    %a{:href => "#"}
+      .col-sm-6.col-md-2.p0.m0.suggested-article
+        .overlay
+        = random_landscape
+        %h3 Announcing our new feature
+    %a{:href => "#"}
+      .col-sm-6.col-md-2.p0.m0.suggested-article
+        .overlay
+        = random_landscape
+        %h3 Invite a friend get 10% off
+    %a{:href => "#"}
+      .col-sm-6.col-md-2.p0.m0.suggested-article
+        .overlay
+        = random_landscape
+        %h3 Guest Accounts
+    %a{:href => "#"}
+      .col-sm-6.col-md-2.p0.m0.suggested-article
+        .overlay
+        = random_landscape
+        %h3 Using Bootstrap for great Victory
+    %a{:href => "#"}
+      .col-sm-6.col-md-2.p0.m0.suggested-article
+        .overlay
+        = random_landscape
+        %h3 Cats in the heating vents
+    %a{:href => "#"}
+      .col-sm-6.col-md-2.p0.m0.suggested-article
+        .overlay
+        = random_landscape
+        %h3 $10,000 in 24hrs

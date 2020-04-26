@@ -1,0 +1,360 @@
+.navbar {
+  z-index: $zindexDropdown;
+  margin-bottom: 0;
+  border: none;
+  border-radius: 0;
+
+  &.navbar-inverse {
+    .navbar-brand {
+      color: $navbar-inverse-brand-color;
+    }
+  }
+
+  .navbar-brand {
+    text-transform: uppercase;
+    color: $navbar-brand-color;
+  }
+
+  .navbar-item {
+    padding-top: 13px;
+    padding-bottom: 10px;
+  }
+
+  .navbar-toggle .icon-bar {
+    display: block;
+    width: 10px;
+    height: 2px;
+    margin: 0;
+    padding: 0;
+    border-radius: 0;
+  }
+
+  .navbar-toggle .icon-bar + .icon-bar {
+    margin-top: 2px;
+  }
+
+  .dropdown,
+  .dropdown-toggle {
+    min-height: $navbar-height;
+  }
+}
+
+.navbar-nav li.active a {
+  min-height: $navbar-height;
+}
+
+.navbar-default,
+.navbar-default .navbar-collapse,
+.navbar-default .navbar-form {
+  border: none;
+  background: $navbar-bg-color;
+}
+
+.navbar-default .navbar-nav > .active > a,
+.navbar-default .navbar-nav > .active > a:hover,
+.navbar-default .navbar-nav > .active > a:focus {
+  color: #555;
+  background-color: $activeBackgroundColor;
+}
+
+.navbar-default {
+  button.dropdown-toggle {
+    min-width: 62px;
+    border: none;
+    background: transparent;
+
+    i {
+      color: $navbar-default-link-color;
+    }
+
+    .caret {
+      color: $navbar-default-link-color;
+    }
+  }
+
+  .dropdown.open .dropdown-toggle {
+    background: $navbar-default-dropdown-open-bg !important;
+
+    i {
+      background: $navbar-default-dropdown-icon-bg !important;
+      color: $navbar-default-dropdown-icon-color !important;
+    }
+
+    .caret {
+      color: $navbar-default-dropdown-icon-color !important;
+    }
+
+  }
+
+  .navbar-nav > .open > a,
+  .navbar-nav > .open > a:hover,
+  .navbar-nav > .open > a:focus {
+    background-color: $navbar-default-link-active-bg;
+    color: $navbar-default-link-active-color;
+  }
+
+  .navbar-text {
+    color: $text-color;
+  }
+
+  .navbar-brand:hover,
+  .navbar-brand:focus {
+    color: $altTextColor;
+    background-color: transparent;
+  }
+
+  .search-form {
+    input {
+      &::-webkit-input-placeholder {
+        color: lighten($text-color, 50%);
+      }
+
+      &:-moz-placeholder { /* Firefox 18- */
+        color: desaturate($text-color, 50%);
+      }
+
+      &::-moz-placeholder {  /* Firefox 19+ */
+        color: desaturate($text-color, 50%);
+      }
+
+      &:-ms-input-placeholder {
+        color: desaturate($text-color, 50%);
+      }
+
+      width: 200px;
+      color: $navbar-default-link-color;
+      border-color: $navbar-search-form-border-color;
+      border-radius: $generalBorderRadius * 2;
+      background: $navbar-search-form-bg;
+      transition: all 500ms ease-in-out;
+
+      &:focus {
+        width: 300px;
+        border-color: $navbar-search-form-focus-border-color;
+      }
+    }
+
+    .search-button {
+      position: absolute;
+      color: $navbar-default-link-color;
+      top: 15px;
+      right: 26px;
+      font-size: 16px;
+    }
+  }
+
+  .btn-group {
+    .btn {
+      border-color: $navbar-form-button-group-border-color;
+      background: $navbar-form-button-group-bg;
+
+      i {
+        color: $navbar-default-link-color;
+        text-shadow: none;
+      }
+    }
+
+    > .active {
+      i {
+        color: white;
+      }
+    }
+  }
+}
+
+.navbar-default .navbar-text a {
+  color: $altTextColor;
+}
+
+.navbar-toggle {
+  color: $borderColor;
+  border-color: $borderColor;
+}
+
+.navbar.small {
+  margin-top: 5px;
+  font-size: .8em;
+}
+
+.user-profile {
+  .dropdown-toggle {
+    height: $navbar-height;
+    padding-top: 8px;
+    line-height: $line-height-base;
+
+    img {
+      margin-right: 1em;
+    }
+  }
+
+  .dropdown-menu {
+    padding: 0;
+
+    li {
+      width: 90%;
+      margin: 0 auto;
+      border-bottom: 1px solid $borderColor;
+
+      &:nth-last-child(2) {
+        border: none;
+      }
+
+      &:last-of-type {
+        width: 100%;
+        border-top: 1px solid $borderColor;
+        border-bottom: none;
+        background-color: color($grey, 100);
+
+        a {
+          width: 90%;
+          margin: 0 auto;
+        }
+
+        a:hover {
+          background-color: color($grey, 100);
+          font-weight: bold;
+        }
+      }
+
+      a:hover {
+        background-color: white;
+        font-weight: bold;
+      }
+    }
+  }
+
+  i {
+    width: .9em;
+    color: $brand-primary;
+    font-size: .9em;
+    line-height: $line-height-base;
+  }
+}
+
+.user-nav {
+  .dropdown-menu {
+    border-top-right-radius: 0;
+    border-top-left-radius: 0;
+    padding: 1px 0 0 0;
+    border-top-width: 0;
+    width: 280px;
+
+    .profile-header {
+      height: 175px;
+      padding: 20px 10px 10px 10px;
+      text-align: center;
+
+      img {
+        z-index: 5;
+        width: 90px;
+        height: 90px;
+        border: 3px solid;
+        border-color: transparent;
+        border-color: rgba(255, 255, 255, 0.2);
+      }
+    }
+
+    .profile-footer {
+      background-color: $backgroundColor;
+      padding: 10px;
+
+      &:before,
+      &:after {
+        content: " ";
+        display: table;
+      }
+
+      &:after {
+        clear: both;
+      }
+    }
+  }
+
+  .caret {
+    margin-top: 2px;
+  }
+}
+
+
+.notifications {
+  .dropdown-toggle {
+    height: $navbar-height;
+    padding-top: 8px;
+    line-height: $line-height-base;
+  }
+
+  .caret {
+    margin-top: -4px;
+  }
+
+  .dropdown-toggle > i {
+    margin-top: -5px;
+    color: $navbar-default-link-color;
+    line-height: $line-height-base;
+  }
+
+  .dropdown-toggle > i + .badge {
+    position: absolute;
+    top: 9px;
+    left: 22px;
+    padding: 2px 4px;
+    color: white;
+    border: 1px solid white;
+    border-radius: 100%;
+    background: $brand-primary;
+    font-size: .7em;
+  }
+
+  .dropdown-menu {
+    padding: 0;
+
+    i {
+      color: $brand-primary;
+      line-height: $line-height-base;
+    }
+  }
+}
+
+@media (min-width: 768px) {
+  .navbar-form {
+    margin-top: 8px;
+  }
+}
+
+@media (max-width: 320px) {
+  .navbar-form {
+    margin: 0;
+    padding: 0 15px;
+    border: none;
+  }
+
+  .navbar-text {
+    .btn-group {
+      margin: 0 0 0 15px;
+    }
+  }
+
+  .notifications {
+    .dropdown-menu .panel {
+      width: 100%;
+    }
+  }
+}
+
+@media (max-width: 736px), (max-width: 1024px) and (orientation: landscape) {
+  .navbar-form {
+    margin-right: 0;
+    margin-left: 0;
+    border: none;
+  }
+
+  .dropdown-menu .panel {
+    width: 100% !important;
+  }
+}
+
+@media (max-width: 1024px) and (orientation: landscape) {
+  .dropdown-menu .panel {
+    width: 280px !important;
+  }
+}

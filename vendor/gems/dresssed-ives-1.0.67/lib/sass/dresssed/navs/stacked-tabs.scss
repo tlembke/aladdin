@@ -1,0 +1,113 @@
+// STACKED TAB
+// -----------
+.nav-stacked {
+  list-style-type: none;
+}
+
+.nav-stacked > li + li {
+  margin-top: -1px;
+  margin-left: 0;
+}
+
+.nav-stacked > li.active {
+  margin-bottom: 2px;
+}
+
+.nav-tabs.nav-stacked > li > a {
+  border-color: $borderColor;
+  background-color: darken($backgroundColor, 3%);
+  @include box-shadow(inset 0 1px 1px #fff);
+  border-radius: 0;
+
+  &:hover {
+    border-color: $borderColor;
+    background-color: darken($backgroundColor, 1%);
+
+  }
+}
+
+.nav-tabs.nav-stacked > li:first-child a {
+    border-radius: 4px;
+}
+
+.nav-tabs.nav-stacked > li:last-child a {
+    border-bottom-right-radius: 4px;
+    border-bottom-left-radius: 4px;
+}
+
+.nav-tabs.nav-stacked > li.active > a {
+  $zoomSize: 3px;
+  margin: 0 -$zoomSize;
+  padding-left: 12px + $zoomSize;
+  background: lighten($backgroundColor, 2%);
+  filter: none;
+
+  border-radius:4px;
+}
+
+
+// Caret
+// -----
+
+.nav-tabs.nav-stacked.nav-caret-left > li.active {
+
+  &::before {
+    @include horizontal-caret(left, $line-height-computed, 9px, $borderColor);
+    border-right: #{$line-height-computed/2} solid #cbdcde;
+    margin-top: 9px;
+    margin-left: -14px;
+  }
+
+  &::after {
+    @include horizontal-caret(left, $line-height-computed, 9px, lighten($backgroundColor, 2%));
+    border-right: #{$line-height-computed/2} solid lighten($backgroundColor, 2%);
+
+    margin-top: -32px;
+    margin-left: -13px;
+  }
+
+  a {
+    border-radius-left: 0;
+  }
+
+  a::before {
+    float: left;
+    margin-left: -14px;
+  }
+}
+
+.nav-tabs.nav-stacked.nav-caret-right > li.active {
+  &::before, &::after {
+    @include horizontal-caret(right, $line-height-computed, 9px, $borderColor);
+    border-left: #{$line-height-computed/2}  solid $borderColor;
+    margin-top: 9px;
+    margin-right: -15px;
+    margin-bottom: -33px;
+  }
+
+  &::after {
+    @include horizontal-caret(right, $line-height-computed, 9px, $backgroundColor);
+    border-left: #{$line-height-computed/2} solid lighten($backgroundColor, 2%);
+
+    margin-top: -32px;
+    margin-right: -14px;
+  }
+
+  a {
+    border-radius-right: 0;
+  }
+
+  a::after {
+    float: right;
+    margin-right: -14px;
+  }
+}
+
+// Dot inside caret
+.nav-tabs.nav-stacked.nav-caret-left > .active > a::before,
+.nav-tabs.nav-stacked.nav-caret-right > .active > a::after {
+  content: "\00B7";
+  font-weight: normal;
+  font-size: 25px;
+  margin-top: -7px;
+}

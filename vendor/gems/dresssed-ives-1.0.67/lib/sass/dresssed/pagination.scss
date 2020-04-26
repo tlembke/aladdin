@@ -1,0 +1,177 @@
+.pagination ul {
+  display: inline-block;
+  margin-bottom: 0;
+  margin-left: 0;
+  padding: 0;
+  border-color: transparent;
+  border-radius: 3px;
+  @include box-shadow(none);
+}
+
+.pagination li {
+  display: inline;
+}
+
+.pagination li:first-child a {
+  margin-left: 0;
+  border-radius: 3px;
+}
+
+.pagination li:last-child a {
+  border-radius: 3px;
+}
+
+.pagination li a {
+  min-width: 10px;
+  margin-left: 10px;
+  padding: $padding-base-horizontal;
+  text-align: center;
+  border-color: $borderColor;
+  border-left-width: 1px;
+  border-radius: 3px;
+  line-height: $line-height-base + 5px;
+
+  &:active {
+    transform: scale(0.9);
+  }
+}
+
+.pagination a:hover,
+.pagination .active a {
+  @include box-shadow(0 1px 0 #fff);
+}
+
+.pagination .active a {
+  color: lighten($link-color, 13%);
+}
+
+.pagination > .active > a, .pagination > .active > a:hover, .pagination > .active > a:focus,
+.pagination > .active > span,
+.pagination > .active > span:hover,
+.pagination > .active > span:focus {
+  z-index: 2;
+  color: #fff;
+  background-color: $brand-primary;
+  border-color: $brand-primary;
+  cursor: pointer;
+}
+
+.pagination .disabled a,
+.pagination .disabled a:hover {
+  margin-left: 0;
+  color: $quietColor;
+  background: none;
+}
+
+.pagination-group {
+  li a {
+    margin-left: -2px;
+    border-radius: 0;
+  }
+
+  li:last-child a {
+    border-radius: 0px;
+    border-top-right-radius: 3px;
+    border-bottom-right-radius: 3px;
+  }
+}
+
+.pager.arrows {
+  li.previous a {
+    width: 40px;
+    overflow: hidden;
+    white-space: nowrap;
+    text-indent: 100%;
+    color: transparent;
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-image: url(image-path("dresssed/arrow-2.svg"));
+
+    &::before {
+      content: '\00ab ';
+    }
+  }
+
+  li.next a {
+    width: 40px;
+    overflow: hidden;
+    white-space: nowrap;
+    text-indent: 100%;
+    color: transparent;
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-image: url(image-path("dresssed/arrow-2.svg"));
+    transform: rotate(180deg);
+
+    &::before {
+      content: '\00ab ';
+    }
+  }
+}
+
+.pagination-block {
+  border-radius: 0.25em;
+  border: 1px solid $borderColor;
+  width: 100%;
+  display: block;
+  overflow: hidden;
+  text-align: center;
+
+  li {
+    float: none;
+    border: none;
+    margin: 0;
+    display: inline-block;
+    border-right: none;
+
+    a {
+      padding: .8em 1em;
+
+      &.active {
+        background-color: $brand-primary;
+        color: white;
+      }
+
+      &:hover {
+        border: none;
+      }
+    }
+
+    &.previous {
+      float: left;
+
+      a:hover {
+        border: none;
+        border-right: 1px solid $borderColor;
+      }
+    }
+
+    &.next {
+      float: right;
+
+      a:hover {
+        border: none;
+        border-left: 1px solid $borderColor;
+      }
+    }
+
+    a {
+      background: transparent;
+      border: none;
+      margin: 0;
+      float: none;
+      line-height: 2.6;
+    }
+  }
+}
+
+.pagination-lg li a {
+  font-size: 1.2em;
+  line-height: $line-height-base + 5px;
+}
+
+.pagination-xs li a {
+  font-size: 12px;
+  line-height: 1;
+  padding: 4px 7px;
+}

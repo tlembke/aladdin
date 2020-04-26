@@ -1,0 +1,171 @@
+input,textarea,select,.uneditable-input {
+    padding: 4px;
+    color: #444455;
+    border: 1px solid #ccc;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    border-radius: 3px;
+}
+
+.form-horizontal {
+  text-align: left;
+}
+
+.form-control {
+  border-radius: $generalBorderRadius;
+  -webkit-transition: border-color ease-in-out .15s,-webkit-box-shadow ease-in-out .15s;
+  -o-transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
+  transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s
+}
+
+// Place holders
+// -------------
+
+:-moz-placeholder {
+  color: $quietColor;
+}
+
+::-webkit-input-placeholder {
+  color: $quietColor;
+}
+
+// Form States
+.has-warning .help-block,
+.has-warning .control-label,
+.has-warning .radio,
+.has-warning .checkbox,
+.has-warning .radio-inline,
+.has-warning .checkbox-inline, .has-warning.radio label, .has-warning.checkbox label, .has-warning.radio-inline label, .has-warning.checkbox-inline label {
+  color: $warningText;
+}
+
+.has-warning .form-control {
+  border-color: $warningText;
+  -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+  box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+}
+
+.has-warning .form-control:focus {
+  border-color: $warningText;
+  -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 6px $warningText;
+  box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 6px $warningText;
+}
+
+.has-warning .form-control-feedback {
+  color: $warningText;
+}
+
+.has-error .help-block,
+.has-error .control-label,
+.has-error .radio,
+.has-error .checkbox,
+.has-error .radio-inline,
+.has-error .checkbox-inline, .has-error.radio label, .has-error.checkbox label, .has-error.radio-inline label, .has-error.checkbox-inline label {
+  color: $errorText;
+}
+
+.has-error .form-control {
+  border-color: $errorText;
+  -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+  box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+}
+
+.has-error .form-control:focus {
+  border-color: $errorText;
+  -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 6px $errorText;
+  box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 6px $errorText;
+}
+
+.has-error .form-control-feedback {
+  color: $errorText;
+}
+
+
+.has-success .help-block,
+.has-success .control-label,
+.has-success .radio,
+.has-success .checkbox,
+.has-success .radio-inline,
+.has-success .checkbox-inline, .has-success.radio label, .has-success.checkbox label, .has-success.radio-inline label, .has-success.checkbox-inline label {
+  color: $successText;
+}
+
+.has-success .form-control {
+  border-color: $successText;
+  -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+  box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+}
+
+.has-success .form-control:focus {
+  border-color: $successText;
+  -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 6px $successText;
+  box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 6px $successText;
+}
+
+.has-success .form-control-feedback {
+  color: $successText;
+}
+
+
+// Rails field errors
+// ------------------
+.field_with_errors {
+  display: inline;
+}
+
+input,
+textarea {
+  @include box-shadow(inset 0 1px 1px rgba(0, 0, 0, 0.075));
+  @include transition(border linear 0.2s,box-shadow linear 0.2s);
+  outline: none;
+}
+
+input[type='checkbox'] {
+  width: auto;
+}
+
+input:focus,
+textarea:focus {
+  border-color:rgba(82, 168, 236, 0.8);
+  outline:0;
+}
+
+input:focus:required:invalid,
+textarea:focus:required:invalid,
+select:focus:required:invalid {
+  color:#b94a48;
+  border-color:#ee5f5b;
+}
+
+input:focus:required:invalid:focus,
+textarea:focus:required:invalid:focus,
+select:focus:required:invalid:focus {
+  border-color:#e9322d;
+  @include box-shadow(0 0 6px #f8b9b7);
+}
+
+.box {
+  margin-top: 1em;
+}
+
+
+.form-well .form-group {
+    border-top: solid 1px #cbdcde;
+    -webkit-box-shadow: inset 0 1px 0 rgba(255,255,255,0.6);
+    box-shadow: inset 0 1px 0 rgba(255,255,255,0.6);
+    margin-left: -14px;
+    margin-right: -14px;
+    margin-bottom: 0;
+    padding: 10px 14px
+}
+
+.form-well .form-group:first-child {
+    margin-top: -14px;
+    border-top: none;
+    -webkit-box-shadow: none;
+    box-shadow: none
+}
+
+.form-well .form-group:last-child {
+    margin-bottom: -14px
+}

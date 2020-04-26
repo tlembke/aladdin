@@ -1,0 +1,19 @@
+- content_for :navbar, render("layouts/user_nav")
+= render :layout => "layouts/minimal" do
+  .page-header
+    .container
+      .row.row-same-height
+        .col-md-12.col-sm-height.col-middle
+          %h2.m0= @title
+          = yield :description
+        .col-md-2.col-sm-height.col-middle
+          = yield :actions
+  / /.page-header
+  .container
+    .row
+      = render "layouts/flashes"
+  .container-fluid
+    .row
+      #content.col-md-12
+        = yield
+      / /#content

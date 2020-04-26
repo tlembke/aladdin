@@ -1,0 +1,83 @@
+- content_for :body_class, "landing"
+- content_for :header do
+  .bg
+  .container
+    .row
+      .col-lg-12.col-xs-12
+        .text.text-center
+          %h1 Unlimited knowledge and insight from nothing at all.
+          %p.lead A super compelling reason to use your App goes here.
+          %a.btn.btn-outline-default.btn-lg{:href => "#"} Learn More →
+    .row
+      .col-sm-12.col-md-10.col-md-offset-1
+        .video
+          .placeholder
+            .play-btn
+              %a{:href => "#"}
+                %span.fa-stack.fa-lg
+                  %i.fa.fa-circle-thin.fa-stack-2x
+                  %i.fa.fa-play.fa-stack-1x
+%section.features
+  %h2.h1
+    = app_name
+  %p.lead This is the best application you could ever buy. You'd be crazy not to buy it. Especially as it's been endorsed by the product teaching mafia.
+  .container
+    .row
+      .col-xs-12.col-md-4
+        %section
+          %i.fa.fa-trash
+          %h4 Buy Pizza Telepathically
+          %p Never leave your home again. Get pizza delivered without talking to anyone!
+      .col-xs-12.col-md-4
+        %section
+          %i.fa.fa-camera-retro
+          %h4 Auto tidying household
+          %p No-one likes to clean house. Then never do it again without our magical app.
+      .col-xs-12.col-md-4
+        %section
+          %i.fa.fa-child
+          %h4 Klingons on the starboard bow!
+          %p Ugh, the worse, am I right? Well now you can get rid of them with the push of one stupid button forever.
+    .row
+      .col-xs-12.col-md-4
+        %section
+          %i.fa.fa-car
+          %h4 Buy Pizza Telepathically
+          %p Never leave your home again. Get pizza delivered without talking to anyone!
+      .col-xs-12.col-md-4
+        %section
+          %i.fa.fa-bell
+          %h4 Auto tidying household
+          %p No-one likes to clean house. Then never do it again without our magical app.
+      .col-xs-12.col-md-4
+        %section
+          %i.fa.fa-lock
+          %h4 Klingons on the starboard bow!
+          %p Ugh, the worse, am I right? Well now you can get rid of them with the push of one stupid button forever.
+%section.getting-started
+  .container
+    .row
+      .col-md-10.col-md-offset-1
+        .col-md-5.text-xs-center.text-md-left
+          %h1 Ready?
+          %p Start a 30-day free trial. Get set up in minutes.
+        .col-md-7.text-xs-center.text-md-right.ctas
+          %a.btn.btn-outline-default{:href => "#"} Sign Up
+          %a.btn.btn-outline-primary{:href => "#"} or see features »
+%section.product-images
+  .container
+    .row
+      .col-sm-12
+        %h2.h1.text-center Amazing App Benefit
+        %p.lead.text-center This is the best application you could ever buy. You'd be crazy not to buy it. Especially as it's been endorsed by the product teaching mafia.
+        .browser
+          .browser__window
+            %img{:height => "560", :src => "http://placekitten.com/1170/560", :width => "1170"}/
+%section.cta
+  .container
+    .row
+      .col-sm-12.col-md-9
+        %h2.text-xs-center.text-md-left Unlimited knowledge and insight from nothing at all.
+        %p.lead.text-xs-center.text-md-left A super compelling reason to use your App goes here.
+      .col-sm-12.col-md-3.text-right.text-xs-center
+        %a.btn.btn-outline-default{:href => "#"} Sign Up for Free »

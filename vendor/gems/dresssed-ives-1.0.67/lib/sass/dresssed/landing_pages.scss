@@ -1,0 +1,309 @@
+$browser-color: $borderColor;
+$browser-dots-color: $borderColor;
+$browser-bar-height: 40px;
+$rounded-depth: 5px;
+
+.browser {
+  position: relative;
+  margin: 2em auto 1em auto;
+  border: 2px solid $browser-color;
+  border-radius: $rounded-depth $rounded-depth 0 0;
+  background: #FFFFFF;
+
+  &:before {
+    content: "";
+    display: block;
+    height: 40px;
+    background: #fff;
+    border-bottom: $rounded-depth solid $browser-color;
+  }
+
+  &:after {
+    position: absolute;
+    top: 0px;
+    right: 0;
+    bottom: 0;
+    left: 20px;
+    font-family: Arial;
+    letter-spacing: 5px;
+    content: "\2022 \2022 \2022";
+    font-size: $browser-bar-height;
+    line-height: $browser-bar-height;
+    color: $browser-dots-color;
+  }
+}
+
+.browser__window {
+  position: relative;
+  overflow-y: scroll;
+  -webkit-overflow-scrolling: touch;
+
+  & > * {
+    transform: translateZ(0px);
+  }
+
+  iframe,
+  img {
+    display: block;
+    width: 100%;
+    min-width: 100%;
+    max-width: 100%;
+  }
+
+  img {
+    height: auto;
+  }
+
+  iframe {
+    height: auto;
+  }
+}
+
+.landing {
+  background: white;
+
+  .navbar {
+    z-index: $zindexPopover;
+    margin: 25px 0;
+    opacity: 0.8;
+
+    .navbar-brand {
+      padding-left: 0;
+      color: darken($text-color, 10%);
+      font-weight: bold;
+    }
+
+    .icon-bar {
+      background-color: lighten($text-color, 10%);
+    }
+
+    .sign-up {
+      margin-left: 25px;
+      margin-top: 7px;
+    }
+  }
+
+  header {
+    position: relative;
+
+    .text {
+      padding-top: 88px;
+      color: white;
+
+      h1 {
+        color: white;
+        font-size: 3em;
+      }
+
+      .btn {
+        border-radius: 20px;
+        color: white;
+        text-shadow: none;
+        margin-bottom: 4em;
+
+        &:hover,
+        &:focus {
+          color: $text-color;
+        }
+      }
+    }
+
+    .video {
+      height: 267px;
+      width: 100%;
+      margin-top: 2em;
+
+      .placeholder {
+        background: url(asset-path("dresssed/app_video_placeholder.png")) no-repeat;
+        background-size: cover;
+        position: absolute;
+        bottom: 0;
+        border: 15px solid #2c3e50;
+        border-top-left-radius: 15px;
+        border-top-right-radius: 15px;
+        border-bottom: 0;
+        width: 100%;
+        height: 100%;
+        color: #fff;
+
+        .play-btn {
+          font-size: 3em;
+          margin-top: 8%;
+          text-align: center;
+          color: black;
+
+          .fa-play {
+            padding-left: 14px;
+          }
+        }
+      }
+
+      @media (max-width: 768px) {
+        .placeholder {
+          width: 700px;
+          margin: 0px auto;
+          height: 267px;
+          position: relative;
+        }
+      }
+    }
+
+    .bg {
+      background: url(asset-path("dresssed/landing_bg.jpg")) top right no-repeat;
+      background-size: cover;
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      z-index: 0;
+      opacity: 1;
+    }
+
+    .bg::after {
+      background-color: $altTextColor;
+      content: " ";
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      z-index: 0;
+      opacity: 0.9;
+    }
+  }
+
+  .features {
+    padding: 100px 0;
+    text-align: center;
+
+    .lead {
+      max-width: 700px;
+      text-align: center;
+      margin: 2em auto 4em auto;
+    }
+
+    .col {
+      border: 2px solid $borderColor;
+      border-radius: $generalBorderRadius;
+    }
+
+    section {
+      margin-bottom: 3em;
+    }
+
+    i {
+      font-size: 5em;
+      width: 1.6em;
+      text-align: center;
+      line-height: 1.6em;
+      border: 2px solid;
+      border-color: $borderColor;
+      border-radius: 0.8em;
+      margin-bottom: 0.5em;
+    }
+  }
+
+  .getting-started {
+    background: darken($text-color, 40%);
+    padding: 3em 0em;
+    color: lighten($text-color, 10%);
+
+    h1 {
+      color: white;
+      margin: 0;
+    }
+
+    .ctas {
+      padding: 5px;
+    }
+
+    .btn {
+      text-shadow: none;
+      color: white;
+      padding: 25px;
+    }
+
+    .btn-outline-primary {
+      border-color: lighten($text-color, 10%);
+    }
+
+    .btn-outline-default:hover {
+      color: black;
+    }
+  }
+
+  .product-images {
+    background: white;
+    padding: 100px 0 0 0;
+
+    .text {
+      padding-top: 5em;
+    }
+  }
+
+  .cta {
+    background: $altTextColor;
+    color: white;
+    padding: 2em 0;
+
+    h2 {
+      margin: 0;
+    }
+
+    .btn-outline-default {
+      color: white;
+      text-shadow: none;
+      box-shadow: none;
+      margin-top: 1.3em;
+      border-width: 3px;
+      border-color: white;
+
+      &:hover {
+        color: $text-color;
+      }
+    }
+  }
+
+  footer {
+    padding: 100px 0;
+
+    section {
+      margin-bottom: 2em;
+    }
+  }
+}
+
+@media only screen and (min-device-width : 320px) and (max-device-width : 667px) {
+  .landing header .video {
+    margin-top: 0;
+    height: auto;
+  }
+
+  .landing .navbar .sign-up {
+    margin-left: 0;
+  }
+
+  .landing header .video .placeholder {
+    width: 90%;
+    height: 185px;
+  }
+}
+
+.landing.one-page {
+  width: 100%;
+  display: table;
+  height: 70vh;
+
+  .content {
+    display: table-cell;
+    vertical-align: middle;
+  }
+
+  footer {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+  }
+}

@@ -1,0 +1,38 @@
+<%% @title = "Showing <%= singular_table_name %>" %>
+
+<%% content_for :description do %>
+  <p>Edit this template in <code>app/views/<%= controller_name %>/show.html.erb</code>.</p>
+  <%% end %>
+
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+        <div class="sheet sheet-condensed">
+          <div class="sheet-inner p30">
+            <div class="form-horizontal">
+              <% attributes.each do |attribute| -%>
+                <div class="form-inputs">
+                 <div class="form-group">
+                    <label class="col-md-2 control-label"><%= attribute.human_name %></label>
+                    <div class="col-md-8">
+                     <div class="form-control uneditable-input">
+                        <span>
+                          <%%= @<%= singular_table_name %>.<%= attribute.name %> %>
+                        </span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+
+              <% end -%>
+              <div class="form-actions col-md-offset-2">
+                <%%= link_to fa_icon_tag("pencil") + ' Edit', edit_<%= singular_table_name %>_path(@<%= singular_table_name %>), <%= Dresssed.key_value :class, "'btn btn-primary'" %> %>
+                <%%= link_to 'Back', <%= index_helper %>_path, <%= Dresssed.key_value :class, "'btn'" %> %>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>

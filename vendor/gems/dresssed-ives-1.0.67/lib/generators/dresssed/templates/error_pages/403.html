@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>You're not authorized to do that (403)</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <link href="/assets/dresssed/blue.css?body=1" media="all" rel="stylesheet">
+  <!-- <link href="/assets/dresssed/black.css?body=1" media="all" rel="stylesheet"> -->
+  <!-- <link href="/assets/dresssed/amber.css?body=1" media="all" rel="stylesheet"> -->
+  <link href="https://fonts.googleapis.com/css?family=Droid+Sans:400,700" media="screen" rel="stylesheet">
+</head>
+
+<style>
+  html, body {
+    height: 100%;
+  }
+
+  .well {
+    padding: 4em;
+  }
+
+  .container{
+    width:1025px;
+  }
+
+  .vertical-center {
+    height:100%;
+    width:100%;
+    text-align: center;  /* align the inline(-block) elements horizontally */
+    font: 0/0 a;         /* remove the gap between inline(-block) elements */
+  }
+
+  .vertical-center:before {    /* create a full-height inline block pseudo=element */
+    content: ' ';
+    display: inline-block;
+    vertical-align: middle;  /* vertical alignment of the inline element */
+    height: 100%;
+  }
+
+  .vertical-center > .container {
+    max-width: 100%;
+    display: inline-block;
+    vertical-align: middle;  /* vertical alignment of the inline element */
+    font: 16px/1 "Helvetica Neue", Helvetica, Arial, sans-serif;        /* <-- reset the font property */
+  }
+
+  @media (max-width: 768px) {
+    .vertical-center:before {
+      /* height: auto; */
+      display: none;
+    }
+  }
+</style>
+
+<body>
+  <!-- This file lives in public/403.html -->
+  <div class='vertical-center'>
+    <div class="container text-center">
+      <div class="row">
+        <div class="col-xs-12 col-sm-12 col-md-6 col-md-offset-3 col-lg-6 col-lg-offset3">
+          <div class="fa-icon text-blue-grey-400">
+            <i class="fa fa-fw fa-2x fa-lock"></i>
+          </div>
+          <div class='well'>
+            <h5>403</h5>
+            <h2 class="mt0">You're not authorized to do that.</h2>
+            <p>Maybe you aren't logged in, or need to request access?</p>
+            <small class="text-muted">If you are the application owner check the logs for more information.</small>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
+
