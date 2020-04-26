@@ -48,7 +48,7 @@ gem 'rest-client'
 
 gem "mini_magick"
 
-gem 'sqlite3'
+gem 'sqlite3', '~> 1.3.13'
 
 
 
