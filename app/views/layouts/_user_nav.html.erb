@@ -11,6 +11,8 @@
     <span class="divider">|</span>
     <%= link_to "Appointments",{controller: "appointments"}, { "data-no-turbolink" => "true"} %>
     <span class="divider">|</span>
+    <%= link_to "Fax",{controller: "fax"}, { "data-no-turbolink" => "true"} %>
+    <span class="divider">|</span>
 
 
 
@@ -61,6 +63,7 @@
     <li role="separator" class="divider"></li>
      <li class="dropdown-header">Editors</li>
      <li><%= link_to "Item Numbers",itemnumbers_path, { "data-no-turbolink" => "true"} %></li>
+     <li><%= link_to "Contacts",contacts_path, { "data-no-turbolink" => "true"} %></li>
     <li><%= link_to "Goals",goals_path, { "data-no-turbolink" => "true"} %></li>
     <li><%= link_to "Measures",measures_path, { "data-no-turbolink" => "true"} %></li>
     <li><%= link_to "Masters",masters_path, { "data-no-turbolink" => "true"} %></li>
