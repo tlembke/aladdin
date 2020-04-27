@@ -1,0 +1,10 @@
+<div class='row'>
+
+
+
+<%= form_tag({action: :index}, multipart: true) do %>
+  <%= file_field_tag 'fax' %><br>
+  <%= submit_tag( "Upload file" ) %>
+<% end %>
+
+</div>

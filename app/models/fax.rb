@@ -84,7 +84,7 @@ class Fax
         response= RestClient::Request.execute(method: :post, url: theUrl,
                             payload: docText, headers: {Authorization: "bearer " + @access_token})
     	response2=JSON[response.body]
-     
+
         rescue RestClient::ExceptionWithResponse => err
         response2 = err.response
 
@@ -118,7 +118,7 @@ class Fax
       			documents << response["document_id"]
       		
 				@response=thisFax.send_fax(faxNumber,documents)
-				FaxLog.info faxNumber + " " + File.basename(f, ".pdf") + " " + @response.to_s
+				FaxLog.info faxNumber + " " + File.basename(f) + " " + @response.to_s
 			else
 					@response = "Testing mode only"
 			end
