@@ -22,6 +22,7 @@ class Pref < ActiveRecord::Base
       :faxpassword=>{:name=>'Fax Password',:default => "password"},
       :faxfolder=>{:name=>'Fax Folder',:default => "/Volumes/Fax"},
       :faxprocessedfolder=>{:name=>'Fax Processed Folder',:default => "/Volumes/Fax/processed"},
+      :faxpendingfolder=>{:name=>'Fax Pending Folder',:default => "/Volumes/Fax/pending"},
       :faxsend=>{:name=>'Fax Send',:default => "true"},
       :vacants=>{:name=>'Allow vacants',:default => "true"}
     }

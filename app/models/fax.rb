@@ -7,6 +7,9 @@ class Fax
     @access_token = self.get_token
   end  
   
+  def access_token
+    @access_token
+  end
 
 
   def get_token
@@ -124,8 +127,37 @@ class Fax
 			end
 
 			# move fax to processed folder
-			faxprocessed = Pref.faxprocessedfolder + "/" + File.basename(f)
-			File.rename f, faxprocessed
+			if @response["id"] and @response["id"] !=""
+				# faxprocessed = Pref.faxprocessedfolder + "/" + File.basename(f)
+				faxpending= Pref.faxpendingfolder + "/" + @response["id"] + File.extname(f)
+				File.rename f, faxpending
+				#change name of image file
+				oldName = Rails.root.join('public','fax',File.basename(f, ".*")+ '.png')
+				newName = Rails.root.join('public','fax',@response["id"] + '.png')
+				# image.write(::Rails.root.join('public','fax',File.basename(f, ".*")+ '.png'))
+				File.rename oldName, newName
+
+			end
 			return [f,faxNumber,@response]
+   end
+
+
+   def self.faxStatus(faxid,access_token)
+  		
+  		
+   		
+   		 		theUrl="https://api.fax2.com.au/v1/sent_faxes/"
+    			# response = RestClient.post(theUrl, {theText.to_json}, {content_type: "text/plain", Authorization: "bearer " + access_token })
+    	 		begin 
+    	 			response= RestClient::Request.execute(method: :get, url: theUrl + faxid,
+                            headers: {content_type: "application/json", Authorization: "bearer " + access_token})
+    				response2 = JSON[response.body]
+		        rescue RestClient::ExceptionWithResponse => err
+		        	debugger
+		        	response2 = err.response
+    			end
+
+    	return response2
+
    end
 end  

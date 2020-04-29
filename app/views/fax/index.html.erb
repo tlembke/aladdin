@@ -25,7 +25,7 @@
 
 
 <% if @faxes and @faxes.length > 0 %>
-	<h4> Sent </h4>
+	<h4>Processing</h4>
 	<table class='table table-striped'>
 	 <% @faxes.each do |fax| %>
 	 	<tr>
@@ -39,23 +39,86 @@
 
 <% end %>
 
+
+
+
+
 <style>
 .table-selected {
   border: 1px solid #eceeef !important;
   background-color: #faf2cc !important;
 }
 </style>
-<h4> Scanned and waiting</h4>
+
 <div class='row'>
 	<div class='col-md-6'>
 		<%= form_tag do %>
 		<table class="table">
 
+
+			<% if @pending and @pending.length > 0 %>
+	
+
+					<tr>
+						<td colspan=5>
+							 <h4>Pending </h4>
+						</td>
+					</tr>
+
+				 		<% @pending.each_with_index do |pend,i| %>
+				 		
+				 	<tr  class="faxpick" id="tr-<%= i %>" faxindex="<%= i.to_s %>" data-url="<%= File.basename(pend[0], '.*') %>.png">
+				 		<td><%= File.basename(pend[0]) %> </td>
+				 		<td>
+
+						<%= pend[1]["status"] %> 
+						<%= ":" + pend[1]["reason"] if pend[1]["status"] =="failed" %>
+
+						</td>
+				 		
+
+				 		<td><%= File.stat(pend[0]).mtime.strftime("%l:%M %d/%m/%Y ") unless  pend[1]["status"] == "sent" %></td>
+						<td>
+							<% if  pend[1]["status"] == "failed"  %>
+						<%= select_tag 'fax-'+i.to_s, options_from_collection_for_select(Contact.order("Name").all,:fax,:name),class: "faxselect", datafax: File.basename(pend[0]),:include_blank => true if pend[1]["status"] == "failed"%>
+							<% end %>
+						</td>
+						<td>
+							<% if  pend[1]["status"] == "failed"  %>
+						<%= text_field_tag File.basename(pend[0]), nil ,size: 10 %>
+							<% end %>
+						</td>
+					
+						<td>
+							<i class="fa fa-arrow-right fax-arrow" id="fax-arrow-<%=i.to_s%>"<%= "style='display:none;'".html_safe if i > 0 %> >
+						</td>
+				 	</tr>
+	 <% end %>
+
+	
+
+<% end %>
+
+
+
+
+
+
+			<tr>
+				<td colspan=5>
+				<h4>Scanned</h4>
+				</td>
+			</tr>
+
 			<% @files.take(10).each_with_index do |f,i| %>
-			<tr  class="faxpick<%= ' table-selected' if i==0 %>" id="tr-<%= i %>" faxindex="<%= i.to_s %>" data-url="<%= File.basename(f, '.*') %>.png">
+			<% i = i + @pending.length  %>
+			<tr  class="faxpick<%= ' table-selected' if i==@pending.length %>" id="tr-<%= i%>" faxindex="<%= i.to_s %>" data-url="<%= File.basename(f, '.*') %>.png">
 				<td>
 				<span><%= File.basename(f) %>
 				</span>
+				</td>
+				<td>
+
 				</td>
 				<td>
 				<%= File.stat(f).mtime.strftime("%l:%M %d/%m/%Y ") %>
