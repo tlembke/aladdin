@@ -51,7 +51,7 @@
 </style>
 
 <div class='row'>
-	<div class='col-md-6'>
+	<div class='col-md-7'>
 		<%= form_tag do %>
 		<table class="table">
 
@@ -142,7 +142,7 @@
 		<% end %> <!-- end form tag -->
 	
 	</div>
-	<div class='col-md-6'>
+	<div class='col-md-5'>
 			<div id="fax-holder">
 			
 				<%= image_tag '/fax/'+File.basename(@files[0], '.pdf') + '.png' if @files.length > 0 %>
