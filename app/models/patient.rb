@@ -542,13 +542,15 @@ end
 
         members = Member.where(patient_id: self.id, recallFlag: true)
         members.each do |member|
-            title = member.recall.title
-            if title == "Custom"
-              title = member.note
-            end
-
-            events = events +   getEvents(title, member.nextDay, member.nextMonth, member.nextYear, member.everyNumber, member.everyUnit, member.exactDate, member.recall.cat)
-
+              # genie_id should bever be nil
+              unless member.genie_id == nil
+                title = member.recall.title
+                if title == "Custom"
+                  title = member.note
+                end
+               
+                events = events +   getEvents(title, member.nextDay, member.nextMonth, member.nextYear, member.everyNumber, member.everyUnit, member.exactDate, member.recall.cat)
+              end
         end
 
 
