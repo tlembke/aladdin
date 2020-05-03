@@ -2156,19 +2156,20 @@ end
           sth = dbh.run(sql)
           careteam=[]
           sth.fetch_hash do |row|
-              member = Member.find_or_create_by(patient_id: patient, genie_id: row['address_book_id'])
-              if member.year_reset == nil or member.year_reset < theYear.to_i
-                  member.update(year_reset: theYear, epc: 0)
-              end
-              row['member']=member
-              if row['PROVIDERTYPE']==""
-                row['PROVIDERTYPE']=row['CATEGORY']
-              end
-              if row['PROVIDERTYPE']==""
-                row['PROVIDERTYPE']=row['SPECIALTY']
-              end
-              
-              careteam << row
+                member = Member.find_or_create_by(patient_id: patient, genie_id: row['address_book_id'])
+                if member.year_reset == nil or member.year_reset < theYear.to_i
+                    member.update(year_reset: theYear, epc: 0)
+                end
+                row['member']=member
+                if row['PROVIDERTYPE']==""
+                  row['PROVIDERTYPE']=row['CATEGORY']
+                end
+                if row['PROVIDERTYPE']==""
+                  row['PROVIDERTYPE']=row['SPECIALTY']
+                end
+                
+                careteam << row
+
           end
           sth.drop
 
