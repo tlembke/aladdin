@@ -92,8 +92,6 @@ $(document).ready(function() {
     $('.faxselect').change(function () {
          var faxNumber  = $(this).children("option:selected").val();
          var faxPick = $(this).attr('datafax');
-         alert(faxNumber);
-         alert(faxPick);
          $("[name='"+faxPick+"']").val(faxNumber);
 
 
