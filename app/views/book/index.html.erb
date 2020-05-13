@@ -1,5 +1,4 @@
 
-
 <h1>Book an appointment</h1>
 <p><%= Pref.urgent.html_safe %></p>
 
@@ -7,13 +6,24 @@
 
 
 
-<h4>Our online booking form is currently closed for maintenance.</h4>
+<div class="row">
+	<div class="col-lg-7"> <%# Left Hand Side %>
 
-Please ring 66280505 for all appointment enquiries.
+			<div id="show_appts_placeholder" >
+				<h3>Loading appointment data...</h3>
+				<%= image_tag("appointments.gif", :class => "img-responsive") %>
+			</div>
+
+		
+	</div> <%# end left side %>
+	
+
+	<div class="col-lg-5">
+		<%# this is the form %>
+		
+		<%= render "appt_form" %>
+		
+	</div>
 
 
-
-
-
-
-
+</div>

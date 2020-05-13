@@ -69,10 +69,11 @@ class BookController < ApplicationController
      if (@error_code==0)
     	  dbh=connect_array[0]
 
-    	  @doctors= get_users(dbh)
+    	  @doctors= get_users_ajax
+
 
     	  # temp
-    	  #@doctors=[["Josh Kingston",91,91],["Jimmy Chiu",8,8],["Mike Davis",96,96]] # for testing only
+    	  @doctors=[["Josh Kingston",91,91],["Jimmy Chiu",8,8],["Mike Davis",96,96]] # for testing only
     	  #@doctors=[["Josh Kingston",91,91]] # for testing only
         @noCols = 3
     
@@ -95,7 +96,8 @@ class BookController < ApplicationController
           		  		
           		  		
           		 		 @thisDate=@theStartDate
-          		 		 @appointments[doctor[2]]=[]
+         
+          		 		 @appointments[doctor[1]]=[]
           		 		 freesCount = 0
           				 while i < @noDays
           				 	    while @thisDate.saturday? or @thisDate.sunday?
@@ -123,22 +125,22 @@ class BookController < ApplicationController
 
           			          #	@appointments[doctor[2]][@thisCode]=findFrees(dbh,doctor[2],@thisDate)
 
-          			          	@appointments[doctor[2]][@thisCode] = freeAppts
-          			          	freesCount = freesCount + @appointments[doctor[2]][@thisCode].length
+          			          	@appointments[doctor[1]][@thisCode] = freeAppts
+          			          	freesCount = freesCount + @appointments[doctor[1]][@thisCode].length
           			         
           			          	@thisDate = @thisDate + 1.day
 
                     				i=i+1
           		          	
           		    end
-          		         @doctorsFreesCount[doctor[2]] = freesCount
+          		         @doctorsFreesCount[doctor[1]] = freesCount
 
           		         if freesCount == 0
           		         	# there are no availabla appitmtnets in those days
           		         	#when is the next?
                           
           		         	#@nextAvailable[doctor[2]]=getThirdAvailable(dbh,doctor[2],@theStartDate,1,Date.today + 6.weeks)[0]
-                        @nextAvailable[doctor[2]]=getNextWeb(connectionId,doctor[2],@theStartDate,Date.today + 8.weeks)
+                        @nextAvailable[doctor[1]]=getNextWeb(connectionId,doctor[1],@theStartDate,Date.today + 8.weeks)
           		         end
 
           		
