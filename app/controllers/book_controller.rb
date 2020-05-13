@@ -73,7 +73,7 @@ class BookController < ApplicationController
 
 
     	  # temp
-    	  @doctors=[["Josh Kingston",91,91],["Jimmy Chiu",8,8],["Mike Davis",96,96]] # for testing only
+    	  #@doctors=[["Josh Kingston",91,91],["Jimmy Chiu",8,8],["Mike Davis",96,96]] # for testing only
     	  #@doctors=[["Josh Kingston",91,91]] # for testing only
         @noCols = 3
     
@@ -109,7 +109,7 @@ class BookController < ApplicationController
           					  	freeAppts = []
 
           					  	#apptArraySimple = findFrees(dbh,doctor[2],@thisDate)
-          					  	apptArraySimple = findFreesWeb(connectionId,doctor[2],@thisDate)
+          					  	apptArraySimple = findFreesWeb(connectionId,doctor[1],@thisDate)
               
           					  	apptArraySimple.each_with_index do |apptTime,j|
           					  			single=1

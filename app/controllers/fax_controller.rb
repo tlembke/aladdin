@@ -6,8 +6,8 @@ class FaxController < ApplicationController
   			faxfolder = Pref.faxfolder
 
   			if request.post?
-  		
-
+  				
+  				# upload file selected
   				if params[:commit] == "Upload file"
 		  		 	
 				    uploaded_io = params[:fax]
@@ -17,7 +17,8 @@ class FaxController < ApplicationController
 
     	 		else
 
-
+    	 			#check what faxes are in the main fax folder
+    	 			#faxes that have a post parameter have been selected to be sent
     	 			 @files = Dir.glob(faxfolder+"/*.*").sort_by { |a| File.stat(a).mtime }.reverse
 	  				 @faxes=[]
 	  			 	 @files.each do |f|
@@ -34,6 +35,9 @@ class FaxController < ApplicationController
 	      						end
 	      				end
 	  			 	 end
+
+	  			 	#check what faxes are in the pending fax folder
+    	 			#faxes that have a post parameter have been selected to be re sent
 					 faxfolder = Pref.faxpendingfolder
 	  			 	 @files = Dir.glob(faxfolder+"/*.*").sort_by { |a| File.stat(a).mtime }.reverse
 	  				
