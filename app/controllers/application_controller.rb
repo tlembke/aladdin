@@ -557,7 +557,7 @@ def connect(username=session[:username],password=session[:password])
 
   end
 
-  def get_users
+  def get_users_ajax
 
 
       # get appointments
