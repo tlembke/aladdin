@@ -119,10 +119,12 @@ class DatabaseController < ApplicationController
           					@columnSt =""
           					intCol = false
           					@columns.each_with_index do |column,i|
-          						@columnSt=@columnSt + column[3]
-          						if i + 1 < @columns.count
-          							@columnSt = @columnSt + ","
-          						end
+          						unless column[3] == "UUID" or column[3] == "From"
+	          						@columnSt=@columnSt + column[3]
+	          						if i + 1 < @columns.count
+	          							@columnSt = @columnSt + ","
+	          						end
+	          					end
           						if column[3] == params[:column]
           							if column[5].starts_with?("INT")
           								intCol = true
@@ -139,6 +141,11 @@ class DatabaseController < ApplicationController
           								@sql= "SELECT " + @columnSt + " from " + @table + " where " + params[:column] + " = " + "'" + params[:value] +"'"
           						
           							end
+          							puts @sql
+          							#@sql="SELECT LetterDate,ReferralContent_,PT_Id_Fk,AddresseeName,Creator,Version,Printed,AB_Id_Fk,FlaggedForFollowup,ReplyReceived,Id,PRCDRE_Id_Fk,Reviewed,Archived,From,ExternalId,CantDelete,ImportLetterPkgFg,SendViaThirdParty,Carrier,DeliveryAcknowledged,GPMP,HLInfo,DocumentType,PrimarySent,ReadyToSend,WebMailId,IsSpecialistLetter,CDA,LastUpdated,LastUpdatedBy,WPDOC_Id_Fk from OutgoingLetter where PT_Id_Fk = 4998"
+          							#@sql="SELECT LetterDate,ReferralContent_,PT_Id_Fk,AddresseeName,Creator,Version,Printed,AB_Id_Fk,FlaggedForFollowup,ReplyReceived,Id,PRCDRE_Id_Fk,Reviewed,Archived,ExternalId,CantDelete,ImportLetterPkgFg,SendViaThirdParty,Carrier,DeliveryAcknowledged,GPMP,HLInfo,DocumentType,PrimarySent,ReadyToSend,WebMailId,IsSpecialistLetter,CDA,LastUpdated,LastUpdatedBy,WPDOC_Id_Fk from OutgoingLetter where PT_Id_Fk = 4998"
+          							#@sql="SELECT LetterDate,ReferralContent_,PT_Id_Fk,AddresseeName,Creator,Version,Printed,AB_Id_Fk from OutgoingLetter where PT_Id_Fk = 4998"
+          						
           							sth3 = dbh.run(@sql)
           							@result = []
           							if params[:number] == "All"
