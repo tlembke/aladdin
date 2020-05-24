@@ -66,7 +66,11 @@ module AppointmentsHelper
 					if @appointments[dateCol[dayCount]][timekey]['patient_id']==0
 						theText += @appointments[dateCol[dayCount]][timekey]['name']
 					else
-				 		theText += link_to( @appointments[dateCol[dayCount]][timekey]['name'],patient_path(:id=> @appointments[dateCol[dayCount]][timekey]['patient_id'].to_s) )
+						if reason.downcase == "annexe - care plan"
+							theText += link_to( @appointments[dateCol[dayCount]][timekey]['name'],careplan_patient_path(:id=> @appointments[dateCol[dayCount]][timekey]['patient_id'].to_s) )	
+						else
+				 			theText += link_to( @appointments[dateCol[dayCount]][timekey]['name'],patient_path(:id=> @appointments[dateCol[dayCount]][timekey]['patient_id'].to_s) )
+				 		end
 					end
 			end
 			theText+= "</td>\r"

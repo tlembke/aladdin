@@ -245,6 +245,9 @@ class PatientController < ApplicationController
           @endCalDate = Date.today + 11.months
           @endCalMonth = @endCalDate.month
 
+          @letters = Patient.letters(@id,dbh)
+          @scans = Patient.scans(@id,dbh)
+
 
 
           # get patient story

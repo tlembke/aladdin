@@ -187,6 +187,21 @@
         </div>
     </div>
 
+          <div class="panel">
+        <div class="panel-heading" role="tab" id="headingLetters">
+          <legend class="panel-title">
+                  <a role="button" data-toggle="collapse" data-parent="#accordion"  href="#collapseLetters" aria-expanded="false" aria-controls="collapseLetters"><i class="fa fa-sticky-note"></i> Letters and Scans</a>
+          </legend>
+         </div>
+         <div id="collapseLetters" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingLetters">
+            <div class="panel-body">
+                     <%=render partial: "letters",locals: {letters: @letters} %>
+                     <%=render partial: "scans",locals: {scans: @scans} %>
+              
+            </div> <!-- panel body -->
+        </div> <!-- collapse -->
+    </div> <!-- panel -->
+
 
 
      <div class="panel panel-default">
