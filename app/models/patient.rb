@@ -74,6 +74,35 @@ class Patient
   
           return letters
   end
+
+      def self.referrals(patient,dbh)
+
+          sql = "SELECT Id, AddresseeName, LetterDate, ReferralContent_ FROM OutgoingLetter WHERE PT_Id_FK = " + patient + " ORDER BY LetterDate DESC LIMIT 20"
+          puts sql 
+
+
+
+          
+         
+
+          sth = dbh.run(sql)
+          letters =[]
+         
+          sth.fetch_hash do |row|
+
+            # row[]=[row[2]].pack('H*')
+
+            letters << row
+
+              end
+          
+
+          sth.drop
+
+     
+  
+          return letters
+   end
      def self.scans(patient,dbh)
 
           sql = "SELECT Id, RealName, Description, ImageDate FROM Graphic WHERE PT_Id_FK = " + patient + " ORDER BY ImageDate DESC LIMIT 20"
@@ -102,6 +131,8 @@ class Patient
   
           return scans
   end
+
+
 
 
 

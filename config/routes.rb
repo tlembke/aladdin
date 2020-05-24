@@ -134,6 +134,7 @@ end
           get 'view'
       end
     end
+    resources :referrals 
 
 
 

@@ -99,6 +99,7 @@ class PatientController < ApplicationController
 
           @letters = Patient.letters(@id,dbh)
           @scans = Patient.scans(@id,dbh)
+          @referrals = Patient.referrals(@id,dbh)
 
   
       
@@ -247,6 +248,8 @@ class PatientController < ApplicationController
 
           @letters = Patient.letters(@id,dbh)
           @scans = Patient.scans(@id,dbh)
+          @referrals = Patient.referrals(@id,dbh)
+
 
 
 

@@ -201,6 +201,28 @@ module ApplicationHelper
         msg=msg.gsub("E\\","")
         msg=msg.gsub("\\E","")
         msg=msg.gsub("\\T\\ndash;"," - ")
+        msg=msg.gsub('>BBBB"','&nbsp;&nbsp;&nbsp;•')
+        msg=msg.gsub('>AAAA','')
+        theStr="#\$\\"
+        msg=msg.gsub(theStr,"")
+        theStr="#\$"
+        msg=msg.gsub(theStr,"")
+        
+        msg=msg.gsub('@8@q','<b>')
+         msg=msg.gsub('@8@U','</b>')
+         msg=msg.gsub(/>.+?BBM/,"&nbsp;&nbsp;&nbsp;M")
+         msg=msg.gsub(/>A.+?C/,"")
+         msg=msg.gsub(/C\*.+?\s/," ")
+         msg=msg.gsub(/C\$/," ")
+         msg=msg.gsub(/@@+\s/,"")
+         msg=msg.gsub('>OAOACCC','')
+      
+         
+         
+
+
+
+         #msg=msg.gsub(/>...A/,"&nbsp;&nbsp;&nbsp;")
        
   
 

@@ -1,0 +1,31 @@
+<h2><%= @patient.fullname %></h2>
+
+<%= link_to 'Close', '_self', {:class => "btn btn-lg btn-primary",:onclick=>'window.close();'} %>
+
+
+            <div class-='no-page-break-inside'>
+       
+                      
+                	<h3><i class="fa fa-sticky-note-o"> </i> <%=@letter["ADDRESSEENAME"] %>   <%= @letter["LETTERDATE"].strftime("%d/%m/%Y") %>  </h3>
+
+
+                    <p>
+
+                    Letter Content Decoded <%= simple_format(decode(@letter["REFERRALCONTENT_"])) %> <p>
+                    	
+                     
+                	
+                	<p>
+  
+
+
+
+
+                
+
+
+
+            
+
+             
+            </div>
