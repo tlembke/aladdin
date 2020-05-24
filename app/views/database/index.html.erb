@@ -1,0 +1,13 @@
+<h1>Database</h1>
+<table>
+
+	<% @tables.each do |table| %>
+
+				<tr>
+  					 <td><%= table[2] %></td><td><%= link_to fa_icon_tag("eye"),{ :action => "table",:table => table[2]} %></td>
+				</tr>
+			<% end %>
+
+
+	
+</table>

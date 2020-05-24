@@ -1,0 +1,28 @@
+   		<!--   NOTES -->
+        <% if scans.count > 0 %>
+            <div class-='no-page-break-inside'>
+                <legend>  Scans</legend>
+       			<table class='table'>
+                <% scans.each do |scan| %>
+        			<tr>
+        			<td><%= link_to fa_icon_tag("eye"),view_patient_letter_path(@id,scan['ID'].to_i), :target => ‘_new’  %></td>
+                	<td align='left'> <%= scan["IMAGEDATE"].strftime("%d/%m/%Y") %> </td>
+                	<td><%= scan["DESCRIPTION"] %></td>
+
+                	
+                	 
+            
+
+                	 </tr>
+                <% end %>
+            </table>
+
+
+
+
+            
+
+             
+            </div>
+    	<% end %>
+    	<!--   END NOTES -->

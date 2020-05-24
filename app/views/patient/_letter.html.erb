@@ -1,0 +1,28 @@
+   		<!--   NOTES -->
+        <% if letters.count > 0 %>
+            <div class-='no-page-break-inside'>
+                <legend>  Letters</legend>
+       
+                <% letters.each do |letter| %>
+        
+                	<%= letter["SENDER"] %>  <%= letter["LETTERTYPE"] %><%= letter["LETTERDATE"] %>  <p>
+
+                    <%= letter["LETTERCONTENT_"] %>
+                    <p>
+                        
+                        Letter Text <%= simple_format(bolden(letter["LETTERCONTENTTEXT"]))%>
+                       
+                    Letter Content Decoded <%= simple_format(decode(letter["LETTERCONTENT_"])) %> <p>
+                     
+                	
+                	<p>
+
+                <% end %>
+
+
+
+            
+
+             
+            </div>
+    	<% end %>

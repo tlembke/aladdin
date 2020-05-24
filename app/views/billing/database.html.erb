@@ -1,0 +1,28 @@
+<table class='table table-condensed'>
+	<% ti = 0 %>
+	<% tablename = "" %>
+	<% @columns.each do |column| %>
+			<% if column[2] != tablename %>
+				<% ti = ti + 1 %>
+				<% tablename = column[2] %>
+
+
+				<tr data-toggle="collapse" data-target=".table<%=ti.to_s%>">
+  					 <td  colspan=15> <b><%= column[2] %> </b>.  <%= link_to 'O', , {:class => "btn btn-sm btn-primary"} %>/td>
+				</tr>
+			<% end %>
+
+
+
+
+
+			<tr class="collapse table<%=ti.to_s%>">
+
+				<% for i in 3..17 do %>
+		 				<td><%= column[i] %> </td>
+				<% end %>
+			</tr>
+		<% end %>
+	
+</table>
+

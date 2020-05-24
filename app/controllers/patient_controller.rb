@@ -97,6 +97,10 @@ class PatientController < ApplicationController
           @consults = get_last_consults(dbh,@id,Date.today.to_s(:db), @noConsults)
 
 
+          @letters = Patient.letters(@id,dbh)
+          @scans = Patient.scans(@id,dbh)
+
+  
       
 
           @consult = @consults[0]
@@ -111,6 +115,8 @@ class PatientController < ApplicationController
           @plan= tests_array[1]
 
           @patient = getall_patient(@id,dbh,"annual")
+
+         
 
 
 

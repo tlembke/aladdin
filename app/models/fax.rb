@@ -76,7 +76,11 @@ class Fax
 
   end
 
+
+  # this is an internal method called from sendFax
+  # shouldn't have two methods with similar names, I guess
   def send_fax(dest_number,documents)
+
       theUrl="https://api.fax2.com.au/v1/send_fax"
       docText = ""
       documents.each do |document|
@@ -96,6 +100,7 @@ class Fax
 
   end
 
+  # remove spaces, add 02 if needed, add 61 if needed
   def self.normaliseFaxNumber(faxnumber)
   		faxnumber = faxnumber.gsub(/\s+/, "")
   		faxnumber = faxnumber.sub(/^0/, '')
@@ -110,7 +115,9 @@ class Fax
   		return faxnumber
   end
 
+  # this is the main method called from outside the class
   def self.sendFax(f,faxNumber)
+
     		documents=[]
   			faxNumber = Fax.normaliseFaxNumber(faxNumber)
   			if Pref.faxsend == "true"

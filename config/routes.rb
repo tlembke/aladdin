@@ -4,6 +4,14 @@ Rails.application.routes.draw do
 
 
 
+  get 'letters/show'
+
+  get 'database/index'
+
+  get 'database/table'
+
+  get 'database/columns'
+
   resources :contacts
   get 'fax/index'
 
@@ -73,7 +81,11 @@ end
       get 'pathways'
       get 'fax'
 
+
+
     end
+
+
 
   end
   
@@ -115,7 +127,15 @@ end
       member do
           post 'toggle'
       end
+
     end
+    resources :letters do
+          member do
+          get 'view'
+      end
+    end
+
+
 
     resources :members do
         get 'index'
@@ -154,6 +174,7 @@ end
         get 'fhir'
         post 'consult'
         get 'sendemail'
+
 
     end
   end

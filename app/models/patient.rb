@@ -26,6 +26,8 @@ class Patient
   def self.medications(patient,dbh)
           sql = "SELECT Medication, Dose, Frequency, Instructions, Category, CreationDate FROM Prescription WHERE PT_Id_FK = " + patient + " ORDER BY Medication"
           puts sql
+
+
          
 
           sth = dbh.run(sql)
@@ -42,6 +44,63 @@ class Patient
 
 
           return medications
+  end
+
+    def self.letters(patient,dbh)
+
+          sql = "SELECT Id, Sender, LetterDate, LetterContent_, LetterContentText, LetterType FROM IncomingLetter WHERE PT_Id_FK = " + patient + " ORDER BY LetterDate DESC LIMIT 20"
+          puts sql 
+
+
+
+          
+         
+
+          sth = dbh.run(sql)
+          
+          letters=[]
+          sth.fetch_hash do |row|
+
+            # row[]=[row[2]].pack('H*')
+
+            letters << row
+
+              end
+          
+
+          sth.drop
+
+     
+  
+          return letters
+  end
+     def self.scans(patient,dbh)
+
+          sql = "SELECT Id, RealName, Description, ImageDate FROM Graphic WHERE PT_Id_FK = " + patient + " ORDER BY ImageDate DESC LIMIT 20"
+          puts sql 
+
+
+
+          
+        
+
+          sth = dbh.run(sql)
+          
+          scans=[]
+          sth.fetch_hash do |row|
+
+            # row[]=[row[2]].pack('H*')
+
+            scans << row
+
+              end
+          
+
+          sth.drop
+
+     
+  
+          return scans
   end
 
 

@@ -1,0 +1,48 @@
+<h2><%= @patient.fullname %></h2>
+
+<%= link_to 'Close', '_self', {:class => "btn btn-lg btn-primary",:onclick=>'window.close();'} %>
+
+
+            <div class-='no-page-break-inside'>
+       
+                      
+                	<h3><i class="fa fa-sticky-note-o"> </i>  <%= @letter["SENDER"].start_with?("Dist") ? @letter["LETTERTYPE"] : @letter["SENDER"] %>   <%= @letter["LETTERDATE"].strftime("%d/%m/%Y") %>  </h3>
+
+
+                    <p>
+                        <% if @letter["LETTERCONTENTTEXT"] and @letter["LETTERCONTENTTEXT"] != nil and @letter["LETTERCONTENTTEXT"] != "" %>
+                        Letter Text <%= simple_format(bolden(@letter["LETTERCONTENTTEXT"]))%>
+                       <% else %>
+                    Letter Content Decoded <%= simple_format(decode(@letter["LETTERCONTENT_"])) %> <p>
+                    	<% end %>
+                     
+                	
+                	<p>
+                	<% if @blob !="" %>
+                	Here is the Blob for this letter<p>
+                		For debugging purposes<p>
+                	
+  
+                	RecordBlob<p>
+                	<%= @blob["RECORDBLOB"] %><p>
+                	RecordBlobDecoded<p>
+                	<%= simple_format(decode(@blob["RECORDBLOB"])) %>
+                	RecordType<p>
+                	<%= @blob["RECORDTYPE"] %><p>
+                	DisplayType<p>
+                	<%= @blob["DISPLAYTYPE"]%><p>
+
+                	<% end %>
+
+
+
+
+                
+
+
+
+            
+
+             
+            </div>
+    

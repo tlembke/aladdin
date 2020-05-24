@@ -158,5 +158,54 @@ module ApplicationHelper
       Document.where(code: 1, patient_id: 0).collect { |m| [m.name, m.id] }
   end
 
+   def breaking_wrap_wrap(txt, col = 80)
+        txt.gsub(/(.{1,#{col}})( +|$\n?)|(.{1,#{col}})/,"\\1\\3\n") 
+   end
+
+   def decode(msg)
+        #convert from hex to text
+        
+        msg = [msg].pack('H*')
+    
+        msg2 = msg.rpartition('</plist>').last
+        msg3 = msg2.force_encoding("ASCII-8BIT").encode('UTF-8', undef: :replace, replace: '')
+
+        msg4=msg3.gsub(/[\u{0000}-\u{0008}]/,"")
+        msg4=msg4.gsub(/[\u{0011}-\u{0014}]/,"")
+        fonts=["New York","Lucida Grande","Times New Roman"]
+        fonts.each do |font|
+          
+          if msg4.include?(font)
+            msg4 = msg4.rpartition(font).last
+          end
+        end
+
+        
+        #msg2 = msg2.gsub("\n", "")
+        #msg2 = msg2.gsub("IRPMx","")
+        # change bold text delimiters
+        msg4=bolden(msg4)
+        
+      
+
+          
+      
+       # msg3 = msg2.rpartition(msg2.scan(/~SBLD.+$/).last).last
+        return msg4
+
+   end
+
+   def bolden(msg)
+        msg=msg.gsub("\\N\\","</b>")
+        msg=msg.gsub("\\H\\","<b>")
+        msg=msg.gsub("E\\","")
+        msg=msg.gsub("\\E","")
+        msg=msg.gsub("\\T\\ndash;"," - ")
+       
+  
+
+        return msg
+   end
+
 
 end

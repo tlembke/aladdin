@@ -271,7 +271,42 @@
         </div> <!-- collapse -->
     </div> <!-- panel -->
 
+
+
       <div class="panel">
+        <div class="panel-heading" role="tab" id="headingLetters">
+          <legend class="panel-title">
+                  <a role="button" data-toggle="collapse" data-parent="#accordion"  href="#collapseLetters" aria-expanded="false" aria-controls="collapseLetters"><i class="fa fa-sticky-note"></i> Letters and Scans</a>
+          </legend>
+         </div>
+         <div id="collapseLetters" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingLetters">
+            <div class="panel-body">
+                     <%=render partial: "letters",locals: {letters: @letters} %>
+                     <%=render partial: "scans",locals: {scans: @scans} %>
+              
+            </div> <!-- panel body -->
+        </div> <!-- collapse -->
+    </div> <!-- panel -->
+
+      <div class="panel">
+        <div class="panel-heading" role="tab" id="headingChanges">
+          <legend class="panel-title">
+                  <a role="button" data-toggle="collapse" data-parent="#accordion"  href="#collapseChanges" aria-expanded="false" aria-controls="collapseChanges"><i class="fa fa-cogs"></i> Changes</a>
+          </legend>
+         </div>
+         <div id="collapseChanges" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingChanges">
+            <div class="panel-body">
+             <%= render partial: "tasks", locals: {tasks: @tasks} %>
+           
+            <%= render partial: "medchanges", locals: {meds: @meds, changes: @changes} %> 
+            <%= render partial: "notes",locals: {notes: @notes} %> 
+            <%= render partial: "tests",locals: {tests: @tests} %>
+             <%=render partial: "appointments",locals: {appointments: @appointments} %>
+              
+            </div> <!-- panel body -->
+        </div> <!-- collapse -->
+    </div> <!-- panel -->
+          <div class="panel">
         <div class="panel-heading" role="tab" id="headingRegisters">
           <legend class="panel-title">
                   <a role="button" data-toggle="collapse" data-parent="#accordion"  href="#collapseRegisters" aria-expanded="false" aria-controls="collapseRegisters"><i class="fa fa-calendar"></i> Registers</a>
@@ -287,22 +322,10 @@
 
 
 
-
 </div> <!-- accordion -->
 
 
 </div> <!-- row -->
 </div> <!-- col -->
 
-<div class="row page-break-before"> <!-- Full screen row -->
-<div class="col-md-12">
 
-           <%= render partial: "tasks", locals: {tasks: @tasks} %>
-           
-            <%= render partial: "medchanges", locals: {meds: @meds, changes: @changes} %> 
-            <%= render partial: "notes",locals: {notes: @notes} %> 
-            <%= render partial: "tests",locals: {tests: @tests} %>
-             <%=render partial: "appointments",locals: {appointments: @appointments} %>
-
-</div> <!-- col -->
-</div> <!--  row -->
