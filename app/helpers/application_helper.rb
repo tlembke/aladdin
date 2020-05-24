@@ -196,6 +196,7 @@ module ApplicationHelper
    end
 
    def bolden(msg)
+     
         msg=msg.gsub("\\N\\","</b>")
         msg=msg.gsub("\\H\\","<b>")
         msg=msg.gsub("E\\","")
@@ -214,9 +215,15 @@ module ApplicationHelper
          msg=msg.gsub(/>A.+?C/,"")
          msg=msg.gsub(/C\*.+?\s/," ")
          msg=msg.gsub(/C\$/," ")
+       
          msg=msg.gsub(/@@+\s/,"")
          msg=msg.gsub('>OAOACCC','')
-      
+         msg=msg.gsub('>SASA','')
+
+       
+         
+
+
          
          
 
