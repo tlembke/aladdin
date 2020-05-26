@@ -5,7 +5,7 @@ class Patient
 
   
 
-  attr_accessor :id, :surname, :firstname, :age, :sex, :fullname, :lastseendate, :lastseenby, :addressline1, :addressline2, :suburb, :dob, :scratchpad, :social, :medicare, :ihi, :homephone, :mobilephone, :smoking, :etoh,  :etohinfo, :nutrition, :activity, :mammogram, :atsi, :email, :pap, :hpv, :hpv_recall, :medications, :allergies, :weight, :height, :weight_date, :height_date, :bmi, :bp, :colonoscopy, :lastFHH, :last_mam, :mam_msg, :hpv_msg, :chol, :hdl, :score, :tetanus, :tetanus_msg, :procedures, :events, :current_problems, :tasks, :meds, :notes, :plan, :appointments, :changes, :tests, :careteam,  :ecg, :bps, :lipids, :lastFHHnew, :results
+  attr_accessor :id, :surname, :firstname, :age, :sex, :fullname, :lastseendate, :lastseenby, :addressline1, :addressline2, :suburb, :dob, :scratchpad, :social, :medicare, :ihi, :homephone, :mobilephone, :smoking, :etoh,  :etohinfo, :nutrition, :activity, :mammogram, :atsi, :email, :pap, :hpv, :hpv_recall, :medications, :allergies, :weight, :height, :weight_date, :height_date, :bmi, :bp, :colonoscopy, :lastFHH, :last_mam, :mam_msg, :hpv_msg, :chol, :hdl, :score, :tetanus, :tetanus_msg, :procedures, :events, :current_problems, :tasks, :meds, :notes, :plan, :appointments, :changes, :tests, :careteam,  :ecg, :bps, :lipids, :lastFHHnew, :results, :unlinkedresults
 
   
 
@@ -74,6 +74,35 @@ class Patient
   
           return letters
   end
+    def self.unlinkedletters(surname,dob,dbh)
+
+          sql = "SELECT Id, Sender, LetterDate, LetterContent_, LetterContentText, LetterType FROM IncomingLetter WHERE PT_Id_FK = 0 and SURNAME = '" + surname + "' and DOB = '" + dob.strftime('%Y-%m-%d') +  "' ORDER BY LetterDate DESC LIMIT 20"
+          puts sql 
+
+
+
+          
+         
+
+          sth = dbh.run(sql)
+          
+          letters=[]
+          sth.fetch_hash do |row|
+
+            # row[]=[row[2]].pack('H*')
+
+            letters << row
+
+              end
+          
+
+          sth.drop
+
+     
+  
+          return letters
+  end
+
 
       def self.referrals(patient,dbh)
 

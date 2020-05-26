@@ -212,7 +212,7 @@ module ApplicationHelper
         msg=msg.gsub('@8@q','<b>')
          msg=msg.gsub('@8@U','</b>')
          msg=msg.gsub(/>.+?BBM/,"&nbsp;&nbsp;&nbsp;M")
-         msg=msg.gsub(/>A.+{3}C/,"")
+         #msg=msg.gsub(/>A.+{3}C/,"")
          msg=msg.gsub(/C\*.+?\s/," ")
          msg=msg.gsub(/C\$/," ")
        

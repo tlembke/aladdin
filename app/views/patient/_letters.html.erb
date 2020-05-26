@@ -1,5 +1,27 @@
    		<!--   NOTES -->
-        <% if letters.count > 0 %>
+        <% if unlinkedletters.count > 0 %>
+            <div class-='no-page-break-inside'>
+                <legend>Unlinked Letters</legend>
+                <table class='table'>
+       
+                <% unlinkedletters.each do |letter| %>
+                    <tr>
+                        <td><%= link_to fa_icon_tag("eye"),patient_letter_path(@id,letter['ID'].to_i), :target => ‘_new’  %></td>
+                    <td> <%= letter["LETTERDATE"] %>  </td>
+                    <td><%= letter["SENDER"].start_with?("Dist") ? letter["LETTERTYPE"] : letter["SENDER"] %>  <%=  %></td>
+
+
+                    </tr>
+
+
+                <% end %>
+
+            </table>
+
+            
+
+             
+            </div>
             <div class-='no-page-break-inside'>
                 <legend>Letters</legend>
                 <table class='table'>

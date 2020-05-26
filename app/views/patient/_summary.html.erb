@@ -1,17 +1,20 @@
 	 <!-- Consult Summary -->
-        <legend><i class="fa fa-user-md"></i>  Consultation <%= @consult['CONSULTDATE'].to_time.strftime("%d/%m/%y") %> with <%= @consult['DOCTORNAME']%></legend>
+     
+    
+        <legend><i class="fa fa-user-md"></i>  Consultation <%= @consult['date'].to_time.strftime("%d/%m/%y") %> with <%= @consult['provider']%></legend>
 
          
          
 
-	    <h4><%= @consult['DIAGNOSIS']%></h4>
+	    <h4><%= @consult['diagnosis']%></h4>
 
 
                  <ul>
-        <% @problems.each do |problem| %>
-        	<% if problem != @consult['DIAGNOSIS'] and problem != "Pathology"%>
+        <% @consult['problems'].each do |problem| %>
+        	<% if problem != @consult['diagnosis'] and problem != "Pathology"%>
         	<li><%= problem %></li>
         	<% end %>
         <% end %>
         </ul>
+  
         <!-- end consult summary  -->

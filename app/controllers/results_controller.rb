@@ -94,7 +94,7 @@ class ResultsController < ApplicationController
 
   def get_result(id,dbh)
 
-        sql = "SELECT Test, CollectionDate, HL7Type, Result FROM  DownloadedResult where Id =  " + id
+        sql = "SELECT Test, CollectionDate, HL7Type, Result, PT_Id_FK, FirstName, Surname, DOB FROM  DownloadedResult where Id =  " + id
  
           puts sql
          

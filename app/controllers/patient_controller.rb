@@ -98,6 +98,7 @@ class PatientController < ApplicationController
 
 
           @letters = Patient.letters(@id,dbh)
+          @unlinkedletters = Patient.unlinkedletters(@patient.surname,@patient.dob,dbh)
           @scans = Patient.scans(@id,dbh)
           @referrals = Patient.referrals(@id,dbh)
 
@@ -122,7 +123,7 @@ class PatientController < ApplicationController
 
 
           @appointments = get_appointments(@id,dbh)
-          # @measures = get_measures(@id,dbh)
+          @measures = get_measures(@id,dbh)
 
           # @phonetime = get_phonetime(session[:id])
           @registers=Register.all
@@ -249,6 +250,7 @@ class PatientController < ApplicationController
           @letters = Patient.letters(@id,dbh)
           @scans = Patient.scans(@id,dbh)
           @referrals = Patient.referrals(@id,dbh)
+          @unlinkedletters = Patient.unlinkedletters(@id,dbh)
 
 
 
@@ -809,6 +811,7 @@ def cma
 
 
           @patient.results = get_results(id,dbh, 20)
+          @patient.unlinkedresults = get_unlinkedresults(@patient.surname, @patient.dob,dbh, 20)
 
 
           bpsweights=get_bps(id,dbh,50)
@@ -1758,7 +1761,7 @@ end
 
   def get_measures(patient,dbh)
           today=Date.today.to_s(:db)
-          consult_date= @consult['CONSULTDATE'].to_date
+          consult_date= @consult['date'].to_date
           consult_date=consult_date.to_s(:db)
 
           sql = "SELECT Systolic,Diastolic,Weight,MeasurementDate FROM Measurement where PT_Id_FK = " + patient + " and MeasurementDate = '"+ consult_date +"'"
@@ -2088,6 +2091,34 @@ end
   def get_results(patient,dbh, limit=50)
 
         sql = "SELECT Test, CollectionDate, HL7Type, Id FROM  DownloadedResult where PT_Id_FK = " + patient + " ORDER BY CollectionDate DESC LIMIT " +limit.to_s
+ 
+          puts sql
+         
+
+          sth = dbh.run(sql)
+               
+          results=[]
+          sth.fetch_hash do |row|
+
+            results << row
+          end
+
+
+
+
+          
+          
+
+         
+          sth.drop
+          
+          return results
+
+  end 
+
+    def get_unlinkedresults(surname,dob,dbh, limit=50)
+
+        sql = "SELECT Test, CollectionDate, HL7Type, Id FROM  DownloadedResult where PT_Id_FK = 0 and SURNAME = '" + surname + "' and DOB = '" + dob.strftime('%Y-%m-%d') +  "' ORDER BY CollectionDate DESC LIMIT " +limit.to_s
  
           puts sql
          

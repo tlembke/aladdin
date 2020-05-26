@@ -519,6 +519,7 @@ def connect(username=session[:username],password=session[:password])
               problems=[]
               consult=Hash.new
               consult['plan'] = row[3]
+              consult['diagnosis'] = row[2]
 
               consult['clinicalText']= row[0] +row[1] + row[2] + row[3]
               consult['problems'] = get_real_problems(dbh, row[4])

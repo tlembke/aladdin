@@ -1,8 +1,12 @@
-<h2><%= @patient.fullname %></h2>
+<h2><%= @result['FIRSTNAME'] %> <%= @result['SURNAME'] %> <%= @result['DOB'].strftime("%d/%m/%y") %></h2>
+<%= "<h3><b>Unlinked result</b> - patient identity should be confirmed</h3>".html_safe if @result['PT_ID_FK'] == 0  %><p>
 
 <%= link_to 'Close', '_self', {:class => "btn btn-lg btn-primary",:onclick=>'window.close();'} %>
 
-<%= @result['COLLECTIONDATE'].strftime("%d/%m/%Y") %> <%= @result['TEST'] %><p>
+<%= @result['COLLECTIONDATE'].strftime("%d/%m/%Y") %> <%= @result['TEST'] %>
+
+
+
 
 <pre>
 <%= pit_convert(@result['RESULT']).html_safe%>
