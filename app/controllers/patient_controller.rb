@@ -250,7 +250,7 @@ class PatientController < ApplicationController
           @letters = Patient.letters(@id,dbh)
           @scans = Patient.scans(@id,dbh)
           @referrals = Patient.referrals(@id,dbh)
-          @unlinkedletters = Patient.unlinkedletters(@id,dbh)
+          @unlinkedletters = Patient.unlinkedletters(@patient.surname,@patient.dob,dbh)
 
 
 

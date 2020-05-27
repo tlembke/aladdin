@@ -195,7 +195,7 @@
          </div>
          <div id="collapseLetters" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingLetters">
             <div class="panel-body">
-                     <%=render partial: "letters",locals: {letters: @letters} %>
+                     <%=render partial: "letters",locals: {letters: @letters, unlinkedletters: @unlinkedletters} %>
                      <%=render partial: "scans",locals: {scans: @scans} %>
                      <%=render partial: "referrals",locals: {referrals: @referrals} %>
               
