@@ -1,9 +1,25 @@
 <div id="goal_<%=@goal.id%>" class="no-page-break-inside">
-<b><%= @goal.title %></b>
 
+  <div class = "row">
+	  	<div class="col-md-12">
+		<b><%= @goal.title %></b>
+		</div>
+		<div class="col-md-4">
+		Success:<br>
+		<%= simple_format(@goal.description) %>
+		</div>
+		<div class="col-md-4">
+		<% if goal.by %>
+			Actions:<br><%= simple_format(@goal.by) %>
+		<% end %>
+		</div>
+		<div class="col-md-4">
+		<% if goal.fallback1 %>
+			Fallback:<br><%= simple_format(@goal.fallback1) %>
+		<% end %>
+		</div>
+	</div>
 
-<br>
-<%= goal.description %><br>
 
 
 
