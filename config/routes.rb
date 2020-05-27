@@ -100,6 +100,7 @@ end
   resources :goals  do
       member do
         get 'touch'
+        post 'priority'
       end
   end
   resources :members

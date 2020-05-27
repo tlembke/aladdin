@@ -1,5 +1,5 @@
 class GoalsController < ApplicationController
-  before_action :set_goal, only: [:show, :edit, :update, :destroy, :touch]
+  before_action :set_goal, only: [:show, :edit, :update, :destroy, :touch, :priority]
 
   # GET /goals
   # GET /goals.json
@@ -136,6 +136,13 @@ class GoalsController < ApplicationController
     end
   end
 
+    def priority
+      @goal.priority ? @goal.priority = false :  @goal.priority = true
+      @goal.priority = true if @goal.priority == nil
+      @goal.save
+      render :nothing => true 
+  end
+
   # DELETE /goals/1
   # DELETE /goals/1.json
   def destroy
@@ -155,6 +162,6 @@ class GoalsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def goal_params
-      params.require(:goal).permit(:title, :description, :by, :fallback1, :fallback2,  :condition_id, :patient_id, :measure_id, :active, :parent, :master_id, :target, :autoload)
+      params.require(:goal).permit(:title, :description, :by, :fallback1, :fallback2,  :condition_id, :patient_id, :measure_id, :active, :parent, :master_id, :target, :autoload, :priority)
     end
 end

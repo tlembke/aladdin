@@ -1,4 +1,6 @@
 <div id="goal_<%=@goal.id%>" class="no-page-break-inside">
+<%= check_box_tag 'goal', @goal.id, @goal.priority, data: {
+	        remote: true, url: priority_goal_path(@goal), method: "POST" } %>
 <b><a href="#" id="editable_goal_title_<%=@goal.id%>" data-defaultValue="Add new goal" data-type="text" data-pk="1" data-resource="goal" data-name="title" data-url="/goals/<%=@goal.id%>" data-emptytext= "Notes"data-placeholder="Your notes here..." data-original-title="Enter notes" class="editable"><%= @goal.title %> </a></b>
 <%= link_to fa_icon_tag("trash-o"),@goal, data: {confirm: "Are you sure you want to delete '#{@goal.title}'?"}, :remote => true, method: :delete %>
 

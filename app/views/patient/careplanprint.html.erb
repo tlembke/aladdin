@@ -34,12 +34,15 @@
 
       <%= render "introduction" %>
       <hr>
-      <div class="col-xs-12" style="height:100px;"></div>
-                  <%= render partial: "tasks", locals: {tasks: @tasks} %>
+      <div class="col-xs-12" style="height:20px;"></div>
+            <%= render partial: "tasks", locals: {tasks: @tasks} %>
             
             <%= render partial: "notes",locals: {notes: @notes} %> 
 
             <%= render partial: "medchanges", locals: {meds: @meds, prescription_history: @prescription_history} %> 
+            <%= render partial: "priorities" %>
+
+
 
 </div> <!-- col -->
 </div> <!--  row -->
