@@ -1,7 +1,10 @@
+						        <% unlinkedresults = @patient.unlinkedresults %>
+
+						        <% if unlinkedresults.count > 0 %>
 						        <legend><i class="fa fa-tasks" aria-hidden="true"></i>  Unlinked Results</legend>
 						        
 						        <ul class="fa-ul">
-						        <% @patient.unlinkedresults.each do |patresult| %>
+						        <% unlinkedresults.each do |patresult| %>
 						       
 	
 						        		  
@@ -13,3 +16,6 @@
 						        		<i class="fa-li fa"></i><%= link_to patresult['COLLECTIONDATE'].to_s + " " + patresult['TEST'].to_s, patient_result_path(@id,patresult['ID'].to_i), :target => ‘_new’  %> </li>
 						        <% end %>
 						        </ul>
+						      
+
+						       <% end %> <!-- end if -->

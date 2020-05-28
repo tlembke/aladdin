@@ -1,23 +1,30 @@
-<h2>Priority Actions next 3 months</h2>
-          
-<% @priorities.each do | goal| %>
-  <div class = "row">
-	  	<div class="col-md-12">
-		<b><%= goal.title %></b>
-		</div>
-		<div class="col-md-4">
-		Success:<br>
-		<%= simple_format(goal.description) %>
-		</div>
-		<div class="col-md-4">
-		<% if goal.by %>
-			Actions:<br><%= simple_format(goal.by) %>
-		<% end %>
-		</div>
-		<div class="col-md-4">
-		<% if goal.fallback1 %>
-			Fallback:<br><%= simple_format(goal.fallback1) %>
-		<% end %>
-		</div>
-	</div>
-<% end %>
+<% if @priorities.count > 0 %>
+ <div class-='no-page-break-inside'>
+<legend>Priority Actions next 3 months</legend>
+<div class="panel-group">       
+	<% @priorities.each do | goal| %>
+	  <div class = "panel panel-default">
+		  	<div class="panel-heading">
+				<b><%= goal.title %></b>
+			</div> 
+			<div class="panel-body">
+				<div class="col-md-4">
+					Success:<br>
+					<%= simple_format(goal.description) %>
+				</div>
+				<div class="col-md-4">
+					<% if goal.by %>
+						Actions : I will...<br><%= simple_format(goal.by) %>
+					<% end %>
+				</div>
+				<div class="col-md-4">
+					<% if goal.fallback1 %>
+						Fallback:  I will...<br><%= simple_format(goal.fallback1) %>
+					<% end %>
+				</div>
+			</div> <!-- panel-body -->
+		</div> <!-- panel --->
+	<% end %>
+</div> <!-- panel group -->
+</div>
+<% end %> <!-- end if -->

@@ -265,7 +265,7 @@ class PatientController < ApplicationController
 
           if params[:print]
             # get results to print
-            @priorities = Goal.where(patient_id: @patient.id, priority: true).all
+            @priorities = Goal.where(patient_id: @patient.id, priority: true)
 
             results=Result.where(patient_id: @patient.id, result_date: Date.today.to_date).all
             @printresults=[]
