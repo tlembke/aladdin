@@ -250,8 +250,25 @@
         </div> <!-- collapse -->
     </div> <!-- panel -->
 
-                        
-                    
+              
+<% if @priorities.count > 1 %>
+   <div class="panel">
+          <div class="panel-heading" role="tab" id="headingPriorities">
+              <legend class="panel-title">
+              
+                        <a role="button" data-toggle="collapse" data-parent="#accordion"  href="#collapsePriorities" aria-expanded="false" aria-controls="collapsePriorities"><i class="fa fa-heartbeat"></i>  Priorities</a>
+              </legend>
+           
+           </div>
+     <div id="collapsePriorities" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingPriorities">
+            <div class="panel-body">
+                
+                 <%= render "priorities" %>
+               
+            </div> <!-- panel body -->
+        </div> <!-- collapse -->
+    </div> <!-- panel -->          
+  <% end %>                
                     
                 
 

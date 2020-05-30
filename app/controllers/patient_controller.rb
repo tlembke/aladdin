@@ -120,7 +120,7 @@ class PatientController < ApplicationController
 
          
 
-
+          @priorities = Goal.where(patient_id: @patient.id, priority: true)
 
           @appointments = get_appointments(@id,dbh)
           @measures = get_measures(@id,dbh)
@@ -681,7 +681,7 @@ def cma
            "s44D_vT_Password" => Pref.decrypt_password(Pref.webpassword),
           "s44D_vT_Output" =>  xml_doc
         })
-      debugger
+      
       @jsmessage = Time.now.strftime("%d/%m/%y")  +"<br><b>" + params[:type] + "</b><br>" + delivery[params[:delivery].to_i] +  consulttime[params[:consulttime].to_i] + "<br>" + consult + "<p>" + session[:name]
 
       @consult = Consult.new
