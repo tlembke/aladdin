@@ -102,17 +102,33 @@ def connect(username=session[:username],password=session[:password])
   end 
 
     def get_patient(patient,dbh)
-            # Get info about this patient
-         sql = "SELECT Surname,FirstName,FullName,LastSeenDate,LastSeenBy,AddressLine1, AddressLine2,Suburb,DOB, Age, Sex, Scratchpad, FamilyHistory, MedicareNum, MedicareRefNum, IHI, HomePhone, MobilePhone, SmokingFreq, ALCST_Id_Fk, AlcoholInfo, LastMammogram, CultureCode, EmailAddress, LastSmear, NoPapRecall FROM Patient WHERE id = "+patient       
-         # puts sql
+           # Get info about this patient
+         sql = "SELECT Surname,FirstName,FullName,LastSeenDate,LastSeenBy,AddressLine1, AddressLine2,Suburb,DOB, Age, Sex, MedicareNum, MedicareRefNum, IHI, HomePhone, MobilePhone,  CultureCode, EmailAddress,  PTCL_Id_Fk FROM Patient WHERE id = "+patient       
+         puts sql
           sth = dbh.run(sql)
+          row1=Hash.new
+          atsi=0
           sth.fetch_hash do |row|
-            atsi=0
+            
             row['CULTURECODE'] > 3 ? atsi=0 : atsi=1
+            row1 = row
+           end
+          
 
-            @patient=Patient.new(id: @id, surname: row['SURNAME'], firstname: row['FIRSTNAME'], fullname: row['FULLNAME'], lastseendate: row['LASTSEENDATE'], lastseenby: row['LASTSEENBY'], addressline1: row['ADDRESSLINE1'], addressline2: row['ADDRESSLINE2'],suburb: row['SUBURB'],dob: row['DOB'], age: row['AGE'], sex: row['SEX'], scratchpad: row['SCRATCHPAD'], social: row['FAMILYHISTORY'], ihi: row['IHI'],medicare: row['MEDICARENUM'].to_s + "/" + row['MEDICAREREFNUM'].to_s,homephone: row['HOMEPHONE'],mobilephone: row['MOBILEPHONE'], smoking: row['SMOKINGFREQ'], etoh: row['ALCST_ID_FK'], etohinfo: row['ALCOHOLINFO'], mammogram: row['LASTMAMMOGRAM'], atsi: atsi, email: row['EMAILADDRESS'], pap: row['LASTSMEAR'],hpv_recall: row['NOPAPREACLL'])
+
+         sql = "SELECT Scratchpad, FamilyHistory, SmokingFreq, ALCST_Id_Fk, AlcoholInfo, LastMammogram, LastSmear, NoHPVRecall, LastHPV FROM PatientClinical WHERE Id = '"+ row1['PTCL_ID_FK'] + "'"
+         puts sql
+         row2=Hash.new
+          sth2 = dbh.run(sql)
+          sth2.fetch_hash do |row|
+            row2 = row
           end
           sth.drop
+          sth2.drop
+
+
+          @patient=Patient.new(id: @id, surname: row1['SURNAME'], firstname: row1['FIRSTNAME'], fullname: row1['FULLNAME'], lastseendate: row1['LASTSEENDATE'], lastseenby: row1['LASTSEENBY'], addressline1: row1['ADDRESSLINE1'], addressline2: row1['ADDRESSLINE2'],suburb: row1['SUBURB'],dob: row1['DOB'], age: row1['AGE'], sex: row1['SEX'], scratchpad: row2['SCRATCHPAD'], social: row2['FAMILYHISTORY'], ihi: row1['IHI'],medicare: row1['MEDICARENUM'].to_s + "/" + row1['MEDICAREREFNUM'].to_s,homephone: row1['HOMEPHONE'],mobilephone: row1['MOBILEPHONE'], smoking: row2['SMOKINGFREQ'], etoh: row2['ALCST_ID_FK'], etohinfo: row2['ALCOHOLINFO'], mammogram: row2['LASTMAMMOGRAM'], atsi: atsi, email: row1['EMAILADDRESS'], pap: row2['LASTSMEAR'],hpv_recall: row2['NOHPVREACLL'], hpv: row2['LASTHPV'])
+    
           return @patient
   end
 

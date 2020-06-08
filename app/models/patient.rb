@@ -13,11 +13,12 @@ class Patient
   def self.get_patient(patient,dbh)
           # ? deprecated
             # Get info about this patient
-         sql = "SELECT Surname,FirstName,FullName,LastSeenDate,LastSeenBy,AddressLine1, AddressLine2,Suburb,DOB, Age, Sex, Scratchpad, FamilyHistory, HomePhone, MobilePhone FROM Patient WHERE id = "+patient       
+           debugger
+         sql = "SELECT Surname,FirstName,FullName,LastSeenDate,LastSeenBy,AddressLine1, AddressLine2,Suburb,DOB, Age, Sex, Unused_Scratchpad, Unused_FamilyHistory, HomePhone, MobilePhone FROM Patient WHERE id = "+patient       
          puts sql
           sth = dbh.run(sql)
           sth.fetch_hash do |row|
-            @patient=Patient.new(id: patient, surname: row['SURNAME'], firstname: row['FIRSTNAME'], fullname: row['FULLNAME'], lastseendate: row['LASTSEENDATE'], lastseenby: row['LASTSEENBY'], addressline1: row['ADDRESSLINE1'], addressline2: row['ADDRESSLINE2'],suburb: row['SUBURB'],homephone: row['HOMEPHONE'],mobilephone: row['MOBILEPHONE'],dob: row['DOB'], age: row['AGE'], sex: row['SEX'], scratchpad: row['SCRATCHPAD'], social: row['FAMILYHISTORY'], smoking: row['SMOKINGFREQ'],etoh: row['ALCOHOL'], etohinfo: row['ALCOHOLINFO'], mammogram: row['LASTMAMMOGRAM'] )
+            @patient=Patient.new(id: patient, surname: row['SURNAME'], firstname: row['FIRSTNAME'], fullname: row['FULLNAME'], lastseendate: row['LASTSEENDATE'], lastseenby: row['LASTSEENBY'], addressline1: row['ADDRESSLINE1'], addressline2: row['ADDRESSLINE2'],suburb: row['SUBURB'],homephone: row['HOMEPHONE'],mobilephone: row['MOBILEPHONE'],dob: row['DOB'], age: row['AGE'], sex: row['SEX'], scratchpad: row['UNUSED_SCRATCHPAD'], social: row['UNUSED_FAMILYHISTORY'], smoking: row['UNUSED_SMOKINGFREQ'],etoh: row['UNUSED_ALCOHOL'], etohinfo: row['UNUSED_ALCOHOLINFO'], mammogram: row['UNUSED_LASTMAMMOGRAM'] )
           end
           sth.drop
           return @patient
