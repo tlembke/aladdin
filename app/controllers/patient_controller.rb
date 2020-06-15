@@ -2135,7 +2135,7 @@ end
 
     def get_unlinkedresults(surname,dob,dbh, limit=50)
 
-        sql = "SELECT Test, CollectionDate, HL7Type, Id FROM  DownloadedResult where PT_Id_FK = 0 and SURNAME = '" + surname + "' and DOB = '" + dob.strftime('%Y-%m-%d') +  "' ORDER BY CollectionDate DESC LIMIT " +limit.to_s
+        sql = "SELECT Test, CollectionDate, HL7Type, Id FROM  DownloadedResult where PT_Id_FK = 0 and SURNAME = '" + surname.sub("'","''") + "' and DOB = '" + dob.strftime('%Y-%m-%d') +  "' ORDER BY CollectionDate DESC LIMIT " +limit.to_s
  
           puts sql
          

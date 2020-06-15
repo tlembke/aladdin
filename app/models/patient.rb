@@ -11,9 +11,9 @@ class Patient
 
   
   def self.get_patient(patient,dbh)
-          # ? deprecated
+          # ? deprecated - no, used by nursing home
             # Get info about this patient
-           debugger
+ 
          sql = "SELECT Surname,FirstName,FullName,LastSeenDate,LastSeenBy,AddressLine1, AddressLine2,Suburb,DOB, Age, Sex, Unused_Scratchpad, Unused_FamilyHistory, HomePhone, MobilePhone FROM Patient WHERE id = "+patient       
          puts sql
           sth = dbh.run(sql)
@@ -77,7 +77,7 @@ class Patient
   end
     def self.unlinkedletters(surname,dob,dbh)
 
-          sql = "SELECT Id, Sender, LetterDate, LetterContent_, LetterContentText, LetterType FROM IncomingLetter WHERE PT_Id_FK = 0 and SURNAME = '" + surname + "' and DOB = '" + dob.strftime('%Y-%m-%d') +  "' ORDER BY LetterDate DESC LIMIT 20"
+          sql = "SELECT Id, Sender, LetterDate, LetterContent_, LetterContentText, LetterType FROM IncomingLetter WHERE PT_Id_FK = 0 and SURNAME = '" + surname.sub("'","''") + "' and DOB = '" + dob.strftime('%Y-%m-%d') +  "' ORDER BY LetterDate DESC LIMIT 20"
           puts sql 
 
 
