@@ -8,7 +8,9 @@ class GenieController < ApplicationController
   	reset_session
     if params[:restart]
           system ("passenger-config restart-app /Users/cpd/Projects/")
-          puts "Restarting Aladdin using passenger-config"
+          system ("/usr/sbin/apachectl graceful")
+          # this need _www ALL = NOPASSWD: /usr/sbin/apachectl to be added to /etc/sudoer using visudo command as root
+          puts "Restarting Aladdin using passenger-config and apachectl"
           connect=false
           flash[:notice]="Aladdin restarted"
     else
@@ -31,6 +33,8 @@ class GenieController < ApplicationController
                   system ("touch #{Rails.root}/tmp/restart.txt")
 
                   system ("passenger-config restart-app /Users/cpd/Projects/")
+                  system ("/usr/sbin/apachectl graceful")
+
             			connect=false
 
             			#redirect_to controller: "genie", action: "login"
