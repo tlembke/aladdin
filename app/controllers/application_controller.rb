@@ -538,6 +538,7 @@ def connect(username=session[:username],password=session[:password])
               consult['diagnosis'] = row[2]
 
               consult['clinicalText']= row[0] +row[1] + row[2] + row[3]
+              consult['clinicalText']=consult['clinicalText'].force_encoding("UTF-8")
               consult['problems'] = get_real_problems(dbh, row[4])
               consult['date'] = row[5]
               consult['provider'] = row[6]
