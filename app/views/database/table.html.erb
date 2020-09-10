@@ -27,7 +27,9 @@
 SELECT * from <%= @table %> where <%= select_tag 'column', options_for_select(@columns.map {|column| [column[3],column[3]]}) %>
 = <%= text_field_tag 'value', nil ,size: 10 %>
 <%= select_tag 'number', options_for_select(["All","First"]) %>
-<%= submit_tag "SELECT", class: "btn-primary" %>
+<%= submit_tag "SELECT", class: "btn-primary" %><p>
+<%= submit_tag "SHOW ALL", class: "btn-primary" %>
+
 
 
 <% end %>

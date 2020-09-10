@@ -368,28 +368,28 @@ class BillingController < ApplicationController
         @allergiesCount = sth.nrows
         sth.drop
 
-        sql = "SELECT COUNT(id) from Patient WHERE SmokingFreq > 0 and Inactive= False and Age > 17"
+        sql = "SELECT COUNT(Patient.Id) from Patient,PatientClinical where Patient.PTCL_ID_FK = PatientClinical.Id  AND  SmokingFreq > 0 and Inactive= False and Age > 17"
         puts sql
         sth = dbh.run(sql)
         row= sth.fetch_first
         @smokingRecorded= row[0]
         sth.drop
 
-        sql = "SELECT COUNT(id) from Patient WHERE SmokingFreq = 0 and Inactive= False and Age > 17"
+        sql = "SELECT COUNT(Patient.Id) from Patient,PatientClinical where Patient.PTCL_ID_FK = PatientClinical.Id  AND SmokingFreq = 0 and Inactive= False and Age > 17"
         puts sql
         sth = dbh.run(sql)
         row= sth.fetch_first
         @smokingUnrecorded= row[0]
         sth.drop
 
-        sql = "SELECT COUNT(id) from Patient WHERE SmokingFreq > 3 and Inactive= False and Age > 17"
+        sql = "SELECT COUNT(Patient.Id) from Patient,PatientClinical where Patient.PTCL_ID_FK = PatientClinical.Id  AND SmokingFreq > 3 and Inactive= False and Age > 17"
         puts sql
         sth = dbh.run(sql)
         row= sth.fetch_first
         @smokingNon= row[0]
         sth.drop
 
-        sql = "SELECT COUNT(id) from Patient WHERE SmokingFreq > 0 and SmokingFreq <4 and Inactive= False and Age > 17"
+        sql = "SELECT COUNT(Patient.Id) from Patient,PatientClinical where Patient.PTCL_ID_FK = PatientClinical.Id  AND  SmokingFreq > 0 and SmokingFreq <4 and Inactive= False and Age > 17"
         puts sql
         sth = dbh.run(sql)
         row= sth.fetch_first
@@ -461,14 +461,18 @@ class BillingController < ApplicationController
      if (@error_code==0)
         dbh=connect_array[0]
 
-        smearDate = 30.months.ago.to_s(:db)   
-        sql = "SELECT COUNT(id) from Patient where Sex = 'F' and Age > 19 and Age < 66 and Inactive = False and LASTSMEAR > '" + smearDate +"'"
+        smearDate = 30.months.ago.to_s(:db)
+
+   # sql = "SELECT COUNT(id) from Patient where Sex = 'F' and Age > 19 and Age < 66 and Inactive = False and LASTSMEAR > '" + smearDate +"'"
+     
+        sql = "SELECT COUNT(Patient.Id) from Patient, PatientClinical where Patient.PTCL_ID_FK = PatientClinical.Id and Sex = 'F' and Age > 19 and Age < 71 and Inactive = False and (LASTHPV > '" + smearDate +"' OR LASTSMEAR > '" + smearDate +"')"
+         
         puts sql
         sth = dbh.run(sql)
         row= sth.fetch_first
         @smearDone = row[0]
         sth.drop
-        sql = "SELECT COUNT(id) from Patient where Sex = 'F' and Age > 19 and Age < 66 and Inactive = False"
+        sql = "SELECT COUNT(Patient.Id) from Patient where Sex = 'F' and Age > 19 and Age < 71 and Inactive = False"
         puts sql
         sth = dbh.run(sql)
         row= sth.fetch_first
@@ -476,13 +480,13 @@ class BillingController < ApplicationController
         sth.drop
 
         mamDate = 24.months.ago.to_s(:db)  
-        sql = "SELECT COUNT(id) from Patient where Sex = 'F' and Age > 49 and Age < 71 and Inactive = False and LASTMAMMOGRAM> '" + mamDate +"'"
+        sql = "SELECT COUNT(Patient.Id) from Patient, PatientClinical where Patient.PTCL_ID_FK = PatientClinical.Id and Sex = 'F' and Age > 49 and Age < 71 and Inactive = False and LASTMAMMOGRAM> '" + mamDate +"'"
         puts sql
         sth = dbh.run(sql)
         row= sth.fetch_first
         @mamDone= row[0]
         sth.drop
-        sql = "SELECT COUNT(id) from Patient where Sex = 'F' and Age > 49 and Age < 71 and Inactive = False"
+        sql = "SELECT COUNT(Patient.Id) from Patient where Sex = 'F' and Age > 49 and Age < 71 and Inactive = False"
         puts sql
         sth = dbh.run(sql)
         row= sth.fetch_first
@@ -490,13 +494,13 @@ class BillingController < ApplicationController
         sth.drop
 
         lastYear = 1.year.ago.to_s(:db)  
-        sql = "SELECT COUNT(id) FROM Patient WHERE Diabetic = True and Inactive= False and DiabetesCycleDate > '" + lastYear +"'"
+        sql = "SELECT COUNT(Patient.Id) FROM Patient, PatientClinical where Patient.PTCL_ID_FK = PatientClinical.Id and Diabetic = True and Inactive= False and DiabetesCycleDate > '" + lastYear +"'"
         puts sql
         sth = dbh.run(sql)
         row= sth.fetch_first
         @diabeticCycles = row[0]
         sth.drop
-        sql = "SELECT COUNT(id) from Patient WHERE Diabetic = True and Inactive= False"
+        sql = "SELECT COUNT(Patient.Id) from Patient, PatientClinical WHERE Patient.PTCL_ID_FK = PatientClinical.Id and Diabetic = True and Inactive= False"
         puts sql
         sth = dbh.run(sql)
         row= sth.fetch_first
@@ -1334,7 +1338,7 @@ end
      @error_code=connect_array[1]
      if (@error_code==0)
         dbh=connect_array[0]
-                # step one - get all patients aged 45-49, orderd pckwards by age
+                
          
          
           params[:age] ? @age= params[:age].to_i : @age = 75
@@ -1349,7 +1353,7 @@ end
 
          
 
-         sql = "SELECT Surname,FirstName,FullName,LastSeenDate,LastSeenBy,LastSmear,LastHPV,MobilePhone, EmailAddress, DOB,  Id, NoHpvRecall FROM Patient WHERE Inactive = FALSE AND " + ageText + " AND " + hpvText + " AND NoHpvRecall = FALSE ORDER BY LastHPV"   
+         sql = "SELECT Surname,FirstName,FullName,LastSeenDate,LastSeenBy,LastSmear,LastHPV,MobilePhone, EmailAddress, DOB,  Patient.Id, NoHpvRecall FROM Patient,PatientClinical where Patient.PTCL_ID_FK = PatientClinical.Id  AND  Inactive = FALSE AND " + ageText + " AND " + hpvText + " AND NoHpvRecall = FALSE ORDER BY LastHPV"   
          puts sql
           sth = dbh.run(sql)
           @hpv_count = sth.nrows
@@ -1568,7 +1572,7 @@ end
   end
 
 
- # get patients being managed under care plan and their total billing last 12 months
+ # get patients being managed under care plan and see if they have had a SHS upload
  def get_cp_uploads(dbh)
           today=Date.today.to_s(:db)
           lastyear=1.year.ago.to_s(:db)

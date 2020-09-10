@@ -90,13 +90,15 @@ class FaxController < ApplicationController
   			 
   			 @files.take(10).each do |f|
   			 	unless File.exist?(::Rails.root.join('public','fax',File.basename(f, ".*")+ '.png'))
-
-					image=MiniMagick::Image.open(f)
-					image.format("png", 0)
-					image.resize("420x594")
-					
-
-					image.write(::Rails.root.join('public','fax',File.basename(f, ".*")+ '.png'))
+  			 		begin
+						image=MiniMagick::Image.open(f)
+						image.format("png", 0)
+						image.resize("420x594")
+						image.write(::Rails.root.join('public','fax',File.basename(f, ".*")+ '.png'))
+					rescue
+						# file couldn't be processed by MiniMagick so use default file which is oops.png
+						FileUtils.cp Rails.root.join('public','fax','oops.png'), Rails.root.join('public','fax',File.basename(f, ".*") + '.png')
+					end
 				end
 	  		end
   end

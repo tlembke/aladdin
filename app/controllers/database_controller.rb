@@ -132,9 +132,29 @@ class DatabaseController < ApplicationController
           						end
           					end
           					# is it in integer columns
+                    
+                   if params[:commit] == "SHOW ALL"
+
+                            @sql= "SELECT " + @columnSt + " from " + @table + " LIMIT 300"
+                      
+
+                        puts @sql
+                        #@sql="SELECT LetterDate,ReferralContent_,PT_Id_Fk,AddresseeName,Creator,Version,Printed,AB_Id_Fk,FlaggedForFollowup,ReplyReceived,Id,PRCDRE_Id_Fk,Reviewed,Archived,From,ExternalId,CantDelete,ImportLetterPkgFg,SendViaThirdParty,Carrier,DeliveryAcknowledged,GPMP,HLInfo,DocumentType,PrimarySent,ReadyToSend,WebMailId,IsSpecialistLetter,CDA,LastUpdated,LastUpdatedBy,WPDOC_Id_Fk from OutgoingLetter where PT_Id_Fk = 4998"
+                        #@sql="SELECT LetterDate,ReferralContent_,PT_Id_Fk,AddresseeName,Creator,Version,Printed,AB_Id_Fk,FlaggedForFollowup,ReplyReceived,Id,PRCDRE_Id_Fk,Reviewed,Archived,ExternalId,CantDelete,ImportLetterPkgFg,SendViaThirdParty,Carrier,DeliveryAcknowledged,GPMP,HLInfo,DocumentType,PrimarySent,ReadyToSend,WebMailId,IsSpecialistLetter,CDA,LastUpdated,LastUpdatedBy,WPDOC_Id_Fk from OutgoingLetter where PT_Id_Fk = 4998"
+                        #@sql="SELECT LetterDate,ReferralContent_,PT_Id_Fk,AddresseeName,Creator,Version,Printed,AB_Id_Fk from OutgoingLetter where PT_Id_Fk = 4998"
+                      
+                        sth3 = dbh.run(@sql)
+                        @result = []
+                      
+                          sth3.fetch_hash do |row|
+                            @result << row
+                          end
+
+                      
+                      
 
 
-          					if params[:column] and params[:value]
+                    elsif  params[:column] and params[:value]
           							if intCol
           								@sql= "SELECT " + @columnSt + " from " + @table + " where " + params[:column] + " = " + params[:value]
           							else
@@ -160,6 +180,8 @@ class DatabaseController < ApplicationController
 
 
           					end
+
+
 
 
           				end
