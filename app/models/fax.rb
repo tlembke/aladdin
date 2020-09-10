@@ -160,7 +160,7 @@ class Fax
                             headers: {content_type: "application/json", Authorization: "bearer " + access_token})
     				response2 = JSON[response.body]
 		        rescue RestClient::ExceptionWithResponse => err
-		        	debugger
+		      
 		        	response2 = err.response
     			end
 
