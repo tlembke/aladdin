@@ -49,6 +49,12 @@ module PatientHelper
 		return @goals
 	end
 
+	def extract_goal_from_note(note)
+		#first get action - should be last thing in note
+		actionText = note.match(/(.*)(Goal\r)(.*?)(Action\r|$)(.*)/)
+		return actionText
+	end
+
 	def get_status(condition, patient)
 		
 		@status=Status.where(condition_id: condition, patient_id: patient).first

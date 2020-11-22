@@ -14,7 +14,11 @@
 								
 								<% theNote  = problem['NOTE'].force_encoding('ISO-8859-1').encode('UTF-8') %>
     							<% if theNote.valid_encoding? %>
-								<%= simple_format(theNote) %>
+    									
+									
+    										<%= simple_format(theNote) %>
+    									
+									
 								<% end %>
 								<!----------- -->
 								<% @status=get_status(problem['ID'],@patient.id) %>
@@ -30,11 +34,20 @@
 
 							
 								<!----------- -->
+
 								<% @goals=get_goals(problem['ID']) %>
-								<% if @goals.count > 0 %>
+								<% if @goals.count > 0 or problem['GOAL'] %>
 									
 									<b>Goals</b>
-	
+									<% if problem['GOAL'] %>
+											<p><b><%= problem['GOAL'] %></b><br>
+											<% if problem['SUCCESS'] %>
+												Success :  I will ... <%= problem['SUCCESS']%><p>
+											<% end %>
+											<% if problem['ACTION'] %>
+												Action :  I will ... <%= problem['ACTION']%><p>
+											<% end %>									
+									<% end %>
 
 										<% @goals.each do |goal| %>
 											<% @goal = goal %>

@@ -1882,6 +1882,8 @@ end
           return lipids
   end
 
+
+
   def get_current_problems(patient,dbh)
 
         sql = "SELECT Problem,Note,Confidential,TermCode,ICPCCode,Id,DiagnosisDate,SnomedCode FROM CurrentProblem where PT_Id_FK = " + patient
@@ -1896,7 +1898,30 @@ end
 
             # Should we update local model here instead
             if row['CONFIDENTIAL'] == "false"
-                 current_problems<< row
+                 # get goal from Note
+                 actionText = extract_goal_from_note(row['NOTE'])
+                 row['GOAL'] = false
+                 row['SUCCESS'] = false
+                 row['ACTION'] = false
+                 if actionText
+                      
+                     if actionText[1]
+                        row['NOTE'] = actionText[1]
+                     end
+                     if actionText[2] and actionText[2].start_with?("Goal")
+                        row['GOAL'] = actionText[3]
+                      end
+                      if actionText[4] and actionText[4].start_with?("Success")
+                        row['SUCCESS'] = actionText[5]
+                      end
+                      if actionText[4] and actionText[4].start_with?("Action")
+                        row['ACTION'] = actionText[5]
+                      end
+                      if actionText[6] and actionText[6].start_with?("Action")
+                        row['ACTION'] = actionText[7]
+                      end
+                end
+                current_problems<< row
             end
           end
 
@@ -1906,6 +1931,15 @@ end
           sth.drop
           return current_problems
 
+  end
+
+  def extract_goal_from_note(note)
+    actionText = false
+    if note.valid_encoding?
+    #first get action - should be last thing in note
+      actionText = note.match(/(.*)(Goal\r)(.*?)(Action\r|$)(.*)/)
+    end
+    return actionText
   end
 
 

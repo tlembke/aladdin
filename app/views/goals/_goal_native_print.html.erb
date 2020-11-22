@@ -1,0 +1,24 @@
+<div class="no-page-break-inside">
+
+  <div class = "row">
+	  	<div class="col-md-12">
+
+		<b><%= problem['GOAL'] %></b>
+
+		</div>
+		<div class="col-md-4">
+		<% if problem['SUCCESS'] %>
+		Native Success:<br><%= simple_format(problem['SUCCESS']) %>
+		<% end %>
+		</div>
+		<div class="col-md-4">
+		<% if problem['ACTION'] %>
+			Actions:<br><%= simple_format(problem['ACTION']) %>
+		<% end %>
+		</div>
+		<div class="col-md-4">
+
+		</div>
+	</div>
+</div> <!-- end id = goal_ -->
+<hr class="hrshrink">

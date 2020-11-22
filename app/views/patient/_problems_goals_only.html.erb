@@ -9,13 +9,16 @@
 
 								<!----------- -->
 								<% @goals=get_goals(problem['ID']) %>
-								<% if @goals.count > 0 %>
+								<% if @goals.count > 0 or problem['GOAL']%>
 									
 									<div class="col-md-11 col-md-offset-1">
 									<h3 class="shrink"><%= problem['PROBLEM'] %></h3>
 									</div> <!-- col-md-11 -->
 									<div class="col-md-10 col-md-offset-2">
-									
+
+										<% if problem['GOAL'] %>
+											<%= render partial: "goals/goal_native_print",locals: {problem: problem} %>
+										<% end %>
 										<% @goals.each do |goal| %>
 											<% @goal = goal %>
 											<% if @print %>
