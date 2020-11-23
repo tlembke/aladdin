@@ -1904,28 +1904,30 @@ end
                  row['SUCCESS'] = false
                  row['ACTION'] = false
                  if actionText
-                      
-                     if actionText[1]
-                        row['NOTE'] = actionText[1]
+
+                     
+                     row['NOTE'] = actionText['note']
+                    
+                     if actionText['goal'] !=""
+                        row['GOAL'] = actionText['goal']
                      end
-                     if actionText[2] and actionText[2].start_with?("Goal")
-                        row['GOAL'] = actionText[3]
+                      if actionText['success'] !=""
+                        if actionText['label'].start_with?("Success")
+                            row['SUCCESS'] = actionText['success']
+                        else
+                            row['ACTION'] = actionText['success']
+                        end
                       end
-                      if actionText[4] and actionText[4].start_with?("Success")
-                        row['SUCCESS'] = actionText[5]
-                      end
-                      if actionText[4] and actionText[4].start_with?("Action")
-                        row['ACTION'] = actionText[5]
-                      end
-                      if actionText[6] and actionText[6].start_with?("Action")
-                        row['ACTION'] = actionText[7]
+                      if actionText['action'] !=""
+                        row['ACTION'] = actionText['action']
                       end
                 end
+
                 current_problems<< row
             end
-          end
+          
 
-         
+         end
 
          
           sth.drop
@@ -1937,8 +1939,11 @@ end
     actionText = false
     if note.valid_encoding?
     #first get action - should be last thing in note
-      actionText = note.match(/(.*)(Goal\r)(.*?)(Action\r|$)(.*)/)
+      #actionText = note.match(/(.*)(Goal\r|Goal-|Goal -|Goal:|Goal :)(?<goal>.*?)(Success\r|Success:|Success :|Success-|Success -|Actions\r|Action\r:|Action :|Actions :|Action:|Actions:|Actions-|Actions -|$)(?<success>.*?)(Actions\r|Action\r:|Action :|Actions :|Action:|Actions:|Actions-| Actions -|$)(?<action>.*)/)
+    #actionText = note.match(/(?<note>.*?)(Goal\r|Goal(-| -|:| :)|$)(?<goal>.*?)(?<label>Success\r|Success(-| -|:| :)|Action\r|Action(-| -|:| :)|$)(?<success>.*?)(Action\r|Action(-| -|:| :)|$)(?<action>.*?)$/)
+    actionText = note.match(/(?<note>.*?)(Goal\r|Goal(-| -|:| :)|$)(?<goal>.*?)(?<label>Success(\r|-| -|:| :)|Action(s?)(\r|-| -|:| :)|$)(?<success>.*?)(Action(s?)(\r|-| -|:| :)|$)(?<action>.*?)$/)
     end
+  
     return actionText
   end
 
