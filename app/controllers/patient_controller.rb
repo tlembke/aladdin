@@ -1941,7 +1941,7 @@ end
     #first get action - should be last thing in note
       #actionText = note.match(/(.*)(Goal\r|Goal-|Goal -|Goal:|Goal :)(?<goal>.*?)(Success\r|Success:|Success :|Success-|Success -|Actions\r|Action\r:|Action :|Actions :|Action:|Actions:|Actions-|Actions -|$)(?<success>.*?)(Actions\r|Action\r:|Action :|Actions :|Action:|Actions:|Actions-| Actions -|$)(?<action>.*)/)
     #actionText = note.match(/(?<note>.*?)(Goal\r|Goal(-| -|:| :)|$)(?<goal>.*?)(?<label>Success\r|Success(-| -|:| :)|Action\r|Action(-| -|:| :)|$)(?<success>.*?)(Action\r|Action(-| -|:| :)|$)(?<action>.*?)$/)
-    actionText = note.match(/(?<note>.*?)(Goal\r|Goal(-| -|:| :)|$)(?<goal>.*?)(?<label>Success(\r|-| -|:| :)|Action(s?)(\r|-| -|:| :)|$)(?<success>.*?)(Action(s?)(\r|-| -|:| :)|$)(?<action>.*?)$/)
+    actionText = note.match(/(?<note>.*?)(Goal\r|Goal(-| -|:| :)|$)(?<goal>.*?)(?<label>Success(\r|-| -|:| :)|Action(s?)(\r|-| -|:| :)|Plan(\r|-| -|:| :)|$)(?<success>.*?)(Action(s?)(\r|-| -|:| :)|Plan(\r|-| -|:| :)|$)(?<action>.*?)$/)
     end
   
     return actionText
