@@ -9,6 +9,7 @@
 
 
 <table class='table table-striped table-bordered table-condensed'>
+
                        <tr><td width=50%>Blood Pressure</td><td><%= @patient.bp[0].to_s +  "/" + @patient.bp[1].to_s if @patient.bp[0]> 0 %><%= status_symbol("orange","Not recorded") unless @patient.bp[0] > 0  %></td>
             <td>
 
@@ -25,6 +26,7 @@
 
 </tr>
 <tr>
+  
 <td width=50%> Smoking</td><td></td>
                 <td>
                  <%= status_symbol("green","Not Smoking") if @patient.smoking.to_i > 3 %>
@@ -35,6 +37,7 @@
                  <td></td>
 
 </tr>
+
 
 
 

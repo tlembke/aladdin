@@ -4,6 +4,8 @@ Rails.application.routes.draw do
 
 
 
+  resources :tags
+  resources :docs
   get 'letters/show'
 
   get 'database/index'

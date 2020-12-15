@@ -180,7 +180,20 @@
 </div> <!--  row -->
 
 
+<% @patient.documents.each do |document| %>
 
+
+
+<div class="row no-page-break-inside"> <!-- Full screen row -->
+<div class="col-md-12">
+<h4><%= document.name %></h4>
+<%= document.content.html_safe %>
+
+
+</div>
+</div>
+
+<% end %>
 
 
 
@@ -233,7 +246,7 @@
             </td></tr>
 
              <% @immunisations.each do |immunisation | %>
-            <tr><td width=50%><%= immunisation["GIVENDATE"].strftime("%d/%m/%Y") %></td><td><%= immunisation["VACCINE"] %></td></tr>
+            <tr><td width=50%><%= immunisation["GIVENDATE"] ? immunisation["GIVENDATE"].strftime("%d/%m/%Y") :"Date Unrecorded" %></td><td><%= immunisation["VACCINE"] %></td></tr>
             <% end %>
             </table>
             </div>

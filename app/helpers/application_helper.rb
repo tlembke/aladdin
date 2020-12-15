@@ -8,6 +8,7 @@ module ApplicationHelper
 		 color="success"
       	 color="warning" if status=="orange"
          color="danger" if status == "red"
+
           theText = "<a class='btn btn-small btn-" + color + "'>" + message + "</a>"
           return theText.html_safe
   end
@@ -27,11 +28,16 @@ module ApplicationHelper
   end
 
   def alcohol_display(alcoholstatus,patient)
+      etohstatus=alcoholstatus[patient]
+      if etohstatus.blank?
+          etohstatus="Unknown"
+      end
       status="green"
-      status="orange" if  alcoholstatus[patient] == "Unsafe"
-      status="red" if  alcoholstatus[patient] == "Very Unsafe"
+      status="orange" if  etohstatus == "Unsafe"
+      status="red" if  etohstatus == "Very Unsafe"
+      status="red" if  etohstatus == "Unknown"
       
-      return status_symbol(status,alcoholstatus[patient])
+      return status_symbol(status,etohstatus)
   end
 
   def age(dob)

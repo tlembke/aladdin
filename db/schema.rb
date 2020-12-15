@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20200424205340) do
+ActiveRecord::Schema.define(version: 20201214035646) do
 
   create_table "cells", force: :cascade do |t|
     t.integer  "register_id"
@@ -58,6 +58,21 @@ ActiveRecord::Schema.define(version: 20200424205340) do
     t.boolean  "favourite"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+  end
+
+  create_table "docs", force: :cascade do |t|
+    t.string   "name"
+    t.string   "filename"
+    t.string   "thumbnail"
+    t.text     "description"
+    t.integer  "cat"
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
+  end
+
+  create_table "docs_tags", id: false, force: :cascade do |t|
+    t.integer "doc_id", null: false
+    t.integer "tag_id", null: false
   end
 
   create_table "documents", force: :cascade do |t|
@@ -242,6 +257,12 @@ ActiveRecord::Schema.define(version: 20200424205340) do
     t.integer  "condition_id"
     t.datetime "created_at",   null: false
     t.datetime "updated_at",   null: false
+  end
+
+  create_table "tags", force: :cascade do |t|
+    t.string   "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
 end

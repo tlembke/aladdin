@@ -23,6 +23,10 @@
   font:400 16px/20px 'PT Mono', monospace;
  }
 
+ .thumbnail:hover {
+        transform: scale(3)
+}
+
 
 @media print {
 	#content {float:none !important;}

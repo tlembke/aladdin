@@ -145,7 +145,7 @@
 	<div class='col-md-5'>
 			<div id="fax-holder">
 			
-				<%= image_tag '/fax/'+File.basename(@files[0], '.pdf') + '.png' if @files.length > 0 %>
+				<%= image_tag '/fax/'+File.basename(@files[0], '.pdf') + '.png', class: :thumbnail if @files.length > 0 %>
 				
 			</div>
 	</div>

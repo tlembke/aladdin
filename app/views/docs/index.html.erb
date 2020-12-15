@@ -1,0 +1,95 @@
+
+
+<div class="row">
+  <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
+        <legend>Document Library</legend>
+  </div>
+  <div class="col-xs-7 col-sm-7 col-md-7 col-lg-7">
+    
+        <%= form_tag({action: "index"}, method: "get",class: "form-inline" ) do %>
+
+        <label for="searchterm">Search for :</label>
+         <%= text_field_tag "searchterm", @searchtermDefault, class: "form-control" %> 
+         <label for="tag">Tag :</label>
+         <%= collection_select("", :tag, Tag.all, :name, :name,{include_blank: 'Any',:selected => @tagDefault},class: "form-control") %>
+          <label for="cat">Type :</label>
+         <%= select_tag :cat, options_for_select( [["Any",0],["Handout",1],["Form",2],["Resource",3]],@catDefault), class: 'form-control' %>
+       <%= submit_tag "Search", class: "btn-primary" %>
+
+        <% end %>
+    </div>
+    <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
+      
+        <%= link_to new_doc_path, class: 'btn btn-primary btn-medium pull-right' do %>
+        <%= fa_icon_tag "plus" %> Add Doc
+        <% end %>
+     </div>
+     <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+          <h4><%= @showing + @showing2 %> </h4>
+    </div>
+</div>
+
+
+
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+      <div class="sheet sheet-condensed">
+        <div class="sheet-inner">
+          <table class="table">
+            <thead>
+              <tr>
+                                <th>Name</th>
+                                
+                                <th>Thumbnail</th>
+                                <th>Description</th>
+                                <th>Cat</th>
+                                <th>Tags</th>
+                                <th></th>
+              </tr>
+            </thead>
+            <tbody>
+              <% @docs.each do |doc| %>
+              <tr>
+                                <td> <%= link_to doc.name, "/library/"+doc.filename, rel: 'tooltip', title: 'Show' %></td>
+
+                                <td>
+                                  <% if doc.thumbnail and doc.thumbnail != nil %>
+                                  <%= link_to "/library/"+doc.filename do %>
+                                       <%= image_tag '/library/thumbnails/' + doc.thumbnail, {height: '128', class: :thumbnail} %>
+                                  <% end %>
+                                  <% end %>
+                               </td>
+                    
+                                <td><%= doc.description %></td>
+                                <td><%= showCat(doc.cat) %></td>
+                                <td>
+                                    <% tag_array =[] %>
+                                    <% doc.tags.each do |tag| %>
+                                        <% tag_array << tag.name %>
+                                    <% end %>
+                                    <%= tag_array.reject(&:blank?).join(',') if tag_array %>
+                                   
+
+
+                                </td>
+                                <td class="actions">
+                  <%= link_to fa_icon_tag("eye"), "/library/"+doc.filename, rel: 'tooltip', title: 'Show' %>
+                  <%= link_to fa_icon_tag("pencil"), edit_doc_path(doc), rel: 'tooltip', title: 'Edit' %>
+                  <%= link_to fa_icon_tag("trash-o"), doc, rel: 'tooltip', title: 'Delete',
+                  data: { confirm: 'Are you sure?' }, method: :delete %>
+                </td>
+              </tr>
+              <% end %>
+              <% if @docs.length == 0 %>
+              <tr><td colspan=42 class='text-center'>No documents found <%= @showing2 %> </td></tr>
+              <% end %>
+            </tbody>
+          </table>
+        </div><!-- /.sheet-inner -->
+      </div><!-- /.sheet -->
+
+                </div>
+  </div>
+</div>

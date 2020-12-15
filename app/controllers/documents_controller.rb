@@ -7,21 +7,36 @@ class DocumentsController < ApplicationController
     if params.has_key?(:code)
       @documents = Document.where(code: params[:code])
     else
-      @documents = Document.all
+      if params[:all] == "true"
+        @documents = Document.all
+        @all = true
+
+      else
+        @documents = Document.where(patient:  0) 
+        @all = false 
+      end
     end
+
   end
 
   # GET /documents/1
   # GET /documents/1.json
   def show
+
   end
 
   # GET /documents/new
   def new
 
     @document = Document.new
+    @source = "careplan"
+    @source=params[:source] if params[:source]
+    @returnPatient = 0
+    @returnPatient = params[:patient_id] if params[:patient_id]
+
     if params.has_key?(:parent)
-      if params[:parent] != ""
+      @document.parent = params[:parent]
+      if params[:parent] != "" and params[:parent] !="0"
         parent=Document.find(params[:parent])
         @document.code = parent.code
         @document.texttype = parent.texttype
@@ -32,7 +47,10 @@ class DocumentsController < ApplicationController
       end
     end
     if params.has_key?(:patient_id)
-        @document.patient_id = params[:patient_id]
+        @document.code = 1
+        if params[:parent] != "" and params[:parent]!= "0"
+          @document.patient_id = params[:patient_id]
+        end
     end
 
 
@@ -40,17 +58,26 @@ class DocumentsController < ApplicationController
 
   # GET /documents/1/edit
   def edit
+    @source=params['source']
   end
 
   # POST /documents
   # POST /documents.json
   def create
     @document = Document.new(document_params)
-
+    flash[:notice] = 'Document was successfully created'
     respond_to do |format|
       if @document.save
-        format.html { redirect_to @document, notice: 'Document was successfully created.' }
-        format.json { render :show, status: :created, location: @document }
+        if params['returnPatient']
+           if params['source']=="show"
+             format.html { redirect_to :controller => :patient, :action => :show, :id => params['returnPatient'] }  
+            else      
+             format.html { redirect_to :controller => :patient, :action => :careplan, :id => params['returnPatient'] }  
+            end
+        else
+            format.html { redirect_to @document }
+        end
+        
       else
         format.html { render :new }
         format.json { render json: @document.errors, status: :unprocessable_entity }
@@ -63,8 +90,16 @@ class DocumentsController < ApplicationController
   def update
     respond_to do |format|
       if @document.update(document_params)
-        format.html { redirect_to @document, notice: 'Document was successfully updated.' }
-        format.json { render :show, status: :ok, location: @document }
+        debugger
+        if @document.patient_id != 0
+           if params['source']=="show"
+             format.html { redirect_to :controller => :patient, :action => :show, :id => @document.patient_id}  
+            else      
+             format.html { redirect_to :controller => :patient, :action => :careplan, :id => @document.patient_id}  
+            end
+        else
+          format.html { redirect_to :controller => :documents, notice: 'Document was successfully updated.' }
+        end
       else
         format.html { render :edit }
         format.json { render json: @document.errors, status: :unprocessable_entity }

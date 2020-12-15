@@ -33,8 +33,32 @@
   </ul>
 </div>
 
+    <span class="divider">|</span>
 
 
+
+  <div class="btn-group">
+  <a class="dropdown-toggle" data-toggle="dropdown" id="dropdownMenu12" href="#" >Sites</a>
+  <ul class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenu13">
+   
+        <li><%= link_to "Therapeutic Guidelines (gp@alstonvilleclinic.com.au:A1stclin!)","https://tg.org.au", { :target => ‘_blank’, "data-no-turbolink" => "true"} %></li>
+         <li><%= link_to "UpToDate (gp@alstonvilleclinic.com.au:A1stclin!)","https://uptodate.com", { :target => ‘_blank’, "data-no-turbolink" => "true"} %></li>
+          <li><%= link_to "North Coast Radiology","https://iv.ncrad.com/Portal/app", { :target => ‘_blank’, "data-no-turbolink" => "true"} %></li>
+          <li><%= link_to "Health Pathways (manchealth:conn3ct3d)","https://manc.communityhealthpathways.org/", { :target => ‘_blank’, "data-no-turbolink" => "true"} %></li>
+          <li><%= link_to "John Murtagh Series","http://cpd.local/www/root", { :target => ‘_blank’, "data-no-turbolink" => "true"} %></li>
+          <li><%= link_to "MASTA Travel Medicine (alston609:purple61)","https://masta.edu.au/", { :target => ‘_blank’, "data-no-turbolink" => "true"} %></li>
+          <li><%= link_to "Lab Tests Online","https://labtestsonline.org.au/", { :target => ‘_blank’, "data-no-turbolink" => "true"} %></li>
+          <li><%= link_to "Sonic Pathology Handbook","http://sonicedu.com.au/", { :target => ‘_blank’, "data-no-turbolink" => "true"} %></li>
+          <li><%= link_to "PBS Online","https://pbs.gov.au/pbs/home", { :target => ‘_blank’, "data-no-turbolink" => "true"} %></li>
+          <li><%= link_to "MBS Online","http://www.mbsonline.gov.au/", { :target => ‘_blank’, "data-no-turbolink" => "true"} %></li>
+
+
+  </ul>
+</div>
+
+<span class="divider">|</span>
+
+    <%= link_to "Library",docs_path, { "data-no-turbolink" => "true"} %>
 <span class="divider">|</span>
 
     <%= link_to "PreChecks",prechecks_patient_index_path, { "data-no-turbolink" => "true"} %>
@@ -62,6 +86,7 @@
       <li><%= link_to "Examen", examen_appointments_path, { "data-no-turbolink" => "true"} %></li>
     <li role="separator" class="divider"></li>
      <li class="dropdown-header">Editors</li>
+     <li><%= link_to "Documents",documents_path, { "data-no-turbolink" => "true"} %></li>
      <li><%= link_to "Item Numbers",itemnumbers_path, { "data-no-turbolink" => "true"} %></li>
      <li><%= link_to "Contacts",contacts_path, { "data-no-turbolink" => "true"} %></li>
     <li><%= link_to "Goals",goals_path, { "data-no-turbolink" => "true"} %></li>

@@ -39,14 +39,32 @@
 								<% if @goals.count > 0 or problem['GOAL'] %>
 									
 									<b>Goals</b>
-									<% if problem['GOAL'] %>
-											<p><b><%= problem['GOAL'] %></b><br>
-											<% if problem['SUCCESS'] %>
-												Success :  <%= problem['SUCCESS']%><br>
-											<% end %>
-											<% if problem['ACTION'] %>
-												Actions :  I will ... <%= problem['ACTION']%><br>
-											<% end %>									
+								
+									<% if problem['GOAL']%>
+											
+												<% begin %>
+												<p><b><%= problem['GOAL']%></b><br>
+													<% rescue %>
+												    (Invalid formatting - please correcT)
+												  <% end %>
+												  <% begin %>
+												<% if problem['SUCCESS'] %>
+													Success :  <%= problem['SUCCESS']%><br>
+												<% end %>
+												<% rescue %>
+												    (Invalid formatting - please correcT)
+												  <% end %>
+
+												<% if problem['ACTION']%>
+												<% begin %>
+													Actions :  I will ... <%= problem['ACTION'] %><br>
+												<% rescue %>
+												    (Invalid formatting - please correct)
+												  <% end %>
+												<% end %>
+											
+
+																	
 									<% end %>
 
 										<% @goals.each do |goal| %>

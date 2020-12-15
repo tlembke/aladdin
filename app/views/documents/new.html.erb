@@ -1,7 +1,10 @@
 <% @title = "New document" %>
 
 <% content_for :description do %>
-<p>Edit this template in <code>app/views/Documents/new.html.erb</code>.</p>
+<% if @document.parent == 0  %>
+	This is a new master document
+<% end %>
+<p>The source for this page was <%= @source %> for patient <%= @returnPatient %> and <%= @document.parent %>.</p>
 <% end %>
 
 <div class="container-fluid">

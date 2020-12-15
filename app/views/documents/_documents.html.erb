@@ -1,0 +1,20 @@
+Here are all the action plans for the patient
+<ul>
+<% @patient.documents.each do |document| %>
+	<li><%= link_to document.name, edit_document_path(id: document.id, source: @source) %></li>
+<% end %>
+</ul>
+
+
+Add an action plan for this patient
+<ul>
+<% masters=Document.where(patient: 0, code: 1) %>
+<% masters.each do |master| %>
+<li><%= link_to master.name,new_document_path(patient_id: @patient.id, parent: master.id, source: @source)  %></li>
+<% end %>
+</ul>
+<p>
+Or <%= link_to "Create a new Master Document",new_document_path(parent: 0,source: @source,patient_id: @patient.id) %>
+
+
+

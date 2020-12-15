@@ -80,7 +80,7 @@ class PatientController < ApplicationController
     # meds
     # problems
     # results
-
+    @source="show"
 		@id=params[:id]
     connect_array=connect()
     @error_code=connect_array[1]
@@ -188,6 +188,7 @@ class PatientController < ApplicationController
 
 
    def careplan
+    @source="careplan"
     @id=params[:id]
     connect_array=connect()
     @error_code=connect_array[1]
@@ -947,6 +948,7 @@ def cma
 
 
             end
+            
             @patient.score=@score
 
 
@@ -969,7 +971,7 @@ def cma
 
           
 
-         
+          
 
 
 
@@ -1899,29 +1901,32 @@ end
             # Should we update local model here instead
             if row['CONFIDENTIAL'] == "false"
                  # get goal from Note
-                 actionText = extract_goal_from_note(row['NOTE'])
-                 row['GOAL'] = false
-                 row['SUCCESS'] = false
-                 row['ACTION'] = false
-                 if actionText
+                     row['GOAL'] = false
+                     row['SUCCESS'] = false
+                     row['ACTION'] = false
+                 if row['NOTE'].valid_encoding?
+                     actionText = extract_goal_from_note(row['NOTE'])
+
+                     if actionText
 
                      
-                     row['NOTE'] = actionText['note']
-                    
-                     if actionText['goal'] !=""
-                        row['GOAL'] = actionText['goal']
-                     end
-                      if actionText['success'] !=""
-                        if actionText['label'].start_with?("Success")
-                            row['SUCCESS'] = actionText['success']
-                        else
-                            row['ACTION'] = actionText['success']
+                       row['NOTE'] = actionText['note']
+                      
+                       if actionText['goal'] !=""
+                          row['GOAL'] = actionText['goal']
+                       end
+                        if actionText['success'] !=""
+                          if actionText['label'].start_with?("Success")
+                              row['SUCCESS'] = actionText['success']
+                          else
+                              row['ACTION'] = actionText['success']
+                          end
                         end
-                      end
-                      if actionText['action'] !=""
-                        row['ACTION'] = actionText['action']
-                      end
-                end
+                        if actionText['action'] !=""
+                          row['ACTION'] = actionText['action']
+                        end
+                  end
+              end
 
                 current_problems<< row
             end

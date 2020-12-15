@@ -629,7 +629,7 @@ def pathways
     if File.exist?("cookies/yaml")
         agent.cookie_jar.load("cookies.yaml")
     else
-      page=agent.get("https://manc.healthpathways.org.au/LoginFiles/Logon.aspx")
+      page=agent.get("https://manc.communityhealthpathways.org/LoginFiles/Logon.aspx")
       pathwaysForm = page.form(id: 'form2')
       pathwaysForm.txtUserName = 'manchealth'
       pathwaysForm.txtPassword = 'conn3ct3d'
@@ -641,7 +641,8 @@ def pathways
     #contents = page.parser.xpath("//div[@id = 'tocContent']")
 
     #@contArray = contents.to_s.scan(/<a id="(\S+)" href="(\S+)"><span class="(\S+)">(.+)<\/span>/)
-    @page=agent.get("https://manc.healthpathways.org.au/search/search.aspx?zoom_per_page=200&zoom_query=" + @searchTerm)
+    # @page=agent.get("https://manc.healthpathways.org.au/search/search.aspx?zoom_per_page=200&zoom_query=" + @searchTerm)
+    @page=agent.get("https://manc.communityhealthpathways.org/search?q=" + @searchTerm)
     
     #@searchResult = page.css(".results").text
 

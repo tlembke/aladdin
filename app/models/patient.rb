@@ -722,6 +722,11 @@ end
         return actionplans
   end
 
+    def documents
+        documents = Document.where(patient_id: self.id)
+        return documents
+  end
+
 
 
 

@@ -19,37 +19,24 @@
       </div>
     <% end %>
 
-    <%= f.form_group :patient_id do |f| %>
-      <%= f.label :patient_id, class: 'control-label col-md-2' %>
-      <div class='col-md-8'>
-        <%= f.number_field :patient_id, class: 'form-control' %>
-        <%= f.error_messages %>
-      </div>
+
+        <%= f.hidden_field :patient_id %>
+        <%= f.hidden_field :parent %>
+        <%= f.hidden_field :texttype  %>
+ 
+    <% if @document.patient_id and @document.patient_id != "0" %>
+        <%= f.hidden_field :code  %>
+    <% else %>
+        <%= f.form_group :code do |f| %>
+          <%= f.label :code, class: 'control-label col-md-2' %>
+          <div class='col-md-8'>
+            <%= f.select :code, options_for_select([['Action Plan', 1], ['Information', 2], ['Policy', 3]]) %>
+            <%= f.error_messages %>
+          </div>
+        <% end %>
     <% end %>
 
-    <%= f.form_group :code do |f| %>
-      <%= f.label :code, class: 'control-label col-md-2' %>
-      <div class='col-md-8'>
-        <%= f.select :code, options_for_select([['Action Plan', 1], ['Information', 2], ['Policy', 3]]) %>
-        <%= f.error_messages %>
-      </div>
-    <% end %>
 
-    <%= f.form_group :parent do |f| %>
-      <%= f.label :parent, class: 'control-label col-md-2' %>
-      <div class='col-md-8'>
-        <%= f.number_field :parent, class: 'form-control' %>
-        <%= f.error_messages %>
-      </div>
-    <% end %>
-
-    <%= f.form_group :texttype do |f| %>
-      <%= f.label :texttype, class: 'control-label col-md-2' %>
-      <div class='col-md-8'>
-        <%= f.text_field :texttype, class: 'form-control' %>
-        <%= f.error_messages %>
-      </div>
-    <% end %>
 
     <%= f.form_group :content do |f| %>
       <%= f.label :content, class: 'control-label col-md-2' %>
@@ -61,7 +48,8 @@
     <% end %>
 
   </div>
-
+  <input type='hidden' name='source' value='<%= @source %>'>
+  <input type='hidden' name='returnPatient' value='<%= @returnPatient %>'>
   <div class="form-actions">
     <div class="form-group">
       <div class="col-md-2"></div>

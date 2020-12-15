@@ -22,6 +22,7 @@
 //= require_tree .
 
 $(document).ready(function() {
+    
     $(".editable").editable();
     $('[data-toggle="tooltip"]').tooltip({container: 'body'});
     $('[data-toggle="popover"]').popover({
@@ -89,6 +90,13 @@ $(document).ready(function() {
       
     });
 
+
+
+
+    
+
+
+
     $('.faxselect').change(function () {
          var faxNumber  = $(this).children("option:selected").val();
          var faxPick = $(this).attr('datafax');
@@ -98,6 +106,16 @@ $(document).ready(function() {
       });
 
 
+        $('#docselect').change(function(e){
+            var fileName = e.target.files[0].name;
+            fileName = fileName.replace(/\.[^/.]+$/, "");
+            fileName = fileName.replace(/_/g, ' ');
+            fileName = fileName.replace(/-/g, ' ');
+            fileName = fileName.replace( /([A-Z])/g, " $1" );
+            fileName = fileName.charAt(0).toUpperCase() + fileName.slice(1);
+            $('#docname').val(fileName);
+        });
+  
 
     $('.faxpick').click(function () {
         var url = "/fax/"+$(this).attr('data-url');

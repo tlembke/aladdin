@@ -25,6 +25,7 @@ class Pref < ActiveRecord::Base
       :faxpendingfolder=>{:name=>'Fax Pending Folder',:default => "/Volumes/Fax/pending"},
       :faxsend=>{:name=>'Fax Send',:default => "true"},
       :imagesfolder=>{:name=>'Images Folder',:default => "/Volumes/Images"},
+      :docfolder=>{:name=>'Document Folder',:default => "/Users/tlembke/Documents/Projects/aladdin/public/docs"},
       :vacants=>{:name=>'Allow vacants',:default => "true"}
     }
   end

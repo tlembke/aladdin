@@ -2,18 +2,28 @@
 
   <div class = "row">
 	  	<div class="col-md-12">
-
+	  		<% begin %>
 		<b><%= problem['GOAL'] %></b>
-
+			<% rescue %>
+			(Invalid formatting - please correcT)
+			 <% end %>
 		</div>
 		<div class="col-md-4">
 		<% if problem['SUCCESS'] %>
-		Success : <br><%= simple_format(problem['SUCCESS']) %>
+			<% begin %>
+			Success : <br><%= simple_format(problem['SUCCESS']) %>
+			<% rescue %>
+			(Invalid formatting - please correcT)
+			 <% end %>
 		<% end %>
 		</div>
 		<div class="col-md-4">
 		<% if problem['ACTION'] %>
+			<% begin %>
 			Actions : <br><%= simple_format(problem['ACTION']) %>
+			<% rescue %>
+			(Invalid formatting - please correcT)
+			<% end %>
 		<% end %>
 		</div>
 		<div class="col-md-4">
