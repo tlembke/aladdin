@@ -91,7 +91,6 @@ class DocumentsController < ApplicationController
   def update
     respond_to do |format|
       if @document.update(document_params)
-        debugger
         if @document.patient_id != 0
            if params['source']=="show"
              format.html { redirect_to :controller => :patient, :action => :show, :id => @document.patient_id}  
