@@ -1,11 +1,16 @@
+
+<% if @patient.documents.count >0 %>
 Here are all the action plans for the patient
 <ul>
 <% @patient.documents.each do |document| %>
 	<li><%= link_to document.name, edit_document_path(id: document.id, source: @source) %></li>
 <% end %>
 </ul>
+<% else %>
+	There are no current action plans for this patient
+<% end %>
 
-
+<hr>
 Add an action plan for this patient
 <ul>
 <% masters=Document.where(patient: 0, code: 1) %>

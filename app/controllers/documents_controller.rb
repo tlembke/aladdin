@@ -33,7 +33,7 @@ class DocumentsController < ApplicationController
     @source=params[:source] if params[:source]
     @returnPatient = 0
     @returnPatient = params[:patient_id] if params[:patient_id]
-
+    @document.parent = 0
     if params.has_key?(:parent)
       @document.parent = params[:parent]
       if params[:parent] != "" and params[:parent] !="0"
@@ -67,15 +67,16 @@ class DocumentsController < ApplicationController
     @document = Document.new(document_params)
     flash[:notice] = 'Document was successfully created'
     respond_to do |format|
+     
       if @document.save
-        if params['returnPatient']
+        if params['returnPatient'] and params['returnPatient']!="0"
            if params['source']=="show"
              format.html { redirect_to :controller => :patient, :action => :show, :id => params['returnPatient'] }  
             else      
              format.html { redirect_to :controller => :patient, :action => :careplan, :id => params['returnPatient'] }  
             end
         else
-            format.html { redirect_to @document }
+            format.html { redirect_to :controller => :documents, notice: 'Document was successfully updated.' }
         end
         
       else
