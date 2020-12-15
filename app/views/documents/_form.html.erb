@@ -23,8 +23,8 @@
         <%= f.hidden_field :patient_id %>
         <%= f.hidden_field :parent %>
         <%= f.hidden_field :texttype  %>
- 
-    <% if @document.patient_id and @document.patient_id != "0" %>
+   
+    <% if @document.patient_id and @document.patient_id != 0 %>
         <%= f.hidden_field :code  %>
     <% else %>
         <%= f.form_group :code do |f| %>
