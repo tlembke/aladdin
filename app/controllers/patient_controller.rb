@@ -416,6 +416,7 @@ def healthsummary
   end
 
   def annual
+    @source="annual"
     @id=params[:id]
     connect_array=connect()
     @error_code=connect_array[1]
@@ -948,7 +949,7 @@ def cma
 
 
             end
-            
+
             @patient.score=@score
 
 

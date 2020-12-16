@@ -1,4 +1,5 @@
-<% @title = "Listing documents" %>
+<% @all ? @title = "Listing all documents" : @title = "Showing Master Templates" %>
+
 
 <% content_for :description do %>
 
@@ -7,10 +8,10 @@
 <% content_for :actions do %>
 <%= link_to @all ? "Masters Only" : "Show All", documents_path + (@all ? "" : "?all=true"), {class: 'btn btn-primary btn-large'}  %>
 <%= link_to new_document_path, class: 'btn btn-primary btn-large pull-right' do %>
-<%= fa_icon_tag "plus" %> Add Document
+<%= fa_icon_tag "plus" %> New Template
 <% end %>
 <% end %>
-
+<% codeArray = ['','Action Plan','Information','Policy'] %>
 <div class="container-fluid">
   <div class="row">
     <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
@@ -21,10 +22,12 @@
               <tr>
                                 <th>Name</th>
                                 <th>Description</th>
+                                <% if @all %>
                                 <th>Patient</th>
+                                <% end %>
                                 <th>Code</th>
                                 <th>Parent</th>
-                                <th>Texttype</th>
+                          
                                 <th>Content</th>
                                 <th></th>
               </tr>
@@ -34,10 +37,13 @@
               <tr>
                                 <td><%= document.name %></td>
                                 <td><%= document.description %></td>
-                                <td><%= document.patient_id %></td>
-                                <td><%= document.code %></td>
+                                <% if @all %>
+                                  <td><%=document.patient_id.to_s %></td>
+                                <% end %>
+
+                                <td><%= codeArray[document.code] if document.code %></td>
                                 <td><%= document.parent %></td>
-                                <td><%= document.texttype %></td>
+                               
                                 <td><%= document.content %></td>
                                 <td class="actions">
                   <%= link_to fa_icon_tag("eye"), document, rel: 'tooltip', title: 'Show' %>

@@ -3,7 +3,7 @@
 Here are all the action plans for the patient
 <ul>
 <% @patient.documents.each do |document| %>
-	<li><%= link_to document.name, edit_document_path(id: document.id, source: @source) %></li>
+	<li id="document-<%= document.id %>"><%= link_to document.name, edit_document_path(id: document.id, source: @source) %> <%= link_to fa_icon_tag("trash-o"),document, data: {confirm: "Are you sure you want to delete '#{document.name}'?"}, :remote => true, method: :delete %></li>
 <% end %>
 </ul>
 <% else %>
@@ -11,7 +11,7 @@ Here are all the action plans for the patient
 <% end %>
 
 <hr>
-Add an action plan for this patient
+Add an action plan for this patient using a master template
 <ul>
 <% masters=Document.where(patient: 0, code: 1) %>
 <% masters.each do |master| %>
@@ -19,7 +19,7 @@ Add an action plan for this patient
 <% end %>
 </ul>
 <p>
-Or <%= link_to "Create a new Master Document",new_document_path(parent: 0,source: @source,patient_id: @patient.id) %>
+Or <%= link_to "Create a new Master Template",new_document_path(parent: 0,source: @source,patient_id: @patient.id) %>
 
 
 

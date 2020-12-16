@@ -68,7 +68,33 @@
  </div>
  </div>
 
-  <%= render "results/print" %>
+ <br style='page-break-before: always;'>
+       
+ <div class="row page-break"> <!-- Full screen row -->
+<div class="col-md-12">
+
+         <%= render "results/print" %>
+
+
+ </div>
+ </div>
+
+ <% @patient.documents.each do |document| %>
+
+
+
+<div class="row no-page-break-inside"> <!-- Full screen row -->
+<div class="col-md-12">
+<h4><%= document.name %></h4>
+<%= document.content.html_safe %>
+
+
+</div>
+</div>
+
+<% end %>
+
+  
 
 
 
