@@ -49,6 +49,8 @@ $(document).ready(function() {
           ],
          toolbar1: "insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image",
          toolbar2: "print preview save media | forecolor backcolor emoticons",
+         relative_urls : false,
+         remove_script_host : true,
          image_advtab: true,
           images_upload_handler: function (blobInfo, success, failure) {
             var xhr, formData;

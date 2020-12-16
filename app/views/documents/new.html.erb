@@ -2,9 +2,8 @@
 
 <% content_for :description do %>
 <% if @document.parent == 0  %>
-	This is a new master document
+	This is a new master template
 <% end %>
-<p>The source for this page was <%= @source %> for patient <%= @returnPatient %> and <%= @document.parent %>.</p>
 <% end %>
 
 <div class="container-fluid">
