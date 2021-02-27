@@ -21,7 +21,7 @@
     <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
       
         <%= link_to new_doc_path, class: 'btn btn-primary btn-medium pull-right' do %>
-        <%= fa_icon_tag "plus" %> Add Doc
+        <%= fa_icon_tag "upload" %> Upload Document
         <% end %>
      </div>
      <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
@@ -76,6 +76,7 @@
                                 </td>
                                 <td class="actions">
                   <%= link_to fa_icon_tag("eye"), "/library/"+doc.filename, rel: 'tooltip', title: 'Show' %>
+                  <%= link_to fa_icon_tag("download"), "/library/"+doc.filename, download: doc.filename ,rel: 'tooltip', title: 'Download' %>
                   <%= link_to fa_icon_tag("pencil"), edit_doc_path(doc), rel: 'tooltip', title: 'Edit' %>
                   <%= link_to fa_icon_tag("trash-o"), doc, rel: 'tooltip', title: 'Delete',
                   data: { confirm: 'Are you sure?' }, method: :delete %>

@@ -61,8 +61,21 @@ class DocsController < ApplicationController
        @showing2 = @showing2 +" IN CATEGORY '" + catarray[params[:cat].to_i] + "'" unless params[:cat] == "0"
        
     else
-      @docs= Doc.recent(20)
-      @showing="Showing 20 most recent documents"
+      if params[:all]
+        @docs=Doc.all
+        @showing="Showing all " + @docs.count.to_s + " documents"
+      elsif params[:untagged]
+        
+        # @docs=Doc.includes(:tags).where("tag.id is null")
+       # @docs=Doc.where.not(id: tag.doc.select(:id))
+      # @docs= Doc.find(:all, :conditions => ["docs.id NOT IN (?)", @tag.doc_ids])
+      @docs = Doc.includes(:docs_tags).where(docs_tags: {doc_id: nil})
+        @showing="Showing all "+ @docs.count.to_s + " untagged documents"
+      else
+        
+        @docs= Doc.all.order(created_at: :DESC).limit(20)
+        @showing="Showing 20 most recent documents"
+      end
 
     end
   end
