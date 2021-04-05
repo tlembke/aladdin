@@ -4,9 +4,10 @@
 	$('#theTalk').promise().done(function(){
 		$('#theTalk').html("<%= @theText %>");  	
 		$('#theTalk').slideDown(1200);
+		$('#flashes').html("<%= escape_javascript(render 'layouts/flashes') %>");
 	});
 	
-	$('#flashes').html("<%= escape_javascript(render 'layouts/flashes') %>");
+	
 	$('#nextMessage').slideUp(1200);
 	$('#nextMessage').promise().done(function(){
 		

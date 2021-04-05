@@ -38,14 +38,14 @@ class VaxController < ApplicationController
   			
   			@vaxtype=params[:vaxtype]
   			
-  			if params[:vaxtype] and params[:surname] and params[:date]
-
+  			unless params[:vaxtype].blank? or params[:surname].blank? or params[:date].blank?
+       
 	  		
 	  			@dob = Date.new(params[:date][:year].to_i,params[:date][:month].to_i,params[:date][:day].to_i)
 	  		
 	  			@thePatient = checkPatient(@vaxtype,params[:surname],params[:firstname],@dob)
 	  			if @thePatient == "0" or @thePatient =="3"
-	  				@theText = "Hey hey"
+	  				@theText = "Hmm. That's strange."
 	  				@thePartial = "form"
 	  			else
               @theText = @patient['KNOWNAS']=="" ? @patient['FIRSTNAME'] : @patient['KNOWNAS']
@@ -69,8 +69,8 @@ class VaxController < ApplicationController
 	  			end
 
 	  		else
-	  			@theText = "We need a Surname and a DOB to procede"
-	  			flash.now[:alert] = "We need a Surname and a DOB to book an appointment"
+	  			@theText = "We need a Surname and a DOB to search"
+	  			flash.now[:notice] = "We need a Surname and a DOB to book an appointment"
 	  			@thePartial = "form"
 	  		end
 	  	when "bookpatient"
@@ -103,7 +103,7 @@ class VaxController < ApplicationController
 		                        @thePatient = @patient
 		                        @vaxtype = @clinic.vaxtype
 
-		                        @theText = "Good news. You are booked in for " + @clinic.clinicdate.strftime("%A, %B %d")+ " at " + timeFormat(@booker.bookhour,@booker.bookminute)
+		                        @theText = "Good news. You are booked in for " + @booker.vaxtype + " on " + @clinic.clinicdate.strftime("%A, %B %d")+ " at " + timeFormat(@booker.bookhour,@booker.bookminute)
 		                        if @vaxtype =="Covax"
 		                        	@theText = @theText + "<p>Don't forget to bring your consent form!"
 		                        end
@@ -200,7 +200,7 @@ class VaxController < ApplicationController
                   dbh.disconnect
                   if @patients_search.length==0
                   	 @patient = "0"
-                  	 flash.now[:notice] = "Hmm. We couldn’t find a patient with Surname " + surname.upcase + " and First Name " + firstname[0...-1].upcase + " with Date of Birth " + dob.to_s + ". Please check and try again or give us a ring on 02 66280505"
+                  	 flash.now[:notice] = "We couldn’t find a patient with Surname " + surname.upcase + " and First Name " + firstname[0...-1].upcase + " with Date of Birth " + dob.strftime("%d/%m/%Y") + ". Please check and try again or give us a ring on 02 66280505"
     				 
                   elsif @patients_search.length>1
                   		
@@ -268,7 +268,7 @@ class VaxController < ApplicationController
 		                  
             else
             	@patient = "3"  
-            	flash[:notice] = "we can't search right now. Give us a ring on 02 66280505"
+            	flash[:notice] = "Sorry, we can't search right now. Give us a ring on 02 66280505"
                 
 
             end
@@ -276,5 +276,10 @@ class VaxController < ApplicationController
 
 
 
+
+
  		end
+                def sendemail
+                  PatientMailer.test_email.deliver_now
+            end
 end
