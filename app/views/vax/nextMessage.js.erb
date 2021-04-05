@@ -12,7 +12,7 @@
 		
     	$('#nextMessage').html("<%= escape_javascript render(:partial => @thePartial,theText: @theText, vaxtype: @vaxtype, patient: @thePatient, clinic: @clinic, booker: @booker) %>")
     	$('#nextMessage').slideDown(1200);
-    	$('#startButton').show();
+
 	});
 
 
