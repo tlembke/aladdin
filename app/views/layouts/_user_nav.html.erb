@@ -34,11 +34,22 @@
 </div>
 
     <span class="divider">|</span>
+     <div class="btn-group">
+  <a class="dropdown-toggle" data-toggle="dropdown" id="dropdownMenu20" href="#" >Vax</a>
+  <ul class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenu20">
+   
+        <li><%= link_to "Fluvax",clinics_path(vaxtype: "Fluvax"), { "data-no-turbolink" => "true"} %></li>
+        <li><%= link_to "Covax",clinics_path(vaxtype: "Covax"), { "data-no-turbolink" => "true"} %></li>
+        <li><%= link_to "Admin",admin_clinics_path, { "data-no-turbolink" => "true"} %></li>
+  </ul>
+</div>
+
+    <span class="divider">|</span>
 
 
 
   <div class="btn-group">
-  <a class="dropdown-toggle" data-toggle="dropdown" id="dropdownMenu12" href="#" >Sites</a>
+  <a class="dropdown-toggle" data-toggle="dropdown" id="dropdownMenu13" href="#" >Sites</a>
   <ul class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenu13">
    
   <li><%= link_to "Authorities Online","https://www2.medicareaustralia.gov.au:5447/pcert/pbsauthority/online/searchPatient.xhtml", { :target => ‘_blank’, "data-no-turbolink" => "true"} %></li>

@@ -1,0 +1,2 @@
+module VaxHelper
+end

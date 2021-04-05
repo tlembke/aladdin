@@ -1,0 +1,63 @@
+	<% if @vaxtype == "Covax" %>
+		<div class= 'row'>
+								
+		
+			<div class="col-md-9 col-md-offset-3">If you can, please download,print and complete this consent form and bring it with you to your clinic appointment</div>
+			<div class="col-md-8 col-md-offset-4"><b><a href='https://www.health.gov.au/sites/default/files/documents/2021/03/covid-19-vaccination-consent-form-for-covid-19-vaccination-covid-19-vaccination-consent-form-print-friendly.pdf'><%= image_tag("pdf.png", size: "50x50") %> Download Consent Form </a></b>
+			</div>
+
+		</div>
+	<% end %>
+
+	<div class="panel panel-default">
+						 	<div class="panel-heading">
+			          		<legend class="panel-title">
+			          			
+			          			<b><%= @booker.vaxtype.upcase %> CLINIC :  <%= @clinic.venue %></b>
+			          		</legend>
+			         		</div> 
+			         		<div class="panel-body">
+	              
+
+								<div class= 'row'>
+							
+									
+										<div class="col-md-2"> For :</div>
+										<div class="col-md-4"> <b><%= @patient.fullname.upcase %></b></div>
+						
+								</div>
+								<div class= 'row'>
+							
+									
+										<div class="col-md-2"> Date :</div>
+										<div class="col-md-4"> <%= @clinic.clinicdate.strftime("%A, %B %d")%></div>
+						
+								</div>
+								<div class= 'row'>
+							
+									
+										<div class="col-md-2"> Time :</div>
+										<div class="col-md-4"><%= formatTime(@booker.bookhour,@booker.bookminute) %></div>
+						
+								</div>
+								<div class= 'row'>
+							
+									
+										
+										<div class="col-md-4 col-md-offset-2"><%= link_to ("Download Calender Event <i class='fa fa-calendar'></i>").html_safe,downloadcal_book_index_path(:date => @clinic.clinicdate, :time => formatTime(@booker.bookhour,@booker.bookminute), :summary => @booker.vaxtype.upcase + " Clinic", :description => @booker.vaxtype + " at " + @clinic.venue , :duration => 30) %></div>
+						
+								</div>								
+							</div>
+	 </div>
+
+								<div class= 'row'>
+							
+									
+									
+										<div class="col-md-4 col-md-offset-3"> <%= link_to "Book another appointment",vax_index_path,{:class => "btn btn-lg btn-primary btn-block"} %>
+						
+								</div>
+
+
+
+

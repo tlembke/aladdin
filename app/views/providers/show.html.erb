@@ -1,0 +1,78 @@
+<% @title = "Showing provider" %>
+
+<% content_for :description do %>
+  <p>Edit this template in <code>app/views/Providers/show.html.erb</code>.</p>
+  <% end %>
+
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+        <div class="sheet sheet-condensed">
+          <div class="sheet-inner p30">
+            <div class="form-horizontal">
+                              <div class="form-inputs">
+                 <div class="form-group">
+                    <label class="col-md-2 control-label">Genie</label>
+                    <div class="col-md-8">
+                     <div class="form-control uneditable-input">
+                        <span>
+                          <%= @provider.genie_id %>
+                        </span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+
+                              <div class="form-inputs">
+                 <div class="form-group">
+                    <label class="col-md-2 control-label">Type</label>
+                    <div class="col-md-8">
+                     <div class="form-control uneditable-input">
+                        <span>
+                          <%= @provider.type %>
+                        </span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+
+                              <div class="form-inputs">
+                 <div class="form-group">
+                    <label class="col-md-2 control-label">Name</label>
+                    <div class="col-md-8">
+                     <div class="form-control uneditable-input">
+                        <span>
+                          <%= @provider.name %>
+                        </span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+
+                              <div class="form-inputs">
+                 <div class="form-group">
+                    <label class="col-md-2 control-label">Online</label>
+                    <div class="col-md-8">
+                     <div class="form-control uneditable-input">
+                        <span>
+                          <%= @provider.online %>
+                        </span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+
+                            <div class="form-actions col-md-offset-2">
+                <%= link_to fa_icon_tag("pencil") + ' Edit', edit_provider_path(@provider), class: 'btn btn-primary' %>
+                <%= link_to 'Back', providers_path, class: 'btn' %>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>

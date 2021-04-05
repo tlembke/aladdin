@@ -1,0 +1,94 @@
+<% @title = "Listing " + @vaxtype + " clinics" %>
+
+<% content_for :description do %>
+<% if @vaxtype == "Fluvax" %>
+  Show <%= link_to "Covax Clinics",admin_clinics_path(vaxtype: "Covax")  %> instead
+<% end %>
+<% if @vaxtype == "Covax" %>
+  Show <%= link_to "Fluvax Clinics",admin_clinics_path(vaxtype: "Fluvax")  %> instead
+<% end %>
+<% end %>
+
+<% content_for :actions do %>
+<%= link_to new_clinic_path(vaxtype: @vaxtype), class: 'btn btn-primary btn-large pull-right' do %>
+<%= fa_icon_tag "plus" %> Add <%= @vaxtype %> Clinic
+<% end %>
+
+<% unless  @vaxtype == "Covax" %>
+    <%= link_to edit_clinic_path(@fluvaxtemplateID), class: 'btn btn-primary btn-large pull-right' do %>
+    Edit Fluvax Template
+    <% end %>
+
+
+
+<% end %>
+<% if  @vaxtype == "Covax" %>
+      <%= link_to edit_clinic_path(@covaxtemplateID), class: 'btn btn-primary btn-large pull-right' do %>
+    Edit Covax Template
+    <% end %>
+<% end %>
+<% end %>
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+      <div class="sheet sheet-condensed">
+        <div class="sheet-inner">
+          <table class="table">
+            <thead>
+              <tr>
+                                <th>Clinicdate</th>
+                                <th>Live</th>
+                                <th>Start</th>
+                        
+                                <th>Finish</th>
+                               
+                                <th>Perhour</th>
+                                <th>People</th>
+                                <th>Vaxtype</th>
+                                <th>Venue</th>
+                                <th>Age</th>
+                                <th>ATSI age</th>
+                                <th>Healthcare</th>
+                                <th>Chronic</th>
+                                <th>Chronicage</th>
+                                <th>Message</th>
+                                <th></th>
+              </tr>
+            </thead>
+            <tbody>
+              <% @clinics.each do |clinic| %>
+              <tr>
+                                <td><%= clinic.clinicdate.strftime("%d-%m-%Y") %></td>
+                                <td><%= clinic.live %></td>
+                                <td><%= clinic.starthour %>:<%= clinic.startminute.to_s.rjust(2, '0') %></td>
+                                <td><%= clinic.finishhour %>:<%= clinic.finishminute.to_s.rjust(2, '0') %></td>
+                                <td><%= clinic.perhour %></td>
+                                <td><%= clinic.people %></td>
+                                <td><%= clinic.vaxtype %></td>
+                                <td><%= clinic.venue %></td>                
+                                <td><%= clinic.age %></td>
+                                <td><%= clinic.ATSIage %></td>
+                                <td><%= clinic.healthcare%></td>
+                                <td><%= clinic.chronic %></td>
+                                <td><%= clinic.chronicage %></td>
+                                <td><%= clinic.message %></td>
+                                <td class="actions">
+                  <%= link_to fa_icon_tag("eye"), clinic, rel: 'tooltip', title: 'Show' %>
+                  <%= link_to fa_icon_tag("pencil"), edit_clinic_path(clinic), rel: 'tooltip', title: 'Edit' %>
+                  <%= link_to fa_icon_tag("trash-o"), clinic, rel: 'tooltip', title: 'Delete',
+                  data: { confirm: 'Are you sure?' }, method: :delete %>
+                </td>
+              </tr>
+              <% end %>
+              <% if @clinics.length == 0 %>
+              <tr><td colspan=42 class='text-center'>No clinics.</td></tr>
+              <% end %>
+            </tbody>
+          </table>
+        </div><!-- /.sheet-inner -->
+      </div><!-- /.sheet -->
+
+                </div>
+  </div>
+</div>

@@ -1,0 +1,78 @@
+<% @title = "Listing bookers" %>
+
+<% content_for :description do %>
+<p>Edit this template in <code>app/views/Bookers/index.html.erb</code>.</p>
+<% end %>
+
+<% content_for :actions do %>
+<%= link_to new_booker_path, class: 'btn btn-primary btn-large pull-right' do %>
+<%= fa_icon_tag "plus" %> Add Booker
+<% end %>
+<% end %>
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+      <div class="sheet sheet-condensed">
+        <div class="sheet-inner">
+          <table class="table">
+            <thead>
+              <tr>
+                                <th>Clinic</th>
+                                <th>Date</th>
+                                <th>Genie</th>
+                                <th>Surname</th>
+                                <th>Firstname</th>
+                                <th>Dob</th>
+                                <th>Vaxtype</th>
+                                <th>Hour</th>
+                                <th>Minute</th>
+                                <th>Contactby</th>
+                                <th>Confirm</th>
+                                <th>Received</th>
+                                <th>Arm</th>
+                                <th>Dose</th>
+                                <th>Batch</th>
+                                <th>Note</th>
+
+                                <th></th>
+              </tr>
+            </thead>
+            <tbody>
+              <% @bookers.each do |booker| %>
+              <tr>
+                                <td><%= booker.clinic_id %></td>
+                                <td><%= booker.clinic.clinicdate.strftime("%d/%m/%Y") %></td>
+                                <td><%= booker.genie %></td>
+                                <td><%= booker.surname %></td>
+                                <td><%= booker.firstname %></td>
+                                <td><%= booker.dob %></td>
+                                <td><%= booker.vaxtype %></td>
+                                <td><%= booker.bookhour %></td>
+                                <td><%= booker.bookminute %></td>
+                                <td><%= booker.contactby %></td>
+                                <td><%= booker.confirm %></td>
+                                <td><%= booker.received %></td>
+                                <td><%= booker.arm %></td>
+                                <td><%= booker.dose %></td>
+                                <td><%= booker.batch %></td>
+                                <td><%= booker.note %></td>
+                                <td class="actions">
+                  <%= link_to fa_icon_tag("eye"), booker, rel: 'tooltip', title: 'Show' %>
+                  <%= link_to fa_icon_tag("pencil"), edit_booker_path(booker), rel: 'tooltip', title: 'Edit' %>
+                  <%= link_to fa_icon_tag("trash-o"), booker, rel: 'tooltip', title: 'Delete',
+                  data: { confirm: 'Are you sure?' }, method: :delete %>
+                </td>
+              </tr>
+              <% end %>
+              <% if @bookers.length == 0 %>
+              <tr><td colspan=42 class='text-center'>No bookers.</td></tr>
+              <% end %>
+            </tbody>
+          </table>
+        </div><!-- /.sheet-inner -->
+      </div><!-- /.sheet -->
+
+                </div>
+  </div>
+</div>

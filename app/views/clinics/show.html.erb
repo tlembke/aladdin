@@ -1,0 +1,94 @@
+<% @title = @clinic.vaxtype + " clinic on " + @clinic.clinicdate.strftime("%A, %B %d")%>
+<style>
+  
+    .time {
+        font-size: 150% !important;
+        font-weight: "bold" !important;
+    }
+
+
+</style>
+<% content_for :description do %>
+  <p>The following have booked for this clinc</p>
+
+  <% end %>
+
+ <% hourCount= @clinic.starthour %>
+
+
+
+ <% while hourCount <= @clinic.finishhour %>
+      <% if hourCount == @clinic.starthour %>
+              <% minCount = @clinic.startminute %>
+      <% else %>
+          <% minCount=0 %>
+      <% end %>
+      <% while minCount < 60  and !(minCount >= @clinic.finishminute and hourCount == @clinic.finishhour) %>
+          <% @count = @clinic.bookers.where(bookhour: hourCount, bookminute: minCount).count %>
+
+            
+            <div class="container-fluid">
+              <div class="row">
+                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                  <div class="sheet sheet-condensed">
+                    <div class="sheet-inner">
+                      <table class="table">
+                        <thead>
+                          <tr>
+                                            <th class="time"><%= formatTime(hourCount,minCount) %></th>
+                                          
+                                            
+                                            <th><%= @count %> / <%= @clinic.people %></th>
+                                             <th></th>
+                                            <th  class="actions">                
+                                              <% if @count < @clinic.people %>
+                                                    <%= link_to "Book", book_clinic_path(@clinic,hour: hourCount, minute: minCount) %>
+                                              <% end %>
+                  
+                                             </th>
+                                          
+                                           
+                                         
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <% @clinic.bookers.where(bookhour: hourCount, bookminute: minCount).order(:surname, :firstname).each do | booker | %>
+                          <tr>
+                                            <td><%= booker.surname %></td>
+                                            <td><%= booker.firstname %></td>
+                                            <td><%= booker.dob.strftime("%d/%m/%Y") %></td>
+                                            
+  
+                                            <td>
+                              <%= link_to fa_icon_tag("trash-o"), unbook_clinic_path(bookerID: booker.id), rel: 'tooltip', title: 'Unbook',
+                              data: { confirm: 'Are you sure?' }%>
+                                            </td>
+
+                          <% end %>
+                        </tbody>
+                      </table>
+                    </div><!-- /.sheet-inner -->
+                  </div><!-- /.sheet -->
+
+                </div>
+              </div>
+            </div>
+          
+
+
+
+
+
+
+
+
+
+
+         <% minCount = minCount + ( 60  / @clinic.perhour) %>
+      <% end %>
+      <% hourCount = hourCount + 1 %>
+  <% end %>
+      
+
+
+

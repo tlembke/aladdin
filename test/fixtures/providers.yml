@@ -1,0 +1,13 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  genie_id: 1
+  type: 1
+  name: MyString
+  online: false
+
+two:
+  genie_id: 1
+  type: 1
+  name: MyString
+  online: false

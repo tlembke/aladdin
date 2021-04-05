@@ -323,10 +323,10 @@ class BillingController < ApplicationController
     end
   end
 
-  def data
-        # get appointments
-     @username = session[:username]
-     @password = session[:password]
+    def data
+          # get appointments
+       @username = session[:username]
+       @password = session[:password]
      @id=session[:id]
      @name=session[:name]
 
@@ -553,6 +553,63 @@ class BillingController < ApplicationController
     
 
   end
+
+
+    def emails
+        
+       @username = session[:username]
+       @password = session[:password]
+      @id=session[:id]
+      @name=session[:name]
+
+     connect_array=connect()
+     @error_code=connect_array[1]
+     if (@error_code==0)
+        dbh=connect_array[0]
+
+        if request.format=="csv"
+
+     
+            sql = "SELECT EmailAddress, FirstName, Surname FROM Patient where Inactive = False AND EmailAddress <> ''"
+            sth = dbh.run(sql)
+            theList= sth.fetch_all
+            
+
+            sth.drop
+
+            csv_file = theList.map(&:to_csv).join 
+        else
+            
+             sql = "SELECT Count(Id) FROM Patient where Inactive = False AND EmailAddress <> ''"
+
+            sth = dbh.run(sql)
+            row= sth.fetch_first
+            @emailCount= row[0]
+            sth.drop
+
+            
+         
+        end 
+
+       
+
+        dbh.disconnect
+     else
+          flash[:alert] = "Unable to connect to database. "+ get_odbc
+          flash[:notice] = connect_array[2]
+          redirect_to  action: "login"
+     end
+
+     respond_to do |format|
+        format.html 
+        format.csv { 
+         send_data csv_file, filename: "emails.csv" 
+        }
+     end
+
+
+  end
+
 
   def shs(dbh,user=0,indexDate = Date.today)
     # this gets the number of shs done in his quarter

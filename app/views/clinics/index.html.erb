@@ -1,0 +1,63 @@
+<% @title = "Listing " + @vaxtype + " clinics" %>
+
+<% content_for :description do %>
+
+
+  <% if @vaxtype == "Fluvax" %>
+    Show <%= link_to "Covax Clinics",clinics_path(vaxtype: "Covax")  %> instead
+  <% end %>
+  <% if @vaxtype == "Covax" %>
+    Show <%= link_to "Fluvax Clinics",clinics_path(vaxtype: "Fluvax")  %> instead
+  <% end %>
+<% end %>
+
+<% content_for :actions do %>
+  <%= link_to admin_clinics_path(vaxtype: @vaxtype), class: 'btn btn-primary btn-large pull-right' do %>
+  Clinic Admin
+  <% end %>
+
+<% end %>
+
+<% clinics=Clinic.findAllGroups(@vaxtype) %>
+<% if clinics.length == 0 %>
+     <div class= 'row'>
+      <div class="col-md-9 col-md-offset-3">
+        <p>We have no <%= @vaxtype %> available currently.<p> Please check back in a few days.
+    </div>
+   </div>
+      
+<% else %>
+       <div class= 'row'>
+          <div class="col-md-9 col-md-offset-3">
+
+            We have the following <%= @vaxtype %> clinics available.<p>Please select the time that would suit best
+        </div>
+       </div>
+
+
+      <% clinics.each do |clinic| %>
+          
+
+            <div class="panel panel-default">
+                  <div class="panel-heading">
+                      <legend class="panel-title">
+                        
+                        <%= link_to clinic.clinicdate.strftime("%A, %B %d"), clinic_path(clinic) %>
+                      </legend>
+                  </div> 
+                  <div class="panel-body">
+                    
+
+                      <div class= 'row'>
+                      <% clinic.groups.each do |group | %>
+                        
+                          <div class="col-md-1"><%= link_to formatTime(group.starthour,group.startminute) + "(" + group.vacancies.to_s + ")", book_clinic_path(clinic,hour: clinic.starthour, minute: clinic.startminute) %>
+                          </div>
+                        
+                      <% end %>
+                    </div>
+                  </div>
+          </div>
+      <% end %>
+
+<% end %>

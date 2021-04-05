@@ -1,0 +1,65 @@
+
+
+<% @title = "Book a vaccination" %>
+  	 <div class= 'row'>
+			<div class="col-md-2 col-md-offset-1"><%= image_tag("chatbot.png")%></div>
+			<div class="col-md-7" ><legend id = "theTalk"><%= @theText %></legend></div>
+			<div class="col-md-2"><%= link_to "Start Again",vax_index_path,{:class => "btn btn-lg btn-primary btn-block",:id => "startButton",:style => "display:none;"} %></div>
+	 </div>
+										
+						
+
+  <div id='flashes'></div>	
+  <div id='nextMessage'>
+
+
+	  <div class="row">
+	                <div class="col-sm-5 col-md-5 col-lg-5 col-sm-offset-0 col-md-offset-1 col-lg-offset-1">
+	                  
+	                    <h3>Flu vaccination</h3>
+						 You can use this online booking form to book into a Fluvax clinic <b>if you aged over 18 and you eligible for a free fluvax from the government</b>.
+	                    This applies to 
+	                    <ul>
+	                    <li>people aged 65 or over</li>
+	                    <li>Aboriginal or Torres Strait Islander people</li>
+	                    <li>women who are pregnant</li>
+	                    <li>peope who have certain medical conditions. Please <a href ='#designated-conditions-modal' onClick="$('#designated-conditions-modal').modal('show');">click here</a> to see if this applies to you.</a></li>
+	               	 	</ul>
+	               	 	<%= link_to 'I am eligible. Book me a Flu Vaccination', vax_nextMessage_path(vaxtype: "Fluvax",message: :findpatient),{:class => "btn btn-lg btn-primary", :remote => true} %>
+
+	               	 	<p>You can also <%= link_to 'check or change an existing appointment', vax_nextMessage_path(vaxtype: "Fluvax",message: :findpatient),{:remote => true} %>
+	               	 	<p>
+	               	 	<b>We have some private supplies of Fluvax available for people who are inelgible for a free vax.</b> Individuals can call in and visit our nurses any afternoon between 2.30 and 4.30pm. Families requesting flu vaccination should ring and make an appointment with our nurses (Vaccination is also free for children aged 6 months to 5 years).
+
+	               	 	 
+					 </div >
+
+                     <%= render "eligibility" %>
+            		
+										
+
+
+	                <div class="col-sm-6 col-md-6 col-lg-6 col-sm-offset-0 col-md-offset-0 col-lg-offset-0">           
+
+	               	 	 <h3>Coronavirus vaccination</h3>
+	               	 	 We have a limited supply of Coronavirus Vaccination.<p> 
+	               	 	 More is expected soon and eventually we hope to immunise everyone who chooses to be immunised.<p>
+	               	 	 We are currently arranging Coroanvirus Vaccination Clinics for our patients aged <%= @covaxAge.to_s%> or over, and also for patients of our clinic who are Health Care Workers.<p>
+	               	 	 <%= link_to 'I am eligible. Book me a Coronavirus Vaccination', vax_nextMessage_path(vaxtype: "Covax",message: :findpatient),{:class => "btn btn-lg btn-primary", :remote => true} %>
+	               	 	 <br>You can also <%= link_to 'check or change an existing appointment', vax_nextMessage_path(vaxtype: "Covax",message: :findpatient),{:remote => true} %>
+	               	 	<p>
+	               	 	 If you are younger than <%= @covaxAge.to_s%>, and not a health care worker, return to this page to see when we are ready for your age group.
+
+
+					 </div >
+	</div>
+
+
+
+
+
+
+
+</div>
+
+

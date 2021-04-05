@@ -1,0 +1,8 @@
+<h1> Email Downloads </h1>
+
+There are <%= @emailCount %> emails for active patients in the database.
+
+<p>
+<%= link_to "Download as CSV", emails_billing_index_path(:format=> :csv),{:class => "btn btn-primary"} %>
+
+

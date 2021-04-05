@@ -1,0 +1,83 @@
+
+
+<% days=Pref.clinicdays.to_i %>
+
+<% clinics=Clinic.findAllGroups(@vaxtype) %>
+
+
+<% if clinics.length == 0 %>
+  	 <div class= 'row'>
+			<div class="col-md-9 col-md-offset-3">
+				<p>We have no <%= @vaxtype %> available currently.<p> Please check back in a few days.
+		</div>
+
+	 </div>
+			
+<% else %>
+			<div class="col-md-9 col-md-offset-3">
+			<% unless  @patient['ELIGIBLE'] %>
+	  			<%= @patient["CRITERIAMESSAGE"].html_safe %><br>
+	  			<% if @patient["CRITERIABOXES"].include? 1 %>
+		  			<%= check_box_tag 'healthcare',"yes",false, :onclick=>"$('.clinicShow').toggle();" %> I confirm I am a health care worker <br>
+	  			<% end %>
+	  			<% if @patient["CRITERIABOXES"].include? 2 %>
+		  			<%= check_box_tag 'chronic',"yes",false, :onclick=>"$('.clinicShow').toggle();"  %> I confirm I have a <a href ="#designated-conditions-modal" onClick="$('#designated-conditions-modal').modal('show');">Designated Conditions</a> <br>
+  				<% end %>
+  				
+  					
+  				
+  				<%= render "eligibility" %>
+  			<% end %>
+
+
+
+		</div>
+	 </div>
+<% if @patient["ELIGIBLE"] %>
+<div class="clinicShow">
+<% else %>
+<div class="clinicShow" style="display:none;">
+<% end %>
+	  <div class= 'row'>
+			<div class="col-md-9 col-md-offset-3">
+
+  			We have the following <%= @vaxtype %> clinics available.<p>Please select the time that would suit you best
+		</div>
+	 </div>
+
+  			<% days = clinics.length if clinics.length < days %>
+  			<% iCount=1 %>
+			<% clinics.each do |clinic| %>
+					
+					<% if iCount <= days %>
+						<% iCount = iCount + 1 %>
+						<div class="panel panel-default">
+						 	<div class="panel-heading">
+			          		<legend class="panel-title">
+			          			
+			          			<%= clinic.clinicdate.strftime("%A, %B %d")%>
+			          		</legend>
+			         		</div> 
+			         		<div class="panel-body">
+	              
+
+								<div class= 'row'>
+								<% clinic.groups.each do |group | %>
+									
+										<div class="col-md-1"><%= link_to formatTime(group.starthour,group.startminute),vax_nextMessage_path(message: :bookpatient, patient: @patient['ID'], clinic: clinic.id.to_s, starthour: group.starthour.to_s, startminute: group.startminute.to_s ),{:class => "btn btn-sm btn-primary ", :remote => true} %>
+										</div>
+									
+								<% end %>
+								</div>
+							</div>
+						 </div>
+					<% end %>
+					
+		    <% end %>
+</div>
+<% end %>
+
+
+
+
+

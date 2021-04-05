@@ -1,0 +1,144 @@
+
+<%= form_for(@clinic, html: { class: 'form-horizontal' }) do |f| %>
+  <%= f.error_notification %>
+
+  <div class="form-inputs">
+    <% unless @clinic.template %>
+    <%= f.form_group :clinicdate do |f| %>
+      <%= f.label :clinicdate, class: 'control-label col-md-2' %>
+      <div class='col-md-8'>
+        <%= f.date_select :clinicdate, :order => [:day, :month, :year],class: 'form-control' %>
+        <%= f.error_messages %>
+      </div>
+    <% end %>
+    <% end %>
+
+    <%= f.form_group :live do |f| %>
+      <%= f.label :live, class: 'control-label col-md-2' %>
+      <div class='col-md-8'>
+    <%= f.check_box :live, class: 'form-control' %>
+        <%= f.error_messages %>
+      </div>
+    <% end %>
+
+
+
+
+
+
+    <%= f.form_group :starthour do |f| %>
+      <%= f.label :starthour, class: 'control-label col-md-2' %>
+      <div class='col-md-8'>
+         <%= f.select :starthour, [6.7,8,9,10,11,12,13,14,15,16,17,18,19,20], class: 'form-control' %>
+        <%= f.select :startminute, [["00",0],["15",15],["30",30],["45",45]], class: 'form-control' %>
+        <%= f.error_messages %>
+      </div>
+    <% end %>
+
+
+    <%= f.form_group :finishhour do |f| %>
+      <%= f.label :finishhour, class: 'control-label col-md-2' %>
+      <div class='col-md-8'>
+        <%= f.select :finishhour, [6.7,8,9,10,11,12,13,14,15,16,17,18,19,20], class: 'form-control' %>
+        <%= f.select :finishminute, [["00",0],["15",15],["30",30],["45",45]], class: 'form-control' %>
+        <%= f.error_messages %>
+      </div>
+    <% end %>
+
+
+
+    <%= f.form_group :perhour do |f| %>
+      <%= f.label "Groups per hour", class: 'control-label col-md-2' %>
+      <div class='col-md-8'>
+        <%= f.select :perhour, [["1",1],["2",2],["3",3],["4",4]], class: 'form-control' %>
+        <%= f.error_messages %>
+      </div>
+    <% end %>
+
+    <%= f.form_group :people do |f| %>
+      <%= f.label "People per group", class: 'control-label col-md-2' %>
+      <div class='col-md-8'>
+        <%= f.number_field :people, class: 'form-control' %>
+        <%= f.error_messages %>
+      </div>
+    <% end %>
+
+    <%= f.form_group :vaxtype do |f| %>
+      <%= f.label :vaxtype, class: 'control-label col-md-2' %>
+      <div class='col-md-8'>
+         <%= f.select :vaxtype, ["Fluvax","Covax"], class: 'form-control' %>
+        <%= f.error_messages %>
+      </div>
+    <% end %>
+
+    <%= f.form_group :venue do |f| %>
+      <%= f.label :venue, class: 'control-label col-md-2' %>
+      <div class='col-md-8'>
+        <%= f.text_field :venue, class: 'form-control' %>
+        <%= f.error_messages %>
+      </div>
+    <% end %>
+
+
+    <%= f.form_group :age do |f| %>
+      <%= f.label :age, class: 'control-label col-md-2' %>
+      <div class='col-md-8'>
+        <%= f.number_field :age, class: 'form-control' %>
+        <%= f.error_messages %>
+      </div>
+    <% end %>
+
+    <%= f.form_group :ATSIage do |f| %>
+      <%= f.label :ATSIage, class: 'control-label col-md-2' %>
+      <div class='col-md-8'>
+        <%= f.number_field :ATSIage, class: 'form-control' %>
+        <%= f.error_messages %>
+      </div>
+    <% end %>
+
+    <%= f.form_group :healthcare do |f| %>
+      <%= f.label :healthcare, class: 'control-label col-md-2' %>
+      <div class='col-md-8'>
+        <%= f.check_box :healthcare, class: 'form-control' %>
+        <%= f.error_messages %>
+      </div>
+    <% end %>
+
+    <%= f.form_group :chronic do |f| %>
+      <%= f.label :chronic, class: 'control-label col-md-2' %>
+      <div class='col-md-8'>
+        <%= f.check_box :chronic, class: 'form-control' %>
+        <%= f.error_messages %>
+      </div>
+    <% end %>
+
+
+    <%= f.form_group :chronicage do |f| %>
+      <%= f.label :chronicage, class: 'control-label col-md-2' %>
+      <div class='col-md-8'>
+        <%= f.number_field :chronicage, class: 'form-control' %>
+        <%= f.error_messages %>
+      </div>
+    <% end %>
+
+    <%= f.form_group :message do |f| %>
+      <%= f.label :message, class: 'control-label col-md-2' %>
+      <div class='col-md-8'>
+        <%= f.text_field :message, class: 'form-control' %>
+        <%= f.error_messages %>
+      </div>
+    <% end %>
+
+  </div>
+
+  <div class="form-actions">
+    <div class="form-group">
+      <div class="col-md-2"></div>
+      <div class="col-md-8">
+        <%= f.submit class: 'btn btn-primary' %>
+        <%= link_to "Cancel", clinics_path, class: 'btn' %>
+      </div>
+    </div>
+  </div>
+<% end %>
+

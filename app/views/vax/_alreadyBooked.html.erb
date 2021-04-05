@@ -1,0 +1,15 @@
+  	 <div class= 'row'>
+			<div class="col-md-9 col-md-offset-3">
+				You already have a booking.
+ 
+<p>
+You have an appointment at the <%=@vaxtype.upcase %> clinic on <%= @booker.clinic.clinicdate.strftime("%A, %B %d") %> at <%= formatTime(@booker.bookhour,@booker.bookminute) %><p>
+<%= link_to "Cancel my booking on " + @booker.clinic.clinicdate.strftime("%d/%m/%Y"),vax_nextMessage_path(message: :unbook, booker: @booker.id,vaxtype: @vaxtype),{:class => "btn btn-sm btn-primary ", :remote => true} %>
+<%= link_to "Keep my booking on " + @booker.clinic.clinicdate.strftime("%d/%m/%Y"),vax_index_path,{:class => "btn btn-sm btn-primary "} %>
+
+
+
+
+		</div>
+
+	 </div>

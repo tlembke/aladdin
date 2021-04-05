@@ -1,0 +1,17 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  appointment: 2020-12-30 12:52:19
+  doctor_id: 1
+  patient_id: 1
+  patient_name: MyString
+  apptype: 
+  available: false
+
+two:
+  appointment: 2020-12-30 12:52:19
+  doctor_id: 1
+  patient_id: 1
+  patient_name: MyString
+  apptype: 
+  available: false

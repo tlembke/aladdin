@@ -179,8 +179,7 @@ $(document).ready(function() {
          };         
 
 
-
-    if ($("#book").length && window.location.pathname.indexOf('confirm') == -1 ){
+    if ($("#book").length && window.location.pathname.indexOf('confirm') == -1 && window.location.pathname.indexOf('slots') == -1){
     // Your specific controller code here
                 
 
@@ -189,15 +188,15 @@ $(document).ready(function() {
                   var month=getQueryVariable("date%5Bmonth%5D");
                   var year=getQueryVariable("date%5Byear%5D")
 
-                  $.ajax({
-                  url: "/book/show_appt",
-                  data: { day: day, year: year, month: month},
-                  cache: false,
-                  success: function(html){
-                    $("#show_appts_placeholder").html(html);
-                  }
+                 // $.ajax({
+                   // url: "/book/show_appt",
+                    //data: { day: day, year: year, month: month},
+                   // cache: false,
+                   // success: function(html){
+                   //   $("#show_appts_placeholder").html(html);
+                    //}
 
-                  });
+                 // });
 
 
 
@@ -467,15 +466,13 @@ $('.editableUpdate').on('save', function() {
 
   // This is to load condiiton id into hidden field in New Goal modal
   $('#show_appts_placeholder').on( "click", ".date-scroller", function(){
-  // $(".date-scroller").click(function(){ 
-       // alert("Show " + $(this).data('show'));
-      // alert("Hide " + $(this).data('hide'));
+  //$(".date-scroller").click(function(){ 
+
        
         
         
         
         theString = "-" + $(this).data('doctor') + "-" + $(this).data('code');
-
         $("#" + $(this).data('hide') + theString).hide();
         $("#" + $(this).data('show') + theString).show();
         if ($(this).data('uparrowhide') != -1 ){
@@ -658,6 +655,14 @@ $('.editableUpdate').on('save', function() {
       return result;
 }
 
+// -- Chat panel -- 
+function sleep(milliseconds) {
+  const date = Date.now();
+  let currentDate = null;
+  do {
+    currentDate = Date.now();
+  } while (currentDate - date < milliseconds);
+}
 
 
 

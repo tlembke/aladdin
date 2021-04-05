@@ -1,0 +1,46 @@
+<% @title = "Booking into " + @clinic.vaxtype + " clinic on " + @clinic.clinicdate.strftime("%A, %B %d") + " at " + formatTime(@bookhour,@bookminute)%>
+
+<% content_for :description do %>
+  <p>Booking for <%=@bookhour%>:<%=@bookminute.to_s.rjust(2, '0') %></p>
+
+  <% end %>
+<div class='row'>
+      <div class='col-md-6'>
+
+      <%= form_tag({}, method: "get",class: "form-vertical" ) do %>
+       <%= hidden_field_tag :hour, @bookhour %>
+       <%= hidden_field_tag :minute, @bookminute %>
+       <fieldset>
+         <legend>Patient Search</legend>
+         <div class="form-group row">
+           <%= label_tag :name, "Surname", class: "form-label col-sm-4" %>
+             <%= text_field_tag :Surname, nil, class: "input-medium col-sm-5" %> 
+          </div>
+          <div class="form-group row">
+            <%= label_tag :name, "First name", class: "form-label col-sm-4" %>
+            <%= text_field_tag :FirstName, nil, class: "input-medium col-sm-5" %>
+         </div>
+         <div class="form-actions col-sm-offset-4 col-sm-8">
+           <%= submit_tag "Search", class: "btn-primary" %>
+         </div>
+       </fieldset>
+
+    <% end %>
+    </div>
+
+  <div class='col-md-6'>
+    <% if @patients_search %>
+        <legend>Search results</legend>
+        <p></p>
+     		<% @patients_search.each do |patient| %>
+
+
+     		<%= link_to formatName(patient['SURNAME'],patient['FIRSTNAME'],patient['DOB']), book_clinic_path(@clinic,genie: patient['ID'],hour: @bookhour, minute: @bookminute) %>
+
+     		<br>
+
+     	<% end %>
+    <% end %>
+  </div>
+</div>
+

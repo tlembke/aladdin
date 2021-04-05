@@ -578,6 +578,7 @@ def connect(username=session[:username],password=session[:password])
   def get_users_ajax
 
 
+
       # get appointments
      @username = session[:username]
      @password = session[:password]
@@ -611,6 +612,7 @@ def connect(username=session[:username],password=session[:password])
           flash[:notice] = connect_array[2]
           redirect_to  action: "login"
      end
+
 
 
   

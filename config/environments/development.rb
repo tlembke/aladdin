@@ -39,6 +39,14 @@ Rails.application.configure do
   # Raises error for missing translations
   # config.action_view.raise_on_missing_translations = true
   config.time_zone = "Sydney"
+  config.active_record.default_timezone = :local
+
+
+  # to stop putting sql in console
+  config.after_initialize do
+      ActiveRecord::Base.logger = Rails.logger.clone
+      ActiveRecord::Base.logger.level = Logger::INFO
+  end
 
 
 config.action_mailer.delivery_method = :smtp

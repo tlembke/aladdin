@@ -26,7 +26,11 @@ class Pref < ActiveRecord::Base
       :faxsend=>{:name=>'Fax Send',:default => "true"},
       :imagesfolder=>{:name=>'Images Folder',:default => "/Volumes/Images"},
       :docfolder=>{:name=>'Document Folder',:default => "/Users/tlembke/Documents/Projects/aladdin/public/docs"},
-      :vacants=>{:name=>'Allow vacants',:default => "true"}
+      :vacants=>{:name=>'Allow vacants',:default => "true"},
+      :firstAppt=>{:name=>'First Appointment',:default => "8"},
+      :lastAppt=>{:name=>'Last Appointment',:default => "18"},
+      :lastAllAvailable=>{:name=>'Last All Available',:default => ""},
+      :clinicdays=>{:name=>'No. Clinics to show ',:default => "4"}
     }
   end
 

@@ -1,0 +1,33 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  clinicdate: 2021-03-23 17:51:16
+  starthour: 1
+  startminute: 1
+  finishhour: 1
+  finishminute: 1
+  perhour: 1
+  vaxtype: MyString
+  venue: MyString
+  template: false
+  age: 1
+  ATSIage: 1
+  chronic: false
+  chronicage: 1
+  message: MyString
+
+two:
+  clinicdate: 2021-03-23 17:51:16
+  starthour: 1
+  startminute: 1
+  finishhour: 1
+  finishminute: 1
+  perhour: 1
+  vaxtype: MyString
+  venue: MyString
+  template: false
+  age: 1
+  ATSIage: 1
+  chronic: false
+  chronicage: 1
+  message: MyString

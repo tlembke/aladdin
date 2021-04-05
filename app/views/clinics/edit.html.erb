@@ -1,0 +1,22 @@
+<% @title = "Editing " + @clinic.vaxtype + " clinic" %>
+<% if @clinic.template %>
+		<% @title = @title + " Template" %>
+<% end %>
+
+<% content_for :description do %>
+<% if @clinic.template %>
+		You are editing the template from which new clinics are created. This does not create a clinic.
+<% end %>
+<% end %>
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+      <div class="sheet sheet-condensed">
+        <div class="sheet-inner p30">
+          <%= render 'form' %>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

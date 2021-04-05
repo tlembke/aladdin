@@ -1,0 +1,123 @@
+
+
+<h1>Appointments</h1>
+ Last initialised <%= @modTimeStr %> <p>
+ Updated Appts  = <%= @updatedAppts %> <p>
+ Updated Blocks  = <%= @updatedBlocks %> <p>
+ Deleted appts = <%= @deletedAppts %> <p>
+ Deleted slots = <%= @deletedSlots %> <p>
+
+
+
+
+
+ 
+
+
+
+
+	
+	<%= render "book/datechange", action: "slots" %><p>
+	
+
+<div class="row">
+	<div class="col-md-12">
+	<div class='panel'>
+	<style>
+		.annexe_-_c, .annexe_app {
+			background-color : purple !important;
+			color : white;
+		}
+		.annexe_-_c, .annexe_app a:link {
+				color : white;
+		}
+		.acute_only{
+			background-color : green !important;
+			color : white;
+		}
+		.acute_only a:link {
+			color : white;
+		}
+		.express_cl{
+			background-color : blue !important;
+			color : white;
+		}
+		.blocked,.teleconfer{
+			background-color : orange !important;
+			color : white;
+		}
+		.general_ch{
+			background-color : pink !important;
+			color : white;
+		}
+		.winsome_cl{
+			background-color : peru !important;
+			color : white;
+		}
+		.nursing_ho{
+			background-color : turquoise !important;
+			color : white;
+		}
+		.annual_lea{
+			background-color : black !important;
+			color : white;
+		}
+		.excision {
+			background-color : aqua !important;
+			color : white;
+		}
+		.excision a:link {
+				color : black;
+		}
+		.ssmrs_bsss,.ssscallsss,.ssson_call,.on_call_5,.second_on_,.staff_meet,.lunch,.on_call_we,.second_on_, .on_call_5p{
+			background-color : yellow !important;
+			color : black;
+		}
+		.timecel{
+			font-size: 8px ;
+			padding: 0px ;
+		}
+		.available{
+			background-color: white !important;
+		}
+		.taken{
+			background-color: red !important;
+		}
+		.no_appoint{
+			background-color: red !important;
+		}
+		.consult,  .gp_mental_ , .skin_check, .licence, .action, .ssssssssss,.routine_at,.ssssssscal,.ssscalllsss,.immunisati,.work_cover,.workers_co{
+			background-color: gray !important;
+		}
+		.consultslot{
+			background-color: gray;
+		}
+
+
+
+
+	
+
+		
+
+
+		
+
+
+
+	</style>
+<%= drawBookCalendar(@theStartDate,@noDays).html_safe %>
+</div>
+</div>
+</div>
+
+
+
+
+
+
+
+
+
+
+

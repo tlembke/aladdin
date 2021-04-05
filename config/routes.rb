@@ -4,6 +4,22 @@ Rails.application.routes.draw do
 
 
 
+  resources :bookers
+  get 'vax/index'
+
+  get 'vax/nextMessage'
+
+
+  resources :clinics do
+      member do
+        get 'book'
+        get 'unbook'
+      end
+      collection do
+        get 'admin'
+      end
+  end
+  resources :providers
   resources :tags
   resources :docs
   get 'letters/show'
@@ -28,6 +44,8 @@ Rails.application.routes.draw do
           get 'confirm'
           get 'downloadcal'
           get 'show_appt'
+          get 'slots'
+
       end
   end
 
@@ -81,7 +99,8 @@ end
       get 'itemcheck'
       get 'log'
       get 'pathways'
-      get 'fax'
+      get 'fax'   
+      get 'emails'
 
 
 

@@ -242,5 +242,19 @@ module ApplicationHelper
         return msg
    end
 
+   def formatTime(thehour,theminute)
+        theTime =thehour.to_s + ":" + theminute.to_s.rjust(2, '0')
+        thehour.to_i < 12 ? theTime += "am" : theTime +="pm"
+        return theTime
+   end
+
+   def formatName(surname,firstname,dob)
+        theText = surname + "," + firstname
+        if dob
+            theText= theText + " (" + dob.strftime("%d/%m/%Y") + ")"
+        end
+        return theText
+   end
+
 
 end

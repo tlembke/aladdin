@@ -11,7 +11,24 @@
 					
 									</div>
 									<div class="col-md-11 col-md-offset-1">
-									<%= simple_format(problem['NOTE'],{class: 'small'},wrapper_tag: "span")%>
+
+
+<% theNote  = problem['NOTE'].force_encoding('ISO-8859-1').encode('UTF-8') %>
+<% if theNote.valid_encoding? %>
+    									
+									
+    									
+    										<%= simple_format(theNote,{class: 'small'},wrapper_tag: "span")%>
+    									
+									
+<% end %>
+
+
+
+
+
+
+									
 											<!----------- -->
 									<% @status=get_status(problem['ID'],@patient.id) %>
 
