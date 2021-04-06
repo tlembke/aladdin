@@ -2,6 +2,23 @@ Thanks for booking for a <%= @booker.vaxtype.upcase %> at the Alstonville Clinic
 
 You are booked on <%= @booker.clinic.clinicdate.strftime("%A, %B %d") %> at <%= formatTime(@booker.bookhour,@booker.bookminute) %>
 
-You can check or change this appointment at 'https://aladdin.alstonville.clinic/vax'
+If you can, please download, print and complete this consent form and bring it with you to your clinic appointment
+
+https://www.health.gov.au/sites/default/files/documents/2021/03/covid-19-vaccination-consent-form-for-covid-19-vaccination-covid-19-vaccination-consent-form-print-friendly.pdf
+
+<% if @booker.eligibility>1%>
+	Also, if you can, please download, print and complete this 'Proof of Eligibility' form and also bring it with you
+
+	https://www.health.gov.au/sites/default/files/documents/2021/03/covid-19-vaccination-eligibility-declaration-form.pdf
+<% end %>
+
+You can check or change this appointment at https://aladdin.alstonville.clinic/vax
+
+Cheers,
+
+The Alstonville Clinic Team
+02 66280505
+
+PS Please don't reply to this email. Ring us if you have any problems or questions.
 
 
