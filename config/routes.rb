@@ -8,6 +8,7 @@ Rails.application.routes.draw do
   get 'vax/index'
 
   get 'vax/nextMessage'
+ post 'vax/sendemail'
 
 
   resources :clinics do

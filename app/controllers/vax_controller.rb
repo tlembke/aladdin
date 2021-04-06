@@ -89,7 +89,7 @@ class VaxController < ApplicationController
             			if (@error_code==0)
                    				dbh=connect_array[0]
                    				@clinic=Clinic.find(params[:clinic])
-			  			        @booker=Booker.new
+			  			            @booker=Booker.new
 		                        @booker.genie = params[:patient]
 		                        @booker.bookhour = params[:starthour]
 		                        @booker.bookminute = params[:startminute]
@@ -99,17 +99,35 @@ class VaxController < ApplicationController
 		                        @booker.dob = @patient.dob
 		                        @booker.vaxtype = @clinic.vaxtype
 		                        @booker.clinic_id = @clinic.id
+                            age = ((Time.zone.now - @patient.dob.to_time) / 1.year.seconds).floor
+                            clinicTemplate=Clinic.where(vaxtype: @booker.vaxtype, template: true).first
+                            @booker.eligibility=1
+                            if age<clinicTemplate.age
+                              @booker.eligibility=2
+                            end
 		                        @booker.save
 		                        @thePatient = @patient
 		                        @vaxtype = @clinic.vaxtype
 
+
+                      
+
 		                        @theText = "Good news. You are booked in for " + @booker.vaxtype + " on " + @clinic.clinicdate.strftime("%A, %B %d")+ " at " + timeFormat(@booker.bookhour,@booker.bookminute)
 		                        if @vaxtype =="Covax"
-		                        	@theText = @theText + "<p>Don't forget to bring your consent form!"
+
+		                        	@theText = @theText + "<p>Don't forget to bring your consent form"
+                              if @booker.eligibility > 1
+                                @theText = @theText + " and your Proof of Eligibility Form"
+                              end
 		                        end
 		                        @theText = @theText.html_safe
             					@thePartial = "booked"
             					dbh.disconnect
+
+                      unless @patient.email.blank?
+                        PatientMailer.clinic_booked(@booker,@patient.email).deliver_now
+                      end
+
 		                 end
 
              end

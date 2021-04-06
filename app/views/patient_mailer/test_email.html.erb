@@ -1,34 +1,15 @@
-
-
-Hi there <%= @patient.fullname %>
-<<%= @patient.email %>>
-
-Thanks for attending your appointment today.
-
-
-    <%= render partial: "patient/summary" %>
-    <%= render partial: "patient/tasks", locals: {tasks: @tasks} %>
-    <%= render partial: "patient/medchanges", locals: {meds: @meds} %> 
-    <%= render partial: "patient/notes",locals: {notes: @notes} %> 
-       
-
-    <%= render "patient/measures" %>
-         
-    <%= render "patient/tests" %>
-     
-     <%=render "patient/appointments" %>
-       
-
-    <%= render "patient/misc" %> 
-
-    <%= render "patient/phonetime" %>
-        
-    <%= render "patient/urgent" %>
-
-   <%= render "patient/medications" %>
-
-
-
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta content='text/html; charset=UTF-8' http-equiv='Content-Type' />
+  </head>
+  <body>
+    <h1>Hi</h1>
+    <p>
+      Sample mail sent using smtp with 'plain'
+    </p>
+  </body>
+</html>
 
 
 

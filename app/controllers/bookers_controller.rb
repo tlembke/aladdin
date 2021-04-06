@@ -69,6 +69,6 @@ class BookersController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def booker_params
-      params.require(:booker).permit(:clinic_id, :genie, :surname, :firstname, :dob, :vaxtype, :contactby, :confirm, :received, :arm, :dose, :batch, :note, :bookhour, :bookminute)
+      params.require(:booker).permit(:clinic_id, :genie, :surname, :firstname, :dob, :vaxtype, :contactby, :confirm, :received, :arm, :dose, :batch, :note, :bookhour, :bookminute,:email,:eligibility)
     end
 end

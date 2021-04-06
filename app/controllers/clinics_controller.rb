@@ -223,7 +223,7 @@ class ClinicsController < ApplicationController
     respond_to do |format|
       format.html { 
         if @genie != 0
-           redirect_to clinics_url, notice: @booker.firstname + " " + @booker.surname + " was booked in on " + @clinic.clinicdate.strftime("%A, %B %d") + " at " + view_context.formatTime(@booker.bookhour,@booker.bookminute)
+           redirect_to clinics_url, notice: @booker.firstname + " " + @booker.surname + " was booked in for " + @booker.vaxtype.upcase + " on " + @clinic.clinicdate.strftime("%A, %B %d") + " at " + view_context.formatTime(@booker.bookhour,@booker.bookminute)
         end
        }
 

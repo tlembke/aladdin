@@ -81,4 +81,18 @@ Rails.application.configure do
   config.active_record.dump_schema_after_migration = false
 
   config.time_zone = "Sydney"
+
+  config.action_mailer.preview_path = "test/mailers/previews"
+
+  config.action_mailer.raise_delivery_errors = true 
+  config.action_mailer.perform_deliveries = true
+  config.action_mailer.delivery_method = :smtp
+  config.action_mailer.smtp_settings = {
+  :enable_starttls_auto => true,
+    :address        => "smtp.socketlabs.com",
+    :port           => 587,
+    :authentication => :login,
+    :user_name  => "server34714",
+    :password  => "s2A3YoFc56Kiz9Z7M"
+  }
 end

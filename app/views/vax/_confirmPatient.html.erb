@@ -18,7 +18,7 @@
 			<% unless  @patient['ELIGIBLE'] %>
 	  			<%= @patient["CRITERIAMESSAGE"].html_safe %><br>
 	  			<% if @patient["CRITERIABOXES"].include? 1 %>
-		  			<%= check_box_tag 'healthcare',"yes",false, :onclick=>"$('.clinicShow').toggle();" %> I confirm I am a health care worker <br>
+		  			<%= check_box_tag 'healthcare',"yes",false, :onclick=>"$('.clinicShow').toggle();" %> I confirm I am a health care worker and will provide Proof of Occupation <a href ="#health-care-worker-modal" onClick="$('#health-care-worker-modal').modal('show');">(click for details and explanation)</a><br>
 	  			<% end %>
 	  			<% if @patient["CRITERIABOXES"].include? 2 %>
 		  			<%= check_box_tag 'chronic',"yes",false, :onclick=>"$('.clinicShow').toggle();"  %> I confirm I have a <a href ="#designated-conditions-modal" onClick="$('#designated-conditions-modal').modal('show');">Designated Conditions</a> <br>
@@ -27,6 +27,7 @@
   					
   				
   				<%= render "eligibility" %>
+  				<%= render "occupation" %>
   			<% end %>
 
 

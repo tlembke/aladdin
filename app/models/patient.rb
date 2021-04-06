@@ -11,7 +11,7 @@ class Patient
 
   
   def self.get_patient(patient,dbh)
-          # ? deprecated - no, used by nursing home
+          # ? deprecated - no, used by nursing home and vax
             # Get info about this patient
  
          sql = "SELECT Surname,FirstName,FullName,LastSeenDate,LastSeenBy,AddressLine1, AddressLine2,Suburb,DOB, Age, Sex, Unused_Scratchpad, Unused_FamilyHistory, HomePhone, MobilePhone,EmailAddress FROM Patient WHERE id = "+patient       
