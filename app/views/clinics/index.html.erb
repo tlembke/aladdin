@@ -51,7 +51,7 @@
                       <div class= 'row'>
                       <% clinic.groups.each do |group | %>
                         
-                          <div class="col-md-1"><%= link_to formatTime(group.starthour,group.startminute) + "(" + group.vacancies.to_s + ")", book_clinic_path(clinic,hour: clinic.starthour, minute: clinic.startminute) %>
+                          <div class="col-md-1"><%= link_to formatTime(group.starthour,group.startminute) + "(" + group.vacancies.to_s + ")", book_clinic_path(clinic,hour: group.starthour, minute: group.startminute) %>
                           </div>
                         
                       <% end %>
