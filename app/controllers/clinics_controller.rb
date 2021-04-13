@@ -166,7 +166,20 @@ class ClinicsController < ApplicationController
                         @booker.dob = @patient.dob
                         @booker.vaxtype = @clinic.vaxtype
                         @booker.clinic_id = @clinic.id
+
+                        age = ((Time.zone.now - @patient.dob.to_time) / 1.year.seconds).floor
+                        clinicTemplate=Clinic.where(vaxtype: @booker.vaxtype, template: true).first
+                        @booker.eligibility=1
+                        if age<clinicTemplate.age
+                              @booker.eligibility=2
+                        end
                         @booker.save
+
+                        # send email
+
+                         unless @patient.email.blank?
+                              PatientMailer.clinic_booked(@booker,@patient.email).deliver_now
+                         end
                         
                     elsif params[:Surname]
 
