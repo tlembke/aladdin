@@ -74,6 +74,13 @@ class ClinicsController < ApplicationController
   # GET /clinics/1
   # GET /clinics/1.json
   def show
+      params[:print] == "true" ? @print=true : @print=false
+   
+      if @print
+          render :print
+      end
+  
+
 
   end
 

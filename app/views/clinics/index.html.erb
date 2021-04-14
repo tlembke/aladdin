@@ -41,20 +41,28 @@
             <div class="panel panel-default">
                   <div class="panel-heading">
                       <legend class="panel-title">
-                        
+                       
+                        <%= link_to "Show",clinic_path(clinic), class: 'btn btn-danger btn-small'  %>
+                        <%= link_to "Print",clinic_path(clinic,print: :true), class: 'btn btn-danger btn-small'  %>
+                      
                         <%= link_to clinic.clinicdate.strftime("%A, %B %d"), clinic_path(clinic) %>
+                       
                       </legend>
+                      
+
                   </div> 
                   <div class="panel-body">
                     
 
-                      <div class= 'row'>
+                      
+                          <div class='btn-toolbar'>
                       <% clinic.groups.each do |group | %>
                         
-                          <div class="col-md-1"><%= link_to formatTime(group.starthour,group.startminute) + "(" + group.vacancies.to_s + ")", book_clinic_path(clinic,hour: group.starthour, minute: group.startminute) %>
-                          </div>
+                         <%= link_to formatTime(group.starthour,group.startminute) + "(" + group.vacancies.to_s + ")", book_clinic_path(clinic,hour: group.starthour, minute: group.startminute),class: 'btn btn-success btn-small' %>
+                          
                         
                       <% end %>
+
                     </div>
                   </div>
           </div>
