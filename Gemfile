@@ -49,6 +49,14 @@ gem "mini_magick"
 
 gem 'sqlite3', '~> 1.3.13'
 
+gem 'ruby_webshot'
+
+gem 'webdrivers'
+
+gem 'sidekiq'
+
+
+
 
 
 

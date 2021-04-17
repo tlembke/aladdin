@@ -4,7 +4,7 @@ module DocsHelper
 		if doccat == nil
 			doccat = 0
 		end
-		catarray=["","Handout", "Form", "Resource"]
+		catarray=["","Handout", "Form", "Resource","Policy"]
 
 		doccat > 0 ? returnText = catarray[doccat] : returnText =""
 		return returnText

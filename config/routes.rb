@@ -22,7 +22,13 @@ Rails.application.routes.draw do
   end
   resources :providers
   resources :tags
-  resources :docs
+  resources :docs do
+      collection do
+        get 'webpage'
+      end
+  end
+
+
   get 'letters/show'
 
   get 'database/index'

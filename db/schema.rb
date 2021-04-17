@@ -11,7 +11,28 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20201214035646) do
+ActiveRecord::Schema.define(version: 20210410122827) do
+
+  create_table "bookers", force: :cascade do |t|
+    t.integer  "clinic_id"
+    t.integer  "genie"
+    t.string   "surname"
+    t.string   "firstname"
+    t.date     "dob"
+    t.string   "vaxtype"
+    t.integer  "contactby"
+    t.boolean  "confirm"
+    t.datetime "received"
+    t.integer  "arm"
+    t.integer  "dose"
+    t.string   "batch"
+    t.string   "note"
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
+    t.integer  "bookhour"
+    t.integer  "bookminute"
+    t.integer  "eligibility"
+  end
 
   create_table "cells", force: :cascade do |t|
     t.integer  "register_id"
@@ -31,6 +52,28 @@ ActiveRecord::Schema.define(version: 20201214035646) do
     t.datetime "created_at",                 null: false
     t.datetime "updated_at",                 null: false
     t.boolean  "check",      default: false, null: false
+  end
+
+  create_table "clinics", force: :cascade do |t|
+    t.date     "clinicdate"
+    t.integer  "starthour",    default: 10
+    t.integer  "startminute",  default: 0
+    t.integer  "finishhour",   default: 13
+    t.integer  "finishminute", default: 0
+    t.integer  "perhour",      default: 0
+    t.string   "vaxtype",      default: "Flu"
+    t.string   "venue",        default: "Baptist Hall"
+    t.boolean  "template",     default: false
+    t.integer  "age",          default: 0
+    t.integer  "ATSIage",      default: 0
+    t.boolean  "chronic",      default: false
+    t.integer  "chronicage",   default: 0
+    t.string   "message"
+    t.datetime "created_at",                            null: false
+    t.datetime "updated_at",                            null: false
+    t.integer  "people",       default: 25
+    t.boolean  "live"
+    t.boolean  "healthcare"
   end
 
   create_table "consults", force: :cascade do |t|
@@ -85,6 +128,7 @@ ActiveRecord::Schema.define(version: 20201214035646) do
     t.text     "content"
     t.datetime "created_at",              null: false
     t.datetime "updated_at",              null: false
+    t.integer  "doc_id"
   end
 
   create_table "goals", force: :cascade do |t|
@@ -95,9 +139,9 @@ ActiveRecord::Schema.define(version: 20201214035646) do
     t.integer  "measure_id"
     t.integer  "active"
     t.integer  "parent"
-    t.integer  "master_id"
     t.datetime "created_at",   null: false
     t.datetime "updated_at",   null: false
+    t.integer  "master_id"
     t.decimal  "target"
     t.string   "autoload"
     t.text     "by"
@@ -214,6 +258,15 @@ ActiveRecord::Schema.define(version: 20201214035646) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "providers", force: :cascade do |t|
+    t.integer  "genie_id"
+    t.integer  "type"
+    t.string   "name"
+    t.boolean  "online",     default: true
+    t.datetime "created_at",                null: false
+    t.datetime "updated_at",                null: false
+  end
+
   create_table "recalls", force: :cascade do |t|
     t.text     "title"
     t.integer  "cat"
@@ -249,6 +302,19 @@ ActiveRecord::Schema.define(version: 20201214035646) do
     t.string   "name"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+  end
+
+  create_table "slots", force: :cascade do |t|
+    t.datetime "appointment"
+    t.integer  "doctor_id"
+    t.integer  "patient_id"
+    t.string   "patient_name"
+    t.string   "apptype"
+    t.boolean  "available"
+    t.datetime "created_at",   null: false
+    t.datetime "updated_at",   null: false
+    t.integer  "appt_id"
+    t.integer  "block_id"
   end
 
   create_table "statuses", force: :cascade do |t|

@@ -1,6 +1,8 @@
 
+Source <%= @source %>
 <%= form_for(@document, html: { class: 'form-horizontal' }) do |f| %>
   <%= f.error_notification %>
+  <% hidden_tag_field :source, @source %>
 
   <div class="form-inputs">
     <%= f.form_group :name do |f| %>
@@ -27,13 +29,23 @@
     <% if @document.patient_id and @document.patient_id != 0 %>
         <%= f.hidden_field :code  %>
     <% else %>
-        <%= f.form_group :code do |f| %>
-          <%= f.label :code, class: 'control-label col-md-2' %>
-          <div class='col-md-8'>
-            <%= f.select :code, options_for_select([['Action Plan', 1], ['Information', 2], ['Policy', 3]]) %>
-            <%= f.error_messages %>
-          </div>
-        <% end %>
+
+          <%= f.form_group :code do |f| %>
+            <%= f.label :code, class: 'control-label col-md-2' %>
+            <div class='col-md-8'>
+              <%= f.select :code, options_for_select([['Action Plan', 1], ['Patient Information', 2], ['Policy', 3], ['Notes', 4]]) %>
+              <%= f.error_messages %>
+            </div>
+          <% end %>
+
+    <% end %>
+
+
+      <%= f.form_group :tag_string do |f| %>
+      <%= f.label :tag_string, class: 'control-label col-md-2' %>
+      <div class='col-md-8'>
+        <%= text_field_tag :tag_string, @tag_string,class: 'form-control' %>
+      </div>
     <% end %>
 
 

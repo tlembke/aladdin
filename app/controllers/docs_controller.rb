@@ -1,5 +1,6 @@
 class DocsController < ApplicationController
   before_action :set_doc, only: [:show, :edit, :update, :destroy]
+  # This controller is for docuemnts in the library, which includes those uploaded as well as those writted using the document controller
 
   # GET /docs
   # GET /docs.json
@@ -48,7 +49,7 @@ class DocsController < ApplicationController
           @docs=@alldocs.flatten.group_by {|i| i}.sort_by {|_, a| -a.count}.map &:first
 
       # @docs = Doc.where('name LIKE ? or description LIKE ? or tags = ?', "%#{params[:searchterm]}%","%#{params[:searchterm]}%" , "%#{params[:searchterm]}%")
-       catarray=%w[Any Handout Form Resource]
+       catarray=%w[Any Handout Form Resource Policy]
        @showing="Showing " + ActionController::Base.helpers.pluralize(@docs.count, 'result')
        
        @showing2 = @showing2 + " for '" + params[:searchterm] +"'"unless params[:searchterm].blank?
@@ -88,6 +89,10 @@ class DocsController < ApplicationController
   # GET /docs/new
   def new
     @doc = Doc.new
+
+    if params[:web] == "true"
+        @web=true
+    end
   end
 
   # GET /docs/1/edit
@@ -103,64 +108,78 @@ class DocsController < ApplicationController
   # POST /docs
   # POST /docs.json
   def create
-   
-
-        # see if a new file has been uploaded
-    docfolder = Pref.docfolder
-
-    
-          
-          # upload file selected
-          
-            
-    uploaded_io = doc_params[:uploaded_doc]
-    File.open(::Rails.root.join('public','library','new',uploaded_io.original_filename), 'wb') do |file|
-          file.write(uploaded_io.read)
-    end
-         
-         
-
-
-    
     @doc = Doc.new(doc_params)
-    @doc.filename = uploaded_io.original_filename
+    if params[:web]
+        @doc.filename = doc_params[:filename]
+        unless @doc.filename.starts_with? "http://" or @doc.filename.starts_with? "https://"
+            @doc.filename = "http://" + @doc.filename
+        end
+        theFilename = "#{SecureRandom.urlsafe_base64}.png"
+        screenshot(@doc.filename,theFilename)
+        @doc.thumbnail = theFilename
 
-    # make sure that filename is unique
-    found = true
-    i=1
-    theFilename = @doc.filename
-    while found
-      if Doc.where(filename: theFilename).first
-        theFilenameArray = @doc.filename.split(".")
-        theFilename = theFilenameArray[0]+ "_" + i.to_s + "." + theFilenameArray[1]
-        i=i+1
-    
-      else
+
+    else
    
-        found = false
-      end
-    end
-    fileOld = ::Rails.root.join('public','library','new', @doc.filename)
-    @doc.filename = theFilename
-    fileNew = ::Rails.root.join('public','library', @doc.filename)
 
-    #reanme and move
-    
-    File.rename fileOld, fileNew
+              # see if a new file has been uploaded
+          docfolder = Pref.docfolder
 
-    # create thumbnail
-     f = fileNew
-     begin
-            image=MiniMagick::Image.open(f)
-            image.format("png", 0)
-            image.resize("420x594")
-            image.write(::Rails.root.join('public','library','thumbnails',File.basename(f, ".*")+ '.png'))
-     rescue
-            # file couldn't be processed by MiniMagick so use default file which is oops.png
-            FileUtils.cp Rails.root.join('public','fax','oops.png'), Rails.root.join('public','library','thumbnails',File.basename(f, ".*") + '.png')
-    end
+          
+                
+                # upload file selected
+                
+                  
+          uploaded_io = doc_params[:uploaded_doc]
+          File.open(::Rails.root.join('public','library','new',uploaded_io.original_filename), 'wb') do |file|
+                file.write(uploaded_io.read)
+          end
+               
+               
 
-    @doc.thumbnail = File.basename(f, ".*") + '.png'
+
+          
+          
+          @doc.filename = uploaded_io.original_filename
+
+          # make sure that filename is unique
+          found = true
+          i=1
+          theFilename = @doc.filename
+          while found
+            if Doc.where(filename: theFilename).first
+              theFilenameArray = @doc.filename.split(".")
+              theFilename = theFilenameArray[0]+ "_" + i.to_s + "." + theFilenameArray[1]
+              i=i+1
+          
+            else
+         
+              found = false
+            end
+          end
+          fileOld = ::Rails.root.join('public','library','new', @doc.filename)
+          @doc.filename = theFilename
+          fileNew = ::Rails.root.join('public','library', @doc.filename)
+
+          #reanme and move
+          
+          File.rename fileOld, fileNew
+
+          # create thumbnail
+           f = fileNew
+           begin
+                  image=MiniMagick::Image.open(f)
+                  image.format("png", 0)
+                  image.resize("420x594")
+                  image.write(::Rails.root.join('public','library','thumbnails',File.basename(f, ".*")+ '.png'))
+           rescue
+                  # file couldn't be processed by MiniMagick so use default file which is oops.png
+                  FileUtils.cp Rails.root.join('public','fax','oops.png'), Rails.root.join('public','library','thumbnails',File.basename(f, ".*") + '.png')
+          end
+
+          @doc.thumbnail = File.basename(f, ".*") + '.png'
+
+  end
 
     # all looks good. We can move now to the main foler with the new name
  
@@ -190,6 +209,17 @@ class DocsController < ApplicationController
         format.json { render json: @doc.errors, status: :unprocessable_entity }
       end
     end
+  end
+
+  def screenshot(url,theFilename)
+      #  https://github.com/nezirz/ruby_webshot
+  
+         # ws = Webshot::Screenshot.instance
+         # screenshot =  ws.capture "#{params[:url_grab]}", ::Rails.root.join('public','library','thumbnails','screenshot5.png'), width: 500, height: 250
+        # RubyWebshot.call("#{params[:url_path]}",{:save_file_path=> ::Rails.root.join('public','library','thumbnails'), :file_name =>"screenshot10png"})
+           RubyWebshot.call(url,{:save_file_path=> ::Rails.root.join('public','library','thumbnails'),:file_name => theFilename})
+           
+  
   end
 
 
@@ -286,6 +316,6 @@ class DocsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def doc_params
-      params.require(:doc).permit(:name, :filename, :thumbnail, :description, :cat, :tag_string, :uploaded_doc,:seacrh)
+      params.require(:doc).permit(:name, :filename, :thumbnail, :description, :cat, :tag_string, :uploaded_doc,:search,:web)
     end
 end
