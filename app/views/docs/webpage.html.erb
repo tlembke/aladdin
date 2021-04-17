@@ -1,5 +1,6 @@
-<% @web ? @title = "New Web Resource" : @title = "New document" %>
 
+
+<% @title = "New web resource" %>
 
 <% content_for :description do %>
 
@@ -14,28 +15,16 @@
 
 <%= form_for(@doc, html: { class: 'form-horizontal', multipart: true }) do |f| %>
   <%= f.error_notification %>
-<%= hidden_field_tag :web, @web %>
-
+  
 
   <div class="form-inputs">
-    <% if @web %>
 
-          <%= f.form_group :filename do |f| %>
-          <%= f.label "URL", class: 'control-label col-md-2' %>
-          <div class='col-md-8'>
-             <%= f.text_field :filename,  class: "form-control" %> 
-            <%= f.error_messages %>
-          </div>
-        <% end %>
-    <% else %>
-
-      <%= f.form_group :uploaded_doc do |f| %>
-        <%= f.label :uploaded_doc, class: 'control-label col-md-2' %>
-        <div class='col-md-8'>
-          <%= f.file_field :uploaded_doc, class: 'form-control', id: 'docselect' %>
-          <%= f.error_messages %>
-        </div>
-      <% end %>
+    <%= f.form_group :url_grab do |f| %>
+      <%= f.label "URL", class: 'control-label col-md-2' %>
+      <div class='col-md-8'>
+         <%= text_field_tag "url_grab", "", class: "form-control" %> 
+        <%= f.error_messages %>
+      </div>
     <% end %>
 
 
@@ -60,7 +49,7 @@
     <%= f.form_group :cat do |f| %>
       <%= f.label :cat, class: 'control-label col-md-2' %>
       <div class='col-md-8'>
-        <%= f.select :cat, [["--",0],["Handout",1],["Form",2],["Resource",3],["Policy",4]], class: 'form-control' %>
+        <%= f.select :cat, [["--",0],["Handout",1],["Form",2],["Resource",3]], class: 'form-control' %>
         <%= f.error_messages %>
       </div>
     <% end %>

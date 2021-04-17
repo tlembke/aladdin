@@ -297,7 +297,7 @@ class VaxController < ApplicationController
 
 
  		end
-                def sendemail
-                  PatientMailer.test_email.deliver_now
-            end
+          def sendemail
+                  PatientMailer.test_email.deliver_later
+          end
 end

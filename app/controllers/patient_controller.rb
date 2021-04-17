@@ -2400,9 +2400,12 @@ end
       todayDate = Date.today
       # has overall health been assigned
       # the measure for alstonville clinic is id 1 abbrev overall
-      measure=Measure.where(:abbreviation => abbrev).first
+    if measure=Measure.where(:abbreviation => abbrev).first
       measurement=Measurement.where(measure: measure.id, patient_id: patient, measuredate: todayDate).first
       measurement != nil
+    else
+      measurement=false
+    end
  end
 
 

@@ -41,4 +41,6 @@ class Clinic < ActiveRecord::Base
     end
 
 
+
+
 end

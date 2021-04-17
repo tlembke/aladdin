@@ -95,4 +95,10 @@ Rails.application.configure do
     :user_name  => "server34714",
     :password  => "s2A3YoFc56Kiz9Z7M"
   }
+
+    # to stop putting sql in console
+  config.after_initialize do
+      ActiveRecord::Base.logger = Rails.logger.clone
+      ActiveRecord::Base.logger.level = Logger::INFO
+  end
 end

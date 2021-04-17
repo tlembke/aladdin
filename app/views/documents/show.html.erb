@@ -1,3 +1,17 @@
-
-<h4><%= @document.name %></h4><p>
-<%= @document.content.html_safe %>
+<% if @print %>
+	<script type="text/javascript"> 
+	    window.onload = function() { window.print(); } 
+	</script>
+<% else %>
+	<% content_for :actions do %>
+		<%= link_to "Edit",  edit_document_path(@document.id, source: @source), {class: 'btn btn-primary btn-large'}  %>
+		<%= link_to 'Print', document_path(@document.id, :print => "true",:source=> @source),{:class => "btn btn-large btn-primary"} %>
+		<%= link_to 'Library', docs_path,{:class => "btn btn-large btn-primary"} %>
+	<% end %>
+<% end %>
+<% @title = @document.name %>
+<div class="row" >
+      <div id="content" class="col-md-12">
+			<%= @document.content.html_safe %>
+	</div>
+</div>
