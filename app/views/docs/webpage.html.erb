@@ -1,0 +1,86 @@
+
+
+<% @title = "New web resource" %>
+
+<% content_for :description do %>
+
+<% end %>
+
+
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+  
+
+<%= form_for(@doc, html: { class: 'form-horizontal', multipart: true }) do |f| %>
+  <%= f.error_notification %>
+  
+
+  <div class="form-inputs">
+
+    <%= f.form_group :url_grab do |f| %>
+      <%= f.label "URL", class: 'control-label col-md-2' %>
+      <div class='col-md-8'>
+         <%= text_field_tag "url_grab", "", class: "form-control" %> 
+        <%= f.error_messages %>
+      </div>
+    <% end %>
+
+
+    <%= f.form_group :name do |f| %>
+      <%= f.label :name, class: 'control-label col-md-2' %>
+      <div class='col-md-8'>
+        <%= f.text_field :name, class: 'form-control', id: 'docname' %>
+        <%= f.error_messages %>
+      </div>
+    <% end %>
+
+
+
+    <%= f.form_group :description do |f| %>
+      <%= f.label :description, class: 'control-label col-md-2' %>
+      <div class='col-md-8'>
+        <%= f.text_area :description, class: 'form-control' %>
+        <%= f.error_messages %>
+      </div>
+    <% end %>
+
+    <%= f.form_group :cat do |f| %>
+      <%= f.label :cat, class: 'control-label col-md-2' %>
+      <div class='col-md-8'>
+        <%= f.select :cat, [["--",0],["Handout",1],["Form",2],["Resource",3]], class: 'form-control' %>
+        <%= f.error_messages %>
+      </div>
+    <% end %>
+
+      <%= f.form_group :tag_string do |f| %>
+      <%= f.label "Tags (comma separated)", class: 'control-label col-md-2' %>
+      <div class='col-md-8'>
+        <%= f.text_field :tag_string, class: 'form-control' %>
+        <%= f.error_messages %>
+      </div>
+    <% end %>
+
+  </div>
+
+  <div class="form-actions">
+    <div class="form-group">
+      <div class="col-md-2"></div>
+      <div class="col-md-8">
+        <%= f.submit class: 'btn btn-primary' %>
+        <%= link_to "Cancel", docs_path, class: 'btn' %>
+      </div>
+    </div>
+  </div>
+<% end %>
+
+
+
+
+
+
+
+    </div>
+  </div>
+</div>
