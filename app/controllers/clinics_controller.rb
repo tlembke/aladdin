@@ -285,6 +285,6 @@ class ClinicsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def clinic_params
-      params.require(:clinic).permit(:clinicdate, :live, :starthour, :startminute, :finishhour, :finishminute, :perhour, :vaxtype, :venue, :people, :template, :age, :ATSIage, :chronic, :chronicage, :message,:hour,:minute,:genie,:healthcare)
+      params.require(:clinic).permit(:clinicdate, :live, :starthour, :startminute, :finishhour, :finishminute, :perhour, :vaxtype, :venue, :people, :template, :age, :ATSIage, :chronic, :chronicage, :message,:hour,:minute,:genie,:healthcare,:break,:bstarthour,:bstartminute,:bfinishhour,:bfinishminute)
     end
 end
