@@ -2,6 +2,16 @@ Thanks for booking for a <%= @booker.vaxtype.upcase %> at the Alstonville Clinic
 
 You are booked on <%= @booker.clinic.clinicdate.strftime("%A, %B %d") %> at <%= formatTime(@booker.bookhour,@booker.bookminute) %>
 
+<% if @booker.vaxtype == "Covax"%>
+
+Please read these two Dept of Health documents before you arrive for your appointment.
+
+Information about the AstraZeneca Covid-19 vaccine
+https://www.health.gov.au/sites/default/files/documents/2021/04/covid-19-vaccination-information-on-covid-19-astrazeneca-vaccine_2.pdf
+
+What to expect after your AstraZeneca vaccine
+https://www.health.gov.au/sites/default/files/documents/2021/04/covid-19-vaccination-after-your-astrazeneca-vaccine-covid-19-vaccination-after-your-astrazeneca-vaccine.pdf 
+
 If you can, please download, print and complete this consent form and bring it with you to your clinic appointment
 
 https://www.health.gov.au/sites/default/files/documents/2021/03/covid-19-vaccination-consent-form-for-covid-19-vaccination-covid-19-vaccination-consent-form-print-friendly.pdf
@@ -11,6 +21,8 @@ https://www.health.gov.au/sites/default/files/documents/2021/03/covid-19-vaccina
 
 	https://www.health.gov.au/sites/default/files/documents/2021/03/covid-19-vaccination-eligibility-declaration-form.pdf
 <% end %>
+
+<% end 
 
 You can check or change this appointment at https://aladdin.alstonville.clinic/vax
 

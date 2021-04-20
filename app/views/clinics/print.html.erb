@@ -31,6 +31,8 @@
           <% minCount=0 %>
       <% end %>
       <% while minCount < 60  and !(minCount >= @clinic.finishminute and hourCount == @clinic.finishhour) %>
+
+          <% if @clinic.isBreak?(hourCount,minCount) == false %>
           <% @count = @clinic.bookers.where(bookhour: hourCount, bookminute: minCount).count %>
 
             
@@ -122,7 +124,7 @@
             </div>
 
           
-
+            <% end %> <!-- unless break  -->
 
 
 

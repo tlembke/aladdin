@@ -37,11 +37,14 @@
                           <tr>
                                             <th class="time"><%= formatTime(hourCount,minCount) %></th>
                                           
-                                            
-                                            <th><%= @count %> / <%= @clinic.people %></th>
+                                             <% if @clinic.isBreak?(hourCount,minCount) %>
+                                                      <th>Break</th>
+                                             <% else %>
+                                                    <th><%= @count %> / <%= @clinic.people %></th>
+                                             <% end %>
                                              <th></th>
-                                            <th  class="actions">                
-                                              <% if @count < @clinic.people %>
+                                            <th  class="actions">
+                                              <% unless @clinic.isBreak?(hourCount,minCount) or @count >= @clinic.people %>
                                                     <%= link_to "Book", book_clinic_path(@clinic,hour: hourCount, minute: minCount) %>
                                               <% end %>
                   

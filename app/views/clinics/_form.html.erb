@@ -45,11 +45,42 @@
     <%= f.form_group :finishhour do |f| %>
       <%= f.label "Finish At", class: 'control-label col-md-6' %>
       <div class='col-md-6'>
-        <%= f.select :finishhour, [6.7,8,9,10,11,12,13,14,15,16,17,18,19,20], class: 'form-control' %>
+        <%= f.select :finishhour, [6,7,8,9,10,11,12,13,14,15,16,17,18,19,20], class: 'form-control' %>
         <%= f.select :finishminute, [["00",0],["15",15],["30",30],["45",45]], class: 'form-control' %>
         <%= f.error_messages %>
       </div>
     <% end %>
+
+    <%= f.form_group :break do |f| %>
+        <%= f.label "Break?", class: 'control-label col-md-6' %>
+        <div class='col-md-6'>
+      <%= f.check_box :break, class: 'form-control', :onclick=> "$('#breaktimes').toggle()" %>
+          <%= f.error_messages %>
+        </div>
+    <% end %>
+
+    <div id="breaktimes" <%= "style='display:none;'" unless @clinic.break %>>
+
+        <%= f.form_group :bstarthour do |f| %>
+      <%= f.label "Break Start At", class: 'control-label col-md-6' %>
+      <div class='col-md-6'>
+         <%= f.select :bstarthour, [6,7,8,9,10,11,12,13,14,15,16,17,18,19,20], class: 'form-control' %>
+        <%= f.select :bstartminute, [["00",0],["15",15],["30",30],["45",45]], class: 'form-control' %>
+        <%= f.error_messages %>
+      </div>
+    <% end %>
+
+
+    <%= f.form_group :bfinishhour do |f| %>
+      <%= f.label "Break Finish At", class: 'control-label col-md-6' %>
+      <div class='col-md-6'>
+        <%= f.select :bfinishhour, [6,7,8,9,10,11,12,13,14,15,16,17,18,19,20], class: 'form-control' %>
+        <%= f.select :bfinishminute, [["00",0],["15",15],["30",30],["45",45]], class: 'form-control' %>
+        <%= f.error_messages %>
+      </div>
+    <% end %>
+
+    </div>
 
 
 

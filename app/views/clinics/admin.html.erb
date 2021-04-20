@@ -42,8 +42,14 @@
                                 <th>Start</th>
                         
                                 <th>Finish</th>
-                               
+
+                                <th>Break</th>
+                                <th>BStart</th>
+                        
+                                <th>BFinish</th>     
+
                                 <th>Perhour</th>
+
                                 <th>People</th>
                                 <th>Vaxtype</th>
                                 <th>Venue</th>
@@ -63,6 +69,9 @@
                                 <td><%= clinic.live %></td>
                                 <td><%= clinic.starthour %>:<%= clinic.startminute.to_s.rjust(2, '0') %></td>
                                 <td><%= clinic.finishhour %>:<%= clinic.finishminute.to_s.rjust(2, '0') %></td>
+                                  <td><%= clinic.break%></td>
+                                <td><%= clinic.bstarthour %>:<%= clinic.bstartminute.to_s.rjust(2, '0') %></td>
+                                <td><%= clinic.bfinishhour %>:<%= clinic.bfinishminute.to_s.rjust(2, '0') %></td>                            
                                 <td><%= clinic.perhour %></td>
                                 <td><%= clinic.people %></td>
                                 <td><%= clinic.vaxtype %></td>

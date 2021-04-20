@@ -1,6 +1,7 @@
 class Clinic < ActiveRecord::Base
 	has_many :bookers, -> { order 'bookhour, bookminute' }
 	has_many :groups
+	belongs_to :group
 
 	#attr_accessor :groups
 
@@ -39,6 +40,28 @@ class Clinic < ActiveRecord::Base
       
 
     end
+
+    def isBreak?(theHour,theMinute)
+
+      returnValue = false
+      if self.break
+          bStart = self.bstarthour * 1000 + self.bstartminute
+          bFinish = self.bfinishhour * 1000 + self.bfinishminute
+          myTime = theHour* 1000 + theMinute
+          if myTime >= bStart and myTime < bFinish
+            returnValue = true
+          end
+      end
+      return returnValue
+
+    end
+
+
+      
+
+
+
+
 
 
 

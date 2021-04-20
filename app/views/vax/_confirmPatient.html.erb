@@ -64,9 +64,10 @@
 
 								<div class= 'row'>
 								<% clinic.groups.each do |group | %>
-									
+										 <% unless clinic.isBreak?(group.starthour,group.startminute) %>
 										<div class="col-md-1"><%= link_to formatTime(group.starthour,group.startminute),vax_nextMessage_path(message: :bookpatient, patient: @patient['ID'], clinic: clinic.id.to_s, starthour: group.starthour.to_s, startminute: group.startminute.to_s ),{:class => "btn btn-sm btn-primary ", :remote => true} %>
 										</div>
+										<% end %>
 									
 								<% end %>
 								</div>
