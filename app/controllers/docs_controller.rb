@@ -6,10 +6,18 @@ class DocsController < ApplicationController
   # GET /docs.json
   def index
     processNewDocs
+    if session[:case]
+      @case = Case.find(session[:case])
+      names = get_patient_name(@case.patient_id)
+     @patient_name = names.firstname+" "+ names.surname
+    end
+ 
+
     @searchtermDefault = params[:searchterm]
     @tagDefault = params[:tag]
     @catDefault = params[:cat].to_i
     @showing2 = ""
+
 
     unless params[:searchterm].blank? and params[:tag].blank? and (params[:cat] == "0" or params[:cat].blank?)
        
@@ -217,7 +225,7 @@ class DocsController < ApplicationController
          # ws = Webshot::Screenshot.instance
          # screenshot =  ws.capture "#{params[:url_grab]}", ::Rails.root.join('public','library','thumbnails','screenshot5.png'), width: 500, height: 250
         # RubyWebshot.call("#{params[:url_path]}",{:save_file_path=> ::Rails.root.join('public','library','thumbnails'), :file_name =>"screenshot10png"})
-           RubyWebshot.call(url,{:save_file_path=> ::Rails.root.join('public','library','thumbnails'),:file_name => theFilename})
+         RubyWebshot.call(url,{:save_file_path=> ::Rails.root.join('public','library','thumbnails'),:file_name => theFilename})
            
   
   end
@@ -307,6 +315,27 @@ class DocsController < ApplicationController
       format.json { head :no_content }
     end
   end
+
+
+   def addcase
+
+      id=params[:id]
+      case_id=params[:case_id]
+
+      @casedoc =CasesDoc.where("doc_id= ? and case_id = ?",id,case_id)
+    
+      if @casedoc.count > 0
+            @casedoc.each do |reg |
+              reg.destroy
+            end
+      else
+            @newcasedoc=CasesDoc.new(doc_id: id, case_id: case_id)
+            #@new_register.update_attribute(:register_id, register_id)
+            #@new_register.update_attribute(:patient_id, id)
+            @newcasedoc.save
+      end
+      render :nothing => true 
+ end
 
   private
     # Use callbacks to share common setup or constraints between actions.
