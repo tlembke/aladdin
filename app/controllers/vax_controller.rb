@@ -3,7 +3,7 @@ class VaxController < ApplicationController
   def index
   		@noDays=3
   		@noGroups=3
-  		@theText = "Hello, let's see if we can book you a vaccination"
+  		@theText = "Hello, let's see if we can book you a vaccination.<p> Please click on one of the orange buttons below".html_safe
       clinicTemplate=Clinic.where(vaxtype: "Covax", template: true).first
       @covaxAge = clinicTemplate.age
 
@@ -125,7 +125,7 @@ class VaxController < ApplicationController
             					dbh.disconnect
 
                       unless @patient.email.blank?
-                        PatientMailer.clinic_booked(@booker,@patient.email).deliver_now
+                        PatientMailer.clinic_booked(@booker.id,@patient.email).deliver_later
                       end
 
 		                 end

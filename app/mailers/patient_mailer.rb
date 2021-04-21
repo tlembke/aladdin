@@ -7,8 +7,8 @@ class PatientMailer < ActionMailer::Base
         mail(to: 'tony@practicecoach.com.au', subject: 'Welcome to Alstonville Clinic')
   end
 
-  def clinic_booked(booker,email)
-    @booker=booker
+  def clinic_booked(booker_id,email)
+    @booker=Booker.find(booker_id)
     mail(to: email, subject: 'Your ' + @booker.vaxtype+ ' booking at Alstonville CLinic')
 
   end
