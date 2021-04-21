@@ -185,7 +185,7 @@ class ClinicsController < ApplicationController
                         # send email
 
                          unless @patient.email.blank?
-                              PatientMailer.clinic_booked(@booker,@patient.email).deliver_now
+                              PatientMailer.clinic_booked(@booker.id,@patient.email).deliver_later
                          end
                         
                     elsif params[:Surname]

@@ -3,7 +3,7 @@ class VaxController < ApplicationController
   def index
   		@noDays=3
   		@noGroups=3
-      @theText = "Hello, let's see if we can book you a vaccination.<p> Please click on one of the orange buttons below".html_safe
+  		@theText = "Hello, let's see if we can book you a vaccination.<p> Please click on one of the orange buttons below".html_safe
       clinicTemplate=Clinic.where(vaxtype: "Covax", template: true).first
       @covaxAge = clinicTemplate.age
 
