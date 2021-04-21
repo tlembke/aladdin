@@ -7,15 +7,15 @@
    <fieldset>
     
      <div class="form-group row">
-       <%= label_tag :name, "Your Surname", class: "form-label col-sm-4" %>
+       <%= label_tag :name, "Your Surname", class: "form-label col-sm-4 text-right" %>
          <%= text_field_tag :surname, nil, class: "input-medium col-sm-6" %> 
       </div>
       <div class="form-group row">
-        <%= label_tag :name, "First name", class: "form-label col-sm-4" %>
+        <%= label_tag :name, "First name", class: "form-label col-sm-4 text-right" %>
         <%= text_field_tag :firstname, nil, class: "input-medium col-sm-6" %>
      </div>
      <div class="form-group row">
-      <%= label_tag :dob, "Date of Birth", class: "form-label col-sm-4" %>
+      <%= label_tag :dob, "Date of Birth", class: "form-label col-sm-4 text-right" %>
       <div class= "input-medium col-sm-6"><%= select_day(Date.today) %><%= select_month(Date.today) %> <%= select_year(1950, start_year: 1920, end_year: 2005)%> </div>
         </div>
 
