@@ -247,9 +247,9 @@ class VaxController < ApplicationController
 
               if age < 18
                  criteriaMessage = "You need to be over 18 to book online. Please ring us"
-              elsif age > clinicTemplate.age
+              elsif age >= clinicTemplate.age
                   eligible = true
-              elsif age > clinicTemplate.ATSIage and @patient['ETHNICITY']== "Indigenous"
+              elsif age >= clinicTemplate.ATSIage and @patient['ETHNICITY']== "Indigenous"
                   eligible = true
               end
 
