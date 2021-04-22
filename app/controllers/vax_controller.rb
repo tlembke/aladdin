@@ -105,6 +105,8 @@ class VaxController < ApplicationController
                             if age<clinicTemplate.age
                               @booker.eligibility=2
                             end
+                            @booker.dose=1
+                            @booker.contactby=2
 		                        @booker.save
 		                        @thePatient = @patient
 		                        @vaxtype = @clinic.vaxtype

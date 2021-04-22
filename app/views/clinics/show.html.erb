@@ -43,6 +43,7 @@
                                                     <th><%= @count %> / <%= @clinic.people %></th>
                                              <% end %>
                                              <th></th>
+                                             <th></th>
                                             <th  class="actions">
                                               <% unless @clinic.isBreak?(hourCount,minCount) or @count >= @clinic.people %>
                                                     <%= link_to "Book", book_clinic_path(@clinic,hour: hourCount, minute: minCount) %>
@@ -60,6 +61,7 @@
                                             <td><%= booker.surname %></td>
                                             <td><%= booker.firstname %></td>
                                             <td><%= booker.dob.strftime("%d/%m/%Y") %></td>
+                                            <td><%= booker.contactby == 1 ? "C" : "W" %></td>
                                             
   
                                             <td>

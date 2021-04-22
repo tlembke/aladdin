@@ -4,10 +4,10 @@
 
 
   <% if @vaxtype == "Fluvax" %>
-    Show <%= link_to "Covax Clinics",clinics_path(vaxtype: "Covax")  %> instead
+    Show <%= link_to "Covax Clinics",clinics_path(vaxtype: "Covax"),class: 'btn btn-primary btn-large'  %> instead
   <% end %>
   <% if @vaxtype == "Covax" %>
-    Show <%= link_to "Fluvax Clinics",clinics_path(vaxtype: "Fluvax")  %> instead
+    Show <%= link_to "Fluvax Clinics",clinics_path(vaxtype: "Fluvax"),class: 'btn btn-primary btn-large'  %> instead
   <% end %>
 <% end %>
 

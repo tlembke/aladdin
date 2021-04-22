@@ -180,6 +180,8 @@ class ClinicsController < ApplicationController
                         if age<clinicTemplate.age
                               @booker.eligibility=2
                         end
+                        @booker.contactby=1
+                        @booker.dose=1
                         @booker.save
 
                         # send email
@@ -243,7 +245,7 @@ class ClinicsController < ApplicationController
     respond_to do |format|
       format.html { 
         if @genie != 0
-           redirect_to clinics_url, notice: @booker.firstname + " " + @booker.surname + " was booked in for " + @booker.vaxtype.upcase + " on " + @clinic.clinicdate.strftime("%A, %B %d") + " at " + view_context.formatTime(@booker.bookhour,@booker.bookminute)
+           redirect_to clinics_url(vaxtype: @booker.vaxtype),  notice: @booker.firstname + " " + @booker.surname + " was booked in for " + @booker.vaxtype.upcase + " on " + @clinic.clinicdate.strftime("%A, %B %d") + " at " + view_context.formatTime(@booker.bookhour,@booker.bookminute)
         end
        }
 
