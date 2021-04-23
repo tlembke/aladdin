@@ -2,8 +2,10 @@ Rails.application.routes.draw do
 
 
 
+require 'sidekiq/web'
+  mount Sidekiq::Web => '/sidekiq'
 
-
+  resources :cases, param: :code
   resources :bookers
   get 'vax/index'
 
@@ -18,6 +20,8 @@ Rails.application.routes.draw do
       end
       collection do
         get 'admin'
+        get 'checkvaxbooking'
+        get 'unbooksearch'
       end
   end
   resources :providers
