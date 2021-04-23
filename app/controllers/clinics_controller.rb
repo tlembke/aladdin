@@ -277,6 +277,26 @@ class ClinicsController < ApplicationController
 
  end
 
+ def checkvaxbooking
+        @bookedresults=Booker.where("surname LIKE ?", params[:Surname]+"%").all
+        @vaxtype=params[:vaxtype]
+ end
+
+  def unbooksearch
+      @booker = Booker.find(params[:bookerID])
+      @vaxtype=params[:vaxtype]
+      firstname=@booker.firstname
+      surname = @booker.surname
+      @booker.destroy
+      respond_to do |format|
+      format.html { 
+           redirect_to clinics_path(vaxtype: @vaxtype), notice: @booker.firstname + " " + @booker.surname + " was unbooked."
+       }
+
+    end
+
+ end
+
 
 
   private
