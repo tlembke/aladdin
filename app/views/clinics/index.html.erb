@@ -21,17 +21,24 @@
 <% clinics=Clinic.findAllGroups(@vaxtype) %>
 <% if clinics.length == 0 %>
      <div class= 'row'>
-      <div class="col-md-9 col-md-offset-3">
+      <div class="col-md-4">
         <p>We have no <%= @vaxtype %> available currently.<p> Please check back in a few days.
-    </div>
-   </div>
+      </div>
+      <div class="col-md-8">
+        <%= render "hozform" %>
+      </div>
+      <div>
+     
       
 <% else %>
        <div class= 'row'>
-          <div class="col-md-9 col-md-offset-3">
+          <div class="col-md-4">
 
             We have the following <%= @vaxtype %> clinics available.<p>Please select the time that would suit best
         </div>
+          <div class="col-md-8">
+            <%= render "hozform" %>
+          </div>
        </div>
 
 
@@ -40,12 +47,13 @@
 
             <div class="panel panel-default">
                   <div class="panel-heading">
-                      <legend class="panel-title">
+                      <legend>
                        
                         <%= link_to "Show",clinic_path(clinic), class: 'btn btn-danger btn-small'  %>
                         <%= link_to "Print",clinic_path(clinic,print: :true), class: 'btn btn-danger btn-small'  %>
                       
                         <%= link_to clinic.clinicdate.strftime("%A, %B %d"), clinic_path(clinic) %>
+                         at <%= clinic.venue %>
                        
                       </legend>
                       

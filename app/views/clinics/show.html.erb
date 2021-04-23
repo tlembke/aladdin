@@ -9,7 +9,7 @@
 
 </style>
 <% content_for :description do %>
-  <p>The following have booked for this clinc</p>
+  <p><%= @clinic.venue %></p>
 
   <% end %>
 
@@ -43,7 +43,7 @@
                                                     <th><%= @count %> / <%= @clinic.people %></th>
                                              <% end %>
                                              <th></th>
-                                             <th></th>
+                                             <th>Booked</th>
                                             <th  class="actions">
                                               <% unless @clinic.isBreak?(hourCount,minCount) or @count >= @clinic.people %>
                                                     <%= link_to "Book", book_clinic_path(@clinic,hour: hourCount, minute: minCount) %>

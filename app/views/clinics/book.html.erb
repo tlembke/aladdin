@@ -36,8 +36,8 @@
 
 
      		<%= link_to formatName(patient['SURNAME'],patient['FIRSTNAME'],patient['DOB']), book_clinic_path(@clinic,genie: patient['ID'],hour: @bookhour, minute: @bookminute) %>
+        <%= showBooked(patient['ID']) %>
 
-     		<br>
 
      	<% end %>
     <% end %>

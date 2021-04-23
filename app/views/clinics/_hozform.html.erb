@@ -1,0 +1,15 @@
+      <%= form_tag({action: :checkvaxbooking},  method: "get", remote: :true, class: "form-horizontal" ) do %>
+       <%= hidden_field_tag :vaxtype, @vaxtype %>
+       To check if a patient already has a booking - 
+       <fieldset>
+         <div class="form-group row">
+           <%= label_tag :name, "Surname", class: "form-label" %>
+             <%= text_field_tag :Surname, nil, class: "input-medium" %> 
+
+           <%= submit_tag "Search", class: "btn-primary" %>
+         </div>
+       </fieldset>
+
+    <% end %>
+    <div id="checkresults" style="display:none";>
+    </div>
