@@ -2,7 +2,7 @@
 
 <% days=Pref.clinicdays.to_i %>
 
-<% clinics=Clinic.findAllGroups(@vaxtype) %>
+<% clinics=Clinic.findAllActiveGroups(@vaxtype) %>
 
 
 <% if clinics.length == 0 %>

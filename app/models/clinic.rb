@@ -12,12 +12,21 @@ class Clinic < ActiveRecord::Base
 
 	def self.findAllGroups(vaxType="Fluvax")
 
-		@allClinics = Clinic.where("vaxtype = ? and clinicdate >= ? and live = ?",vaxType,Date.today,true).all
+		@allClinics = Clinic.where("vaxtype = ? and clinicdate >= ?",vaxType,Date.today).all
 
 		return @allClinics
 
 
 	end
+
+  def self.findAllActiveGroups(vaxType="Fluvax")
+
+    @allClinics = Clinic.where("vaxtype = ? and clinicdate >= ? and live = ?",vaxType,Date.today,true).all
+
+    return @allClinics
+
+
+  end
 
 	def groups
  			hourCount= self.starthour

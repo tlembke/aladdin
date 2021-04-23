@@ -54,6 +54,9 @@
                       
                         <%= link_to clinic.clinicdate.strftime("%A, %B %d"), clinic_path(clinic) %>
                          at <%= clinic.venue %>
+                         <% unless clinic.live %>
+                            (Hidden)
+                         <% end %>
                        
                       </legend>
                       
