@@ -38,6 +38,7 @@
             <thead>
               <tr>
                                 <th>Clinicdate</th>
+                                <th>No</th>
                                 <th>Show publically</th>
                                 <th>Start</th>
                         
@@ -64,8 +65,10 @@
             </thead>
             <tbody>
               <% @clinics.each do |clinic| %>
+              <% booked = Booker.where(clinic_id: clinic.id).count %>
               <tr>
                                 <td><%= clinic.clinicdate.strftime("%d-%m-%Y") %></td>
+                                <td><%= booked %>
                                 <td><%= clinic.live %></td>
                                 <td><%= clinic.starthour %>:<%= clinic.startminute.to_s.rjust(2, '0') %></td>
                                 <td><%= clinic.finishhour %>:<%= clinic.finishminute.to_s.rjust(2, '0') %></td>
@@ -85,8 +88,10 @@
                                 <td class="actions">
                   <%= link_to fa_icon_tag("eye"), clinic, rel: 'tooltip', title: 'Show' %>
                   <%= link_to fa_icon_tag("pencil"), edit_clinic_path(clinic), rel: 'tooltip', title: 'Edit' %>
+                  <% if booked == 0 %>
                   <%= link_to fa_icon_tag("trash-o"), clinic, rel: 'tooltip', title: 'Delete',
                   data: { confirm: 'Are you sure?' }, method: :delete %>
+                  <% end %>
                 </td>
               </tr>
               <% end %>
