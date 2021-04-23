@@ -130,10 +130,17 @@ class ClinicsController < ApplicationController
   # DELETE /clinics/1
   # DELETE /clinics/1.json
   def destroy
-    debugger
-    # @clinic.destroy
+    @bookers=Booker.where(clinic_id: @clinic.id).all
+    @vaxtype=@clinic.vaxtype
+    if @bookers.count == 0
+      @clinic.destroy
+      @message = "Clinic was deleted"
+    else
+      @message = "Clinic has people booked and cannot be deleted"
+    end
+    
     respond_to do |format|
-      format.html { redirect_to clinics_url, notice: 'Clinic was successfully destroyed.' }
+      format.html { redirect_to admin_clinics_path(vaxtype: @vaxtype), notice: @message }
       format.json { head :no_content }
     end
   end
