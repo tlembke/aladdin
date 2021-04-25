@@ -8,18 +8,49 @@
 
   <div class="form-inputs">
     <% unless @clinic.template %>
-    <%= f.form_group :clinicdate do |f| %>
-      <%= f.label :clinicdate, class: 'control-label col-md-6' %>
-      <div class='col-md-6'>
-        <%= f.date_select :clinicdate, :order => [:day, :month, :year],class: 'form-control' %>
-        <%= f.error_messages %>
-      </div>
-    <% end %>
+        <%= f.form_group :clinicdate do |f| %>
+          <%= f.label :clinicdate, class: 'control-label col-md-6' %>
+          <div class='col-md-6'>
+            <%= f.date_select :clinicdate, :order => [:day, :month, :year],class: 'form-control' %>
+            <%= f.error_messages %>
+          </div>
+        <% end %>
+        <% if @clinic.vaxtype == "Covax"%>
+              <%= hidden_field_tag :backpair, @backpair %>
+              <%= f.form_group :pair1 do |f| %>
+                <%= f.label "Paired Clinic 1", class: 'control-label col-md-6' %>
+                <div class='col-md-6'>
+                  <%= f.select :pair1, @clinic.pairOptions, include_blank: true  %>
+                  <%= f.error_messages %>
+                </div>
+              <% end %>
+              <%= f.form_group :pair2 do |f| %>
+                <%= f.label "Paired Clinic 2", class: 'control-label col-md-6' %>
+                <div class='col-md-6'>
+                  <%= f.select :pair2, @clinic.pairOptions, include_blank: true  %>
+                  <%= f.error_messages %>
+                </div>
+              <% end %>
+
+              <% if @clinic.pair1 == nil and @clinic.pair2 == nil %>
+               <div class="form-group ">
+                    <label class="control-label col-md-6" for="makepair">Make a new paired clinic for 12 weeks?</label>
+                    <div class='col-md-6'>
+                        <%= check_box_tag :makepair,false %>
+
+                    </div>
+              </div>
+              <% end %>
+
+            <% end %>
+      
+
+
     <% end %>
 
 
           <%= f.form_group :live do |f| %>
-        <%= f.label "Show Publically", class: 'control-label col-md-6' %>
+        <%= f.label "Show", class: 'control-label col-md-6' %>
         <div class='col-md-6'>
       <%= f.check_box :live, class: 'form-control' %>
           <%= f.error_messages %>
@@ -111,6 +142,8 @@
         <%= f.error_messages %>
       </div>
     <% end %>
+
+
 
     <% if @clinic.template %>
         <%= f.form_group :age do |f| %>

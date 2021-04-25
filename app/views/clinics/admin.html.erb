@@ -39,7 +39,12 @@
               <tr>
                                 <th>Clinicdate</th>
                                 <th>No</th>
-                                <th>Show publically</th>
+                                <th>Show</th>
+                                <% if @vaxtype == "Covax" %>
+                                <th>Pair1</th>
+                                <th>Pair2</th>
+
+                                <% end %>
                                 <th>Start</th>
                         
                                 <th>Finish</th>
@@ -70,6 +75,11 @@
                                 <td><%= clinic.clinicdate.strftime("%d-%m-%Y") %></td>
                                 <td><%= booked %>
                                 <td><%= clinic.live %></td>
+                                 <% if @vaxtype == "Covax" %>
+
+                                <td><%= Clinic.find(clinic.pair1).clinicdate.strftime("%d-%m-%Y") if clinic.pair1%></td>
+                                <td><%= Clinic.find(clinic.pair2).clinicdate.strftime("%d-%m-%Y") if clinic.pair2%></td>
+                                <% end %>
                                 <td><%= clinic.starthour %>:<%= clinic.startminute.to_s.rjust(2, '0') %></td>
                                 <td><%= clinic.finishhour %>:<%= clinic.finishminute.to_s.rjust(2, '0') %></td>
                                   <td><%= clinic.break%></td>

@@ -24,21 +24,20 @@
 			<div class="col-md-9 col-md-offset-3"><p><p>Also, if you can, please download, print and complete this 'Proof of Eligibility' form and also bring it with you</div>
 			<div class="col-md-8 col-md-offset-4"><b><a href='https://www.health.gov.au/sites/default/files/documents/2021/03/covid-19-vaccination-eligibility-declaration-form.pdf'  target="_blank"><%= image_tag("pdf.png", size: "50x50") %> Download Proof of Eligibility Form </a></b>
 			</div>
-
 			<% end %>
 			<div class="col-md-9 col-md-offset-3">
-			<p><p>If you are unable to download this information, please ask for a copy of this information when you attend your vaccination appointment.
+			<p><p>If you are unable to download this information, please ask for a copy  when you attend your vaccination appointment.
 		 	</div>
 
 
 
 		</div>
-	<% end %>
-
-	<div class="panel panel-default">
+	
+    <% end %>
+<div class="panel panel-default">
 						 	<div class="panel-heading">
 			          		<legend class="panel-title">
-			          			
+			          		
 			          			<b><%= @booker.vaxtype.upcase %> CLINIC :  <%= @clinic.venue %></b>
 			          		</legend>
 			         		</div> 
@@ -75,6 +74,52 @@
 								</div>								
 							</div>
 	 </div>
+	<% if @booker2 %>
+		<% @clinic2 = Clinic.find(@booker2.clinic_id) %>
+		<div class="panel panel-default">
+						 	<div class="panel-heading">
+			          		<legend class="panel-title">
+			          		
+			          			<b><%= @booker.vaxtype.upcase %> CLINIC :  <%= @clinic2.venue %></b>
+			          		</legend>
+			         		</div> 
+			         		<div class="panel-body">
+	              
+
+								<div class= 'row'>
+							
+									
+										<div class="col-md-2"> For :</div>
+										<div class="col-md-4"> <b><%= @patient.fullname.upcase %></b></div>
+						
+								</div>
+								<div class= 'row'>
+							
+									
+										<div class="col-md-2"> Date :</div>
+										<div class="col-md-4"> <%= @clinic2.clinicdate.strftime("%A, %B %d")%></div>
+						
+								</div>
+								<div class= 'row'>
+							
+									
+										<div class="col-md-2"> Time :</div>
+										<div class="col-md-4"><%= formatTime(@booker2.bookhour,@booker2.bookminute) %></div>
+						
+								</div>
+								<div class= 'row'>
+							
+									
+										
+										<div class="col-md-4 col-md-offset-2"><%= link_to ("Download Calender Event <i class='fa fa-calendar'></i>").html_safe,downloadcal_book_index_path(:date => @clinic2.clinicdate, :time => formatTime(@booker2.bookhour,@booker2.bookminute), :summary => @booker2.vaxtype.upcase + " Clinic", :description => @booker2.vaxtype + " at " + @clinic2.venue , :duration => 30) %></div>
+						
+								</div>								
+							</div>
+	 </div>
+	<% end %>
+
+
+
 
 								<div class= 'row'>
 							

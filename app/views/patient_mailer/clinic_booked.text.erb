@@ -2,6 +2,11 @@ Thanks for booking for a <%= @booker.vaxtype.upcase %> at the Alstonville Clinic
 
 You are booked on <%= @booker.clinic.clinicdate.strftime("%A, %B %d") %> at <%= formatTime(@booker.bookhour,@booker.bookminute) %>
 
+<% if @booker2 %>
+You are also booked for your second vaccination on <%= @booker2.clinic.clinicdate.strftime("%A, %B %d") %> at <%= formatTime(@booker2.bookhour,@booker2.bookminute) %>
+<% end %>
+
+
 <% if @booker.vaxtype == "Covax"%>
 
 Please read these two Dept of Health documents before you arrive for your appointment.
