@@ -189,6 +189,10 @@ class Patient
           return allergies
   end
 
+  def case
+     @case=Case.where(patient_id: self.id).first
+  end
+
 
 
 
@@ -726,6 +730,68 @@ end
         documents = Document.where(patient_id: self.id)
         return documents
   end
+
+  def self.getPatientMini(genie)
+            
+            @username = Pref.aladdinuser
+            @password = Pref.decrypt_password(Pref.aladdinpassword)
+
+
+            connect_array=Patient.connect(@username,@password)
+            @error_code=connect_array[1]
+            if (@error_code==0)
+                  dbh=connect_array[0]
+                  @patient = Patient.get_patient(genie.to_s,dbh)
+            
+
+                  dbh.disconnect
+
+                
+          else
+                  @patient = nil
+          end
+          return @patient
+
+
+  end
+
+  def self.connect(username=session[:username],password=Pref.decrypt_password(session[:password]))
+      error_code=0
+      dbh=nil
+      begin
+      dsns= ODBC.datasources
+      dsns.each do |dsn|
+            puts dsn.name
+          end
+      dsn_name= dsns[0].name
+      puts "Connecting to " + dsn_name
+      rescue
+      error_code=1
+      #redirect_to controller: "genie", action: "login"
+      end
+      begin
+        dbh=ODBC.connect(dsn_name,username,password) 
+      rescue
+        # ["08004 (1109) Server rejected the connection:\nOn SQL Authentication failed.\r"]
+        if ODBC.error[0].include? "Authentication failed"
+          error_code = 2
+          #redirect_to({controller: "genie", action: "login"}, notice: "Username / password failed")
+        else
+          error_code=3
+        #redirect_to({controller: "genie", action: "login"}, notice: ODBC.error[0])
+        end
+      error_msg=ODBC.error[0]
+      else
+        dbh.use_time = true
+      end
+      # logged in
+
+      
+      return [dbh,error_code,error_msg]
+
+   end
+
+
 
 
 
