@@ -79,13 +79,15 @@
                                             <% if @clinic.vaxtype =='Covax' %>
                                                   <td><%= booker.dose %></td>
                                                   <td id="pair-<%= booker.id %>">
-                                                  <% if booker.nextDate == nil and @clinic.pair1 > 0 and booker.dose==1 %>
+                                                  <% if booker.nextDate == nil and @clinic.pair1 != nil  and booker.dose==1 %>
                                                     <%= link_to 'Pair', pair_booker_path(booker),{:class => "btn btn-small btn-primary", :remote => true} %>
 
                                                   <% elsif booker.dose ==2 %>
                                                     ----
                                                   <% else %>
-                                                 <%= booker.nextDate.strftime("%d-%m-%y") %> <%= formatTime(booker.bookhour,booker.bookminute) %>
+                                                          <% if booker.nextDate != nil %>
+                                                           <%= booker.nextDate.strftime("%d-%m-%y") %> <%= formatTime(booker.bookhour,booker.bookminute) %>
+                                                          <% end %>
                                                  <% end %>
                                                  </td>
                                             <% end %>
