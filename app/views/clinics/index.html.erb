@@ -57,13 +57,19 @@
                          <% unless clinic.live %>
                             (Hidden)
                          <% end %>
-                       
+                     
                       </legend>
+                         <% if clinic.pair1 %>
+                         Paired with <%= Clinic.find(clinic.pair1).clinicdate.strftime("%A, %B %d") %>
+                        <% end %>
+                        <% if clinic.pair2 %>
+                         and <%= Clinic.find(clinic.pair2).clinicdate.strftime("%A, %B %d") %>
+                        <% end %> 
                       
 
                   </div> 
                   <div class="panel-body">
-                    
+
 
                       
                           <div class='btn-toolbar'>

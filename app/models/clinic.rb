@@ -2,6 +2,8 @@ class Clinic < ActiveRecord::Base
 	has_many :bookers, -> { order 'bookhour, bookminute' }
 	has_many :groups
 	belongs_to :group
+  belongs_to :clinic, foreign_key: :pair1
+
 
 	#attr_accessor :groups
 
@@ -12,7 +14,7 @@ class Clinic < ActiveRecord::Base
 
 	def self.findAllGroups(vaxType="Fluvax")
 
-		@allClinics = Clinic.where("vaxtype = ? and clinicdate >= ?",vaxType,Date.today).all
+		@allClinics = Clinic.where("vaxtype = ? and clinicdate >= ?",vaxType,Date.today).order(:clinicdate).all
 
 		return @allClinics
 
@@ -21,7 +23,7 @@ class Clinic < ActiveRecord::Base
 
   def self.findAllActiveGroups(vaxType="Fluvax")
 
-    @allClinics = Clinic.where("vaxtype = ? and clinicdate >= ? and live = ?",vaxType,Date.today,true).all
+    @allClinics = Clinic.where("vaxtype = ? and clinicdate >= ? and live = ?",vaxType,Date.today,true).order(:clinicdate).all
 
     return @allClinics
 
@@ -62,6 +64,73 @@ class Clinic < ActiveRecord::Base
           end
       end
       return returnValue
+
+    end
+
+    def pairOptions
+
+        self.clinicdate == nil ? thisClinicdate = Date.today : thisClinicdate=self.clinicdate
+        Clinic.where("template = ? and clinicdate > ? and clinicdate < ? and vaxtype='Covax'",false,thisClinicdate + 11.weeks, thisClinicdate + 13.weeks).all.collect { |c| [c.clinicdate.strftime('%d-%m-%Y') + "  (" + weeksBetween(c.clinicdate,thisClinicdate) + ")", c.id] }
+        #Clinic.where(template: false).all.collect { |c| [c.clinicdate.strftime('%y-%m-%d'), c.id] }
+
+    end
+
+    def weeksBetween (date1,date2)
+        dB = (date1 - date2).to_i
+        wB = dB/7
+        dayB=dB - (wB*7)
+        return wB.to_s + "w" + dayB.to_s + "d"
+
+    end
+
+    def self.removePair(gc)
+        aClinics = Clinic.where(pair1: gc).all
+        aClinics.each do |c|
+            c.update(pair1: nil)
+        end
+        aClinics = Clinic.where(pair2: gc).all
+        aClinics.each do |c|
+            c.update(pair2: nil)
+        end
+
+
+    end
+
+    def  makePair
+            theMess = ""
+            if self.pair1 !=nil and self.pair2 != nil 
+               theMess = " New pair not created as pair already selected"
+            elsif Clinic.where(clinicdate: self.clinicdate + 12.weeks).first
+              theMess = " New pair not created as clinic already existed on " + (self.clinicdate + 12.weeks).strftime("%d-%m-%Y")
+            else
+              @clinic2=self.dup
+              @clinic2.clinicdate = self.clinicdate + 12.weeks
+              @clinic2.pair1 = nil
+              @clinic2.pair2 = nil
+              @clinic2.live = false
+              @clinic2.save
+              self.update(pair1: @clinic2.id)
+              theMess = ' Hidden Paired Clinic also created for ' + @clinic2.clinicdate.strftime("%d-%m-%Y")
+            end
+            return theMess
+
+    end
+
+    def Clinic.findTime(clinic_id)
+        nextAppt=nil
+        clinic= Clinic.find(clinic_id)
+        clinic.groups.each do |group |
+            unless clinic.isBreak?(group.starthour,group.startminute)
+                  if group.vacancies > 0 
+                        nextAppt=[group.starthour,group.startminute]
+                        return nextAppt
+                        break
+                  end
+            end
+        end
+        return nextAppt
+
+
 
     end
 

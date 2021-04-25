@@ -1,9 +1,18 @@
 class VaxController < ApplicationController
   skip_before_filter :require_login
   def index
+
+        @vaxtype= params[:vaxtype]
+
   		@noDays=3
   		@noGroups=3
-  		@theText = "Hello, let's see if we can book you a vaccination.<p> Please click on one of the orange buttons below".html_safe
+  		@theText = "Hello, let's see if we can book you a vaccination.<p>"
+      if @vaxtype == "Fluvax" or @vaxtype == "Covax"
+        @theText = @theText + "Please click on the orange button below"
+      else
+        @theText = @theText + "Please click on one of the orange buttons below"
+      end
+      @theText=@theText.html_safe
       clinicTemplate=Clinic.where(vaxtype: "Covax", template: true).first
       @covaxAge = clinicTemplate.age
 
@@ -110,11 +119,36 @@ class VaxController < ApplicationController
 		                        @booker.save
 		                        @thePatient = @patient
 		                        @vaxtype = @clinic.vaxtype
+                            theMess=""
+                            # if it is a paired appointment, also book for that
+                            if @clinic.pair1 != nil and @booker.dose !=2
+                                #what would the first available starttime be
+                                nextAppt = Clinic.findTime(@clinic.pair1)
+                                useClinic=@clinic.pair1
+                                if nextAppt==nil and @clinic.pair2 !=nil
+                                   useClinic=@clinic.pair2
+                                  nextAppt=Clinic.findTime(@clinic.pair2)
+                                end
+                           
+                                if nextAppt
+                             
+                                    
+                                    @booker2=@booker.dup
+                                    @booker2.clinic_id = useClinic
+                                    @booker2.dose=2
+                                    @booker2.bookhour = nextAppt[0]
+                                    @booker2.bookminute = nextAppt[1]
+                                    @booker2.save
+                                    theMess = "<p>You are also booked in for your second vaccination on "+  @booker2.clinic.clinicdate.strftime("%A, %B %d")+ " at " + timeFormat(@booker2.bookhour,@booker2.bookminute)+ "."
+                                  end
+
+                            end
+
 
 
                       
 
-		                        @theText = "Good news. You are booked in for " + @booker.vaxtype + " on " + @clinic.clinicdate.strftime("%A, %B %d")+ " at " + timeFormat(@booker.bookhour,@booker.bookminute)
+		                        @theText = "Good news. You are booked in for " + @booker.vaxtype + " on " + @clinic.clinicdate.strftime("%A, %B %d")+ " at " + timeFormat(@booker.bookhour,@booker.bookminute) + theMess.html_safe
 		                        if @vaxtype =="Covax"
 
 		                        	@theText = @theText + "<p>Don't forget to bring your consent form"
@@ -127,10 +161,14 @@ class VaxController < ApplicationController
             					dbh.disconnect
 
                       unless @patient.email.blank?
-                        PatientMailer.clinic_booked(@booker.id,@patient.email).deliver_later
+                          booker2_id = 0
+                          if @booker2
+                              booker2_id=@booker2.id
+                          end
+                            PatientMailer.clinic_booked(@booker.id,booker2_id,@patient.email).deliver_later
                       end
-
-		                 end
+                        
+                end
 
              end
 
@@ -184,11 +222,12 @@ class VaxController < ApplicationController
 		          surname_text=""
 		          if surname and surname !=""
 		            surname = surname.sub("'"){"''"}
+                 surname=surname.strip
 		              surname_text= "Surname = '%s'" % surname
 		          end
 		          firstname_text=""
                   if firstname and firstname!=""
-                       firstname = firstname + "%"
+                       firstname = firstname[0..2] + "%"
                       firstname_text="(FirstName LIKE '%s'" % firstname
                       firstname_text=firstname_text + " OR KnownAs LIKE '%s'" % firstname
                       firstname_text+=")"

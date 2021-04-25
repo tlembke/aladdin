@@ -62,11 +62,11 @@ class ClinicsController < ApplicationController
         params[:vaxtype] ? @vaxtype = params[:vaxtype] : @vaxtype = "Fluvax"
 
         if @vaxtype == "Covax"
-            @clinics = Clinic.where(vaxtype: "Covax",template: false)
+            @clinics = Clinic.where(vaxtype: "Covax",template: false).order(:clinicdate)
         elsif @vaxtype == "Fluvax"
-            @clinics = Clinic.where(vaxtype: "Fluvax",template: false)
+            @clinics = Clinic.where(vaxtype: "Fluvax",template: false).order(:clinicdate)
         else
-            @clinics = Clinic.where(template: false)
+            @clinics = Clinic.where(template: false).order(:clinicdate)
         end
 
   end
@@ -101,10 +101,20 @@ class ClinicsController < ApplicationController
   # POST /clinics.json
   def create
     @clinic = Clinic.new(clinic_params)
-
+    theMess=""
     respond_to do |format|
       if @clinic.save
-        format.html { redirect_to admin_clinics_url(vaxtype: @clinic.vaxtype), notice: 'Clinic was successfully created.' }
+        
+        
+        # Were was asked to create a pair in three months?
+        if params[:makepair] and @clinic.vaxtype == "Covax"
+            theMess = @clinic.makePair
+
+
+        end
+
+
+        format.html { redirect_to admin_clinics_url(vaxtype: @clinic.vaxtype), notice: 'Clinic was successfully created.' + theMess }
         format.json { render :show, status: :created, location: @clinic }
       else
         format.html { render :new }
@@ -116,9 +126,13 @@ class ClinicsController < ApplicationController
   # PATCH/PUT /clinics/1
   # PATCH/PUT /clinics/1.json
   def update
+    theMess=""
     respond_to do |format|
       if @clinic.update(clinic_params)
-        format.html { redirect_to admin_clinics_url(vaxtype: @clinic.vaxtype), notice: 'Clinic was successfully updated.' }
+        if params[:makepair] and @clinic.vaxtype == "Covax"
+          theMess = @clinic.makePair
+        end
+        format.html { redirect_to admin_clinics_url(vaxtype: @clinic.vaxtype), notice: 'Clinic was successfully updated.' + theMess}
         format.json { render :show, status: :ok, location: @clinic }
       else
         format.html { render :edit }
@@ -133,6 +147,8 @@ class ClinicsController < ApplicationController
     @bookers=Booker.where(clinic_id: @clinic.id).all
     @vaxtype=@clinic.vaxtype
     if @bookers.count == 0
+      # need to remove it as a pair
+      Clinic.removePair(@clinic.id)
       @clinic.destroy
       @message = "Clinic was deleted"
     else
@@ -191,10 +207,46 @@ class ClinicsController < ApplicationController
                         @booker.dose=1
                         @booker.save
 
-                        # send email
 
+                            theMess=""
+                            # if it is a paired appointment, also book for that
+                            if @clinic.pair1 != nil and @booker.dose !=2
+                                #what would the first available starttime be
+                                nextAppt = Clinic.findTime(@clinic.pair1)
+                                useClinic=@clinic.pair1
+                                if nextAppt==nil and @clinic.pair2 !=nil
+                                   useClinic=@clinic.pair2
+                                  nextAppt=Clinic.findTime(@clinic.pair2)
+                                end
+                           
+                                if nextAppt
+                             
+                                    
+                                    @booker2=@booker.dup
+                                    @booker2.clinic_id = useClinic
+                                    @booker2.dose=2
+                                    @booker2.bookhour = nextAppt[0]
+                                    @booker2.bookminute = nextAppt[1]
+                                    @booker2.save
+                                
+                                    theMess = "Also booked in for a second vaccination on "+  @booker2.clinic.clinicdate.strftime("%A, %B %d")+ " at " + view_context.formatTime(@booker2.bookhour,@booker2.bookminute)+ "."
+                                   
+                                  end
+
+                            end
+
+
+
+
+
+
+                        # send email
+                        booker2_id = 0
+                        if @booker2
+                          booker2_id=@booker2.id
+                        end
                          unless @patient.email.blank?
-                              PatientMailer.clinic_booked(@booker.id,@patient.email).deliver_later
+                              PatientMailer.clinic_booked(@booker.id,booker2_id,@patient.email).deliver_later
                          end
                         
                     elsif params[:Surname]
@@ -252,7 +304,7 @@ class ClinicsController < ApplicationController
     respond_to do |format|
       format.html { 
         if @genie != 0
-           redirect_to clinics_url(vaxtype: @booker.vaxtype),  notice: @booker.firstname + " " + @booker.surname + " was booked in for " + @booker.vaxtype.upcase + " on " + @clinic.clinicdate.strftime("%A, %B %d") + " at " + view_context.formatTime(@booker.bookhour,@booker.bookminute)
+           redirect_to clinics_url(vaxtype: @booker.vaxtype),  notice: (@booker.firstname + " " + @booker.surname + " was booked in for " + @booker.vaxtype.upcase + " on " + @clinic.clinicdate.strftime("%A, %B %d") + " at " + view_context.formatTime(@booker.bookhour,@booker.bookminute) + "." +  theMess).html_safe
         end
        }
 
@@ -314,6 +366,6 @@ class ClinicsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def clinic_params
-      params.require(:clinic).permit(:clinicdate, :live, :starthour, :startminute, :finishhour, :finishminute, :perhour, :vaxtype, :venue, :people, :template, :age, :ATSIage, :chronic, :chronicage, :message,:hour,:minute,:genie,:healthcare,:break,:bstarthour,:bstartminute,:bfinishhour,:bfinishminute)
+      params.require(:clinic).permit(:clinicdate, :live, :starthour, :startminute, :finishhour, :finishminute, :perhour, :vaxtype, :venue, :people, :template, :age, :ATSIage, :chronic, :chronicage, :message,:hour,:minute,:genie,:healthcare,:break,:bstarthour,:bstartminute,:bfinishhour,:bfinishminute,:pair1,:pair2,:pair3)
     end
 end
