@@ -9,9 +9,19 @@
 
 </style>
 <% content_for :description do %>
-  <p><%= @clinic.venue %></p>
+  <p><b><%= @clinic.venue %></b>
+    <% if @clinic.pair1 %>
+                 Paired with <%= Clinic.find(@clinic.pair1).clinicdate.strftime("%A, %B %d") %>
+    <% end %>
 
   <% end %>
+
+<% content_for :actions do %>
+  <%= link_to clinics_path(vaxtype: @clinic.vaxtype), class: 'btn btn-primary btn-large pull-right' do %>
+  Back
+  <% end %>
+
+<% end %>
 
  <% hourCount= @clinic.starthour %>
 
@@ -44,6 +54,10 @@
                                              <% end %>
                                              <th></th>
                                              <th>Booked</th>
+                                             <% if @clinic.vaxtype =='Covax' %>
+                                              <th>Dose</th>
+                                              <th>Next</th>
+                                            <% end %>
                                             <th  class="actions">
                                               <% unless @clinic.isBreak?(hourCount,minCount) or @count >= @clinic.people %>
                                                     <%= link_to "Book", book_clinic_path(@clinic,hour: hourCount, minute: minCount) %>
@@ -62,6 +76,19 @@
                                             <td><%= booker.firstname %></td>
                                             <td><%= booker.dob.strftime("%d/%m/%Y") %></td>
                                             <td><%= booker.contactby == 1 ? "C" : "W" %></td>
+                                            <% if @clinic.vaxtype =='Covax' %>
+                                                  <td><%= booker.dose %></td>
+                                                  <td id="pair-<%= booker.id %>">
+                                                  <% if booker.nextDate == nil and @clinic.pair1 > 0 and booker.dose==1 %>
+                                                    <%= link_to 'Pair', pair_booker_path(booker),{:class => "btn btn-small btn-primary", :remote => true} %>
+
+                                                  <% elsif booker.dose ==2 %>
+                                                    ----
+                                                  <% else %>
+                                                 <%= booker.nextDate.strftime("%d-%m-%y") %> <%= formatTime(booker.bookhour,booker.bookminute) %>
+                                                 <% end %>
+                                                 </td>
+                                            <% end %>
                                             
   
                                             <td>

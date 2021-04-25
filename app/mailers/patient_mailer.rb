@@ -15,6 +15,14 @@ class PatientMailer < ActionMailer::Base
     mail(to: email, subject: 'Your ' + @booker.vaxtype+ ' booking at Alstonville CLinic')
 
   end
+
+  def second_booked(booker_id,email)
+    @booker=Booker.find(booker_id)
+    mail(to: email, subject: 'Your Second ' + @booker.vaxtype+ ' booking at Alstonville CLinic')
+
+  end
+
+
 end
 
 

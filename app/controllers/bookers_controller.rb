@@ -1,5 +1,5 @@
 class BookersController < ApplicationController
-  before_action :set_booker, only: [:show, :edit, :update, :destroy]
+  before_action :set_booker, only: [:show, :edit, :update, :destroy, :pair]
 
   # GET /bookers
   # GET /bookers.json
@@ -60,6 +60,44 @@ class BookersController < ApplicationController
       format.json { head :no_content }
     end
   end
+
+  def pair
+        # find appt to pair with
+        @theMessage = "Unable to Pair"
+
+        nextAppt = Clinic.findTime(@booker.clinic.pair1)
+        useClinic=@booker.clinic.pair1
+        if nextAppt==nil and @booker.clinic.pair2 !=nil
+             useClinic=@booker.clinic.pair2
+             nextAppt=Clinic.findTime(@booker.clinic.pair2)
+        end
+                           
+        if nextAppt
+     
+            
+            @booker2=@booker.dup
+            @booker2.clinic_id = useClinic
+            @booker2.dose=2
+            @booker2.bookhour = nextAppt[0]
+            @booker2.bookminute = nextAppt[1]
+            @booker2.save   
+            @theMessage = @booker2.clinic.clinicdate.strftime("%d-%m-%y")+ "  " + view_context.formatTime(@booker2.bookhour,@booker2.bookminute)
+
+
+            @patient = Patient.getPatientMini(@booker.genie)
+
+
+            unless @patient.email.blank?
+
+                            PatientMailer.second_booked(@booker.id,@patient.email).deliver_later
+             end 
+   
+        end
+
+
+  end
+
+
 
   private
     # Use callbacks to share common setup or constraints between actions.
