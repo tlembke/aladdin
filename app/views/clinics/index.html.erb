@@ -11,22 +11,29 @@
   <% end %>
 <% end %>
 
+
 <% content_for :actions do %>
-  <%= link_to admin_clinics_path(vaxtype: @vaxtype), class: 'btn btn-primary btn-large pull-right' do %>
-  Clinic Admin
-  <% end %>
+
+<%= image_tag @vaxtype.downcase+".png", width: '500'%>
+
+
 
 <% end %>
 
 <% clinics=Clinic.findAllGroups(@vaxtype) %>
 <% if clinics.length == 0 %>
      <div class= 'row'>
-      <div class="col-md-4">
-        <p>We have no <%= @vaxtype %> available currently.<p> Please check back in a few days.
-      </div>
-      <div class="col-md-8">
-        <%= render "hozform" %>
-      </div>
+          <div class="col-md-4">
+            <p>We have no <%= @vaxtype %> available currently.<p> Please check back in a few days.
+          </div>
+          <div class="col-md-7">
+            <%= render "hozform" %>
+          </div>
+          <div class="col-md-1">
+          <%= link_to admin_clinics_path(vaxtype: @vaxtype), class: 'btn btn-primary btn-large pull-right' do %>
+            Clinic Admin
+          <% end %>
+          </div>
       <div>
      
       
@@ -36,8 +43,13 @@
 
             We have the following <%= @vaxtype %> clinics available.<p>Please select the time that would suit best
         </div>
-          <div class="col-md-8">
+          <div class="col-md-7">
             <%= render "hozform" %>
+          </div>
+                    <div class="col-md-1">
+          <%= link_to admin_clinics_path(vaxtype: @vaxtype), class: 'btn btn-primary btn-large pull-right' do %>
+            Clinic Admin
+          <% end %>
           </div>
        </div>
 

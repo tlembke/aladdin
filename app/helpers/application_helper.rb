@@ -256,5 +256,17 @@ module ApplicationHelper
         return theText
    end
 
+   def doseNumber(dose1,dose2,vaxtype)
+          extraText=""
+          if vaxtype == "Covax"
+            extraText = " Dose 1"
+            if dose1
+                extraText=" Dose 2"
+            end
+          end
+          return extraText
+
+   end
+
 
 end
