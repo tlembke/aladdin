@@ -17,6 +17,7 @@
   <% end %>
 
 <% content_for :actions do %>
+<%= image_tag @clinic.vaxtype.downcase+".png", width: '500'%>
   <%= link_to clinics_path(vaxtype: @clinic.vaxtype), class: 'btn btn-primary btn-large pull-right' do %>
   Back
   <% end %>

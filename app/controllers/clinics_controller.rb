@@ -5,6 +5,12 @@ class ClinicsController < ApplicationController
   # GET /clinics.json
   def index
 
+      # temp fix
+      @orphans = Booker.where(dose: nil, vaxtype: "Covax").all
+      @orphans.update_all(dose: 1)
+
+
+
         # are there already templates?
         # if not make them using default values
        if  @fluvaxtemplate = Clinic.where(vaxtype: "Fluvax",template: true).first
@@ -204,11 +210,18 @@ class ClinicsController < ApplicationController
                               @booker.eligibility=2
                         end
                         @booker.contactby=1
+
                         @booker.dose=1
+                        if @booker.vaxtype == "Covax"
+                            if Booker.where(genie: @booker.genie,vaxtype: "Covax",dose: 1).first or params[:dose] == "2"
+                                  @booker.dose = 2
+                            end
+                        end
                         @booker.save
+                        theMess=""
+                        if @booker.vaxtype=="Covax"
 
-
-                            theMess=""
+                            
                             # if it is a paired appointment, also book for that
                             if @clinic.pair1 != nil and @booker.dose !=2
                                 #what would the first available starttime be
@@ -236,7 +249,7 @@ class ClinicsController < ApplicationController
                             end
 
 
-
+                        end
 
 
 
@@ -304,7 +317,7 @@ class ClinicsController < ApplicationController
     respond_to do |format|
       format.html { 
         if @genie != 0
-           redirect_to clinics_url(vaxtype: @booker.vaxtype),  notice: (@booker.firstname + " " + @booker.surname + " was booked in for " + @booker.vaxtype.upcase + " on " + @clinic.clinicdate.strftime("%A, %B %d") + " at " + view_context.formatTime(@booker.bookhour,@booker.bookminute) + "." +  theMess).html_safe
+           redirect_to clinics_url(vaxtype: @booker.vaxtype),  notice: (@booker.firstname + " " + @booker.surname + " was booked in for " + @booker.vaxtype.upcase + @booker.dose.to_s + " on " + @clinic.clinicdate.strftime("%A, %B %d") + " at " + view_context.formatTime(@booker.bookhour,@booker.bookminute) + "." +  theMess).html_safe
         end
        }
 
@@ -337,7 +350,7 @@ class ClinicsController < ApplicationController
  end
 
  def checkvaxbooking
-        @bookedresults=Booker.where("surname LIKE ?", params[:Surname]+"%").all
+        @bookedresults=Booker.where("surname LIKE ?", params[:Surname]+"%").order(:Surname, :Firstname).all
         @vaxtype=params[:vaxtype]
  end
 
