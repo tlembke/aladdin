@@ -4,6 +4,9 @@
     <meta content='text/html; charset=UTF-8' http-equiv='Content-Type' />
   </head>
   <body>
+
+Hi <%= @booker.firstname %>,<p>
+
 Thanks for booking for a <%= @booker.vaxtype.upcase %> at the Alstonville Clinic.
 <p>
 You are booked on <%= @booker.clinic.clinicdate.strftime("%A, %B %d") %> at <%= formatTime(@booker.bookhour,@booker.bookminute) %><p>
