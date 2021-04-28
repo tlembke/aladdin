@@ -336,13 +336,24 @@ class ClinicsController < ApplicationController
 
  end
  def unbook
+      theMess =""
       @booker = Booker.find(params[:bookerID])
+      genie=@booker.genie
       firstname=@booker.firstname
       surname = @booker.surname
+      if @booker.vaxtype == "Covax" and @booker.dose == 1
+          if @booker2 = Booker.where(genie: genie, vaxtype: "Covax", dose: 2).first
+                theMess = " Covax2 on " + @booker2.clinic.clinicdate.strftime("%d-%m-%Y") + " was also unbooked"
+                @booker2.destroy
+          end
+      end   
+      
+
+
       @booker.destroy
       respond_to do |format|
       format.html { 
-           redirect_to clinic_url, notice: @booker.firstname + " " + @booker.surname + " was unbooked."
+           redirect_to clinic_url, notice: @booker.firstname + " " + @booker.surname + " " + @booker.vaxtype + @booker.dose.to_s + " on " + @booker.clinic.clinicdate.strftime("%d-%m-%Y") + " was unbooked." + theMess
        }
 
     end
@@ -355,14 +366,22 @@ class ClinicsController < ApplicationController
  end
 
   def unbooksearch
+      theMess =""
       @booker = Booker.find(params[:bookerID])
       @vaxtype=params[:vaxtype]
       firstname=@booker.firstname
       surname = @booker.surname
+      genie=@booker.genie
+      if @booker.vaxtype == "Covax" and @booker.dose == 1
+          if @booker2 = Booker.where(genie: genie, vaxtype: "Covax", dose: 2).first
+                theMess = " Covax2 on " + @booker2.clinic.clinicdate.strftime("%d-%m-%Y") + " was also unbooked"
+                @booker2.destroy
+          end
+      end      
       @booker.destroy
       respond_to do |format|
       format.html { 
-           redirect_to clinics_path(vaxtype: @vaxtype), notice: @booker.firstname + " " + @booker.surname + " was unbooked."
+           redirect_to clinics_path(vaxtype: @vaxtype), notice: @booker.firstname + " " + @booker.surname + " " + @booker.vaxtype + @booker.dose.to_s + " on " + @booker.clinic.clinicdate.strftime("%d-%m-%Y") + " was unbooked." + theMess
        }
 
     end
