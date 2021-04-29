@@ -87,7 +87,7 @@
                                                     ----
                                                   <% else %>
                                                           <% if booker.nextDate != nil %>
-                                                           <%= booker.nextDate.strftime("%d-%m-%y") %> <%= formatTime(booker.bookhour,booker.bookminute) %>
+                                                           <%= booker.nextDateTime %>
                                                           <% end %>
                                                  <% end %>
                                                  </td>

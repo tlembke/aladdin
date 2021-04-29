@@ -64,6 +64,7 @@
                           		<th>Consent</th>
                           		<th>Arm</th>
                           		<th>Batch Number</th>
+                              <th>Next</th>
                           		<th>Billed</th>
                          </tr>
                         </thead>
@@ -78,6 +79,11 @@
                                             <td><input type="checkbox"></td>
                                             <td>  L   R  </td>
                                             <td></td>
+                                            <td>
+                                              <% if booker.nextDate != nil %>
+                                                           <%= booker.nextDateTime %>
+                                               <% end %>
+                                              </td>
                                             <td><input type="checkbox"></td>
                                             
   
@@ -106,6 +112,9 @@
                                             <td><input type="checkbox"></td>
                                             <td>  L   R  </td>
                                             <td></td>
+                                            <td>
+
+                                            </td>
                                             <td><input type="checkbox"></td>
                                             
   
