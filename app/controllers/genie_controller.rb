@@ -95,20 +95,6 @@ class GenieController < ApplicationController
       end
    end
 
-   def dashboard
-         redis_check  = `ps ax | grep "[r]edis"`
-         redis_check.blank? ? @redis = "Not running" : @redis = "Running"
-         sidekiq_check  = `ps ax | grep "[s]idekiq"`
-         sidekiq_check.blank? ? @sidekiq = "Not running ... will restart" : @sidekiq = "Running"
-         if sidekiq_check.blank?
-              system("#{Rails.root}/start_sidekiq.sh")
-         end
-
-
-
-
-   end
-
 
 
 
