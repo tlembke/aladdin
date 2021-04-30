@@ -41,6 +41,7 @@ class GenieController < ApplicationController
             end
             if connect
                   begin
+                   
       			           dbh=ODBC.connect(dsn_name,@username,@password)
                   rescue
         			         connect=false
@@ -76,6 +77,8 @@ class GenieController < ApplicationController
               session[:id]=@id
               session[:name]=@name
         		 	session[:username] = @username
+              crypt = ActiveSupport::MessageEncryptor.new(Rails.application.secrets.bickles_base)
+              @password = crypt.encrypt_and_sign(@password)
         		 	session[:password] = @password
               session[:provider] = @provider
               #session[:id] = id
@@ -90,6 +93,20 @@ class GenieController < ApplicationController
         end
 
       end
+   end
+
+   def dashboard
+         redis_check  = `ps ax | grep "[r]edis"`
+         redis_check.blank? ? @redis = "Not running" : @redis = "Running"
+         sidekiq_check  = `ps ax | grep "[s]idekiq"`
+         sidekiq_check.blank? ? @sidekiq = "Not running ... will restart" : @sidekiq = "Running"
+         if sidekiq_check.blank?
+              system("#{Rails.root}/start_sidekiq.sh")
+         end
+
+
+
+
    end
 
 
