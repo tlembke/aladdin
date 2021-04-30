@@ -1,3 +1,6 @@
+if defined?(::Rails::Server)
+	system(Rails.root.join('start_sidekiq.sh').to_s)
+end
 Sidekiq.configure_server do |config|
   config.redis = { url: 'redis://localhost:6379/0' }
 end
