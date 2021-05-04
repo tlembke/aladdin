@@ -117,7 +117,7 @@ class DocsController < ApplicationController
   # POST /docs.json
   def create
     @doc = Doc.new(doc_params)
-    if params[:web] == :true
+    if params[:web] == "true"
         @doc.filename = doc_params[:filename]
         unless @doc.filename.starts_with? "http://" or @doc.filename.starts_with? "https://"
             @doc.filename = "http://" + @doc.filename

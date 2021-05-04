@@ -30,7 +30,7 @@ class ApplicationController < ActionController::Base
   end
 
 
-def connect(username=session[:username],password=session[:password])
+def connect(username=session[:username],password=Pref.decrypt_password(session[:password]))
       error_code=0
       dbh=nil
       begin
