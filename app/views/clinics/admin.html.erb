@@ -102,6 +102,7 @@
                                 <td class="actions">
                   <%= link_to fa_icon_tag("eye"), clinic, rel: 'tooltip', title: 'Show' %>
                   <%= link_to fa_icon_tag("pencil"), edit_clinic_path(clinic), rel: 'tooltip', title: 'Edit' %>
+                  <%= link_to fa_icon_tag("print"), clinic_path(clinic,print: :true), rel: 'tooltip', title: 'Print' %>
                   <% if booked == 0 %>
                   <%= link_to fa_icon_tag("trash-o"), clinic, rel: 'tooltip', title: 'Delete',
                   data: { confirm: 'Are you sure?' }, method: :delete %>

@@ -6,15 +6,16 @@
   <body>
 
 Hi <%= @booker.firstname %>,<p>
-
+<p>
 Thanks for booking for a <%= @booker.vaxtype.upcase %> at the Alstonville Clinic.
 <p>
 You are booked on <%= @booker.clinic.clinicdate.strftime("%A, %B %d") %> at <%= formatTime(@booker.bookhour,@booker.bookminute) %><p>
+This clinic will be held at <b><%= @booker.clinic.venue %></b><p>
 <% if @booker2 %>
-You are also booked for your second vaccination on <%= @booker2.clinic.clinicdate.strftime("%A, %B %d") %> at <%= formatTime(@booker2.bookhour,@booker2.bookminute) %>
+You are also booked for your second vaccination on <%= @booker2.clinic.clinicdate.strftime("%A, %B %d") %> at <%= formatTime(@booker2.bookhour,@booker2.bookminute) %>. This clinic will <%= "also" if @booker.clinic.venue == @booker2.clinic.venue %> be held at <b><%= @booker2.clinic.venue %></b>
 <% end %>
 <p>
-<% if @booker.vaxtype == "Covax" %>
+<% if @booker.vaxtype == "Covax" and @booker.dose == 1 %>
 	Please read these two Dept of Health documents before you arrive for your appointment.
 			<ul>
 				<li><a href='https://www.health.gov.au/sites/default/files/documents/2021/04/covid-19-vaccination-information-on-covid-19-astrazeneca-vaccine_2.pdf'  target="_blank"><b>information about the AstraZeneca Covid-19 vaccine</b></a></li>
