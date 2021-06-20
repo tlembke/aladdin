@@ -1,0 +1,23 @@
+<div class="modal fade" id="case-modal" role="dialog">
+    <div class="modal-dialog">
+
+      <!-- Modal content-->
+     	<div class="modal-content">
+        	<div class="modal-header">
+         		 <button type="button" class="close" data-dismiss="modal">&times;</button>
+       			<h4>Document Case</h4>
+        	</div>
+     	 	<div class="modal-body">
+	     	 <button type='button' onClick="navigator.clipboard.writeText('<%= case_url(@patient.case.code) %>');$('#case-modal').modal('hide');">Copy</button>
+	     	      <% if @patient.case %>
+                      <%= link_to "Open".html_safe,case_path(@patient.case.code,name: @patient.fullname),{:class => "btn btn-primary"} %>
+                      <% else %>
+                      <%= link_to "Open".html_safe,new_case_path(patient_id: @patient.id,name: @patient.fullname),{:class => "btn btn-primary"} %>
+                     <% end %>
+			  </div> <!-- modal body -->
+			  <div class="modal-footer">
+	          	<button type="submit" class="btn btn-default btn-default pull-left" data-dismiss="modal"><span class="glyphicon glyphicon-remove"></span> Close</button>
+	          </div> <!-- modal footer -->
+		</div> <!-- modal content -->
+    </div> <!-- modal dialog -->
+  </div>  <!-- modal -->

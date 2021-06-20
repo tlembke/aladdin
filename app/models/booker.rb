@@ -23,4 +23,25 @@ class Booker < ActiveRecord::Base
 		      end
 		    return nextDate
     end
+
+    def patient
+    	return Patient.getPatientMini(self.genie)
+    end
+
+    def emaildec
+    	email = ""
+    	unless self.email.blank?
+    		crypt = ActiveSupport::MessageEncryptor.new(Rails.application.secrets.bickles_base)
+			email = crypt.decrypt_and_verify(self.email)
+		end
+		return email
+    end
+    def mobiledec
+    	mobile = ""
+    	unless self.mobile.blank?
+	    	crypt = ActiveSupport::MessageEncryptor.new(Rails.application.secrets.bickles_base)
+			mobile = crypt.decrypt_and_verify(self.mobile)
+		end
+		return mobile
+    end    
 end

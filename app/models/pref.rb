@@ -30,7 +30,9 @@ class Pref < ActiveRecord::Base
       :firstAppt=>{:name=>'First Appointment',:default => "8"},
       :lastAppt=>{:name=>'Last Appointment',:default => "18"},
       :lastAllAvailable=>{:name=>'Last All Available',:default => ""},
-      :clinicdays=>{:name=>'No. Clinics to show ',:default => "4"}
+      :clinicdays=>{:name=>'No. Clinics to show ',:default => "4"},
+      :TWILIO_ACCOUNT_SID=>{:name=>'TWILIO_ACCOUNT_SID',:default => "password"},
+      :TWILIO_AUTH_TOKEN=>{:name=>'TWILIO_AUTH_TOKEN',:default => "password"}
     }
   end
 

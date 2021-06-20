@@ -2,3 +2,6 @@
 :queues:
   - default
   - mailers
+  - textris
+  - workers
+  

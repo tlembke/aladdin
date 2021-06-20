@@ -37,7 +37,7 @@ class PrefsController < ApplicationController
     @pref = Pref.new(pref_params)
 
     # encrypt alladinpassword or webpassword
-    if @pref.name.include?  "password"
+    if @pref.name.include?  "password" or @pref.name.include? "TWILIO"
       crypt = ActiveSupport::MessageEncryptor.new(Rails.application.secrets.bickles_base)
       @pref.value = crypt.encrypt_and_sign(@pref.value)
     end
@@ -62,7 +62,7 @@ class PrefsController < ApplicationController
     @pref = Pref.find(params[:id])
     @pref.name = pref_params[:name]
     @pref.value= pref_params[:value]
-   if @pref.name.include?  "password"
+   if @pref.name.include?  "password" or @pref.name.include? "TWILIO"
       crypt = ActiveSupport::MessageEncryptor.new(Rails.application.secrets.bickles_base)
       encrypted_value = crypt.encrypt_and_sign(pref_params[:value])
       @pref.value = encrypted_value

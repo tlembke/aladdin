@@ -31,6 +31,8 @@
                      <%= link_to 'Annual', annual_patient_path(@patient.id), {:class => "btn btn-lg btn-primary"} %>
                      <%= link_to 'Pre', precheck_patient_path(@patient.id), {:class => "btn btn-lg btn-primary"} %>
                       <%= link_to 'Print',patient_path(@patient.id, :consult_id=> @consult['ID'], :print => "true"),{:class => "btn btn-lg btn-primary"} %>
+
+                     <%= link_to  "<i class='fa fa-briefcase'></i>".html_safe, case_path(@patient.case.code,name: @patient.fullname),{:class => "btn btn-primary"} %>
                      <% end %>
             </div>
 
@@ -38,6 +40,9 @@
         </div>
   </div>
 </div>
+
+
+<%= render "casemodal" %>
 
      <div class="row">
                     <div class="col-md-4">
@@ -73,6 +78,14 @@
                             </div>
                             <div class="col-md-10">
                             <%= @patient.mobilephone %>
+                            </div>
+                            
+                            <div class="col-md-2">
+                            Case: 
+                            </div>
+                            <div class="col-md-10">
+                            <%= case_url(@patient.case.code) %>
+                            <button type='button' onClick="navigator.clipboard.writeText('<%= case_url(@patient.case.code) %>');">Copy</button>
                             </div>
  
                         </div>
