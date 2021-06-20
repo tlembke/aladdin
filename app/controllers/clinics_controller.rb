@@ -1,5 +1,5 @@
 class ClinicsController < ApplicationController
-  before_action :set_clinic, only: [:show, :edit, :update, :destroy, :book]
+  before_action :set_clinic, only: [:show, :edit, :update, :destroy, :book, :email, :sms]
 
   # GET /clinics
   # GET /clinics.json
@@ -203,6 +203,11 @@ class ClinicsController < ApplicationController
                         @booker.vaxtype = @clinic.vaxtype
                         @booker.clinic_id = @clinic.id
 
+                        crypt = ActiveSupport::MessageEncryptor.new(Rails.application.secrets.bickles_base)
+                        @booker.email = crypt.encrypt_and_sign(@patient.email)
+                        @booker.mobile = crypt.encrypt_and_sign(@patient.mobilephone)
+
+
                         age = ((Time.zone.now - @patient.dob.to_time) / 1.year.seconds).floor
                         clinicTemplate=Clinic.where(vaxtype: @booker.vaxtype, template: true).first
                         @booker.eligibility=1
@@ -261,6 +266,7 @@ class ClinicsController < ApplicationController
                          unless @patient.email.blank?
                               PatientMailer.clinic_booked(@booker.id,booker2_id,@patient.email).deliver_later
                          end
+                         # AgentTexter.alert(params).deliver
                         
                     elsif params[:Surname]
 
@@ -285,10 +291,10 @@ class ClinicsController < ApplicationController
                       if surname_text!="" and firstname_text!=""
                         surname_text=surname_text + " AND "
                       end
-                      where_clause = surname_text + firstname_text
+                      where_clause = surname_text + firstname_text + " AND Deceased = false"
                       puts "Where is " + where_clause
                       if where_clause!=""
-                              sql = "SELECT Surname,FirstName,LastSeenDate,id,DOB FROM Patient WHERE " + where_clause + "ORDER BY Surname, FirstName"
+                              sql = "SELECT Surname,FirstName,LastSeenDate,id,DOB FROM Patient WHERE " + where_clause + " ORDER BY Surname, FirstName"
                               puts sql
 
                               sth = dbh.run(sql)
@@ -386,6 +392,164 @@ class ClinicsController < ApplicationController
 
     end
 
+ end
+
+ def emailreminders
+    params[:days] ? noDays = params[:days] : noDays = 1
+    # find clinics on that day
+    remindDate = Date.today + noDays.days
+    clinics = Clinic.where(clinicdate: remindDate).all
+    @reminders = []
+    clinics.each do |clinic|
+             clinic.bookers.each do |booker|
+             unless booker.email.blank?
+                    PatientMailer.email_reminder(booker.id).deliver_later
+                    @reminders << [booker.surname,booker.firstname,booker.clinic.clinicdate,booker.emaildec]
+              end
+
+        end
+    end
+
+
+
+
+  end
+
+  def email
+        @reminders = []
+        @clinic.bookers.each do |booker|
+             unless booker.email.blank?
+                    PatientMailer.email_reminder(booker.id).deliver_later
+                    @reminders << [booker.surname,booker.firstname,booker.clinic.clinicdate,booker.emaildec]
+              end
+        end
+        @reminderType = "email"
+        render :reminders
+
+
+  end
+
+  def sms
+    # find clinics on that day
+
+    if @clinic.clinicdate == Date.today
+        theTerm = "today"
+    elsif  @clinic.clinicdate == Date.tomorrow
+        theTerm = "tomorrow"
+    else 
+        theTerm = "on " + clinic.clinicdate.strftime("%A, %B %d")
+    end
+    @reminders = []
+
+    @clinic.bookers.each do |booker|
+             msg = "Reminder - you have an immunisation appointment " + theTerm + " at " + view_context.formatTime(booker.bookhour,booker.bookminute)
+             unless booker.mobile.blank?
+                    mobile=formatMobile(booker.mobiledec)
+                     AgentTexter.reminder(mobile: mobile, msg: msg).deliver_later
+                    @reminders << [booker.surname,booker.firstname,view_context.formatTime(booker.bookhour,booker.bookminute),mobile]
+              end
+
+
+    end
+    @reminderType = "sms"
+    render :reminders
+
+
+
+
+ end
+
+
+  def smsreminders
+    params[:days] ? noDays = params[:days] : noDays = 1
+    # find clinics on that day
+    remindDate = Date.today + noDays.days
+    if noDays ==0
+        theTerm ="today"
+    end
+    if noDays == 1
+        theTerm ="tomorrow"
+    end
+    if noDays > 1
+        theTerm = "on " + remindDate.strftime("%A, %B %d")
+    end
+    clinics = Clinic.where(clinicdate: remindDate).all
+    @reminders = []
+    clinics.each do |clinic|
+             clinic.bookers.each do |booker|
+             msg = "Reminder - you have an immunisation appointment " + theTerm + " at " + view_context.formatTime(booker.bookhour,booker.bookminute)
+             unless booker.mobile.blank?
+                    mobile=formatMobile(booker.mobiledec)
+                     AgentTexter.reminder(mobile: mobile, msg: msg).deliver_later
+                    @reminders << [booker.surname,booker.firstname,view_context.formatTime(booker.bookhour,booker.bookminute),mobile]
+              end
+
+        end
+    end
+
+
+
+
+ end
+
+ def formatMobile(mobile)
+                    mobile = mobile.gsub(/\s+/, "") # remove spaces
+                    if mobile.starts_with?("0")
+                        mobile=mobile[1..-1] #remove leading 0 
+                    end
+                    if mobile.starts_with?("6")
+                        mobile = "+"+ mobile
+                    end
+                    if mobile.starts_with?("4")
+                       mobile = "+61"+ mobile
+                    end
+                    return mobile
+
+ end
+
+ def updatecontacts
+      @username = session[:username]
+      @password = session[:password]
+      @id=session[:id]
+      @name=session[:name]
+      @bookersupdated=[]
+      connect_array=connect()
+      @error_code=connect_array[1]
+      if (@error_code==0)
+           dbh=connect_array[0]
+              clinics = Clinic.where("clinicdate >= ?",Date.today).all
+              clinics.each do |clinic|
+                  clinic.bookers.each do |booker|
+                      if booker.email.blank? or  booker.mobile.blank?
+                            @patient = Patient.get_patient(booker.genie.to_s,dbh)
+                            crypt = ActiveSupport::MessageEncryptor.new(Rails.application.secrets.bickles_base)
+                            booker.update_attributes(mobile: crypt.encrypt_and_sign(@patient.mobilephone), email: crypt.encrypt_and_sign(@patient.email))
+                            @bookersupdated << [booker.firstname,booker.surname,@patient.mobilephone,@patient.email]
+                      end
+                  end
+              end
+       else
+            flash[:alert] = "Unable to connect to database. "+get_odbc
+            flash[:notice] = connect_array[2]
+            redirect_to  controller: "genie", action: "login"
+      end
+
+ end
+   
+ 
+
+ def sendReminder
+      apptTime = Time.now
+      reminderTime = apptTime.change({ hour: 8, minute:0 })
+      #AgentTexter.alert(msg: "meeting at 7.30am").deliver
+      AgentTexter.alert(mobile: "+61413740060", msg: "meeting at 7.30am").deliver_later
+      AgentTexter.alert(mobile: "+61414320036", msg: "meeting at 7.30am").deliver_later
+      AgentTexter.alert(mobile: "+61437094047", msg: "meeting at 7.30am").deliver_later
+      AgentTexter.alert(mobile: "+61432296797", msg: "meeting at 7.30am").deliver_later
+      AgentTexter.alert(mobile: "+61413740060", msg: "no meeting at 8.00am").deliver_later(wait_until: reminderTime)
+      AgentTexter.alert(mobile: "+61414320036", msg: "mo meeting at 8.00am").deliver_later(wait_until: reminderTime)
+      AgentTexter.alert(mobile: "+61437094047", msg: "no meeting at 8.00am").deliver_later(wait_until: reminderTime)
+      AgentTexter.alert(mobile: "+61432296797", msg: "no meeting at 8.00am").deliver_later
  end
 
 

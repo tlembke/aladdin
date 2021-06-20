@@ -46,6 +46,8 @@ Rails.application.configure do
   
   config.active_job.queue_adapter = :sidekiq
 
+  config.textris_delivery_method = :twilio
+
   config.action_mailer.raise_delivery_errors = true 
   config.action_mailer.perform_deliveries = true
   config.action_mailer.delivery_method = :smtp
@@ -57,8 +59,6 @@ Rails.application.configure do
     :user_name  => "server34714",
     :password  => "s2A3YoFc56Kiz9Z7M"
   }
-
-
   # to stop putting sql in console
   config.after_initialize do
       ActiveRecord::Base.logger = Rails.logger.clone

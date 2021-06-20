@@ -22,7 +22,7 @@
 	  <div class="row" id = "fluvax" <%= "style='display:none'".html_safe unless @vaxtype == "Fluvax"%> >
 	                <div class="col-sm-11 col-md-11 col-lg-11 col-sm-offset-0 col-md-offset-1 col-lg-offset-1">
 	                  
- 						<h3>Flu vaccination</h3>
+	                    <h3>Flu vaccination</h3>
 
 	                    <% clinics=Clinic.findAllActiveGroups('Fluvax') %>
 	                    
@@ -54,9 +54,9 @@
 
 	               	 	<p>You can also <%= link_to 'check or change an existing appointment', vax_nextMessage_path(vaxtype: "Fluvax",message: :findpatient),{:remote => true} %>
 	               	 	<p>
-	               	 	<% end %>
-	               	 	<b>We have some private supplies of Fluvax available for people who are not eligible for a free vax.</b> <p>These are $20 (free to children under 5). Individuals and family groups should ring and book a visit with our nurses 02 66280505.
  						<p><p><button type="button" onClick= "$('#fluvax').slideUp();$('#covax').slideDown();">Oops, actually I'm after a Covax Vaccination</button>
+
+ 						
 					 </div >
 
                      <%= render "eligibility" %>

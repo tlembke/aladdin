@@ -60,9 +60,9 @@ class VaxController < ApplicationController
               @theText = @patient['KNOWNAS']=="" ? @patient['FIRSTNAME'] : @patient['KNOWNAS']
               @theText = "Thanks, " + @theText
               @theText += ". We have found you in our records."
-            # Does this person already have a booking?
-            @booker=Booker.where(genie: @thePatient['ID'],vaxtype: @vaxtype).first
-
+           
+            @booker=Booker.joins(:clinic).where("bookers.genie = ? and bookers.vaxtype = ? and clinics.clinicdate > ? ",@thePatient['ID'],@vaxtype, Date.today).first
+          
             if @booker
               @thePartial = "alreadyBooked"
               @clinic = @booker.clinic
@@ -241,7 +241,7 @@ class VaxController < ApplicationController
 		          # sql = "SELECT Surname,FirstName,FullName,LastSeenDate,LastSeenBy,AddressLine1, AddressLine2,Suburb,DOB, Age, Sex, MedicareNum, MedicareRefNum, IHI, HomePhone, MobilePhone,  CultureCode, EmailAddress,  PTCL_Id_Fk FROM Patient WHERE id = "+patient       
 
 
-		          where_clause = surname_text + dob_text
+		          where_clause = surname_text + dob_text + " AND Deceased = false"
 
                   sql = "SELECT Id, Surname,FirstName, KnownAs, EmailAddress, MobilePhone, Ethnicity FROM Patient WHERE " + where_clause
             

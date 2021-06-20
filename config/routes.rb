@@ -3,10 +3,15 @@ Rails.application.routes.draw do
 
 
 require 'sidekiq/web'
+require 'sidekiq/cron/web'
   mount Sidekiq::Web => '/sidekiq'
 
-  resources :cases, param: :code
-   resources :bookers do
+  resources :cases, param: :code do
+        member do
+              get 'close'
+        end
+  end
+  resources :bookers do
       member do
         get 'pair'
       end
@@ -21,11 +26,17 @@ require 'sidekiq/web'
       member do
         get 'book'
         get 'unbook'
+        get 'email'
+        get 'sms'
       end
       collection do
         get 'admin'
         get 'checkvaxbooking'
         get 'unbooksearch'
+        get 'sendReminder'
+        get 'emailreminders'
+        get 'updatecontacts'
+        get 'smsreminders'
       end
   end
   resources :providers

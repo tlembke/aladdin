@@ -1,0 +1,17 @@
+<% @title = "Updated contact information" %>
+
+<% content_for :description do %>
+This information was updated
+<% end %>
+
+<table class='table'>
+	<% @bookersupdated.each do |booker| %>
+			<tr>
+				<td><%= booker[0] %></td>
+				<td><%= booker[1] %></td>
+				<td><%= booker[2] %></td>
+				<td><%= booker[3] %></td>
+			</tr>
+	<% end %>
+</table>
+

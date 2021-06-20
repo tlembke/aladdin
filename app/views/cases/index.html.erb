@@ -1,0 +1,51 @@
+<% @title = "Listing cases" %>
+
+<% content_for :description do %>
+<p>Edit this template in <code>app/views/Cases/index.html.erb</code>.</p>
+<% end %>
+
+<% content_for :actions do %>
+<%= link_to new_case_path, class: 'btn btn-primary btn-large pull-right' do %>
+<%= fa_icon_tag "plus" %> Add Case
+<% end %>
+<% end %>
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+      <div class="sheet sheet-condensed">
+        <div class="sheet-inner">
+          <table class="table">
+            <thead>
+              <tr>
+                                <th>Code</th>
+                                <th>Patient</th>
+                                <th>Message</th>
+                                <th></th>
+              </tr>
+            </thead>
+            <tbody>
+              <% @cases.each do |nextcase| %>
+              <tr>
+                                <td><%= nextcase.code %></td>
+                                <td><%= nextcase.patient_id %></td>
+                                <td><%= nextcase.message %></td>
+                                <td class="actions">
+                  <%= link_to fa_icon_tag("eye"), nextcase, rel: 'tooltip', title: 'Show' %>
+                  <%= link_to fa_icon_tag("pencil"), edit_case_path(nextcase), rel: 'tooltip', title: 'Edit' %>
+                  <%= link_to fa_icon_tag("trash-o"), nextcase, rel: 'tooltip', title: 'Delete',
+                  data: { confirm: 'Are you sure?' }, method: :delete %>
+                </td>
+              </tr>
+              <% end %>
+              <% if @cases.length == 0 %>
+              <tr><td colspan=42 class='text-center'>No cases.</td></tr>
+              <% end %>
+            </tbody>
+          </table>
+        </div><!-- /.sheet-inner -->
+      </div><!-- /.sheet -->
+
+                </div>
+  </div>
+</div>

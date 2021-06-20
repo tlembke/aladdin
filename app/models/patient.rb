@@ -191,6 +191,15 @@ class Patient
 
   def case
      @case=Case.where(patient_id: self.id).first
+     unless @case
+            code = rand(36**8).to_s(36)
+            while  Case.where(code: code).first
+                code = rand(36**8).to_s(36)
+            end
+            @case = Case.new(code: code, patient_id: self.id)
+            @case.save
+     end
+     return @case
   end
 
 

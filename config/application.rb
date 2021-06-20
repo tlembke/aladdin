@@ -29,6 +29,10 @@ module Aladdin
      config.assets.paths << "#{Rails.root}/app/assets/stylesheets/bootstrap/" #All bootstraps css files location
      config.assets.paths << "#{Rails.root}/vendor/assets/fonts"
 
+     Redis.exists_returns_integer = false
+
+
+
      
      
   end

@@ -1,6 +1,7 @@
 class Doc < ActiveRecord::Base
 	# A Doc is a file uploaded to Aladdin, or a reference to a document created in Aladdin, or a reference to a url
 	has_and_belongs_to_many :tags
+	has_and_belongs_to_many :cases
 	attr_accessor :tag_string, :uploaded_doc
 
 

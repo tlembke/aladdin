@@ -1,0 +1,16 @@
+<% @title = "Reminders sent" %>
+
+<% content_for :description do %>
+These reminders were sent
+<% end %>
+
+<table class='table'>
+	<% @reminders.each do |booker| %>
+			<tr>
+				<td><%= booker[0] %></td>
+				<td><%= booker[1] %></td>
+				<td><%= booker[2] %></td>
+				<td><%= booker[3] %></td>
+			</tr>
+	<% end %>
+</table>

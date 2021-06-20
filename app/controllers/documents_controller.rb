@@ -5,7 +5,6 @@ class DocumentsController < ApplicationController
   # GET /documents
   # GET /documents.json
   def index
-    @case_id= session[:case]
     if params.has_key?(:code)
       @documents = Document.where(code: params[:code])
     else

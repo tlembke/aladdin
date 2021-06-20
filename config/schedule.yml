@@ -1,0 +1,4 @@
+clinic_reminders:
+    cron: "*/10 * * * *"
+    class: "ReminderWorker"
+

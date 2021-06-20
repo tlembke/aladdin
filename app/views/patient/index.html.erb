@@ -15,6 +15,8 @@
  		<%= link_to "CP", careplan_patient_path(:id=> patient['ID']),{:class => "btn btn-primary btn-xs"} %>
     <%= link_to "An", annual_patient_path(:id=> patient['ID']),{:class => "btn btn-primary btn-xs"} %>
     <%= link_to "Pre", precheck_patient_path(:id=> patient['ID']),{:class => "btn btn-primary btn-xs"} %>
+    <%= link_to "Pre", precheck_patient_path(:id=> patient['ID']),{:class => "btn btn-primary btn-xs"} %>
+    <%= link_to  "<i class='fa fa-briefcase'></i>".html_safe, new_case_path(patient_id: patient['ID'],name: patient['FIRSTNAME'] + " " + patient['SURNAME']),{:class => "btn btn-primary btn-xs"} %>
  		<br>
 
  	<% end %>
