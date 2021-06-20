@@ -253,7 +253,7 @@ def connect(username=session[:username],password=Pref.decrypt_password(session[:
         test=[]
         test[0]=tests_match[1]
         test[1]=tests_match[2]
-        tests<<test
+        tests << test
         # now remove that test from plan
         plan=plan.sub tests_match[0],'' 
     end
@@ -516,7 +516,7 @@ def connect(username=session[:username],password=Pref.decrypt_password(session[:
           sth = dbh.run(sql)      
           problems=[]
           sth.fetch do |row|
-            problems<<row[0]
+            problems << row[0]
           end
           sth.drop
            
@@ -566,7 +566,7 @@ def connect(username=session[:username],password=Pref.decrypt_password(session[:
           problems=[]
           sth.fetch do |row|
             unless row[0] == "Pathology" or row[0] == "Prescription(s)"
-              problems<<row[0]
+              problems << row[0]
             end
           end
           sth.drop
