@@ -70,7 +70,7 @@
                           		<th>Consent</th>
                           		<th>Arm</th>
                           		<th>BN</th>
-                              <th>Next</th>
+                                <th>Next</th>
                           		<th>Billed</th>
                          </tr>
                         </thead>
@@ -81,7 +81,7 @@
                                           
                                             <td><%= booker.dob.strftime("%d/%m/%Y") %></td>
                                             <td><%= booker.age.to_s %></td>
-                                            <td></td>
+                                            <td><%= booker.dose.to_s %></td>
                                             <td><input type="checkbox"></td>
                                             <td>  L   R  </td>
                                             <td></td>

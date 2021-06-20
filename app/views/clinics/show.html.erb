@@ -18,6 +18,9 @@
 
 <% content_for :actions do %>
 <%= image_tag @clinic.vaxtype.downcase+".png", width: '500'%>
+<%= link_to clinic_path(@clinic,print: :true),  class: 'btn btn-primary btn-large pull-right' do %>
+Print
+<% end %>
   <%= link_to clinics_path(vaxtype: @clinic.vaxtype), class: 'btn btn-primary btn-large pull-right' do %>
   Back
   <% end %>
@@ -54,6 +57,8 @@
                                                     <th><%= @count %> / <%= @clinic.people %></th>
                                              <% end %>
                                              <th></th>
+                                              <th>Mobile</th>
+                                           
                                              <th>Booked</th>
                                              <% if @clinic.vaxtype =='Covax' %>
                                               <th>Dose</th>
@@ -76,6 +81,8 @@
                                             <td><%= booker.surname %></td>
                                             <td><%= booker.firstname %></td>
                                             <td><%= booker.dob.strftime("%d/%m/%Y") %></td>
+                                            <td><%= booker.mobiledec %></td>
+                                        
                                             <td><%= booker.contactby == 1 ? "C" : "W" %></td>
                                             <% if @clinic.vaxtype =='Covax' %>
                                                   <td><%= booker.dose %></td>
