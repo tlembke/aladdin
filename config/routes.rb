@@ -6,7 +6,11 @@ require 'sidekiq/web'
   mount Sidekiq::Web => '/sidekiq'
 
   resources :cases, param: :code
-  resources :bookers
+   resources :bookers do
+      member do
+        get 'pair'
+      end
+  end
   get 'vax/index'
 
   get 'vax/nextMessage'
@@ -143,6 +147,7 @@ end
 
 
   get 'genie/home'
+  get 'genie/dashboard'
 
 
   # The priority is based upon order of creation: first created -> highest priority.

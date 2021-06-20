@@ -22,7 +22,26 @@
 	  <div class="row" id = "fluvax" <%= "style='display:none'".html_safe unless @vaxtype == "Fluvax"%> >
 	                <div class="col-sm-11 col-md-11 col-lg-11 col-sm-offset-0 col-md-offset-1 col-lg-offset-1">
 	                  
-	                    <h3>Flu vaccination</h3>
+ 						<h3>Flu vaccination</h3>
+
+	                    <% clinics=Clinic.findAllActiveGroups('Fluvax') %>
+	                    
+
+						<% if clinics.length == 0 %>
+						   Please call the clinic on 02 66280505 to book a time with our nurses to have your vaccination <p><p>
+				
+							<b>You may be eligible for a free fluvax from the government</b>.<p>
+	                    This applies to 
+	                    <ul>
+	                    <li>people aged 65 or over</li>
+	                    <li>people aged under 5</li>
+	                    <li>Aboriginal or Torres Strait Islander people</li>
+	                    <li>women who are pregnant</li>
+	                    <li>people who have certain medical conditions. Please <a href ='#designated-conditions-modal' onClick="$('#designated-conditions-modal').modal('show');">click here</a> to see if this applies to you.</a></li>
+	               	 	</ul>
+
+
+						<% else %>
 						 You can use this online booking form to book into a Fluvax clinic <b>if you aged over 18 and you eligible for a free fluvax from the government</b>.
 	                    This applies to 
 	                    <ul>
@@ -35,7 +54,8 @@
 
 	               	 	<p>You can also <%= link_to 'check or change an existing appointment', vax_nextMessage_path(vaxtype: "Fluvax",message: :findpatient),{:remote => true} %>
 	               	 	<p>
-	               	 	<b>We have some private supplies of Fluvax available for people who are not eligible for a free vax.</b> These are $20 (free to children under 5). Individuals and family groups should ring and book a visit with our nurses.
+	               	 	<% end %>
+	               	 	<b>We have some private supplies of Fluvax available for people who are not eligible for a free vax.</b> <p>These are $20 (free to children under 5). Individuals and family groups should ring and book a visit with our nurses 02 66280505.
  						<p><p><button type="button" onClick= "$('#fluvax').slideUp();$('#covax').slideDown();">Oops, actually I'm after a Covax Vaccination</button>
 					 </div >
 
@@ -49,16 +69,15 @@
 
 
 	                <div class="col-sm-11 col-md-11 col-lg-11 col-sm-offset-0 col-md-offset-1 col-lg-offset-1">           
-
 	               	 	 <h3>Coronavirus vaccination</h3>
 	               	 	 You can read more about coronavirus vaccination <a href='https://alstonville.clinic/coronavirus' target='_blank'>on this page</a><p>
-	               	 	 We have a limited supply of Coronavirus Vaccination.<p> 
-	               	 	 More is expected soon and eventually we hope to immunise everyone who chooses to be immunised.<p>
-	               	 	 We are currently arranging Coroanvirus Vaccination Clinics for our patients aged <%= @covaxAge.to_s%> or over, and also for patients of our clinic who are Health Care Workers.<p>
+	               	 	
+	               	 	 We are currently arranging Coroanvirus Vaccination Clinics for our patients aged <%= @covaxAge.to_s%> or over<p>
 	               	 	 <%= link_to 'I am eligible. Book me a Coronavirus Vaccination', vax_nextMessage_path(vaxtype: "Covax",message: :findpatient),{:class => "btn btn-lg btn-primary", :remote => true} %>
 	               	 	 <br>You can also <%= link_to 'check or change an existing appointment', vax_nextMessage_path(vaxtype: "Covax",message: :findpatient),{:remote => true} %>
 	               	 	<p>
-	               	 	 If you are younger than <%= @covaxAge.to_s%>, and not a health care worker, return to this page to see when we are ready for your age group.
+	               	 	 <b>If you are younger than <%= @covaxAge.to_s%>,</b> a covid vaccination clinic is now available at Lismore Base Hospital from 7am-3:30pm.<p>
+						 Phone Bookings 1800 438829<p>
 
 	               	 	    <p><p><button type="button" onClick= "$('#covax').slideUp();$('#fluvax').slideDown();">Oops, actually I'm after a Flu Vaccination</button>
 
