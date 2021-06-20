@@ -30,7 +30,7 @@ class ApplicationController < ActionController::Base
   end
 
 
-def connect(username=session[:username],password=session[:password])
+def connect(username=session[:username],password=Pref.decrypt_password(session[:password]))
       error_code=0
       dbh=nil
       begin
@@ -617,6 +617,15 @@ def connect(username=session[:username],password=session[:password])
 
   
 
+
+  end
+
+  def get_patient_name(id)
+    
+     connect_array=connect()
+     dbh=connect_array[0]
+     name=Patient.get_patient_name_from_id(id,dbh)
+     return name
 
   end
 

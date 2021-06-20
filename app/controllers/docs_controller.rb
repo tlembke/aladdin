@@ -1,5 +1,5 @@
 class DocsController < ApplicationController
-  before_action :set_doc, only: [:show, :edit, :update, :destroy]
+  before_action :set_doc, only: [:show, :edit, :update, :destroy, :addcase]
   # This controller is for docuemnts in the library, which includes those uploaded as well as those writted using the document controller
 
   # GET /docs
@@ -117,7 +117,7 @@ class DocsController < ApplicationController
   # POST /docs.json
   def create
     @doc = Doc.new(doc_params)
-    if params[:web] == :true
+    if params[:web] == "true"
         @doc.filename = doc_params[:filename]
         unless @doc.filename.starts_with? "http://" or @doc.filename.starts_with? "https://"
             @doc.filename = "http://" + @doc.filename
@@ -322,12 +322,12 @@ class DocsController < ApplicationController
       id=params[:id]
       case_id=params[:case_id]
 
-      @casedoc =CasesDoc.where("doc_id= ? and case_id = ?",id,case_id)
+      @casedoc =CasesDoc.where("doc_id= ? and case_id = ?",id,case_id).first
     
-      if @casedoc.count > 0
-            @casedoc.each do |reg |
-              reg.destroy
-            end
+      if @casedoc
+          
+            @doc.cases.delete(case_id)
+
       else
             @newcasedoc=CasesDoc.new(doc_id: id, case_id: case_id)
             #@new_register.update_attribute(:register_id, register_id)
