@@ -395,6 +395,7 @@ class ClinicsController < ApplicationController
  end
 
  def emailreminders
+    # not used
     params[:days] ? noDays = params[:days] : noDays = 1
     # find clinics on that day
     remindDate = Date.today + noDays.days
@@ -418,7 +419,7 @@ class ClinicsController < ApplicationController
   def email
         @reminders = []
         @clinic.bookers.each do |booker|
-             unless booker.email.blank?
+              if booker.emaildec  =~ URI::MailTo::EMAIL_REGEXP
                     PatientMailer.email_reminder(booker.id).deliver_later
                     @reminders << [booker.surname,booker.firstname,booker.clinic.clinicdate,booker.emaildec]
               end
@@ -445,7 +446,9 @@ class ClinicsController < ApplicationController
              msg = "Reminder - you have an immunisation appointment " + theTerm + " at " + view_context.formatTime(booker.bookhour,booker.bookminute)
              unless booker.mobile.blank?
                     mobile=formatMobile(booker.mobiledec)
+                    if Phony.plausible?(mobile)
                      AgentTexter.reminder(mobile: mobile, msg: msg).deliver_later
+                    end
                     @reminders << [booker.surname,booker.firstname,view_context.formatTime(booker.bookhour,booker.bookminute),mobile]
               end
 
@@ -461,6 +464,7 @@ class ClinicsController < ApplicationController
 
 
   def smsreminders
+    # not used
     params[:days] ? noDays = params[:days] : noDays = 1
     # find clinics on that day
     remindDate = Date.today + noDays.days
@@ -480,7 +484,9 @@ class ClinicsController < ApplicationController
              msg = "Reminder - you have an immunisation appointment " + theTerm + " at " + view_context.formatTime(booker.bookhour,booker.bookminute)
              unless booker.mobile.blank?
                     mobile=formatMobile(booker.mobiledec)
-                     AgentTexter.reminder(mobile: mobile, msg: msg).deliver_later
+                    if Phony.plausible?(mobile)
+                      AgentTexter.reminder(mobile: mobile, msg: msg).deliver_later
+                    end
                     @reminders << [booker.surname,booker.firstname,view_context.formatTime(booker.bookhour,booker.bookminute),mobile]
               end
 
@@ -494,6 +500,7 @@ class ClinicsController < ApplicationController
 
  def formatMobile(mobile)
                     mobile = mobile.gsub(/\s+/, "") # remove spaces
+                    mobile=mobile.delete('^0-9') #remove everything except digits
                     if mobile.starts_with?("0")
                         mobile=mobile[1..-1] #remove leading 0 
                     end
@@ -520,12 +527,12 @@ class ClinicsController < ApplicationController
               clinics = Clinic.where("clinicdate >= ?",Date.today).all
               clinics.each do |clinic|
                   clinic.bookers.each do |booker|
-                      if booker.email.blank? or  booker.mobile.blank?
+                      #if booker.email.blank? or  booker.mobile.blank?
                             @patient = Patient.get_patient(booker.genie.to_s,dbh)
                             crypt = ActiveSupport::MessageEncryptor.new(Rails.application.secrets.bickles_base)
                             booker.update_attributes(mobile: crypt.encrypt_and_sign(@patient.mobilephone), email: crypt.encrypt_and_sign(@patient.email))
                             @bookersupdated << [booker.firstname,booker.surname,@patient.mobilephone,@patient.email]
-                      end
+                      #end
                   end
               end
        else

@@ -65,11 +65,13 @@ class DocumentsController < ApplicationController
 
   # GET /documents/1/edit
   def edit
-     tag_array=[]
-     @document.doc.tags.each do |tag|
-         tag_array << tag.name
+    if @document.doc
+       tag_array=[]
+       @document.doc.tags.each do |tag|
+           tag_array << tag.name
+       end
+       @tag_string = tag_array.reject(&:blank?).join(',')
      end
-     @tag_string = tag_array.reject(&:blank?).join(',')
      @source=params['source']
   end
 
