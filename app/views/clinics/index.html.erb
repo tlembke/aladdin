@@ -69,6 +69,8 @@
                          <% unless clinic.live %>
                             (Hidden)
                          <% end %>
+                         <%= link_to "Email",email_clinic_path(clinic), class: 'btn btn-primary btn-small pull-right'  %>
+                         <%= link_to "SMS",sms_clinic_path(clinic), class: 'btn btn-primary btn-small pull-right'  %>
                      
                       </legend>
                          <% if clinic.pair1 %>
@@ -77,8 +79,7 @@
                         <% if clinic.pair2 %>
                          and <%= Clinic.find(clinic.pair2).clinicdate.strftime("%A, %B %d") %>
                         <% end %> 
-                        <%= link_to "Email",email_clinic_path(clinic), class: 'btn btn-small pull-right'  %>
-                         <%= link_to "SMS",sms_clinic_path(clinic), class: 'btn btn-small pull-right'  %>
+                        
                       
 
                   </div> 
