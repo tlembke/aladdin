@@ -20,7 +20,7 @@
 
 <% end %>
 
-<% clinics=Clinic.findAllGroups(@vaxtype) %>
+<% clinics=Clinic.findAllGroups(@vaxtype[0..-1]) %>
 <% if clinics.length == 0 %>
      <div class= 'row'>
           <div class="col-md-4">
@@ -63,6 +63,7 @@
                        
                         <%= link_to "Show",clinic_path(clinic), class: 'btn btn-danger btn-small'  %>
                         <%= link_to "Print",clinic_path(clinic,print: :true), class: 'btn btn-danger btn-small'  %>
+
                       
                         <%= link_to clinic.clinicdate.strftime("%A, %B %d"), clinic_path(clinic) %>
                          at <%= clinic.venue %>
@@ -73,6 +74,13 @@
                          <%= link_to "SMS",sms_clinic_path(clinic), class: 'btn btn-primary btn-small pull-right'  %>
                      
                       </legend>
+                          <% if clinic.vaxtype == "Covax" %>
+                              <b>AZ Covax (Age >= <%= @covaxtemplate.age %>)</b>
+                        <% elsif clinic.vaxtype=="CovaxP" %>
+                              <b>Pfizer Covax (Ages <%= @covaxPtemplate.age %> to <%= @covaxtemplate.age %>)</b>
+                        <% else %>
+                              <b>Fluvax</b>
+                        <% end %>
                          <% if clinic.pair1 %>
                          Paired with <%= Clinic.find(clinic.pair1).clinicdate.strftime("%A, %B %d") %>
                         <% end %>

@@ -19,6 +19,7 @@ class ClinicsController < ApplicationController
               @clinic = Clinic.new(vaxtype: "Fluvax", template: true)
               @clinic.save
               @fluvaxtemplateID = @clinic.id
+              @fluvaxtemplate= @clinic
         end
 
         if @covaxtemplate = Clinic.where(vaxtype: "Covax",template: true).first
@@ -26,14 +27,21 @@ class ClinicsController < ApplicationController
         else
               @clinic = Clinic.new(vaxtype: "Covax", template: true)
               @clinic.save
-              @covaxtemplateID = @clinic.id
+              @covaxtemplate = @clinic
         end
-
+        if @covaxPtemplate = Clinic.where(vaxtype: "CovaxP",template: true).first
+            @covaxPtemplateID = @covaxPtemplate.id
+        else
+              @clinic = Clinic.new(vaxtype: "CovaxP", template: true)
+              @clinic.save
+              @covaxPtemplate = @clinic
+              @covaxPtemplateID = @clinic.id
+        end
 
         params[:vaxtype] ? @vaxtype = params[:vaxtype] : @vaxtype = "Fluvax"
 
-        if @vaxtype == "Covax"
-            @clinics = Clinic.where(vaxtype: "Covax",template: false)
+        if @vaxtype.start_with? "Covax"
+            @clinics = Clinic.where("template == false and vaxtype LIKE 'Covax%'")
         elsif @vaxtype == "Fluvax"
             @clinics = Clinic.where(vaxtype: "Fluvax",template: false)
         else
@@ -64,13 +72,23 @@ class ClinicsController < ApplicationController
               @covaxtemplateID = @clinic.id
         end
 
+        if @covaxPtemplate = Clinic.where(vaxtype: "CovaxP",template: true).first
+            @covaxPtemplateID = @covaxPtemplate.id
+        else
+              @clinic = Clinic.new(vaxtype: "CovaxP", template: true)
+              @clinic.save
+              @covaxPtemplateID = @clinic.id
+        end
+
+
 
         params[:vaxtype] ? @vaxtype = params[:vaxtype] : @vaxtype = "Fluvax"
 
-        if @vaxtype == "Covax"
-            @clinics = Clinic.where(vaxtype: "Covax",template: false).order(:clinicdate)
+        if @vaxtype.start_with? "Covax"
+            @clinics = Clinic.where("vaxtype LIKE ? AND template = ?","Covax%",false).order(:clinicdate)
         elsif @vaxtype == "Fluvax"
             @clinics = Clinic.where(vaxtype: "Fluvax",template: false).order(:clinicdate)
+       
         else
             @clinics = Clinic.where(template: false).order(:clinicdate)
         end
@@ -92,7 +110,7 @@ class ClinicsController < ApplicationController
 
   # GET /clinics/new
   def new
-    params[:vaxtype] == "Covax" ? @vaxtype="Covax" : @vaxtype="Fluvax"
+    @vaxtype=params[:vaxtype]
     @clinic = Clinic.where(vaxtype: @vaxtype,template: true).first.dup
     @clinic.template = false
     
@@ -113,7 +131,7 @@ class ClinicsController < ApplicationController
         
         
         # Were was asked to create a pair in three months?
-        if params[:makepair] and @clinic.vaxtype == "Covax"
+        if params[:makepair] and @clinic.vaxtype.start_with?("Covax")
             theMess = @clinic.makePair
 
 
@@ -135,7 +153,7 @@ class ClinicsController < ApplicationController
     theMess=""
     respond_to do |format|
       if @clinic.update(clinic_params)
-        if params[:makepair] and @clinic.vaxtype == "Covax"
+        if params[:makepair] and @clinic.vaxtype.start_with("Covax")
           theMess = @clinic.makePair
         end
         format.html { redirect_to admin_clinics_url(vaxtype: @clinic.vaxtype), notice: 'Clinic was successfully updated.' + theMess}

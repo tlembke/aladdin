@@ -14,7 +14,7 @@ class Clinic < ActiveRecord::Base
 
 	def self.findAllGroups(vaxType="Fluvax")
 
-		@allClinics = Clinic.where("vaxtype = ? and clinicdate >= ?",vaxType,Date.today).order(:clinicdate).all
+		@allClinics = Clinic.where("vaxtype LIKE ? and clinicdate >= ?",vaxType+"%",Date.today).order(:clinicdate).all
 
 		return @allClinics
 
@@ -70,9 +70,13 @@ class Clinic < ActiveRecord::Base
     def pairOptions
 
         self.clinicdate == nil ? thisClinicdate = Date.today : thisClinicdate=self.clinicdate
-        Clinic.where("template = ? and clinicdate > ? and clinicdate < ? and vaxtype='Covax'",false,thisClinicdate + 11.weeks, thisClinicdate + 13.weeks).all.collect { |c| [c.clinicdate.strftime('%d-%m-%Y') + "  (" + weeksBetween(c.clinicdate,thisClinicdate) + ")", c.id] }
-        #Clinic.where(template: false).all.collect { |c| [c.clinicdate.strftime('%y-%m-%d'), c.id] }
-
+        if self.vaxtype=="Covax"
+            Clinic.where("template = ? and clinicdate > ? and clinicdate < ? and vaxtype='Covax'",false,thisClinicdate + 11.weeks, thisClinicdate + 13.weeks).all.collect { |c| [c.clinicdate.strftime('%d-%m-%Y') + "  (" + weeksBetween(c.clinicdate,thisClinicdate) + ")", c.id] }
+            #Clinic.where(template: false).all.collect { |c| [c.clinicdate.strftime('%y-%m-%d'), c.id] }
+        else
+            Clinic.where("template = ? and clinicdate > ? and clinicdate < ? and vaxtype='CovaxP'",false,thisClinicdate + 3.weeks - 3.days, thisClinicdate + 3.weeks + 3.days).all.collect { |c| [c.clinicdate.strftime('%d-%m-%Y') + "  (" + weeksBetween(c.clinicdate,thisClinicdate) + ")", c.id] }
+  
+        end
     end
 
     def weeksBetween (date1,date2)
@@ -97,14 +101,15 @@ class Clinic < ActiveRecord::Base
     end
 
     def  makePair
+            self.vaxtype == "Covax" ? noWeeks=12 : noWeeks=3
             theMess = ""
             if self.pair1 !=nil and self.pair2 != nil 
                theMess = " New pair not created as pair already selected"
-            elsif Clinic.where(clinicdate: self.clinicdate + 12.weeks).first
-              theMess = " New pair not created as clinic already existed on " + (self.clinicdate + 12.weeks).strftime("%d-%m-%Y")
+            elsif Clinic.where(clinicdate: self.clinicdate + noWeeks.weeks).first
+              theMess = " New pair not created as clinic already existed on " + (self.clinicdate + noWeeks.weeks).strftime("%d-%m-%Y")
             else
               @clinic2=self.dup
-              @clinic2.clinicdate = self.clinicdate + 12.weeks
+              @clinic2.clinicdate = self.clinicdate + noWeeks.weeks
               @clinic2.pair1 = nil
               @clinic2.pair2 = nil
               @clinic2.live = false

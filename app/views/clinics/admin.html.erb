@@ -4,31 +4,45 @@
 <% if @vaxtype == "Fluvax" %>
   Show <%= link_to "Covax Clinics",admin_clinics_path(vaxtype: "Covax")  %> instead
 <% end %>
-<% if @vaxtype == "Covax" %>
+<% if @vaxtype.start_with? "Covax" %>
   Show <%= link_to "Fluvax Clinics",admin_clinics_path(vaxtype: "Fluvax")  %> instead
 <% end %>
 <% end %>
 
 
 <% content_for :actions do %>
-<%= link_to new_clinic_path(vaxtype: @vaxtype), class: 'btn btn-primary btn-large pull-right' do %>
-<%= fa_icon_tag "plus" %> Add <%= @vaxtype %> Clinic
+<%= link_to new_clinic_path(vaxtype: "Covax"), class: 'btn btn-primary btn-large' do %>
+<%= fa_icon_tag "plus" %> Add Covax AZ Clinic
+<% end %>
+<% if @vaxtype.start_with? "Covax" %>
+  <%= link_to new_clinic_path(vaxtype: "CovaxP"), class: 'btn btn-primary btn-large' do %>
+  <%= fa_icon_tag "plus" %> Add Covax P Clinic
+  <% end %>
+
 <% end %>
 
-<% unless  @vaxtype == "Covax" %>
-    <%= link_to edit_clinic_path(@fluvaxtemplateID), class: 'btn btn-primary btn-large pull-right' do %>
+
+<% unless  @vaxtype.start_with? "Covax" %>
+  <%= link_to new_clinic_path(vaxtype: @vaxtype), class: 'btn btn-primary btn-large' do %>
+  <%= fa_icon_tag "plus" %> Add <%= @vaxtype %> Clinic
+  <% end %>
+    <%= link_to edit_clinic_path(@fluvaxtemplateID), class: 'btn btn-primary btn-large t' do %>
     Edit Fluvax Template
-    <% end %>
+   <% end %>
 
 
 
 <% end %>
-<% if  @vaxtype == "Covax" %>
-      <%= link_to edit_clinic_path(@covaxtemplateID), class: 'btn btn-primary btn-large pull-right' do %>
-    Edit Covax Template
+
+<% if  @vaxtype.start_with? "Covax" %>
+      <%= link_to edit_clinic_path(@covaxtemplateID), class: 'btn btn-primary btn-large' do %>
+    Edit Covax AZ Template
+    <% end %>
+      <%= link_to edit_clinic_path(@covaxPtemplateID), class: 'btn btn-primary btn-large' do %>
+    Edit Covax P Template
     <% end %>
 <% end %>
-     <%= link_to clinics_path(vaxtype: @vaxtype), class: 'btn btn-primary btn-large pull-right' do %>
+     <%= link_to clinics_path(vaxtype: @vaxtype), class: 'btn btn-primary btn-large ' do %>
     Exit Admin
     <% end %>
 <% end %>
@@ -44,7 +58,8 @@
                                 <th>Clinicdate</th>
                                 <th>No</th>
                                 <th>Show</th>
-                                <% if @vaxtype == "Covax" %>
+                                <% if @vaxtype.start_with? "Covax" %>
+                                <th>Type</th>
                                 <th>Pair1</th>
                                 <th>Pair2</th>
 
@@ -79,8 +94,8 @@
                                 <td><%= clinic.clinicdate.strftime("%d-%m-%Y") %></td>
                                 <td><%= booked %>
                                 <td><%= clinic.live %></td>
-                                 <% if @vaxtype == "Covax" %>
-
+                                 <% if @vaxtype.start_with? "Covax" %>
+                                <td><%= clinic.vaxtype == "Covax" ? "AZ" : "P" %>
                                 <td><%= Clinic.find(clinic.pair1).clinicdate.strftime("%d-%m-%Y") if clinic.pair1%></td>
                                 <td><%= Clinic.find(clinic.pair2).clinicdate.strftime("%d-%m-%Y") if clinic.pair2%></td>
                                 <% end %>
