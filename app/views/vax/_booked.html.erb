@@ -38,7 +38,7 @@
 						 	<div class="panel-heading">
 			          		<legend class="panel-title">
 			          		
-			          			<b><%= @booker.vaxtype.upcase %> CLINIC :  <%= @clinic.venue %></b>
+			          			<b><%= fullVaxtype(@booker.vaxtype).upcase %> CLINIC :  <%= @clinic.venue %></b>
 			          		</legend>
 			         		</div> 
 			         		<div class="panel-body">
@@ -80,7 +80,7 @@
 						 	<div class="panel-heading">
 			          		<legend class="panel-title">
 			          		
-			          			<b><%= @booker.vaxtype.upcase %> CLINIC :  <%= @clinic2.venue %></b>
+			          			<b><%= fullVaxtype(@booker.vaxtype).upcase %> CLINIC :  <%= @clinic2.venue %></b>
 			          		</legend>
 			         		</div> 
 			         		<div class="panel-body">

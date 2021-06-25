@@ -15,6 +15,8 @@ class VaxController < ApplicationController
       @theText=@theText.html_safe
       clinicTemplate=Clinic.where(vaxtype: "Covax", template: true).first
       @covaxAge = clinicTemplate.age
+      clinicPTemplate=Clinic.where(vaxtype: "CovaxP", template: true).first
+      @covaxPAge = clinicPTemplate.age
 
 
 
@@ -26,6 +28,10 @@ class VaxController < ApplicationController
 
 
   def nextMessage
+      clinicTemplate=Clinic.where(vaxtype: "Covax", template: true).first
+      @covaxAge = clinicTemplate.age
+      clinicPTemplate=Clinic.where(vaxtype: "CovaxP", template: true).first
+      @covaxPAge = clinicTemplate.age
   		@thePatient =[]
   		@theText = ""
   		case params[:message]
@@ -74,6 +80,7 @@ class VaxController < ApplicationController
 
   					  @theText += ". We have found you in our records."
   	  				@thePartial = "confirmPatient"
+
             end
 	  			end
 
@@ -147,8 +154,13 @@ class VaxController < ApplicationController
 
 
                       
-
-		                        @theText = "Good news. You are booked in for " + @booker.vaxtype + " on " + @clinic.clinicdate.strftime("%A, %B %d")+ " at " + timeFormat(@booker.bookhour,@booker.bookminute) + theMess.html_safe
+                            clinicName = @vaxtype
+                            if clinicName == "Covax"
+                                clinicName = "Covid 19 Vaccination (Astra Zeneca)"
+                            elsif clinicName == "CovaxP"  
+                                clinicName = "Covid 19 Vaccination (Pfizer)"
+                            end
+		                        @theText = "Good news. You are booked in for " + clinicName + " on " + @clinic.clinicdate.strftime("%A, %B %d")+ " at " + timeFormat(@booker.bookhour,@booker.bookminute) + theMess.html_safe
 		                        if @vaxtype =="Covax"
 
 		                        	@theText = @theText + "<p>Don't forget to bring your consent form"
@@ -282,7 +294,14 @@ class VaxController < ApplicationController
               age = ((Time.zone.now - dob.to_time) / 1.year.seconds).floor
 
               # get criteria for vaxtype
-              clinicTemplate=Clinic.where(vaxtype: vaxtype, template: true).first
+              if vaxtype=="Fluvax"
+                clinicTemplate=Clinic.where(vaxtype: vaxtype, template: true).first
+              else
+                clinicTemplate=Clinic.where(vaxtype: "CovaxP", template: true).first
+                clinicTemplateAZ = Clinic.where(vaxtype: "Covax", template: true).first
+              end
+
+
 
               
 
@@ -311,6 +330,12 @@ class VaxController < ApplicationController
               @patient['CRITERIAMESSAGE'] = criteriaMessage
               @patient['CRITERIABOXES'] = criteriaBoxes
               @patient['ELIGIBLE'] = eligible
+              @patient['AGE'] = age
+              if age < clinicTemplateAZ.age 
+                  @vaxtype="CovaxP"
+              end
+
+
 
 
 

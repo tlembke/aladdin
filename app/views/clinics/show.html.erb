@@ -56,7 +56,8 @@ Print
                                              <% else %>
                                                     <th><%= @count %> / <%= @clinic.people %></th>
                                              <% end %>
-                                             <th></th>
+                                             <th>DOB</th>
+                                             <th>Age</th>
                                               <th>Mobile</th>
                                            
                                              <th>Booked</th>
@@ -80,7 +81,8 @@ Print
                           <tr>
                                             <td><%= booker.surname %></td>
                                             <td><%= booker.firstname %></td>
-                                            <td><%= booker.dob.strftime("%d/%m/%Y") %></td>
+                                            <td><%= booker.dob.strftime("%d/%m/%Y") %>
+                                            <td><%= booker.age %></td>
                                             <td><%= booker.mobiledec %></td>
                                         
                                             <td><%= booker.contactby == 1 ? "C" : "W" %></td>
