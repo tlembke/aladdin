@@ -12,7 +12,7 @@ class PatientMailer < ActionMailer::Base
     if booker2_id > 0 
     		@booker2=Booker.find(booker2_id)
     end
-    mail(to: email, subject: 'Your ' + @booker.vaxtype+ ' booking at Alstonville CLinic')
+    mail(to: email, subject: 'Your ' + @booker.vaxtype+ ' booking at Alstonville Clinic')
 
   end
 
