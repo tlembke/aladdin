@@ -1,8 +1,3 @@
-#if defined?(::Rails::Server)
-#	system(Rails.root.join('start_sidekiq.sh').to_s)
-#end
-#system("#{Rails.root}/start_sidekiq")
-
 system(Rails.root.join('start_sidekiq.sh').to_s)
 
 Sidekiq.configure_server do |config|
