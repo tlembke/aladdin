@@ -1,4 +1,4 @@
-	<% if @vaxtype == "Covax" %>
+	<% if @vaxtype.start_with? "Covax" %>
 		<div class= 'row'>
 								
 		
@@ -7,12 +7,22 @@
 
 
 			<div class="col-md-9 col-md-offset-3">
+				<ul>
 			Please read these two Dept of Health documents before you arrive for your appointment.
-			<ul>
-				<li><a href='https://www.health.gov.au/sites/default/files/documents/2021/04/covid-19-vaccination-information-on-covid-19-astrazeneca-vaccine_2.pdf'  target="_blank"><b>information about the AstraZeneca Covid-19 vaccine</b></a></li>
-				<li><a href='https://www.health.gov.au/sites/default/files/documents/2021/04/covid-19-vaccination-after-your-astrazeneca-vaccine-covid-19-vaccination-after-your-astrazeneca-vaccine.pdf' target="_blank"><b>what to expect after your AstraZeneca vaccine</b></a></li>
-			</ul>
+			<% if @vaxtype =="Covax" %>
+			
+					<li><a href='https://www.health.gov.au/sites/default/files/documents/2021/04/covid-19-vaccination-information-on-covid-19-astrazeneca-vaccine_2.pdf'  target="_blank"><b>information about the AstraZeneca Covid-19 vaccine</b></a></li>
+					<li><a href='https://www.health.gov.au/sites/default/files/documents/2021/04/covid-19-vaccination-after-your-astrazeneca-vaccine-covid-19-vaccination-after-your-astrazeneca-vaccine.pdf' target="_blank"><b>what to expect after your AstraZeneca vaccine</b></a></li>
+				
+			<% else %>
+
+					<li><a href='https://www.health.gov.au/sites/default/files/documents/2021/06/covid-19-vaccination-information-on-covid-19-pfizer-comirnaty-vaccine.pdf'  target="_blank"><b>information about the Pfizer Covid-19 vaccine</b></a></li>
+					<li><a href='https://www.health.gov.au/sites/default/files/documents/2021/03/covid-19-vaccination-after-your-pfizer-comirnaty-vaccine-covid-19-vaccination-after-your-pfizer-comirnaty-vaccine.pdf' target="_blank"><b>what to expect after your Pfizer vaccine</b></a></li>
+
+		 	<% end %>
+		 	    </ul>
 		 	</div>
+
 
 		 				<div class="col-md-9 col-md-offset-3"><p><p>If you can, please download, print and complete this consent form and bring it with you to your clinic appointment</div>
 			<div class="col-md-8 col-md-offset-4"><b><a href='https://www.health.gov.au/sites/default/files/documents/2021/03/covid-19-vaccination-consent-form-for-covid-19-vaccination-covid-19-vaccination-consent-form-print-friendly.pdf'  target="_blank"><%= image_tag("pdf.png", size: "50x50") %> Download Consent Form </a></b>
@@ -126,6 +136,7 @@
 									
 									
 										<div class="col-md-4 col-md-offset-3"> <%= link_to "Book another appointment",vax_index_path,{:class => "btn btn-lg btn-primary btn-block"} %>
+										</div>
 						
 								</div>
 

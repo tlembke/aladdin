@@ -373,11 +373,11 @@ def healthsummary
           @mode="precheck"
           sth = dbh.run(sql)
            sth.fetch_hash do |row|
-            patient_array<<row['ID'].to_s
+            patient_array << row['ID'].to_s
           end
           @patients=[]
           patient_array.each do |patient|
-            @patients<<getall_patient(patient,dbh,"precheck")
+            @patients << getall_patient(patient,dbh,"precheck")
           end
           sth.drop
           @alcohol_status = get_alcohol_status(dbh)
@@ -401,7 +401,7 @@ def healthsummary
           dbh=connect_array[0]
           @patients=[]
           @mode="precheck"
-          @patients<<getall_patient(@id,dbh,"precheck")
+          @patients << getall_patient(@id,dbh,"precheck")
           dbh.disconnect
     else    # lost connection to database
           flash[:notice]=connect_array[2]
@@ -1462,26 +1462,7 @@ def cma
 
   end
 
-    def get_immunisations(patient,dbh)
-          sql = "SELECT ACIRCode, GivenDate, Vaccine FROM Vaccination WHERE PT_Id_FK = " + patient.to_s + "ORDER BY GivenDate DESC"
-          puts sql
-         
 
-          sth = dbh.run(sql)
-               
-          immunisations=[]
-          sth.fetch_hash do |row|
-
-            immunisations<< row
-          end
-
-         
-
-         
-          sth.drop
-          return immunisations
-
-    end
 
 
     def get_medications_amt(patient,dbh)
@@ -1738,7 +1719,7 @@ end
           sth = dbh.run(sql)      
           problems=[]
           sth.fetch do |row|
-            problems<<row[0]
+            problems << row[0]
           end
           sth.drop
           return problems

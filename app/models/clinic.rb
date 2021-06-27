@@ -105,7 +105,7 @@ class Clinic < ActiveRecord::Base
             theMess = ""
             if self.pair1 !=nil and self.pair2 != nil 
                theMess = " New pair not created as pair already selected"
-            elsif Clinic.where(clinicdate: self.clinicdate + noWeeks.weeks).first
+            elsif Clinic.where(clinicdate: self.clinicdate + noWeeks.weeks, vaxtype: self.vaxtype).first
               theMess = " New pair not created as clinic already existed on " + (self.clinicdate + noWeeks.weeks).strftime("%d-%m-%Y")
             else
               @clinic2=self.dup

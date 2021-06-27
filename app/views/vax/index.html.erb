@@ -75,16 +75,24 @@
 	               	 	 <h3>Coronavirus vaccination</h3>
 	               	 	 You can read more about coronavirus vaccination <a href='https://alstonville.clinic/coronavirus' target='_blank'>on this page</a><p>
 	               	 	
-	               	 	 We are currently arranging Coroanvirus Vaccination Clinics for our patients aged <%= @covaxAge.to_s%> or over<p>
+	               	 	 We are currently arranging Coroanvirus Vaccination Clinics for our patients aged <%= @covaxPAge.to_s%> or over<p>
+	               	 		<% if @clinicPTemplate.healthcare %>
+	               	 		Health and aged care workers aged under 40 are also eligbile for vaccination <a href ="#health-care-worker-modal" onClick="$('#health-care-worker-modal').modal('show');">(click for details and explanation)</a><p>
+	               	 		<% end %>
+	               	 		<% if @clinicPTemplate.chronic %>
+	               	 		People with designated serious medical conditions aged under 40 may be also eligbile for vaccination <a href ="#covid-eligibility-modal" onClick="$('#covid-eligibility-modal').modal('show');">Click to see Designated Conditions</a><p>
+	               	 		<% end %>
 	               	 	 <%= link_to 'I am eligible. Book me a Coronavirus Vaccination', vax_nextMessage_path(vaxtype: "Covax",message: :findpatient),{:class => "btn btn-lg btn-primary", :remote => true} %>
 	               	 	 <br>You can also <%= link_to 'check or change an existing appointment', vax_nextMessage_path(vaxtype: "Covax",message: :findpatient),{:remote => true} %>
 	               	 	<p>
-	               	 	 If you are younger than <%= @covaxAge.to_s%> return to this page to see when we are ready for your age group.
+	               	 	 If you are younger than <%= @covaxPAge.to_s%> return to this page to see when we are ready for your age group.
 
 	               	 	    <p><p><button type="button" onClick= "$('#covax').slideUp();$('#fluvax').slideDown();">Oops, actually I'm after a Flu Vaccination</button>
 
 
 					 </div >
+					 <%= render "covid_eligibility" %>
+  					 <%= render "occupation" %>
 	</div>
 
 

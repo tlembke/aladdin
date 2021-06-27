@@ -10,15 +10,24 @@ This clinic will be held at <%= @booker.clinic.venue %>.
 You are also booked for your second vaccination on <%= @booker2.clinic.clinicdate.strftime("%A, %B %d") %> at <%= formatTime(@booker2.bookhour,@booker2.bookminute) %>. This clinic will <%= "also" if @booker.clinic.venue == @booker2.clinic.venue %> be held at <%= @booker2.clinic.venue %>
 <% end %>
 
-<% if @booker.vaxtype == "Covax" and @booker.dose == 1 %>
+<% if @booker.vaxtype.start_with? "Covax" and @booker.dose == 1 %>
 
 Please read these two Dept of Health documents before you arrive for your appointment.
 
-Information about the AstraZeneca Covid-19 vaccine
-https://www.health.gov.au/sites/default/files/documents/2021/04/covid-19-vaccination-information-on-covid-19-astrazeneca-vaccine_2.pdf
+			<% if @vaxtype =="Covax" %>
+			Information about the AstraZeneca Covid-19 vaccine
+						https://www.health.gov.au/sites/default/files/documents/2021/04/covid-19-vaccination-information-on-covid-19-astrazeneca-vaccine_2.pdf
+			What to expect after your AstraZeneca vaccine
+				https://www.health.gov.au/sites/default/files/documents/2021/04/covid-19-vaccination-after-your-astrazeneca-vaccine-covid-19-vaccination-after-your-astrazeneca-vaccine.pdf
+				
+			<% else %>
 
-What to expect after your AstraZeneca vaccine
-https://www.health.gov.au/sites/default/files/documents/2021/04/covid-19-vaccination-after-your-astrazeneca-vaccine-covid-19-vaccination-after-your-astrazeneca-vaccine.pdf 
+			Information about the Pfizer Covid-19 vaccine
+			https://www.health.gov.au/sites/default/files/documents/2021/06/covid-19-vaccination-information-on-covid-19-pfizer-comirnaty-vaccine.pdf
+			What to expect after your Pfizer vaccine
+			https://www.health.gov.au/sites/default/files/documents/2021/03/covid-19-vaccination-after-your-pfizer-comirnaty-vaccine-covid-19-vaccination-after-your-pfizer-comirnaty-vaccine.pdf
+
+		 	<% end %>
 
 If you can, please download, print and complete this consent form and bring it with you to your clinic appointment
 
