@@ -153,7 +153,7 @@ class ClinicsController < ApplicationController
     theMess=""
     respond_to do |format|
       if @clinic.update(clinic_params)
-        if params[:makepair] and @clinic.vaxtype.start_with("Covax")
+        if params[:makepair] and @clinic.vaxtype.start_with?("Covax")
           theMess = @clinic.makePair
         end
         format.html { redirect_to admin_clinics_url(vaxtype: @clinic.vaxtype), notice: 'Clinic was successfully updated.' + theMess}

@@ -13,10 +13,10 @@ class VaxController < ApplicationController
         @theText = @theText + "Please click on one of the orange buttons below"
       end
       @theText=@theText.html_safe
-      clinicTemplate=Clinic.where(vaxtype: "Covax", template: true).first
-      @covaxAge = clinicTemplate.age
-      clinicPTemplate=Clinic.where(vaxtype: "CovaxP", template: true).first
-      @covaxPAge = clinicPTemplate.age
+      @clinicTemplate=Clinic.where(vaxtype: "Covax", template: true).first
+      @covaxAge = @clinicTemplate.age
+      @clinicPTemplate=Clinic.where(vaxtype: "CovaxP", template: true).first
+      @covaxPAge = @clinicPTemplate.age
 
 
 
@@ -58,21 +58,29 @@ class VaxController < ApplicationController
 	  		
 	  			@dob = Date.new(params[:date][:year].to_i,params[:date][:month].to_i,params[:date][:day].to_i)
 	  		
-	  			@thePatient = checkPatient(@vaxtype,params[:surname],params[:firstname],@dob)
-	  			if @thePatient == "0" or @thePatient =="3"
+	  			@patient = checkPatient(@vaxtype,params[:surname],params[:firstname],@dob)
+          
+          
+	  			if @patient == "0" or @thePatient =="3"
 	  				@theText = "Hmm. That's strange."
 	  				@thePartial = "form"
 	  			else
+            # checkPatient() will change vaxtype depending on patient eligibility
+              @vaxtype=@patient['VAXTYPE']
               @theText = @patient['KNOWNAS']=="" ? @patient['FIRSTNAME'] : @patient['KNOWNAS']
               @theText = "Thanks, " + @theText
               @theText += ". We have found you in our records."
            
-            @booker=Booker.joins(:clinic).where("bookers.genie = ? and bookers.vaxtype = ? and clinics.clinicdate > ? ",@thePatient['ID'],@vaxtype, Date.today).first
+            @booker=Booker.joins(:clinic).where("bookers.genie = ? and bookers.vaxtype = ? and clinics.clinicdate > ? ",@patient['ID'],@vaxtype, Date.today).first
           
             if @booker
               @thePartial = "alreadyBooked"
               @clinic = @booker.clinic
+            elsif  @patient['COVAST'].length + @patient['COMIRN'].length >=2
 
+                          @theText = "Your COVID19 Vaccination is complete"
+                          flash.now[:notice] = "You have immunity!"
+                          @thePartial = "complete"
 
             else
   	  				@theText = @patient['KNOWNAS']=="" ? @patient['FIRSTNAME'] : @patient['KNOWNAS']
@@ -122,6 +130,9 @@ class VaxController < ApplicationController
                               @booker.eligibility=2
                             end
                             @booker.dose=1
+                            if params[:dose] ==2
+                                @booker.dose=2
+                            end
                             @booker.contactby=2
 		                        @booker.save
 		                        @thePatient = @patient
@@ -268,7 +279,12 @@ class VaxController < ApplicationController
                     @patients_search<< row
                   end
                   sth.drop
-                  dbh.disconnect
+
+                  # get immunisation history for patient
+
+                 
+
+                 
                   if @patients_search.length==0
                   	 @patient = "0"
                   	 flash.now[:notice] = "We couldn’t find a patient with Surname " + surname.upcase + " and First Name " + firstname[0...-1].upcase + " with Date of Birth " + dob.strftime("%d/%m/%Y") + ". Please check and try again or give us a ring on 02 66280505"
@@ -309,31 +325,48 @@ class VaxController < ApplicationController
                  criteriaMessage = "You need to be over 18 to book online. Please ring us"
               elsif age >= clinicTemplate.age
                   eligible = true
-              elsif age >= clinicTemplate.ATSIage and @patient['ETHNICITY']== "Indigenous"
+              elsif clinicTemplate.ATSIage and clinicTemplate.ATSIage>0 and age >= clinicTemplate.ATSIage and @patient['ETHNICITY']== "Indigenous"
                   eligible = true
               end
 
               if age > 18 and eligible == false
                   if clinicTemplate.healthcare and clinicTemplate.chronic
-                      criteriaMessage="You need to have either a designated health condition <a href ='#designated-conditions-modal' onClick=\"$('#designated-conditions-modal').modal('show');\">(click to show)</a> or be a health care worker to book using this form"
+                      criteriaMessage="You need to have either a designated health condition or be a health care worker to book using this form"
                       criteriaBoxes=[1,2]
                   elsif clinicTemplate.healthcare
                       criteriaMessage="You need to be a health care worker to book using this form"
                       criteriaBoxes=[1]        
                   elsif clinicTemplate.chronic
-                      criteriaMessage="You need to have a one of these conditions <a href ='#designated-conditions-modal' onClick=\"$('#designated-conditions-modal').modal('show');\">(click to show)</a> to book using this form"
+                      criteriaMessage="You need to have a designated health conditions to book using this form"
                       criteriaBoxes=[2]  
+                  else
+                      criteriaMessage="It appears you are not yet eligible to receive a vaccine. We have vaccination available for people aged over " + clinicTemplate.age.to_s  + ". Please contact us on 02 66280505 if this is incorrect"
                   end
                     
               end
-      
-              @patient['CRITERIAMESSAGE'] = criteriaMessage
-              @patient['CRITERIABOXES'] = criteriaBoxes
-              @patient['ELIGIBLE'] = eligible
-              @patient['AGE'] = age
-              if age < clinicTemplateAZ.age 
-                  @vaxtype="CovaxP"
+
+
+              # has the patient had an immunsiation
+              immunisations= get_immunisations(@patient["ID"],dbh)
+              @patient['COVAST']=[]
+              @patient['COMIRN']=[]
+              immunisations.each do |jab|
+                  if jab['ACIRCODE']=="COVAST"
+                      @patient['COVAST'] << jab['GIVENDATE']
+                  end
+                  if jab['ACIRCODE']=="COMIRN"
+                      @patient['COMIRN'] << jab['GIVENDATE']
+                  end
               end
+
+                @patient['CRITERIAMESSAGE'] = criteriaMessage
+                @patient['CRITERIABOXES'] = criteriaBoxes
+                @patient['ELIGIBLE'] = eligible
+                @patient['AGE'] = age
+                @patient['VAXTYPE'] = "Covax"
+                if age < clinicTemplateAZ.age and @patient['COVAST'].length == 0
+                   @patient['VAXTYPE']="CovaxP"
+                end
 
 
 
@@ -356,6 +389,7 @@ class VaxController < ApplicationController
                 
 
             end
+             dbh.disconnect
             return @patient
 
 

@@ -629,6 +629,27 @@ def connect(username=session[:username],password=Pref.decrypt_password(session[:
 
   end
 
+  def get_immunisations(patient,dbh)
+          sql = "SELECT ACIRCode, GivenDate, Vaccine FROM Vaccination WHERE PT_Id_FK = " + patient.to_s + " ORDER BY GivenDate DESC"
+          puts sql
+         
+
+          sth = dbh.run(sql)
+               
+          immunisations=[]
+          sth.fetch_hash do |row|
+
+            immunisations << row
+          end
+
+         
+
+         
+          sth.drop
+          return immunisations
+
+    end
+
 
 
 

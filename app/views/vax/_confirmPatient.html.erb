@@ -4,7 +4,25 @@
 
 <% clinics=Clinic.findAllActiveGroups(@vaxtype) %>
 
+<% if @vaxtype.starts_with? "Covax" %>
+  	 <div class= 'row'>
+		<div class="col-md-9 col-md-offset-3">
+			<% covaxCount =   @patient['COVAST'].length +  @patient['COMIRN'].length %>
+			According to our records, you have currently had <%= covaxCount.to_s + " vaccination".pluralize(covaxCount) %> for COVID-19.
+			<% if covaxCount>0 %>
+				<ul>
+					<% @patient['COVAST'].each do |jab| %>
+						<li><%= jab.strftime("%d/%m/%Y") %> AstraZeneca</li>
+					<% end %>
+					<% @patient['COMIRN'].each do |jab| %>
+						<li><%= jab.strftime("%d/%m/%Y") %> Pfizer</li>
+					<% end %>
+				</ul>
+			<% end %>
+		</div>
+	</div>
 
+<% end %>
 <% if clinics.length == 0 %>
   	 <div class= 'row'>
 			<div class="col-md-9 col-md-offset-3">
@@ -22,12 +40,17 @@
 		  			<%= check_box_tag 'healthcare',"yes",false, :onclick=>"$('#clinicShow').toggle();" %> I confirm I am a health care worker and will provide Proof of Occupation <a href ="#health-care-worker-modal" onClick="$('#health-care-worker-modal').modal('show');">(click for details and explanation)</a><br>
 	  			<% end %>
 	  			<% if @patient["CRITERIABOXES"].include? 2 %>
-		  			<%= check_box_tag 'chronic',"yes",false, :onclick=>"$('#clinicShow').toggle();"  %> I confirm I have a <a href ="#designated-conditions-modal" onClick="$('#designated-conditions-modal').modal('show');">Designated Conditions</a> <br>
+	  				<% if @vaxtype.start_with? "Covax" %>
+		  			<%= check_box_tag 'chronic',"yes",false, :onclick=>"$('#clinicShow').toggle();"  %> I confirm I have a <a href ="#covid-eligibility-modal" onClick="$('#covid-eligibility-modal').modal('show');">Designated Conditions (click to show)</a> <br>
+	  				<% else %>
+		  			<%= check_box_tag 'chronic',"yes",false, :onclick=>"$('#clinicShow').toggle();"  %> I confirm I have a <a href ="#designated-conditions-modal" onClick="$('#designated-conditions-modal').modal('show');">Designated Conditions (click to show)</a> <br>
+		  			<% end %>
   				<% end %>
   				
   					
   				
   				<%= render "eligibility" %>
+  				<%= render "covid_eligibility" %>
   				<%= render "occupation" %>
   			<% end %>
 
@@ -57,8 +80,7 @@
 						<div class="panel panel-default">
 						 	<div class="panel-heading">
 			          		<legend class="panel-title">
-			          			
-			          			<%= clinic.clinicdate.strftime("%A, %B %d")%>
+			          			<%= clinic.clinicdate.strftime("%A, %B %d")%> : <%= fullVaxtype(clinic.vaxtype) %> 
 			          		</legend>
 			         		</div> 
 			         		<div class="panel-body">
@@ -68,7 +90,7 @@
 								<% clinic.groups.each do |group | %>
 								
 										 <% unless clinic.isBreak?(group.starthour,group.startminute) or group.vacancies <1 %>
-										<div class="col-md-1"><%= link_to formatTime(group.starthour,group.startminute),vax_nextMessage_path(message: :bookpatient, patient: @patient['ID'], clinic: clinic.id.to_s, starthour: group.starthour.to_s, startminute: group.startminute.to_s ),{:class => "btn btn-sm btn-primary ", :remote => true} %>
+										<div class="col-md-1"><%= link_to formatTime(group.starthour,group.startminute),vax_nextMessage_path(message: :bookpatient, patient: @patient['ID'], clinic: clinic.id.to_s, starthour: group.starthour.to_s, startminute: group.startminute.to_s,dose: covaxCount + 1 ),{:class => "btn btn-sm btn-primary ", :remote => true} %>
 										</div>
 										<% end %>
 									

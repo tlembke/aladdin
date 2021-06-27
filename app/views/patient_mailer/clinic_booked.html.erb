@@ -7,7 +7,7 @@
 
 Hi <%= @booker.firstname %>,<p>
 <p>
-Thanks for booking for a <%= @booker.vaxtype.upcase %> at the Alstonville Clinic.
+Thanks for booking for a <%= fullVaxtype(@booker.vaxtype) %> at the Alstonville Clinic.
 <p>
 You are booked on <%= @booker.clinic.clinicdate.strftime("%A, %B %d") %> at <%= formatTime(@booker.bookhour,@booker.bookminute) %><p>
 This clinic will be held at <b><%= @booker.clinic.venue %></b><p>
@@ -15,12 +15,25 @@ This clinic will be held at <b><%= @booker.clinic.venue %></b><p>
 You are also booked for your second vaccination on <%= @booker2.clinic.clinicdate.strftime("%A, %B %d") %> at <%= formatTime(@booker2.bookhour,@booker2.bookminute) %>. This clinic will <%= "also" if @booker.clinic.venue == @booker2.clinic.venue %> be held at <b><%= @booker2.clinic.venue %></b>
 <% end %>
 <p>
-<% if @booker.vaxtype == "Covax" and @booker.dose == 1 %>
+<% if @booker.vaxtype.start_with? "Covax" and @booker.dose == 1 %>
 	Please read these two Dept of Health documents before you arrive for your appointment.
-			<ul>
-				<li><a href='https://www.health.gov.au/sites/default/files/documents/2021/04/covid-19-vaccination-information-on-covid-19-astrazeneca-vaccine_2.pdf'  target="_blank"><b>information about the AstraZeneca Covid-19 vaccine</b></a></li>
-				<li><a href='https://www.health.gov.au/sites/default/files/documents/2021/04/covid-19-vaccination-after-your-astrazeneca-vaccine-covid-19-vaccination-after-your-astrazeneca-vaccine.pdf' target="_blank"><b>what to expect after your AstraZeneca vaccine</b></a></li>
-			</ul>
+	
+		
+			Please read these two Dept of Health documents before you arrive for your appointment.
+			 <ul>
+			<% if @vaxtype.start_with "Covax" %>
+			
+					<li><a href='https://www.health.gov.au/sites/default/files/documents/2021/04/covid-19-vaccination-information-on-covid-19-astrazeneca-vaccine_2.pdf'  target="_blank"><b>information about the AstraZeneca Covid-19 vaccine</b></a></li>
+					<li><a href='https://www.health.gov.au/sites/default/files/documents/2021/04/covid-19-vaccination-after-your-astrazeneca-vaccine-covid-19-vaccination-after-your-astrazeneca-vaccine.pdf' target="_blank"><b>what to expect after your AstraZeneca vaccine</b></a></li>
+				
+			<% else %>
+
+					<li><a href='https://www.health.gov.au/sites/default/files/documents/2021/06/covid-19-vaccination-information-on-covid-19-pfizer-comirnaty-vaccine.pdf'  target="_blank"><b>information about the Pfizer Covid-19 vaccine</b></a></li>
+					<li><a href='https://www.health.gov.au/sites/default/files/documents/2021/03/covid-19-vaccination-after-your-pfizer-comirnaty-vaccine-covid-19-vaccination-after-your-pfizer-comirnaty-vaccine.pdf' target="_blank"><b>what to expect after your Pfizer vaccine</b></a></li>
+
+		 	<% end %>
+		  </ul>
+
 	<p>If you can, please download, print and complete this consent form and bring it with you to your clinic appointment<p>
 		<a href='https://www.health.gov.au/sites/default/files/documents/2021/03/covid-19-vaccination-consent-form-for-covid-19-vaccination-covid-19-vaccination-consent-form-print-friendly.pdf'> Download Consent Form </a><p>
 
