@@ -86,7 +86,7 @@ Print
                                             <td><%= booker.mobiledec %></td>
                                         
                                             <td><%= booker.contactby == 1 ? "C" : "W" %></td>
-                                            <% if @clinic.vaxtype =='Covax' %>
+                                            <% if @clinic.vaxtype.start_with? 'Covax' %>
                                                   <td><%= booker.dose %></td>
                                                   <td id="pair-<%= booker.id %>">
                                                   <% if booker.nextDate == nil and @clinic.pair1 != nil  and booker.dose==1 %>
