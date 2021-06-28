@@ -73,15 +73,14 @@ class VaxController < ApplicationController
            
             @booker=Booker.joins(:clinic).where("bookers.genie = ? and bookers.vaxtype = ? and clinics.clinicdate > ? ",@patient['ID'],@vaxtype, Date.today).first
           
-            if @booker
-              @thePartial = "alreadyBooked"
-              @clinic = @booker.clinic
-            elsif  @patient['COVAST'].length + @patient['COMIRN'].length >=2
+            if  @patient['COVAST'].length + @patient['COMIRN'].length >=2
 
                           @theText = "Your COVID19 Vaccination is complete"
                           flash.now[:notice] = "You have immunity!"
                           @thePartial = "complete"
-
+            elsif @booker
+              @thePartial = "alreadyBooked"
+              @clinic = @booker.clinic
             else
   	  				@theText = @patient['KNOWNAS']=="" ? @patient['FIRSTNAME'] : @patient['KNOWNAS']
   	  				@theText = "Thanks, " + @theText
