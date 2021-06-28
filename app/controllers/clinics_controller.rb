@@ -235,14 +235,14 @@ class ClinicsController < ApplicationController
                         @booker.contactby=1
 
                         @booker.dose=1
-                        if @booker.vaxtype == "Covax"
-                            if Booker.where(genie: @booker.genie,vaxtype: "Covax",dose: 1).first or params[:dose] == "2"
+                        if @booker.vaxtype.start_with? "Covax"
+                            if Booker.where(genie: @booker.genie,vaxtype: @booker.vaxtype,dose: 1).first or params[:dose] == "2"
                                   @booker.dose = 2
                             end
                         end
                         @booker.save
                         theMess=""
-                        if @booker.vaxtype=="Covax"
+                        if @booker.vaxtype.start_with? "Covax"
 
                             
                             # if it is a paired appointment, also book for that
