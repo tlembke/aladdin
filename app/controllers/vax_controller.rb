@@ -122,6 +122,11 @@ class VaxController < ApplicationController
 		                        @booker.dob = @patient.dob
 		                        @booker.vaxtype = @clinic.vaxtype
 		                        @booker.clinic_id = @clinic.id
+
+                            crypt = ActiveSupport::MessageEncryptor.new(Rails.application.secrets.bickles_base)
+                            @booker.email = crypt.encrypt_and_sign(@patient.email)
+                            @booker.mobile = crypt.encrypt_and_sign(@patient.mobilephone)
+                          
                             age = ((Time.zone.now - @patient.dob.to_time) / 1.year.seconds).floor
                             clinicTemplate=Clinic.where(vaxtype: @booker.vaxtype, template: true).first
                             @booker.eligibility=1
