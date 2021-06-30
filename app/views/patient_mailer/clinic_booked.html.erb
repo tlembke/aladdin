@@ -19,10 +19,8 @@ You are also booked for your second vaccination on <%= @booker2.clinic.clinicdat
 <% if @booker.vaxtype.start_with? "Covax" and @booker.dose == 1 %>
 	Please read these two Dept of Health documents before you arrive for your appointment.
 	
-		
-			Please read these two Dept of Health documents before you arrive for your appointment.
 			 <ul>
-			<% if @booker.vaxtype.start_with? "Covax" %>
+			<% if @booker.vaxtype == "Covax" %>
 			
 					<li><a href='https://www.health.gov.au/sites/default/files/documents/2021/04/covid-19-vaccination-information-on-covid-19-astrazeneca-vaccine_2.pdf'  target="_blank"><b>information about the AstraZeneca Covid-19 vaccine</b></a></li>
 					<li><a href='https://www.health.gov.au/sites/default/files/documents/2021/04/covid-19-vaccination-after-your-astrazeneca-vaccine-covid-19-vaccination-after-your-astrazeneca-vaccine.pdf' target="_blank"><b>what to expect after your AstraZeneca vaccine</b></a></li>
