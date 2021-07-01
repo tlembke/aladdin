@@ -11,40 +11,56 @@
 
 
 <% content_for :actions do %>
+<div class='btn-group'>
 <%= link_to new_clinic_path(vaxtype: "Covax"), class: 'btn btn-primary btn-large' do %>
-<%= fa_icon_tag "plus" %> Add Covax AZ Clinic
+<%= fa_icon_tag "plus" %> AZ Clinic
 <% end %>
 <% if @vaxtype.start_with? "Covax" %>
   <%= link_to new_clinic_path(vaxtype: "CovaxP"), class: 'btn btn-primary btn-large' do %>
-  <%= fa_icon_tag "plus" %> Add Covax P Clinic
+  <%= fa_icon_tag "plus" %> Pfizer Clinic
   <% end %>
 
 <% end %>
-
+</div>
 
 <% unless  @vaxtype.start_with? "Covax" %>
+<div class='btn-group'>
   <%= link_to new_clinic_path(vaxtype: @vaxtype), class: 'btn btn-primary btn-large' do %>
   <%= fa_icon_tag "plus" %> Add <%= @vaxtype %> Clinic
   <% end %>
     <%= link_to edit_clinic_path(@fluvaxtemplateID), class: 'btn btn-primary btn-large t' do %>
     Edit Fluvax Template
    <% end %>
-
+</div>
 
 
 <% end %>
 
 <% if  @vaxtype.start_with? "Covax" %>
+<div class='btn-group'>
       <%= link_to edit_clinic_path(@covaxtemplateID), class: 'btn btn-primary btn-large' do %>
-    Edit Covax AZ Template
+    AZ Template
     <% end %>
       <%= link_to edit_clinic_path(@covaxPtemplateID), class: 'btn btn-primary btn-large' do %>
-    Edit Covax P Template
+    Pfizer Template
     <% end %>
+  </div>
 <% end %>
+<div class='btn-group'>
+    <% if @showAll %>
+         <%= link_to admin_clinics_path(vaxtype: @vaxtype), class: 'btn btn-primary btn-large ' do %>
+        Show current
+        <% end %>
+    <% else %>
+         <%= link_to admin_clinics_path(vaxtype: @vaxtype,showAll: true), class: 'btn btn-primary btn-large ' do %>
+          Show past
+          <% end %>
+
+    <% end %>
      <%= link_to clinics_path(vaxtype: @vaxtype), class: 'btn btn-primary btn-large ' do %>
     Exit Admin
     <% end %>
+  </div>
 <% end %>
 
 <div class="container-fluid">
@@ -55,11 +71,12 @@
           <table class="table">
             <thead>
               <tr>
-                                <th>Clinicdate</th>
-                                <th>No</th>
+                                 <th>Type</th>
+                                <th>Date</th>
+                                <th>B</th>
                                 <th>Show</th>
                                 <% if @vaxtype.start_with? "Covax" %>
-                                <th>Type</th>
+                               
                                 <th>Pair1</th>
                                 <th>Pair2</th>
 
@@ -69,20 +86,16 @@
                                 <th>Finish</th>
 
                                 <th>Break</th>
-                                <th>BStart</th>
+                                <th></th>
                         
-                                <th>BFinish</th>     
+                                <th></th>     
 
-                                <th>Perhour</th>
+                                <th>P/h</th>
 
-                                <th>People</th>
-                                <th>Vaxtype</th>
+                                <th>No</th>
+                               
                                 <th>Venue</th>
-                                <th>Age</th>
-                                <th>ATSI age</th>
-                                <th>Healthcare</th>
-                                <th>Chronic</th>
-                                <th>Chronicage</th>
+
                                 <th>Message</th>
                                 <th></th>
               </tr>
@@ -91,28 +104,25 @@
               <% @clinics.each do |clinic| %>
               <% booked = Booker.where(clinic_id: clinic.id).count %>
               <tr>
-                                <td><%= clinic.clinicdate.strftime("%d-%m-%Y") %></td>
+                                <td><b><%= clinic.vaxtype == "Covax" ? "AZ" : "P" %></b>
+                                <td><%= clinic.clinicdate.strftime("%d/%m/%y") %></td>
                                 <td><%= booked %>
-                                <td><%= clinic.live %></td>
+                                <td><%= fa_icon_tag "check-square" if clinic.live %><%= fa_icon_tag "square" unless clinic.live %></td>
                                  <% if @vaxtype.start_with? "Covax" %>
-                                <td><%= clinic.vaxtype == "Covax" ? "AZ" : "P" %>
-                                <td><%= Clinic.find(clinic.pair1).clinicdate.strftime("%d-%m-%Y") if clinic.pair1%></td>
-                                <td><%= Clinic.find(clinic.pair2).clinicdate.strftime("%d-%m-%Y") if clinic.pair2%></td>
+                                
+                                <td><%= Clinic.find(clinic.pair1).clinicdate.strftime("%d/%m/%y") if clinic.pair1%></td>
+                                <td><%= Clinic.find(clinic.pair2).clinicdate.strftime("%d/%m/%y") if clinic.pair2%></td>
                                 <% end %>
                                 <td><%= clinic.starthour %>:<%= clinic.startminute.to_s.rjust(2, '0') %></td>
                                 <td><%= clinic.finishhour %>:<%= clinic.finishminute.to_s.rjust(2, '0') %></td>
-                                  <td><%= clinic.break%></td>
+                                  <td><%= fa_icon_tag "check-square" if clinic.break %><%= fa_icon_tag "square" unless clinic.break %></td>
                                 <td><%= clinic.bstarthour %>:<%= clinic.bstartminute.to_s.rjust(2, '0') %></td>
                                 <td><%= clinic.bfinishhour %>:<%= clinic.bfinishminute.to_s.rjust(2, '0') %></td>                            
                                 <td><%= clinic.perhour %></td>
                                 <td><%= clinic.people %></td>
-                                <td><%= clinic.vaxtype %></td>
+                              
                                 <td><%= clinic.venue %></td>                
-                                <td><%= clinic.age %></td>
-                                <td><%= clinic.ATSIage %></td>
-                                <td><%= clinic.healthcare%></td>
-                                <td><%= clinic.chronic %></td>
-                                <td><%= clinic.chronicage %></td>
+                                
                                 <td><%= clinic.message %></td>
                                 <td class="actions">
                   <%= link_to fa_icon_tag("eye"), clinic, rel: 'tooltip', title: 'Show' %>

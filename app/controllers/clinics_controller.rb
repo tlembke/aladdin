@@ -83,14 +83,28 @@ class ClinicsController < ApplicationController
 
 
         params[:vaxtype] ? @vaxtype = params[:vaxtype] : @vaxtype = "Fluvax"
-
+        @showAll = params[:showAll]
         if @vaxtype.start_with? "Covax"
-            @clinics = Clinic.where("vaxtype LIKE ? AND template = ?","Covax%",false).order(:clinicdate)
+
+            if params[:showAll]
+
+               @clinics = Clinic.where("vaxtype LIKE ? AND template = ?","Covax%",false).order(:clinicdate)
+            else
+              @clinics = Clinic.where("vaxtype LIKE ? AND template = ? and clinicdate >=?","Covax%",false,Date.today).order(:clinicdate)
+            end
         elsif @vaxtype == "Fluvax"
-            @clinics = Clinic.where(vaxtype: "Fluvax",template: false).order(:clinicdate)
+            if params[:showAll]
+               @clinics = Clinic.where(vaxtype: "Fluvax",template: false).order(:clinicdate)
+            else         
+              @clinics = Clinic.where("vaxtype = ? AND template = ? and clinicdate >=?","Fluvax",false,Date.today).order(:clinicdate)
+            end
        
         else
-            @clinics = Clinic.where(template: false).order(:clinicdate)
+            if params[:showAll]
+                 @clinics = Clinic.where(template: false).order(:clinicdate)
+            else
+                 @clinics = Clinic.where("template = ? and clinicdate >=?", false, Date.today).order(:clinicdate)
+            end
         end
 
   end
