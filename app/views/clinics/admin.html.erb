@@ -37,31 +37,35 @@
 <% end %>
 
 <% if  @vaxtype.start_with? "Covax" %>
-<div class='btn-group'>
-      <%= link_to edit_clinic_path(@covaxtemplateID), class: 'btn btn-primary btn-large' do %>
-    AZ Template
-    <% end %>
-      <%= link_to edit_clinic_path(@covaxPtemplateID), class: 'btn btn-primary btn-large' do %>
-    Pfizer Template
-    <% end %>
-  </div>
-<% end %>
-<div class='btn-group'>
-    <% if @showAll %>
-         <%= link_to admin_clinics_path(vaxtype: @vaxtype), class: 'btn btn-primary btn-large ' do %>
-        Show current
+    <div class='btn-group'>
+          <%= link_to edit_clinic_path(@covaxtemplateID), class: 'btn btn-primary btn-large' do %>
+        AZ Template
         <% end %>
-    <% else %>
-         <%= link_to admin_clinics_path(vaxtype: @vaxtype,showAll: true), class: 'btn btn-primary btn-large ' do %>
-          Show past
-          <% end %>
+          <%= link_to edit_clinic_path(@covaxPtemplateID), class: 'btn btn-primary btn-large' do %>
+        Pfizer Template
+        <% end %>
+      </div>
+    <% end %>
+    <div class='btn-group'>
+        <% if @showAll %>
+             <%= link_to admin_clinics_path(vaxtype: @vaxtype), class: 'btn btn-primary btn-large ' do %>
+            Show current
+            <% end %>
+        <% else %>
+             <%= link_to admin_clinics_path(vaxtype: @vaxtype,showAll: true), class: 'btn btn-primary btn-large ' do %>
+              Show past
+              <% end %>
 
-    <% end %>
-     <%= link_to clinics_path(vaxtype: @vaxtype), class: 'btn btn-primary btn-large ' do %>
-    Exit Admin
-    <% end %>
-  </div>
+        <% end %>
+         <%= link_to clinics_path(vaxtype: @vaxtype), class: 'btn btn-primary btn-large ' do %>
+        Exit Admin
+        <% end %>
+      </div>
+      <div class='btn-group'>
+      <%= link_to "Waiting List",waiting_bookers_path, class: 'btn btn-primary btn-large'  %>
+</div>
 <% end %>
+
 
 <div class="container-fluid">
   <div class="row">
@@ -75,6 +79,9 @@
                                 <th>Date</th>
                                 <th>B</th>
                                 <th>Show</th>
+                                <th>New</th>
+                                <th>InvOld</th>
+                                <th>InvNew</th>
                                 <% if @vaxtype.start_with? "Covax" %>
                                
                                 <th>Pair1</th>
@@ -108,8 +115,13 @@
                                 <td><%= clinic.clinicdate.strftime("%d/%m/%y") %></td>
                                 <td><%= booked %>
                                 <td><%= fa_icon_tag "check-square" if clinic.live %><%= fa_icon_tag "square" unless clinic.live %></td>
+                                 
+                                <td><%= fa_icon_tag "check-square" if clinic.shownew %><%= fa_icon_tag "square" unless clinic.shownew %></td>
+                                 
+                                 <td><%= fa_icon_tag "check-square" if clinic.inviteold %><%= fa_icon_tag "square" unless clinic.inviteold %></td>
+                                 
+                                <td><%= fa_icon_tag "check-square" if clinic.invitenew %><%= fa_icon_tag "square" unless clinic.invitenew %></td>
                                  <% if @vaxtype.start_with? "Covax" %>
-                                
                                 <td><%= Clinic.find(clinic.pair1).clinicdate.strftime("%d/%m/%y") if clinic.pair1%></td>
                                 <td><%= Clinic.find(clinic.pair2).clinicdate.strftime("%d/%m/%y") if clinic.pair2%></td>
                                 <% end %>

@@ -5,7 +5,12 @@ module ClinicsHelper
 		if bookings.count > 0
 			   returnText = "<ul>"
 				bookings.each do |booking|
-						returnText = returnText + "<li>" + booking.vaxtype + " " + booking.dose.to_s + " " + booking.clinic.clinicdate.strftime("%A, %B %d") + "</li>"
+
+						if booking.clinic_id == 0
+							returnText = returnText + "<li>" + booking.vaxtype + " - Waiting List</li>"
+						else
+							returnText = returnText + "<li>" + booking.vaxtype + " " + booking.dose.to_s + " " + booking.clinic.clinicdate.strftime("%A, %B %d") + "</li>"
+						end
 				end
 				returnText = returnText + "</ul>"
 

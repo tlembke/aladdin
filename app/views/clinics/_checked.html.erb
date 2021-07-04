@@ -9,8 +9,12 @@
 			<td><%= booker.surname %></td>
 			<td><%= booker.firstname %></td>
 			<td><%= booker.vaxtype %><%= " " + booker.dose.to_s if booker.vaxtype.start_with? "Covax"%></td>
+			<% if booker.clinic_id == 0 %>	
+				<td>Waiting list</td>
+			<% else %>
 			<td><%= booker.clinic.clinicdate.strftime("%A, %B %d") %></td>
 			<td class="time"><%= formatTime(booker.bookhour,booker.bookminute) %></td>
+			<% end %> 
 			<td><%= link_to fa_icon_tag("edit"), edit_booker_path(booker), rel: 'tooltip', title: 'Edit' %></td>
 			<td><%= link_to fa_icon_tag("trash-o")+" Unbook " + booker.vaxtype, unbooksearch_clinics_path(bookerID: booker.id,vaxtype: @vaxtype), rel: 'tooltip', title: 'Unbook',
                               data: { confirm: 'Are you sure?' }%></td>

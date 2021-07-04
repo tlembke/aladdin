@@ -13,6 +13,9 @@
     <% if @clinic.pair1 %>
                  Paired with <%= Clinic.find(@clinic.pair1).clinicdate.strftime("%A, %B %d") %>
     <% end %>
+    <p>
+   <%= image_tag "pf.png", height: '100' if @clinic.vaxtype=="CovaxP"%>
+   <%= image_tag "az.png", height: '100' if @clinic.vaxtype=="Covax"%>
 
   <% end %>
 
@@ -61,9 +64,10 @@ Print
                                               <th>Mobile</th>
                                            
                                              <th>Booked</th>
-                                             <% if @clinic.vaxtype =='Covax' %>
+                                             <% if @clinic.vaxtype.start_with? 'Covax' %>
                                               <th>Dose</th>
                                               <th>Next</th>
+                                              <th>AIR</th>
                                             <% end %>
                                             <th  class="actions">
                                               <% unless @clinic.isBreak?(hourCount,minCount) or @count >= @clinic.people %>
@@ -85,7 +89,7 @@ Print
                                             <td><%= booker.age %></td>
                                             <td><%= booker.mobiledec %></td>
                                         
-                                            <td><%= booker.contactby == 1 ? "C" : "W" %></td>
+                                            <td><%= booker.contactby == 1 ? "C" : "W" %>-<%= booker.genie ==0 ? "N" : "O" %></td>
                                             <% if @clinic.vaxtype.start_with? 'Covax' %>
                                                   <td><%= booker.dose %></td>
                                                   <td id="pair-<%= booker.id %>">
@@ -93,12 +97,20 @@ Print
                                                     <%= link_to 'Pair', pair_booker_path(booker),{:class => "btn btn-small btn-primary", :remote => true} %>
 
                                                   <% elsif booker.dose ==2 %>
-                                                    ----
+                                                   ----
                                                   <% else %>
                                                           <% if booker.nextDate != nil %>
                                                            <%= booker.nextDateTime %>
                                                           <% end %>
                                                  <% end %>
+                                                 </td>
+                                                 <td>
+                                                   <%= check_box_tag 'confirm', 1 , booker.confirm,
+      data: {
+        remote: true,
+        url: url_for(controller: :bookers, action: :confirm, id: booker.id),
+        method: "POST"
+      } %>
                                                  </td>
                                             <% end %>
                                             

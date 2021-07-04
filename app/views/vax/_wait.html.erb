@@ -1,0 +1,52 @@
+
+
+Please check the details below.
+If incorrect, please correct and search again.
+If correct, you can add yourself to our waiting list and we will contact you when an appointment is available.<p>
+Please note that if you are aged under 40 you will need to demonstrate that you are an aged care or health worker or have a designated chronic illness.
+
+
+<div id='newpatient'>
+
+          <%= form_tag({action: :nextMessage},  method: "get",remote: :true, class: "form-vertical" ) do %>
+                <%= hidden_field_tag :vaxtype, @vaxtype %>
+                <%= hidden_field_tag :genie, 0 %>
+                <%= hidden_field_tag :message, "checkpatient", id: 'message' %>
+                  <div class="form-group row">
+                   <%= label_tag :name, "Surname", class: "form-label col-sm-4 text-right" %>
+                     <%= text_field_tag :surname, @patient['SURNAME'], class: "input-medium col-sm-5" %> 
+                  </div>
+                  <div class="form-group row">
+                    <%= label_tag :name, "First name", class: "form-label col-sm-4 text-right" %>
+                    <%= text_field_tag :firstname, @patient['FIRSTNAME'], class: "input-medium col-sm-5" %>
+                 </div>
+                      <div class="form-group row">
+      <%= label_tag :dob, "Date of Birth", class: "form-label col-sm-4 text-right" %>
+      <div class= "input-medium col-sm-6"><%= select_day(@patient['DOB']) %><%= select_month(@patient['DOB']) %> <%= select_year(@patient['DOB'].year, start_year: 1920, end_year: 2005)%> </div>
+        </div>
+
+
+
+
+
+
+
+
+                 <div class="form-group row wait" style="display:none;">
+                    <%= label_tag :mobile, "Mobile", class: "form-label col-sm-4 text-right" %>
+                    <%= text_field_tag :mobile, nil, class: "input-medium col-sm-5" %>
+                 </div>
+                  <div class="form-group row wait" style="display:none;">
+                    <%= label_tag :email, "Email", class: "form-label col-sm-4 text-right" %>
+                    <%= text_field_tag :email, nil, class: "input-medium col-sm-5" %>
+                 </div>
+                 <div class="form-actions col-sm-offset-4 col-sm-3">
+                   <%= submit_tag "Search again", class: "btn-primary wait" %>
+                 
+                   <%= submit_tag "Add to waiting list", {class: "btn-primary wait",style: "display:none;",onclick: "$('#message').val('waitinglist');"}%>
+
+                   <%= link_to "Add to waiting list", "#",class: "btn btn-primary wait", onclick: "$('.wait').toggle();" %>
+                 </div>
+         <% end %>
+
+</div>

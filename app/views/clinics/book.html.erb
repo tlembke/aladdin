@@ -33,14 +33,14 @@
         <legend>Search results</legend>
         <p></p>
      		<% @patients_search.each do |patient| %>
-        <% dose1 = Booker.where(genie: patient['ID'], vaxtype: "Covax", dose: 1).first %>
-        <% dose2 = Booker.where(genie: patient['ID'], vaxtype: "Covax", dose: 2).first %>
-        <% if dose1 and dose2 and @clinic.vaxtype=="Covax" %>
+        <% dose1 = Booker.where(genie: patient['ID'], vaxtype: @clinic.vaxtype, dose: 1).first %>
+        <% dose2 = Booker.where(genie: patient['ID'], vaxtype: @clinic.vaxtype, dose: 2).first %>
+        <% if dose1 and dose2 and @clinic.vaxtype.start_wuth? "Covax" %>
             <%= formatName(patient['SURNAME'],patient['FIRSTNAME'],patient['DOB']) %>
         <% else %>
 
      		<%= link_to formatName(patient['SURNAME'],patient['FIRSTNAME'],patient['DOB']) + doseNumber(dose1,dose2,@clinic.vaxtype), book_clinic_path(@clinic,genie: patient['ID'],hour: @bookhour, minute: @bookminute) %>
-        <% if @clinic.vaxtype == "Covax" and dose1 == nil and dose2 == nil %>
+        <% if @clinic.vaxtype.start_with? "Covax" and dose1 == nil and dose2 == nil %>
             <%= link_to "Dose 2", book_clinic_path(@clinic,genie: patient['ID'],dose: 2,hour: @bookhour, minute: @bookminute) %>
         <% end %>
         <% end %>

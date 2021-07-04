@@ -1,13 +1,107 @@
-<% @title = "New booker" %>
+<% @title = "Waiting List" %>
 
 <% content_for :description do %>
-<p>Edit this template in <code>app/views/Bookers/new.html.erb</code>.</p>
+
+<% end %>
+<% content_for :actions do %>
+         <%= link_to "View Waiting List",waiting_bookers_path, class: 'btn btn-info btn-large'  %>
+         <%= link_to "Clinics",clinics_path, class: 'btn btn-primary btn-large'  %>
 <% end %>
 
-<div class="container-fluid">
-  <div class="row">
-    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-      <%= render 'form' %>
+
+
+<div class='row'>
+      <div class='col-md-6'>
+
+      <%= form_tag({}, method: "get",class: "form-vertical" ) do %>
+       <%= hidden_field_tag :clinic, 0 %>
+       
+       <fieldset>
+         <legend>Add to Waiting List</legend>
+         <div class="form-group row">
+           <%= label_tag :name, "Surname", class: "form-label col-sm-4" %>
+             <%= text_field_tag :Surname, nil, class: "input-medium col-sm-5" %> 
+          </div>
+          <div class="form-group row">
+            <%= label_tag :name, "First name", class: "form-label col-sm-4" %>
+            <%= text_field_tag :FirstName, nil, class: "input-medium col-sm-5" %>
+         </div>
+         <div class="form-actions col-sm-offset-4 col-sm-8">
+           <%= submit_tag "Search", class: "btn-primary" %>
+         </div>
+       </fieldset>
+
+    <% end %>
     </div>
+
+  <div class='col-md-6'>
+    <% if @patients_search %>
+        <legend>Search results</legend>
+        <p></p>
+        <%= link_to @firstname + " " + @surname + " (new patient)", "#", :onclick => "$('#newpatient').toggle();$('#bookedpatients').toggle();" %><p>
+        
+        <div id='newpatient' style="display:none;">
+          <%= form_tag({}, method: "get",class: "form-vertical" ) do %>
+               
+                <%= hidden_field_tag :genie, 0 %>
+                  <div class="form-group row">
+                   <%= label_tag :name, "Surname", class: "form-label col-sm-4" %>
+                     <%= text_field_tag :Surname, @surname, class: "input-medium col-sm-5" %> 
+                  </div>
+                  <div class="form-group row">
+                    <%= label_tag :name, "First name", class: "form-label col-sm-4" %>
+                    <%= text_field_tag :FirstName, @firstname, class: "input-medium col-sm-5" %>
+                 </div>
+
+                  <div class="form-group row">
+                    <%= label_tag :vaxtype, "Vax Type", class: "form-label col-sm-4" %>
+                  <div class="o-switch btn-group input-medium col-sm-5" data-toggle="buttons" role="group">
+                      <label class="btn btn-primary">
+                        <input type="radio" name="vaxtype" value="Fluvax" id="Fluvax"> Fluvax
+                      </label>
+                      <label class="btn btn-primary">
+                        <input type="radio" name="vaxtype" value="Covax" id="Covax" > Covax AZ
+                      </label>
+                      <label class="btn btn-primary active">
+                        <input type="radio" name="vaxtype" value="CovaxP" id="CovaxP" checked  > Covax P
+                      </label>
+                  </div>
+           </div>
+
+
+
+
+
+
+
+                 <div class="form-group row">
+                    <%= label_tag :mobile, "Mobile", class: "form-label col-sm-4" %>
+                    <%= text_field_tag :mobile, nil, class: "input-medium col-sm-5" %>
+                 </div>
+                 <div class="form-actions col-sm-offset-4 col-sm-8">
+                   <%= submit_tag "Add to waiting list ", class: "btn-primary" %>
+                 </div>
+         <% end %>
+        </div>
+        <div id='bookedpatients' >
+              <% @patients_search.each do |patient| %>
+
+
+              <%= formatName(patient['SURNAME'],patient['FIRSTNAME'],patient['DOB']) %><br>
+              <div class='btn-group'>
+                <%= link_to "Flu", new_booker_path(@booker,genie: patient['ID'],vaxtype: "Fluvax"), class: 'btn btn-primary btn-sm'%>
+                <%= link_to "AZ", new_booker_path(@booker,genie: patient['ID'],vaxtype: "Covax"), class: 'btn btn-primary btn-sm' %>
+                 <%= link_to "PZ", new_booker_path(@booker,genie: patient['ID'],vaxtype: "CovaxP"), class: 'btn btn-primary btn-sm' %>
+              </div>
+
+            
+              <%= showBooked(patient['ID']) %>
+        
+       
+
+
+            <% end %>
+      </div>
+    <% end %>
   </div>
 </div>

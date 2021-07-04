@@ -3,7 +3,7 @@
 Here are all the action plans for the patient
 <ul>
 <% @patient.documents.each do |document| %>
-	<li id="document-<%= document.id %>"><%= link_to document.name, edit_document_path(id: document.id, source: @source) %> <%= link_to fa_icon_tag("trash-o"),document, data: {confirm: "Are you sure you want to delete '#{document.name}'?"}, :remote => true, method: :delete %></li>
+	<li id="document-<%= document.id %>"><%= link_to document.name, document_path(id: document.id, source: @source) %>  <%= link_to fa_icon_tag("edit"), edit_document_path(id: document.id, source: @source) %>  <%= link_to fa_icon_tag("trash-o"),document, data: {confirm: "Are you sure you want to delete '#{document.name}'?"}, :remote => true, method: :delete %></li>
 <% end %>
 </ul>
 <% else %>

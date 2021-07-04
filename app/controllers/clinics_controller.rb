@@ -410,16 +410,22 @@ class ClinicsController < ApplicationController
       firstname=@booker.firstname
       surname = @booker.surname
       genie=@booker.genie
-      if @booker.vaxtype == "Covax" and @booker.dose == 1
+      if @booker.vaxtype == "Covax" and @booker.dose == 1 and booker.clinic_id != 0
           if @booker2 = Booker.where(genie: genie, vaxtype: "Covax", dose: 2).first
                 theMess = " Covax2 on " + @booker2.clinic.clinicdate.strftime("%d-%m-%Y") + " was also unbooked"
                 @booker2.destroy
           end
       end      
+      if @booker.clinic_id == 0 
+          theMess = firstname + " " + surname + " " + @booker.vaxtype + " was removed from waiting list"
+    
+      else
+          theMess = firstname + " " + surname + " " + @booker.vaxtype + @booker.dose.to_s + " on " + @booker.clinic.clinicdate.strftime("%d-%m-%Y") + " was unbooked." + theMess
+      end
       @booker.destroy
       respond_to do |format|
       format.html { 
-           redirect_to clinics_path(vaxtype: @vaxtype), notice: @booker.firstname + " " + @booker.surname + " " + @booker.vaxtype + @booker.dose.to_s + " on " + @booker.clinic.clinicdate.strftime("%d-%m-%Y") + " was unbooked." + theMess
+           redirect_to clinics_path(vaxtype: @vaxtype), notice: theMess
        }
 
     end
@@ -601,6 +607,6 @@ class ClinicsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def clinic_params
-      params.require(:clinic).permit(:clinicdate, :live, :starthour, :startminute, :finishhour, :finishminute, :perhour, :vaxtype, :venue, :people, :template, :age, :ATSIage, :chronic, :chronicage, :message,:hour,:minute,:genie,:healthcare,:break,:bstarthour,:bstartminute,:bfinishhour,:bfinishminute,:pair1,:pair2,:pair3)
+      params.require(:clinic).permit(:clinicdate, :live, :starthour, :startminute, :finishhour, :finishminute, :perhour, :vaxtype, :venue, :people, :template, :age, :ATSIage, :chronic, :chronicage, :message,:hour,:minute,:genie,:healthcare,:break,:bstarthour,:bstartminute,:bfinishhour,:bfinishminute,:pair1,:pair2,:pair3,:shownew,:invitenew,:inviteold)
     end
 end

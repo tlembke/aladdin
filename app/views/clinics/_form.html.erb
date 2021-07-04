@@ -57,10 +57,29 @@
         </div>
       <% end %>
   
+     <%= f.form_group :shownew do |f| %>
+        <%= f.label "Show new", class: 'control-label col-md-6' %>
+        <div class='col-md-6'>
+      <%= f.check_box :shownew, class: 'form-control' %>
+          <%= f.error_messages %>
+        </div>
+      <% end %>
+  
+     <%= f.form_group :inviteold do |f| %>
+        <%= f.label "Invite Old", class: 'control-label col-md-6' %>
+        <div class='col-md-6'>
+      <%= f.check_box :inviteold, class: 'form-control' %>
+          <%= f.error_messages %>
+        </div>
+      <% end %>
 
-
-
-
+     <%= f.form_group :invitenew do |f| %>
+        <%= f.label "Invite new", class: 'control-label col-md-6' %>
+        <div class='col-md-6'>
+      <%= f.check_box :invitenew, class: 'form-control' %>
+          <%= f.error_messages %>
+        </div>
+      <% end %>
 
 
     <%= f.form_group :starthour do |f| %>

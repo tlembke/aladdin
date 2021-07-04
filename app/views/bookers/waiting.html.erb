@@ -1,0 +1,66 @@
+<% @title = "Waiting Lists" %>
+
+<% content_for :description do %>
+  <%= link_to "Add to Waiting List",new_booker_path, class: 'btn btn-info btn-large'  %>
+<% end %>
+
+<% content_for :actions do %>
+<div class='btn-group'>
+<%= link_to "Fluvax",waiting_bookers_path(vaxtype: "Fluvax"), class: 'btn btn-primary btn-large' %>
+<%= link_to "Covax AZ",waiting_bookers_path(vaxtype: "Covax"), class: 'btn btn-primary btn-large' %>
+<%= link_to "Covax P",waiting_bookers_path(vaxtype: "CovaxP"), class: 'btn btn-primary btn-large' %>
+<%= link_to "All",waiting_bookers_path, class: 'btn btn-primary btn-large' %>
+</div>
+<div class='btn-group'>
+<%= link_to "New","#",onclick: "$('.old').hide();$('.new').show();", class: 'btn btn-primary btn-large' %>
+<%= link_to "Old","#",onclick: "$('.new').hide();$('.old').show();",class: 'btn btn-primary btn-large' %>
+<%= link_to "All","#",onclick: "$('.new').show();$('.new').show();", class: 'btn btn-primary btn-large' %>
+</div>
+<%= link_to "Clinics",clinics_path, class: 'btn btn-primary btn-large' %>
+<% end %>
+
+<table class='table'>
+		<thead>
+		<tr>
+				<th>Booked</th>
+				<th>New?</th>
+				<th>Surname</th>
+				<th>First name</th>
+				<th>Age</th>
+				<th>Vax</th>
+				<th>Mobile</th>
+				<th>Inv</th>
+				
+				<th></th>
+		</tr>
+	</thead>
+<% @bookers.each do |booker| %>
+
+	<tbody>
+		<tr class="<%= 'new' if booker.genie==0 %><%= 'old' unless booker.genie==0 %>" >	
+			<td><%= booker.created_at.strftime("%d/%m/%Y") %></td>
+			<td><%= fa_icon_tag "check-square" if booker.genie== 0  %><%= fa_icon_tag "square" unless booker.genie ==0 %></td>
+			<td><%= booker.surname %></td>
+			<td><%= booker.firstname %></td>
+			<td><%= booker.age %></td>
+			<td><%= booker.vaxtype %></td>
+			<td><%= booker.mobiledec %></td>
+			<td id='invite-<%= booker.id %>'>
+				<% if booker.invite %>
+				  <%= fa_icon_tag "check-square" %>
+				<% else %>
+					<%= link_to fa_icon_tag("square"), invite_booker_path(booker), remote: true, onclick: "$('#invite-"+booker.id.to_s+"').html('"+fa_icon_tag('check-square') + "');" %>
+				<% end %>
+
+
+				
+			</td>
+
+
+			<td><%= link_to fa_icon_tag("trash-o"), booker_path(booker), method: :delete, rel: 'tooltip', title: 'Remove', data: { confirm: 'Are you sure?' }%></td>
+
+		</tr>
+	</tbody>
+<% end %>
+</table>
+

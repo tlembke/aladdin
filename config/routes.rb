@@ -14,6 +14,11 @@ require 'sidekiq/cron/web'
   resources :bookers do
       member do
         get 'pair'
+        post 'confirm'
+        get 'invite'
+      end
+      collection do
+        get 'waiting'
       end
   end
   get 'vax/index'

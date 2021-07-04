@@ -29,6 +29,25 @@ class Clinic < ActiveRecord::Base
 
 
   end
+    def self.findAllFilteredGroups(vaxType,status,invite)
+        if status == "Old"
+            if invite == true
+                @allClinics = Clinic.where("vaxtype = ? and clinicdate >= ? and live = ?",vaxType,Date.today,true).order(:clinicdate).all
+            else
+                @allClinics = Clinic.where("vaxtype = ? and clinicdate >= ? and live = ? and invitenew = ?",vaxType,Date.today,true,false).order(:clinicdate).all
+            end
+        else
+            if invite == true
+                @allClinics = Clinic.where("vaxtype = ? and clinicdate >= ? and live = ? and shownew = ?",vaxType,Date.today,true,true).order(:clinicdate).all
+            else
+                @allClinics = Clinic.where("vaxtype = ? and clinicdate >= ? and live = ? and shownew = ? and invitenew = ?",vaxType,Date.today,true,true,false).order(:clinicdate).all
+            end
+        end
+
+        return @allClinics
+
+    end
+
 
 	def groups
  			hourCount= self.starthour

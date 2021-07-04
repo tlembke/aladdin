@@ -650,6 +650,17 @@ def connect(username=session[:username],password=Pref.decrypt_password(session[:
 
     end
 
+    def fullTextVax(vaxtype)
+      fullTextVax = "Influenza Vaccination"
+      case vaxtype
+      when "Covax"
+          fullTextVax = "Covid Astra Zeneca Vaccination"
+      when "CovaxP"
+          fullTextVax = "Covid Pfizer Vaccination"
+      end
+      return fullTextVax
+    end
+
 
 
 

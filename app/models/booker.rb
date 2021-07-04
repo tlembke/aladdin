@@ -1,8 +1,15 @@
 class Booker < ActiveRecord::Base
 	belongs_to :clinic
 
+	# a booker with no clinic is on the waiting list
+	# a booker on the waiting list booker.genie = x a current patient
+	# a booker on the waiting list booker.genie = "" new patient
+
 	def age
-		age = ((Time.zone.now - self.dob.to_time) / 1.year.seconds).floor
+		age=0
+		if self.dob
+			age = ((Time.zone.now - self.dob.to_time) / 1.year.seconds).floor
+		end
 	end
 
 	def nextDate
@@ -43,5 +50,22 @@ class Booker < ActiveRecord::Base
 			mobile = crypt.decrypt_and_verify(self.mobile)
 		end
 		return mobile
-    end    
+    end 
+
+     def self.add_to_waiting(genie,surname,firstname,dob,email,mobile,vaxtype,eligibility)
+		    @booker = Booker.new
+		    @booker.surname = surname
+		    @booker.firstname = firstname
+		    @booker.dob = dob
+		    @booker.clinic_id = 0
+		    @booker.genie = genie
+		    @booker.vaxtype = vaxtype
+		    @booker.eligibility = eligibility
+		    crypt = ActiveSupport::MessageEncryptor.new(Rails.application.secrets.bickles_base)
+			@booker.mobile = crypt.encrypt_and_sign(mobile)
+			@booker.email = crypt.encrypt_and_sign(email)
+			@booker.save
+			return @booker
+
+ 	end   
 end

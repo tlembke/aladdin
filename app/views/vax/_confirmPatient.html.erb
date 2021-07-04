@@ -2,7 +2,7 @@
 
 <% days=Pref.clinicdays.to_i %>
 
-<% clinics=Clinic.findAllActiveGroups(@vaxtype) %>
+<% clinics=Clinic.findAllFilteredGroups(@vaxtype,@patient["STATUS"],@patient["INVITE"]) %>
 
 <% if @vaxtype.starts_with? "Covax" %>
   	 <div class= 'row'>
@@ -90,7 +90,7 @@
 								<% clinic.groups.each do |group | %>
 								
 										 <% unless clinic.isBreak?(group.starthour,group.startminute) or group.vacancies <1 %>
-										<div class="col-md-1"><%= link_to formatTime(group.starthour,group.startminute),vax_nextMessage_path(message: :bookpatient, patient: @patient['ID'], clinic: clinic.id.to_s, starthour: group.starthour.to_s, startminute: group.startminute.to_s,dose: covaxCount + 1 ),{:class => "btn btn-sm btn-primary ", :remote => true} %>
+										<div class="col-md-1"><%= link_to formatTime(group.starthour,group.startminute),vax_nextMessage_path(message: :bookpatient, booker: @booker_id, patient: @patient['ID'], clinic: clinic.id.to_s, starthour: group.starthour.to_s, startminute: group.startminute.to_s,dose: covaxCount + 1 ),{:class => "btn btn-sm btn-primary ", :remote => true} %>
 										</div>
 										<% end %>
 									
