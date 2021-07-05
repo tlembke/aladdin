@@ -37,8 +37,9 @@ class ClinicsController < ApplicationController
               @covaxPtemplate = @clinic
               @covaxPtemplateID = @clinic.id
         end
+        #chnaging so only options are "Covax" and "Fluvax"
+        params[:vaxtype]== "Fluvax" ? @vaxtype = "Fluvax" : @vaxtype = "Covax"
 
-        params[:vaxtype] ? @vaxtype = params[:vaxtype] : @vaxtype = "Covax"
 
         if @vaxtype.start_with? "Covax"
             @clinics = Clinic.where("template == false and vaxtype LIKE 'Covax%'")

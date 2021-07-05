@@ -1,9 +1,9 @@
 
 
 Please check the details below.
-If incorrect, please correct and search again.
-If correct, you can add yourself to our waiting list and we will contact you when an appointment is available.<p>
-Please note that if you are aged under 40 you will need to demonstrate that you are an aged care or health worker or have a designated chronic illness.
+If incorrect, please correct and search again.<p>
+If correct, you can add yourself to our list and we will contact you when an appointment is available.<p>
+Please note that if you are aged under 40 you will need to demonstrate that you are an aged care or health worker or that you have a designated chronic illness.<p>
 
 
 <div id='newpatient'>
@@ -41,11 +41,11 @@ Please note that if you are aged under 40 you will need to demonstrate that you 
                     <%= text_field_tag :email, nil, class: "input-medium col-sm-5" %>
                  </div>
                  <div class="form-actions col-sm-offset-4 col-sm-3">
-                   <%= submit_tag "Search again", class: "btn-primary wait" %>
+                   <%= submit_tag "Check again", class: "btn btn-primary wait" %>
                  
-                   <%= submit_tag "Add to waiting list", {class: "btn-primary wait",style: "display:none;",onclick: "$('#message').val('waitinglist');"}%>
+                   <%= submit_tag "Add me", {class: "btn btn-primary wait",style: "display:none;",onclick: "$('#message').val('waitinglist');"}%>
 
-                   <%= link_to "Add to waiting list", "#",class: "btn btn-primary wait", onclick: "$('.wait').toggle();" %>
+                   <%= link_to "I'm new. Add me", "#",class: "btn btn-primary wait", onclick: "$('.wait').toggle();" %>
                  </div>
          <% end %>
 
