@@ -113,7 +113,7 @@ class VaxController < ApplicationController
 
 
 
-                                      if @booker.clinic_id
+                                      if @booker.clinic_id and @booker.clinic_id != 0
                                           @thePartial = "alreadyBooked"
                                           @clinic = @booker.clinic
                                       else
