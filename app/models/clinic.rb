@@ -34,7 +34,7 @@ class Clinic < ActiveRecord::Base
             if invite == true
                 @allClinics = Clinic.where("vaxtype = ? and clinicdate >= ? and live = ?",vaxType,Date.today,true).order(:clinicdate).all
             else
-                @allClinics = Clinic.where("vaxtype = ? and clinicdate >= ? and live = ? and invitenew = ?",vaxType,Date.today,true,false).order(:clinicdate).all
+                @allClinics = Clinic.where("vaxtype = ? and clinicdate >= ? and live = ? and inviteold = ?",vaxType,Date.today,true,false).order(:clinicdate).all
             end
         else
             if invite == true

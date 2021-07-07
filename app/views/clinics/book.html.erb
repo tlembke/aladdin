@@ -35,7 +35,7 @@
      		<% @patients_search.each do |patient| %>
         <% dose1 = Booker.where(genie: patient['ID'], vaxtype: @clinic.vaxtype, dose: 1).first %>
         <% dose2 = Booker.where(genie: patient['ID'], vaxtype: @clinic.vaxtype, dose: 2).first %>
-        <% if dose1 and dose2 and @clinic.vaxtype.start_wuth? "Covax" %>
+        <% if dose1 and dose2 and @clinic.vaxtype.start_with? "Covax" %>
             <%= formatName(patient['SURNAME'],patient['FIRSTNAME'],patient['DOB']) %>
         <% else %>
 

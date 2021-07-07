@@ -67,7 +67,7 @@ class VaxController < ApplicationController
         @patient = getPatientFromBooker(@booker.id)
         
         @booker_id=@booker.id
-        debugger
+
         if @booker.genie == 0
           @booker.clinic_id = 0
            
@@ -144,7 +144,7 @@ class VaxController < ApplicationController
                     @theText = @patient['KNOWNAS']=="" ? @patient['FIRSTNAME'] : @patient['KNOWNAS']
                     @theText = "Thanks, " + @theText
                     @theText += ". We have found you in our records."
-                 
+                    
                      @booker=Booker.joins(:clinic).where("bookers.genie = ? and bookers.vaxtype = ? and clinics.clinicdate > ? ",@patient['ID'],@vaxtype, Date.today).first
                 
                     if  @patient['COVAST'].length + @patient['COMIRN'].length >=2
@@ -172,9 +172,9 @@ class VaxController < ApplicationController
 	  		end
           
 	  	when "bookpatient"
-	  		if params[:patient] and params[:clinic] and params[:starthour] and params[:startminute]
+	  		if params[:clinic] and params[:starthour] and params[:startminute]
 
-             if params[:booker] != 0
+             if params[:booker].to_s != "0"
                     # do the new patient stuff
                     # repeats what follow so should be fixed to be DRY 
                     @booker=Booker.find(params[:booker])
@@ -463,6 +463,7 @@ class VaxController < ApplicationController
               @patient['CRITERIAMESSAGE'] = eligibilityarray[0]
               @patient['CRITERIABOXES'] = eligibilityarray[1]
               @patient['ELIGIBLE'] = eligibilityarray[2]
+              @patient['STATUS'] = "Old"
  
 
               # get criteria for vaxtype
