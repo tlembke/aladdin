@@ -40,6 +40,10 @@ Please note that if you are aged under 40 you will need to demonstrate that you 
                     <%= label_tag :email, "Email", class: "form-label col-sm-4 text-right" %>
                     <%= text_field_tag :email, nil, class: "input-medium col-sm-5" %>
                  </div>
+                 <div class="form-group row wait" style="display:none;">
+                     <%= label_tag :priority, "Category", class: "form-label col-sm-4  text-right" %>
+                     <%= select_tag :priority, options_for_select([["Normal",0],["Health Care Worker",1],["Aged Care Worker",2],["Meat worker",3],["Designated medical condition",4]]), class: "input-medium col-sm-5"  %>
+                  </div>                             
                  <div class="form-actions col-sm-offset-4 col-sm-3">
                    <%= submit_tag "Check again", class: "btn btn-primary wait" %>
                  

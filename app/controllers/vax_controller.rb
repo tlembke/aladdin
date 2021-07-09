@@ -48,7 +48,7 @@ class VaxController < ApplicationController
                 eligibility = 2
             end
         end
-        @booker=Booker.add_to_waiting(0,params[:surname],params[:firstname],@dob,params[:email],params[:mobile],@vaxtype,eligibility)
+        @booker=Booker.add_to_waiting(0,params[:surname],params[:firstname],@dob,params[:email],params[:mobile],@vaxtype,eligibility,params[:priority])
         @patient = getPatientFromBooker(@booker.id)
         @booker_id=@booker.id
         @thePartial = "confirmPatient"
@@ -132,7 +132,7 @@ class VaxController < ApplicationController
                                 @thePartial = "wait"
                         end
                 elsif @patient=="3"
-                    @theText ="Hmm. We can't search right now. Please try again later or ing us on 02 66280505"
+                    @theText ="Hmm. We can't search right now. Please try again later or ring us on 02 66280505"
                     @thePartial ="form"
                   else
                   # checkPatient() will change vaxtype depending on patient eligibility

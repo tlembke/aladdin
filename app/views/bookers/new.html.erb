@@ -52,21 +52,32 @@
                     <%= label_tag :name, "First name", class: "form-label col-sm-4" %>
                     <%= text_field_tag :FirstName, @firstname, class: "input-medium col-sm-5" %>
                  </div>
+                 <div class="form-group row">
+                        <%= label_tag :dob, "Date of Birth", class: "form-label col-sm-4 t" %>
+                       <div class= "input-medium col-sm-6"><%= select_day(Date.today) %><%= select_month(Date.today) %> <%= select_year(1950, start_year: 1920, end_year: 2005)%> </div>
+                  </div>
 
                   <div class="form-group row">
                     <%= label_tag :vaxtype, "Vax Type", class: "form-label col-sm-4" %>
-                  <div class="o-switch btn-group input-medium col-sm-5" data-toggle="buttons" role="group">
-                      <label class="btn btn-primary">
-                        <input type="radio" name="vaxtype" value="Fluvax" id="Fluvax"> Fluvax
-                      </label>
-                      <label class="btn btn-primary">
-                        <input type="radio" name="vaxtype" value="Covax" id="Covax" > Covax AZ
-                      </label>
-                      <label class="btn btn-primary active">
-                        <input type="radio" name="vaxtype" value="CovaxP" id="CovaxP" checked  > Covax P
-                      </label>
+                    <div class="o-switch btn-group input-medium col-sm-5" data-toggle="buttons" role="group">
+                        <label class="btn btn-primary">
+                          <input type="radio" name="vaxtype" value="Fluvax" id="Fluvax"> Fluvax
+                        </label>
+                        <label class="btn btn-primary">
+                          <input type="radio" name="vaxtype" value="Covax" id="Covax" > Covax AZ
+                        </label>
+                        <label class="btn btn-primary active">
+                          <input type="radio" name="vaxtype" value="CovaxP" id="CovaxP" checked  > Covax P
+                        </label>
+                    </div>
                   </div>
-           </div>
+                  <div class="form-group row">
+                     <%= label_tag :priority, "Priority", class: "form-label col-sm-4" %>
+                     <%= select_tag :priority, options_for_select([["None",0],["Health Care",1],["Aged Care",2],["Meat worker",3],["Disease",4]]), class: "input-medium col-sm-5"  %>
+                  </div>
+
+
+         
 
 
 

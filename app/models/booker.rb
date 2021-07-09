@@ -52,7 +52,7 @@ class Booker < ActiveRecord::Base
 		return mobile
     end 
 
-     def self.add_to_waiting(genie,surname,firstname,dob,email,mobile,vaxtype,eligibility)
+     def self.add_to_waiting(genie,surname,firstname,dob,email,mobile,vaxtype,eligibility,priority)
 		    @booker = Booker.new
 		    @booker.surname = surname
 		    @booker.firstname = firstname
@@ -60,6 +60,7 @@ class Booker < ActiveRecord::Base
 		    @booker.clinic_id = 0
 		    @booker.genie = genie
 		    @booker.vaxtype = vaxtype
+		    @booker.priority = priority
 		    @booker.eligibility = eligibility
 		    crypt = ActiveSupport::MessageEncryptor.new(Rails.application.secrets.bickles_base)
 			@booker.mobile = crypt.encrypt_and_sign(mobile)
@@ -88,6 +89,21 @@ class Booker < ActiveRecord::Base
  		 newInvited = Booker.where(clinic_id: 0, genie: 0,vaxtype: vaxtype,invite: true).count
  		 oldInvited = Booker.where(clinic_id: 0,invite: true,vaxtype: vaxtype).where.not(genie: 0).count
  		 return [vaxtype,oldWaiting,oldInvited, newWaiting, newInvited]
+  end
+
+  def priorityText
+  		returnText = ""
+  		case self.priority
+  			when 1
+  				returnText = "HCW"
+  			when 2		
+  				returnText = "ACW"
+  			when 3
+  				returnText = "MW"
+  			when 4
+  				returnText = "Dis"
+  		end
+  		return returnText
   end
 
 end

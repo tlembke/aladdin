@@ -44,10 +44,10 @@ class BookersController < ApplicationController
 
                           @booker.surname = params[:Surname]
                           @booker.firstname =params[:FirstName]
-                          #@booker.dob = @patient.dob
+                          @booker.dob = Date.new(params[:date][:year].to_i,params[:date][:month].to_i,params[:date][:day].to_i)
                           @booker.vaxtype = @vaxtype
                           @booker.clinic_id = 0
-
+                          @booker.priority = params[:priority]
 
                           crypt = ActiveSupport::MessageEncryptor.new(Rails.application.secrets.bickles_base)
                           
@@ -313,6 +313,6 @@ class BookersController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def booker_params
-      params.require(:booker).permit(:clinic_id, :genie, :surname, :firstname, :dob, :vaxtype, :contactby, :confirm, :received, :arm, :dose, :batch, :note, :bookhour, :bookminute,:email,:eligibility)
+      params.require(:booker).permit(:clinic_id, :genie, :surname, :firstname, :dob, :vaxtype, :contactby, :confirm, :received, :arm, :dose, :batch, :note, :bookhour, :bookminute,:email,:eligibility,:priority)
     end
 end
