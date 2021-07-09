@@ -19,6 +19,31 @@
 <%= link_to "Clinics",clinics_path, class: 'btn btn-primary btn-large' %>
 <% end %>
 
+<%= render "waitinglist" %>
+
+
+<%= form_tag({action: :sendWaitMessage},  method: "get", class: "form-horizontal" ) do %>
+<div class="form-group row">
+<%= label_tag :theMessage, "Message", class: "form-label col-sm-1", onclick: "$('.message').toggle();"%>
+
+<%= text_area_tag :theMessage, "Hi {{firstname}}, There may be immunisation clinics available now. Check https://vax.alstonville.clinic", class: "input-medium col-sm-9 message", style: "display:none;" %>
+
+<div class="form-actions col-sm-2">
+<span id='checkcount'>0</span> bookers selected.<p>
+<%= submit_tag "Send SMS",  class: "btn btn-primary message",style: "display:none;" %>
+</div>
+</div>
+
+<script>
+			function updateCheckcount(){
+				//var checkCount = $('.messcheck').find('input.messcheck:checked').length;
+				var checkCount = $('input.messcheck:checked').length;
+				$('#checkcount').html(checkCount);
+			}
+			
+</script>
+
+
 <table class='table'>
 		<thead>
 		<tr>
@@ -32,6 +57,7 @@
 				<th>Inv</th>
 				
 				<th></th>
+				<th>Mess</th>
 		</tr>
 	</thead>
 <% @bookers.each do |booker| %>
@@ -58,9 +84,12 @@
 
 
 			<td><%= link_to fa_icon_tag("trash-o"), booker_path(booker), method: :delete, rel: 'tooltip', title: 'Remove', data: { confirm: 'Are you sure?' }%></td>
+			<td><%= check_box_tag 'mess[]' , booker.id.to_s, false, class: "messcheck",onclick: "updateCheckcount();"%></td>
 
 		</tr>
 	</tbody>
 <% end %>
 </table>
+
+<% end %>
 

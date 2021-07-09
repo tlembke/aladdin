@@ -265,6 +265,44 @@ class BookersController < ApplicationController
 
 
 
+  def sendWaitMessage
+    # find clinics on that day
+    
+    if params[:mess]
+      @theMessage = params[:theMessage]
+      if @theMessage == ""
+          @theMessage = "There may be immunisation clinics available now at https://vax.alstonville.clinic"
+      end
+
+      @reminders=[]
+      @noreminders=[]
+
+      params[:mess].each do |booker_id|
+               if booker=Booker.find(booker_id)
+                 unless booker.mobile.blank?
+                        mobile=formatMobile(booker.mobiledec)
+                        @newMessage = @theMessage.gsub("{{firstname}}", booker.firstname)
+                        if Phony.plausible?(mobile)
+                               AgentTexter.reminder(mobile: mobile, msg: @newMessage).deliver_later
+                          @reminders << [booker.surname,booker.firstname,@newMessage,mobile]
+                        else
+                          @noreminders << [booker.surname,booker.firstname,mobile]
+                        end
+                        
+                  end
+              end
+
+
+      end
+
+    end
+
+
+
+ end
+
+
+
 
 
   private

@@ -1,0 +1,22 @@
+<% waitingArray = Booker.waiting %>
+<table border=1>
+	<thead>
+		<tr>
+			<th>Vaxtype</th>
+			<th>Old</th>
+			<th>Old - Inv</th>
+			<th>New</th>
+			<th>New - Inv</th>
+		</tr>
+	</thead>
+	<tbody>
+		<% waitingArray.each do |vaxtypeArray| %>
+			<tr>
+				<% vaxtypeArray.each do |vaxtypeCount| %>
+						<td><%= vaxtypeCount %></td>
+				<% end %>
+			</tr>
+		<% end %>
+	</tbody>
+</table>
+

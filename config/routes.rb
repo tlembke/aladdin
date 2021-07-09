@@ -19,6 +19,7 @@ require 'sidekiq/cron/web'
       end
       collection do
         get 'waiting'
+        get 'sendWaitMessage'
       end
   end
   get 'vax/index'

@@ -537,21 +537,7 @@ class ClinicsController < ApplicationController
 
  end
 
- def formatMobile(mobile)
-                    mobile = mobile.gsub(/\s+/, "") # remove spaces
-                    mobile=mobile.delete('^0-9') #remove everything except digits
-                    if mobile.starts_with?("0")
-                        mobile=mobile[1..-1] #remove leading 0 
-                    end
-                    if mobile.starts_with?("6")
-                        mobile = "+"+ mobile
-                    end
-                    if mobile.starts_with?("4")
-                       mobile = "+61"+ mobile
-                    end
-                    return mobile
 
- end
 
  def updatecontacts
       @username = session[:username]

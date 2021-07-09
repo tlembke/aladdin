@@ -1,0 +1,14 @@
+The message<p> <b><%= @theMessage %></b><p>
+	was sent to
+	<ul>
+		<% @reminders.each do |booker| %>
+				<li><%= booker[0] + " " + booker[1] +"  <" + booker[3] + ">" %><br>
+				<%= booker[2]%></li>
+		<% end %>
+	</ul>
+	and were not sent to
+	<ul>
+		<% @noreminders.each do |booker| %>
+				<li><%= booker[0] + " " + booker[1] + " <" + booker[2] + ">" %></li>
+		<% end %>
+	</ul>

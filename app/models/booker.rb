@@ -67,5 +67,27 @@ class Booker < ActiveRecord::Base
 			@booker.save
 			return @booker
 
- 	end   
+ 	end  
+
+ 	def self.waiting
+ 		 vaxtypes =["Fluvax","Covax","CovaxP"]
+ 		 waitingArray=Array.new
+ 		 vaxtypes.each do | vaxtype |
+ 		 	puts vaxtype
+ 		 	waitingArray << Booker.getCounts(vaxtype)
+ 		 end 
+ 		 return waitingArray
+
+
+ 	end
+
+ 	def self.getCounts(vaxtype)
+
+ 	     newWaiting = Booker.where(clinic_id: 0, vaxtype: vaxtype, genie: 0).count
+ 		 oldWaiting = Booker.where(clinic_id: 0,vaxtype: vaxtype).where.not(genie: 0).count
+ 		 newInvited = Booker.where(clinic_id: 0, genie: 0,vaxtype: vaxtype,invite: true).count
+ 		 oldInvited = Booker.where(clinic_id: 0,invite: true,vaxtype: vaxtype).where.not(genie: 0).count
+ 		 return [vaxtype,oldWaiting,oldInvited, newWaiting, newInvited]
+  end
+
 end
