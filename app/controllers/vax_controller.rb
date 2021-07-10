@@ -60,19 +60,41 @@ class VaxController < ApplicationController
       when "unbook"
         @vaxtype=params[:vaxtype]
         @booker=Booker.find(params[:booker])
-        @theText = "I have unbooked you for " + @booker.clinic.clinicdate.strftime("%d/%m/%Y") + "<p>You can book another appointment below"
-        @theText=@theText.html_safe
-        #@thePatient=checkPatient(@vaxtype,@booker.surname,@booker.firstname,@booker.dob)
+        @theText = "I have unbooked you for " + @booker.clinic.clinicdate.strftime("%d/%m/%Y")
         
+
+        #@thePatient=checkPatient(@vaxtype,@booker.surname,@booker.firstname,@booker.dob)
+        if @booker.vaxtype.start_with? "Covax" and @booker.dose == 1
+          if @booker.genie != 0
+            if @booker2 = Booker.where(genie: @booker.genie, vaxtype: @booker.vaxtype, dose: 2).first
+                  @theText= @theText +  " Covax2 on " + @booker2.clinic.clinicdate.strftime("%d-%m-%Y") + " was also unbooked"
+                  @booker2.destroy
+            end
+          else
+             if @booker2 = Booker.where(firstname: @booker.firstname, surname: @booker.surname,  dob: @booker.dob,  vaxtype: @booker.vaxtype, dose: 2).first
+                  @theText= @theText +  " Covax2 on " + @booker2.clinic.clinicdate.strftime("%d/%m/%Y") + " was also unbooked"
+                  @booker2.destroy
+              end
+
+           end
+        end          
+       @theText = @theText +  "<p>You can book another appointment below"
+       @theText=@theText.html_safe
+
+
+
+
+
         @patient = getPatientFromBooker(@booker.id)
         
         @booker_id=@booker.id
-
+        # dont destroy if a new patient ie genie = 0
         if @booker.genie == 0
           @booker.clinic_id = 0
            
         else
              @booker.destroy
+             @booker_id= 0
         end
         
         @thePartial = "confirmPatient"
@@ -537,8 +559,9 @@ class VaxController < ApplicationController
 
 
 
-              
-
+              eligible = false
+              criteriaMessage=""
+              criteriaBoxes=[]
               if age < 18
                  criteriaMessage = "You need to be over 18 to book online. Please ring us"
               elsif age >= clinicTemplate.age
@@ -546,7 +569,7 @@ class VaxController < ApplicationController
               elsif clinicTemplate.ATSIage and clinicTemplate.ATSIage>0 and age >= clinicTemplate.ATSIage and @patient['ETHNICITY']== "Indigenous"
                   eligible = true
               end
-
+          
               if age > 18 and eligible == false
                   if clinicTemplate.healthcare and clinicTemplate.chronic
                       criteriaMessage="You need to have either a designated health condition or be a health care worker to book using this form"

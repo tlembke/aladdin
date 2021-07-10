@@ -380,11 +380,19 @@ class ClinicsController < ApplicationController
       genie=@booker.genie
       firstname=@booker.firstname
       surname = @booker.surname
-      if @booker.vaxtype == "Covax" and @booker.dose == 1
-          if @booker2 = Booker.where(genie: genie, vaxtype: "Covax", dose: 2).first
+      dob = @booker.dob
+      if @booker.vaxtype.start_with? "Covax" and @booker.dose == 1
+        if genie != 0
+          if @booker2 = Booker.where(genie: genie, vaxtype: @booker.vaxtype, dose: 2).first
                 theMess = " Covax2 on " + @booker2.clinic.clinicdate.strftime("%d-%m-%Y") + " was also unbooked"
                 @booker2.destroy
           end
+        else
+           if @booker2 = Booker.where(firstname: firstname, surname: surname,  dob: dob,  vaxtype: @booker.vaxtype, dose: 2).first
+                theMess = " Covax2 on " + @booker2.clinic.clinicdate.strftime("%d-%m-%Y") + " was also unbooked"
+                @booker2.destroy
+          end
+        end
       end   
       
 
@@ -408,14 +416,21 @@ class ClinicsController < ApplicationController
       theMess =""
       @booker = Booker.find(params[:bookerID])
       @vaxtype=params[:vaxtype]
-      firstname=@booker.firstname
+      firstname = @booker.firstname
       surname = @booker.surname
       genie=@booker.genie
-      if @booker.vaxtype == "Covax" and @booker.dose == 1 and booker.clinic_id != 0
-          if @booker2 = Booker.where(genie: genie, vaxtype: "Covax", dose: 2).first
+      if @booker.vaxtype.start_with? "Covax" and @booker.dose == 1
+        if genie != 0
+          if @booker2 = Booker.where(genie: genie, vaxtype: @booker.vaxtype, dose: 2).first
                 theMess = " Covax2 on " + @booker2.clinic.clinicdate.strftime("%d-%m-%Y") + " was also unbooked"
                 @booker2.destroy
           end
+        else
+           if @booker2 = Booker.where(firstname: @booker.firstname, surname: @booker.surname,  dob: @booker.dob,  vaxtype: @booker.vaxtype, dose: 2).first
+                theMess = " Covax2 on " + @booker2.clinic.clinicdate.strftime("%d-%m-%Y") + " was also unbooked"
+                @booker2.destroy
+          end
+        end
       end      
       if @booker.clinic_id == 0 
           theMess = firstname + " " + surname + " " + @booker.vaxtype + " was removed from waiting list"

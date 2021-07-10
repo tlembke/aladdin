@@ -74,6 +74,11 @@ class GenieController < ApplicationController
 
                 end
                 sth.drop
+              # test for medium stength  at least a lowercase letter, a uppercase, a digit and 8+ chars
+              unless @password[/^(?=.*[a-zA-Z])(?=.*[0-9]).{8,}$/]
+                  flash[:alert] = "Your password needs to be changed in Genie so that it has at least a lowercase letter, an uppercase letter, a digit and 8+ chars"
+                  flash[:notice] = "Please  go to Genie > File > Add or Change User > Set Password"
+              end
               session[:id]=@id
               session[:name]=@name
         		 	session[:username] = @username
