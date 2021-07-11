@@ -53,6 +53,7 @@ def connect(username=session[:username],password=Pref.decrypt_password(session[:
           #redirect_to({controller: "genie", action: "login"}, notice: "Username / password failed")
         else
           error_code=3
+          sendAlert
         #redirect_to({controller: "genie", action: "login"}, notice: ODBC.error[0])
         end
       error_msg=ODBC.error[0]
@@ -676,6 +677,14 @@ def connect(username=session[:username],password=Pref.decrypt_password(session[:
                     return mobile
 
  end
+
+    def sendAlert
+          if session[:warned_at] and session[:warned_at] < Time.current + 10.minutes
+              session[:warned_at] = Time.current
+              AgentTexter.alert(mobile: "+61413740060", msg: "Genie Server Down").deliver_later
+          end
+
+   end
 
 
 
