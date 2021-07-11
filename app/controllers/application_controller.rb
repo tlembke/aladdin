@@ -679,11 +679,27 @@ def connect(username=session[:username],password=Pref.decrypt_password(session[:
  end
 
     def sendAlert
-          if session[:warned_at] and session[:warned_at] < Time.current + 10.minutes
-              session[:warned_at] = Time.current
+          alertTime = getTime("alert")
+          puts alertTime
+          puts Time.current
+          if alertTime == nil or alertTime < Time.current - 3.minutes
+              putTime("alert")
               AgentTexter.alert(mobile: "+61413740060", msg: "Genie Server Down").deliver_later
+              debugger
           end
 
+   end
+
+   def putTime(cookieName)
+        FileUtils.touch(::Rails.root.join('public',cookieName+'.txt'))
+   end 
+   def getTime(cookieName)
+        modTime = nil
+        if File.file?(::Rails.root.join('public',cookieName+'.txt'))
+            modTime = File.mtime(::Rails.root.join('public',cookieName+'.txt'))
+            modTime= modTime.utc
+        end
+        return modTime
    end
 
 

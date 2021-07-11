@@ -32,9 +32,10 @@ class GenieController < ApplicationController
             			flash[:notice]="Unable to find dsn. Have you configured iODBC? I will restart Alladin so try again"
                   system ("touch #{Rails.root}/tmp/restart.txt")
 
-                  system ("passenger-config restart-app /Users/cpd/Projects/")
-                  system ("/usr/sbin/apachectl graceful")
+                  system ("passenger-config restart-app /Users/cpd/Projects/aladdin")
+                  # system ("/usr/sbin/apachectl graceful")
 
+                  sendAlert
             			connect=false
 
             			#redirect_to controller: "genie", action: "login"
@@ -51,6 +52,7 @@ class GenieController < ApplicationController
         			         else
         				            flash[:alert] = "Unable to connect to database. "+get_odbc
                             flash[:notice] =  ODBC.error[0]
+                            sendAlert
       				#redirect_to({controller: "genie", action: "login"}, notice: ODBC.error[0])
                        end
       			      end
