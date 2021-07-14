@@ -33,8 +33,9 @@
               <% end %>
 
               <% if @clinic.pair1 == nil and @clinic.pair2 == nil %>
+              <% @template = @clinic.getTemplate %>
                <div class="form-group ">
-                    <label class="control-label col-md-6" for="makepair">Make a new paired clinic for <%= vaxtype=="Covax" ? "12" : "3" %> weeks?</label>
+                    <label class="control-label col-md-6" for="makepair">Make a new paired clinic for <%= @template.pairpref %> weeks?</label>
                     <div class='col-md-6'>
                         <%= check_box_tag :makepair,false %>
 

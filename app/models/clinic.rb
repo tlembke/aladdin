@@ -90,7 +90,7 @@ class Clinic < ActiveRecord::Base
 
         self.clinicdate == nil ? thisClinicdate = Date.today : thisClinicdate=self.clinicdate
         template=self.getTemplate
-        Clinic.where("template = ? and clinicdate > ? and clinicdate < ? and vaxtype='Covax'",false,thisClinicdate + template.pairmin.weeks, thisClinicdate + template.pairmax.weeks).all.collect { |c| [c.clinicdate.strftime('%d-%m-%Y') + "  (" + weeksBetween(c.clinicdate,thisClinicdate) + ")", c.id] }
+        Clinic.where("template = ? and vaxtype=? and clinicdate >= ? and clinicdate <= ? ",false, self.vaxtype, thisClinicdate + template.pairmin.weeks, thisClinicdate + template.pairmax.weeks).all.collect { |c| [c.clinicdate.strftime('%d-%m-%Y') + "  (" + weeksBetween(c.clinicdate,thisClinicdate) + ")", c.id] }
           
         #if self.vaxtype == "Covax"
          #   Clinic.where("template = ? and clinicdate > ? and clinicdate < ? and vaxtype='Covax'",false,thisClinicdate + template.pairmin.weeks, thisClinicdate + template.pairmax.weeks).all.collect { |c| [c.clinicdate.strftime('%d-%m-%Y') + "  (" + weeksBetween(c.clinicdate,thisClinicdate) + ")", c.id] }
