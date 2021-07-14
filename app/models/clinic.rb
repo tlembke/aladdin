@@ -89,13 +89,16 @@ class Clinic < ActiveRecord::Base
     def pairOptions
 
         self.clinicdate == nil ? thisClinicdate = Date.today : thisClinicdate=self.clinicdate
-        if self.vaxtype == "Covax"
-            Clinic.where("template = ? and clinicdate > ? and clinicdate < ? and vaxtype='Covax'",false,thisClinicdate + 11.weeks, thisClinicdate + 13.weeks).all.collect { |c| [c.clinicdate.strftime('%d-%m-%Y') + "  (" + weeksBetween(c.clinicdate,thisClinicdate) + ")", c.id] }
+        template=self.getTemplate
+        Clinic.where("template = ? and clinicdate > ? and clinicdate < ? and vaxtype='Covax'",false,thisClinicdate + template.pairmin.weeks, thisClinicdate + template.pairmax.weeks).all.collect { |c| [c.clinicdate.strftime('%d-%m-%Y') + "  (" + weeksBetween(c.clinicdate,thisClinicdate) + ")", c.id] }
+          
+        #if self.vaxtype == "Covax"
+         #   Clinic.where("template = ? and clinicdate > ? and clinicdate < ? and vaxtype='Covax'",false,thisClinicdate + template.pairmin.weeks, thisClinicdate + template.pairmax.weeks).all.collect { |c| [c.clinicdate.strftime('%d-%m-%Y') + "  (" + weeksBetween(c.clinicdate,thisClinicdate) + ")", c.id] }
             #Clinic.where(template: false).all.collect { |c| [c.clinicdate.strftime('%y-%m-%d'), c.id] }
-        else
-            Clinic.where("template = ? and clinicdate > ? and clinicdate < ? and vaxtype='CovaxP'",false,thisClinicdate + 3.weeks - 2.days, thisClinicdate + 5.weeks + 1.day).all.collect { |c| [c.clinicdate.strftime('%d-%m-%Y') + "  (" + weeksBetween(c.clinicdate,thisClinicdate) + ")", c.id] }
+        #else
+            #Clinic.where("template = ? and clinicdate > ? and clinicdate < ? and vaxtype='CovaxP'",false,thisClinicdate + 3.weeks - 2.days, thisClinicdate + 5.weeks + 1.day).all.collect { |c| [c.clinicdate.strftime('%d-%m-%Y') + "  (" + weeksBetween(c.clinicdate,thisClinicdate) + ")", c.id] }
   
-        end
+        #end
     end
 
     def weeksBetween (date1,date2)
@@ -120,7 +123,8 @@ class Clinic < ActiveRecord::Base
     end
 
     def  makePair
-            self.vaxtype == "Covax" ? noWeeks=12 : noWeeks=3
+            template=self.getTemplate
+            noWeeks=template.pairpref
             theMess = ""
             if self.pair1 !=nil and self.pair2 != nil 
                theMess = " New pair not created as pair already selected"
@@ -137,6 +141,12 @@ class Clinic < ActiveRecord::Base
               theMess = ' Hidden Paired Clinic also created for ' + @clinic2.clinicdate.strftime("%d-%m-%Y")
             end
             return theMess
+
+    end
+
+    def getTemplate
+        template = Clinic.where(vaxtype: self.vaxtype,template: true).first
+        return template
 
     end
 

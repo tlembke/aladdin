@@ -26,6 +26,9 @@ class ClinicsController < ApplicationController
             @covaxtemplateID = @covaxtemplate.id
         else
               @clinic = Clinic.new(vaxtype: "Covax", template: true)
+              @clinic.pairpref=12
+              @clinic.pairmax=16
+              @clinic.pairmin=4
               @clinic.save
               @covaxtemplate = @clinic
         end
@@ -33,6 +36,9 @@ class ClinicsController < ApplicationController
             @covaxPtemplateID = @covaxPtemplate.id
         else
               @clinic = Clinic.new(vaxtype: "CovaxP", template: true)
+              @clinic.pairpref=3
+              @clinic.pairmax=6
+              @clinic.pairmin=3
               @clinic.save
               @covaxPtemplate = @clinic
               @covaxPtemplateID = @clinic.id
@@ -609,6 +615,6 @@ class ClinicsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def clinic_params
-      params.require(:clinic).permit(:clinicdate, :live, :starthour, :startminute, :finishhour, :finishminute, :perhour, :vaxtype, :venue, :people, :template, :age, :ATSIage, :chronic, :chronicage, :message,:hour,:minute,:genie,:healthcare,:break,:bstarthour,:bstartminute,:bfinishhour,:bfinishminute,:pair1,:pair2,:pair3,:shownew,:invitenew,:inviteold)
+      params.require(:clinic).permit(:clinicdate, :live, :starthour, :startminute, :finishhour, :finishminute, :perhour, :vaxtype, :venue, :people, :template, :age, :ATSIage, :chronic, :chronicage, :message,:hour,:minute,:genie,:healthcare,:break,:bstarthour,:bstartminute,:bfinishhour,:bfinishminute,:pair1,:pair2,:pair3,:shownew,:invitenew,:inviteold,:pairmin,:pairmax,:pairpref)
     end
 end

@@ -206,6 +206,30 @@
           </div>
         <% end %>
 
+
+        <%= f.form_group :pairpref do |f| %>
+          <%= f.label "Pair - Preferred weeks", class: 'control-label col-md-6' %>
+          <div class='col-md-6'>
+            <%= f.number_field :pairpref, class: 'form-control' %>
+            <%= f.error_messages %>
+          </div>
+        <% end %>
+
+        <%= f.form_group :pairmin do |f| %>
+          <%= f.label "Pair - Minimum weeks", class: 'control-label col-md-6' %>
+          <div class='col-md-6'>
+            <%= f.number_field :pairmin, class: 'form-control' %>
+            <%= f.error_messages %>
+          </div>
+        <% end %>
+
+        <%= f.form_group :pairmax do |f| %>
+          <%= f.label "Pair - Maximum weeks", class: 'control-label col-md-6' %>
+          <div class='col-md-6'>
+            <%= f.number_field :pairmax, class: 'form-control' %>
+            <%= f.error_messages %>
+          </div>
+        <% end %>
     <% end %> <!-- end clinic template -->
 
 
