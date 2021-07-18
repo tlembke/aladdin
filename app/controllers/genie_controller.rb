@@ -7,12 +7,13 @@ class GenieController < ApplicationController
   def login
   	reset_session
     if params[:restart]
-          ##  system ("passenger-config restart-app /Users/cpd/Projects/aladdin")
+         system ("passenger-config restart-app /Users/cpd/Projects/aladdin")
+        #system ("passenger-config restart-app /")
          ## system ("/usr/sbin/apachectl graceful")
           # this need _www ALL = NOPASSWD: /usr/sbin/apachectl to be added to /etc/sudoer using visudo command as root
           
-          FileUtils.touch(::Rails.root.join('tmp','restart.txt'))
-          puts "Restarting Aladdin using restart.txt"
+          #FileUtils.touch(::Rails.root.join('tmp','restart.txt'))
+          #puts "Restarting Aladdin using restart.txt"
           connect=false
           flash[:notice]="Aladdin restarted"
     else
@@ -32,8 +33,9 @@ class GenieController < ApplicationController
 
             rescue
             			flash[:notice]="Unable to find dsn. Have you configured iODBC? I will restart Alladin so try again"
-                  FileUtils.touch(::Rails.root.join('tmp','restart.txt'))
-                  puts "Restarting Aladdin using restart.txt"
+                  #FileUtils.touch(::Rails.root.join('tmp','restart.txt'))
+                  #puts "Restarting Aladdin using restart.txt"
+                  system ("passenger-config restart-app /Users/cpd/Projects/aladdin")
                   connect=false
                   flash[:notice]="Aladdin restarted"
 
@@ -57,8 +59,9 @@ class GenieController < ApplicationController
         			         else
         				            flash[:alert] = "Unable to connect to database. "+get_odbc
                             flash[:notice] =  ODBC.error[0] + " : Aladdin restarted"
-                            FileUtils.touch(::Rails.root.join('tmp','restart.txt'))
-                            puts "Restarting Aladdin using restart.txt"
+                           #FileUtils.touch(::Rails.root.join('tmp','restart.txt'))
+                            system ("passenger-config restart-app /Users/cpd/Projects/aladdin")
+                            puts "Restarting Aladdin"
                             sendAlert
       				#redirect_to({controller: "genie", action: "login"}, notice: ODBC.error[0])
                        end
