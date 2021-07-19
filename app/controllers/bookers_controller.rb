@@ -252,6 +252,24 @@ class BookersController < ApplicationController
 
   end
 
+
+   def missed
+      @username = session[:username]
+      @password = session[:password]
+      connect_array=connect()
+      @error_code=connect_array[1]
+      @genie = params[:genie]
+      if (@error_code==0)
+            dbh=connect_array[0]
+            @booker = Booker.create_booker(dbh,params[:clinic],params[:genie],true)
+            dbh.disconnect
+       else
+            flash[:alert] = "Unable to connect to database. "+get_odbc
+            flash[:notice] = connect_array[2]
+            redirect_to  controller: "genie", action: "login"
+      end
+ end
+
   def confirm
       @booker.confirm ? @booker.confirm = false : @booker.confirm = true
       @booker.save

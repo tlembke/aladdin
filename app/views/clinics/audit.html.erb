@@ -34,9 +34,10 @@ Checks if vaccinations recorded in Genie
           <h2>These patients received a vaccination but no booking is recorded</h2>
                <table class = 'table' >
                   <% @missed.each do |miss| %>
-                    <tr>
+                    <tr id='missed-<%= miss.id %>'>
                           <td><%= miss.surname %></td>
                           <td><%= miss.firstname %></td>
+                          <td><%= link_to 'Create Booker', missed_bookers_path(genie: miss.id, clinic: @clinic.id),{:class => "btn btn-small btn-primary", :remote => true} %></td>
 
                     </tr>
                   <% end %>

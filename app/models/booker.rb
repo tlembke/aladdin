@@ -70,6 +70,26 @@ class Booker < ActiveRecord::Base
 
  	end  
 
+ def self.create_booker(dbh,clinic_id,genie,given=true)
+ 				@clinic=Clinic.find(clinic_id)
+ 				@patient = Patient.get_patient(genie.to_s, dbh)
+		    @booker = Booker.new
+		    @booker.surname = @patient.surname
+		    @booker.firstname = @patient.firstname
+		    @booker.dob = @patient.dob
+		    @booker.clinic_id = clinic_id
+		    @booker.genie = genie
+		    @booker.vaxtype = @clinic.vaxtype
+		    @booker.bookhour = @clinic.starthour
+		    @booker.bookminute= @clinic.startminute
+		    @booker.given = given
+		    crypt = ActiveSupport::MessageEncryptor.new(Rails.application.secrets.bickles_base)
+				@booker.mobile = crypt.encrypt_and_sign(@patient.mobilephone)
+				@booker.email = crypt.encrypt_and_sign(@patient.email)
+				@booker.save
+				return @booker
+ 	end  
+
  	def self.waiting
  		 vaxtypes =["Fluvax","Covax","CovaxP"]
  		 waitingArray=Array.new
