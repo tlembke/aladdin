@@ -391,7 +391,7 @@ class VaxController < ApplicationController
    		
 
 
-            @username = Pref.aladdinuser
+      @username = Pref.aladdinuser
             @password = Pref.decrypt_password(Pref.aladdinpassword)
 
 
@@ -466,58 +466,58 @@ class VaxController < ApplicationController
     					         @patient = "2"
     					
     					
-    			 else
-               # OK, so all good and we have one patient
-    			 		@patient = @patients_search[0]
-              @booker_id=0
+            			 else
+                       # OK, so all good and we have one patient
+            			 		@patient = @patients_search[0]
+                      @booker_id=0
 
-              criteriaMessage=""
-              criteriaBoxes=[]
-              eligible = false
-
-
-              # check eligibility
-              # age
-
-              age = ((Time.zone.now - dob.to_time) / 1.year.seconds).floor
-              @patient['AGE'] = age
-              eligibilityarray=getEligibility(age,vaxtype)
-              @patient['CRITERIAMESSAGE'] = eligibilityarray[0]
-              @patient['CRITERIABOXES'] = eligibilityarray[1]
-              @patient['ELIGIBLE'] = eligibilityarray[2]
-              @patient['STATUS'] = "Old"
- 
-
-              # get criteria for vaxtype
-    
+                      criteriaMessage=""
+                      criteriaBoxes=[]
+                      eligible = false
 
 
-              # has the patient had an immunsiation
-              immunisations= get_immunisations(@patient["ID"],dbh)
-              @patient['COVAST']=[]
-              @patient['COMIRN']=[]
-              immunisations.each do |jab|
-                  if jab['ACIRCODE']=="COVAST"
-                      @patient['COVAST'] << jab['GIVENDATE']
-                  end
-                  if jab['ACIRCODE']=="COMIRN"
-                      @patient['COMIRN'] << jab['GIVENDATE']
-                  end
-              end
+                      # check eligibility
+                      # age
 
-              clinicTemplateAZ = Clinic.where(vaxtype: "Covax", template: true).first
-              @patient['VAXTYPE'] = "Covax"
-              if age < clinicTemplateAZ.age and @patient['COVAST'].length == 0
-                 @patient['VAXTYPE']="CovaxP"
-              end
+                      age = ((Time.zone.now - dob.to_time) / 1.year.seconds).floor
+                      @patient['AGE'] = age
+                      eligibilityarray=getEligibility(age,vaxtype)
+                      @patient['CRITERIAMESSAGE'] = eligibilityarray[0]
+                      @patient['CRITERIABOXES'] = eligibilityarray[1]
+                      @patient['ELIGIBLE'] = eligibilityarray[2]
+                      @patient['STATUS'] = "Old"
+         
+
+                      # get criteria for vaxtype
+            
 
 
+                      # has the patient had an immunsiation
+                      immunisations= get_immunisations(@patient["ID"],dbh)
+                      @patient['COVAST']=[]
+                      @patient['COMIRN']=[]
+                      immunisations.each do |jab|
+                          if jab['ACIRCODE']=="COVAST"
+                              @patient['COVAST'] << jab['GIVENDATE']
+                          end
+                          if jab['ACIRCODE']=="COMIRN"
+                              @patient['COMIRN'] << jab['GIVENDATE']
+                          end
+                      end
+
+                      clinicTemplateAZ = Clinic.where(vaxtype: "Covax", template: true).first
+                      @patient['VAXTYPE'] = "Covax"
+                      if age < clinicTemplateAZ.age and @patient['COVAST'].length == 0
+                         @patient['VAXTYPE']="CovaxP"
+                      end
 
 
 
 
 
-    			 end
+
+
+            			 end
 
     			            
             
@@ -532,7 +532,7 @@ class VaxController < ApplicationController
                 
 
             end
-             dbh.disconnect
+            dbh.disconnect
             return @patient
 
 

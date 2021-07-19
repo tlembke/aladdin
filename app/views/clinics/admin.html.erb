@@ -78,6 +78,7 @@
                                  <th>Type</th>
                                 <th>Date</th>
                                 <th>B</th>
+                                <th>G</th>
                                 <th>Show</th>
                                 <th>New</th>
                                 <th>InvOld</th>
@@ -109,11 +110,20 @@
             </thead>
             <tbody>
               <% @clinics.each do |clinic| %>
-              <% booked = Booker.where(clinic_id: clinic.id).count %>
+              
               <tr>
-                                <td><b><%= clinic.vaxtype == "Covax" ? "AZ" : "P" %></b>
+                                <td><b><%= clinic.vaxtype == "Covax" ? "AZ" : "P" %></b></td>
                                 <td><%= clinic.clinicdate.strftime("%d/%m/%y") %></td>
-                                <td><%= booked %>
+                                <td><%= clinic.booked %></td>
+                                <td>
+                                <% if clinic.audit %>
+                                    <%= clinic.given %>
+                                <% else %> 
+                                    <% if clinic.clinicdate <= Date.today %>
+                                        <%= link_to fa_icon_tag("history"), audit_clinic_path(clinic), rel: 'tooltip', title: 'Audit' %>
+                                    <% end %>
+                                <% end %>
+                               </td>
                                 <td><%= fa_icon_tag "check-square" if clinic.live %><%= fa_icon_tag "square" unless clinic.live %></td>
                                  
                                 <td><%= fa_icon_tag "check-square" if clinic.shownew %><%= fa_icon_tag "square" unless clinic.shownew %></td>
@@ -138,6 +148,9 @@
                                 <td><%= clinic.message %></td>
                                 <td class="actions">
                   <%= link_to fa_icon_tag("eye"), clinic, rel: 'tooltip', title: 'Show' %>
+                  <% if clinic.clinicdate <= Date.today %>
+                  <%= link_to fa_icon_tag("history"), audit_clinic_path(clinic), rel: 'tooltip', title: 'Audit' %>
+                  <% end %>
                   <%= link_to fa_icon_tag("pencil"), edit_clinic_path(clinic), rel: 'tooltip', title: 'Edit' %>
                   <%= link_to fa_icon_tag("print"), clinic_path(clinic,print: :true), rel: 'tooltip', title: 'Print' %>
                   <% if booked == 0 %>
@@ -158,3 +171,7 @@
                 </div>
   </div>
 </div>
+
+
+
+

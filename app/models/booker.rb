@@ -106,4 +106,68 @@ class Booker < ActiveRecord::Base
   		return returnText
   end
 
+  def vaxGiven?(dbh)
+  	# get vaccination Hx for patient with this booking
+
+       	  vaxGiven=false
+       	  self.vaxtype == "Covax"? acircode = "COVAST" : acircode = "COMIRN"
+		  immunisations= get_immunisation(self.genie,acircode,dbh)
+	      immunisations.each do |jab|
+
+	              if jab['GIVENDATE'] == self.clinic.clinicdate
+	                  vaxGiven = true
+	              end
+
+	      end
+
+
+ 
+		  return vaxGiven
+
+  end
+
+    def vaxDates(dbh)
+  	# get vaccination Hx for patient with this booking
+  	# not used
+	  	  vaxDates=Hash.new
+
+		  immunisations= get_immunisations(self.genie,dbh)
+	      vaxDates['COVAST']=[]
+	      vaxDates['COMIRN']=[]
+	      immunisations.each do |jab|
+	          if jab['ACIRCODE']=="COVAST"
+	              vaxDates['COVAST'] << jab['GIVENDATE']
+	          end
+	          if jab['ACIRCODE']=="COMIRN"
+	              vaxDates['COMIRN'] << jab['GIVENDATE']
+	          end
+	      end
+
+
+	         
+	      return vaxDates
+
+    end
+
+      def get_immunisation(patient,acircode,dbh)
+          sql = "SELECT ACIRCode, GivenDate, Vaccine FROM Vaccination WHERE PT_Id_FK = " + patient.to_s + " AND ACIRCode = '" + acircode + "' ORDER BY GivenDate DESC"
+          puts sql
+         
+
+          sth = dbh.run(sql)
+               
+          immunisations=[]
+          sth.fetch_hash do |row|
+
+            immunisations << row
+          end
+
+         
+
+         
+          sth.drop
+          return immunisations
+
+    end
+
 end

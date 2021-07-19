@@ -1,0 +1,49 @@
+<% @title = "Audit " + @clinic.vaxtype + " clinic on " + @clinic.clinicdate.strftime("%d/%m/%Y")%>
+
+
+<% content_for :description do %>
+Checks if vaccinations recorded in Genie
+<% end %>
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+      <div class="sheet sheet-condensed">
+          <h2>These patients have a booking but no vaccination recorded</h2>
+          <table class = 'table' >
+                  <% bookers = Booker.where(clinic_id: @clinic.id).order(:surname).all %>
+                  <% bookers.each do |booker| %>
+                    <% unless booker.given %>
+                      <tr>
+                            <td><%= booker.surname %></td>
+                            <td><%= booker.firstname %></td>
+                     </tr>
+                    <% end %>
+                  <% end %>
+          </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+      <div class="sheet sheet-condensed">
+        <div class="sheet-inner">
+          <h2>These patients received a vaccination but no booking is recorded</h2>
+               <table class = 'table' >
+                  <% @missed.each do |miss| %>
+                    <tr>
+                          <td><%= miss.surname %></td>
+                          <td><%= miss.firstname %></td>
+
+                    </tr>
+                  <% end %>
+          </table>
+
+        </div><!-- /.sheet-inner -->
+      </div><!-- /.sheet -->
+     </div>
+  </div>
+</div>

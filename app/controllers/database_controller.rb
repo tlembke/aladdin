@@ -124,6 +124,9 @@ class DatabaseController < ApplicationController
 	          						if i + 1 < @columns.count
 	          							@columnSt = @columnSt + ","
 	          						end
+                                else
+                                    #remove , from string
+                                    @columnSt = @columnSt[0...-1]
 	          					end
           						if column[3] == params[:column]
           							if column[5].starts_with?("INT")

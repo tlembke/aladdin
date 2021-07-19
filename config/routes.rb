@@ -34,6 +34,7 @@ require 'sidekiq/cron/web'
         get 'unbook'
         get 'email'
         get 'sms'
+        get 'audit'
       end
       collection do
         get 'admin'

@@ -1,5 +1,5 @@
 class ClinicsController < ApplicationController
-  before_action :set_clinic, only: [:show, :edit, :update, :destroy, :book, :email, :sms]
+  before_action :set_clinic, only: [:show, :edit, :update, :destroy, :book, :email, :sms, :audit]
 
   # GET /clinics
   # GET /clinics.json
@@ -560,6 +560,10 @@ class ClinicsController < ApplicationController
 
 
 
+
+
+
+
  def updatecontacts
       @username = session[:username]
       @password = session[:password]
@@ -581,6 +585,7 @@ class ClinicsController < ApplicationController
                       #end
                   end
               end
+            dbh.disconnect
        else
             flash[:alert] = "Unable to connect to database. "+get_odbc
             flash[:notice] = connect_array[2]
@@ -603,6 +608,34 @@ class ClinicsController < ApplicationController
       AgentTexter.alert(mobile: "+61414320036", msg: "mo meeting at 8.00am").deliver_later(wait_until: reminderTime)
       AgentTexter.alert(mobile: "+61437094047", msg: "no meeting at 8.00am").deliver_later(wait_until: reminderTime)
       AgentTexter.alert(mobile: "+61432296797", msg: "no meeting at 8.00am").deliver_later
+ end
+
+ def audit
+      
+      @username = session[:username]
+      @password = session[:password]
+      @id=session[:id]
+      @name=session[:name]
+      @bookersupdated=[]
+      connect_array=connect()
+      @error_code=connect_array[1]
+      if (@error_code==0)
+            dbh=connect_array[0]
+            @clinic.auditgiven(dbh,true)
+            missedvaxees = @clinic.auditmissed(dbh)
+            @missed = []
+            missedvaxees.each do | miss |
+                unless Booker.where(genie: miss["PT_ID_FK"],clinic_id: @clinic.id).first
+                    @patient = Patient.get_patient(miss["PT_ID_FK"].to_s, dbh)
+                    @missed << @patient
+                end
+            end
+            dbh.disconnect
+       else
+            flash[:alert] = "Unable to connect to database. "+get_odbc
+            flash[:notice] = connect_array[2]
+            redirect_to  controller: "genie", action: "login"
+      end
  end
 
 

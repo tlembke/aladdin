@@ -168,14 +168,59 @@ class Clinic < ActiveRecord::Base
 
     end
 
+    def booked
+            booked = Booker.where(clinic_id: self.id).count
+            return booked
+    end
 
-      
+    def given
+            given = Booker.where(clinic_id: self.id, given: true).count
+            return given
+    end
+
+   
+
+     def auditgiven(dbh,force=false)
+
+        if self.audit == false or force == true
+            bookers=Booker.where(clinic_id: self.id).all
+            bookers.each do |booker|
+                
+                booker.given = booker.vaxGiven?(dbh)
+                booker.save
+                
+            end
+            self.audit = true 
+            self.save
+        end
 
 
 
+     end
+
+    def auditmissed(dbh)
+          self.vaxtype == "Covax"? acircode = "COVAST" : acircode = "COMIRN"
+          sql = "SELECT PT_Id_FK, ACIRCode, GivenDate, Vaccine FROM Vaccination WHERE GivenDate= '" + self.clinicdate.to_s(:db) + "' AND ACIRCode = '" + acircode + "'"
+          puts sql
+         
+
+          sth = dbh.run(sql)
+               
+          immunisations=[]
+          sth.fetch_hash do |row|
+
+            immunisations << row
+          end
+        
+
+         
+
+         
+          sth.drop
+          return immunisations
 
 
 
-
+     end
 
 end

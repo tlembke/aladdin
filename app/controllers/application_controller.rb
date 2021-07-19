@@ -682,10 +682,9 @@ def connect(username=session[:username],password=Pref.decrypt_password(session[:
           alertTime = getTime("alert")
           puts alertTime
           puts Time.current
-          if alertTime == nil or alertTime < Time.current - 3.minutes
+          if alertTime == nil or alertTime < Time.current - 30.minutes
               putTime("alert")
               AgentTexter.alert(mobile: "+61413740060", msg: "Genie Server Down").deliver_later
-              debugger
           end
 
    end
